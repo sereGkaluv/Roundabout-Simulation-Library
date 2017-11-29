@@ -5,59 +5,73 @@ import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 import desmoj.core.simulator.Entity;
 import desmoj.core.simulator.Model;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 public class StreetSection extends Entity implements IStreetSection {
 
+    private double _lengthInMeters;
+    private IStreetConnector _nextStreetConnector;
+    private IStreetConnector _previousStreetConnector;
+    private Map<ICar, Double> _carPositions;
+    private Queue<ICar> _carQueue;
 
-    public StreetSection(Model model, String s, boolean b) {
+    public StreetSection(double lengthInMeters, IStreetConnector previousStreetConnector, IStreetConnector nextStreetConnector, Model model, String s, boolean b) {
         super(model, s, b);
+        _lengthInMeters = lengthInMeters;
+        _carQueue = new LinkedList<>();
+        _carPositions = new HashMap<>();
+        _previousStreetConnector = previousStreetConnector;
+        _nextStreetConnector = nextStreetConnector;
     }
 
     @Override
     public double getLengthInMeters() {
-        return 0;
+        return _lengthInMeters;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return _carQueue.isEmpty();
     }
 
     @Override
     public IStreetConnector getNextStreetConnector() {
-        return null;
+        return _nextStreetConnector;
     }
 
     @Override
     public IStreetConnector getPreviousStreetConnector() {
-        return null;
+        return _previousStreetConnector;
     }
 
     @Override
     public Map<ICar, Double> getCarPositions() {
-        return null;
+        return _carPositions;
     }
 
     public void updateAllCarsPositions() {
-
+        throw new NotImplementedException();
     }
 
     public boolean isFirstCarOnExitPoint() {
-        return false;
+        throw new NotImplementedException();
     }
 
     public boolean carCouldEnterNextSection() {
-        return false;
+        throw new NotImplementedException();
     }
 
     public void moveFirstCarToNextSection() {
-
+        throw new NotImplementedException();
     }
 
     @Override
     public void addCar(ICar car) {
-
+        throw new NotImplementedException();
     }
 }
