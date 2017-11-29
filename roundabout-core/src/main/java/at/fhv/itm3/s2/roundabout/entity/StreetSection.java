@@ -5,8 +5,17 @@ import desmoj.core.simulator.Model;
 
 public class StreetSection extends Entity {
 
+
     public StreetSection(Model model, String s, boolean b) {
         super(model, s, b);
+    }
+
+    public void updateAllCarsPositions() {
+
+    }
+
+    public boolean isFirstCarOnExitPoint() {
+        return false;
     }
 
     public boolean carCouldEnterNextSection() {
@@ -17,5 +26,9 @@ public class StreetSection extends Entity {
         // update pos in previous roundabout section
         // if no car entering from previous roundabout section && enough space in previous section
         return false;
+    }
+
+    public void moveFirstCarToNextSection() {
+
     }
 }
