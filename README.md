@@ -1,4 +1,7 @@
 # Roundabout Simulation Library
+Cosists of 2 sub modules:
+- Roundabout API
+- Roundabout Core
 
 ## Usage
 
