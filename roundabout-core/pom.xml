@@ -29,8 +29,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>desmoj.core</groupId>
-            <artifactId>desmoj.core.simulator</artifactId>
+            <groupId>desmoj</groupId>
+            <artifactId>desmoj</artifactId>
+            <version>2.5.1e</version>
             <scope>system</scope>
             <systemPath>${local.repository.folder}/desmoj-2.5.1e-bin.jar</systemPath>
         </dependency>
