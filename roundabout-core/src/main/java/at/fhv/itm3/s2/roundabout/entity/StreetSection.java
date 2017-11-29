@@ -14,8 +14,6 @@ public class StreetSection extends Entity implements IStreetSection {
 
     private Queue<Car> queue;
 
-
-
     public StreetSection(Model model, String s, boolean b) {
         super(model, s, b);
     }
