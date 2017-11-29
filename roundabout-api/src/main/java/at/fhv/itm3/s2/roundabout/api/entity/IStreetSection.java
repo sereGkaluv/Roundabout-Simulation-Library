@@ -61,4 +61,10 @@ public interface IStreetSection {
      * Moves the first car in the section to the next section.
      */
     void moveFirstCarToNextSection();
+
+    /**
+     * Adds a new car to the street section.
+     * @param car The car to add.
+     */
+    void addCar(ICar car);
 }
