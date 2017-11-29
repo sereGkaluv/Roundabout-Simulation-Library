@@ -32,6 +32,8 @@ public class StreetSection extends Entity {
         // if no car entering from previous roundabout section && enough space in previous section
 
         if (isFirstCarOnExitPoint()) {
+            Car firstCar = null; // TODO get car from queue
+
             return true;
         }
 
