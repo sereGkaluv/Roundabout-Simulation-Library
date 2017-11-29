@@ -27,6 +27,7 @@ hs_err_pid*
 #Intellij Idea
 .idea/
 .gradle/
+*.iml
 
 #Eclipse
 .settings/
