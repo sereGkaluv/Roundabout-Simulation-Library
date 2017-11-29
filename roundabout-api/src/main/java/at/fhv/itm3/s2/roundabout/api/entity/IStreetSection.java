@@ -23,21 +23,21 @@ public interface IStreetSection {
      *
      * @return
      */
-    StreetConnector getNextStreetConnector();
+    IStreetConnector getNextStreetConnector();
 
     /**
      * Gets the previous street connector if available.
      *
      * @return
      */
-    StreetConnector getPreviousStreetConnector();
+    IStreetConnector getPreviousStreetConnector();
 
     /**
      * Gets all car positions of the street section.
      *
      * @return
      */
-    Map<Car, Double> getCarPositions();
+    Map<ICar, Double> getCarPositions();
 
     /**
      * Recalculates all car positions in the street section.
