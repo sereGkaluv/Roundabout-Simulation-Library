@@ -1,4 +1,4 @@
-package at.fhv.itm3.s2.roundabout;
+package at.fhv.itm3.s2.roundabout.entity;
 
 import desmoj.core.simulator.Entity;
 import desmoj.core.simulator.Model;
