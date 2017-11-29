@@ -1,25 +1,38 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import desmoj.core.simulator.Entity;
 
-import java.time.LocalTime;
 import java.util.List;
 
 public class Car implements ICar {
 
-    private LocalTime lastUpdateTime;
+    private double lastUpdateTime;
     private DriverBehaviour driverBehaviour;
     private double length;
-    private StreetSection streetSection;
+    private StreetSection destination;
     private List<StreetSection> route;
     private StreetSection actualSection;
 
-    public LocalTime getLastUpdateTime() {
+    public Car(){}
+
+    public Car(long lastUpdateTime, DriverBehaviour driverBehaviour, double length, StreetSection destination, List<StreetSection> route, StreetSection actualSection ){
+        this.lastUpdateTime = lastUpdateTime;
+        this.driverBehaviour = driverBehaviour;
+        this.length = length;
+        this.destination = destination;
+        this.route = route;
+        this.actualSection = actualSection;
+    }
+
+    public double getLastUpdateTime() {
         return lastUpdateTime;
     }
 
-    public void setLastUpdateTime(LocalTime lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
+    public void setLastUpdateTime(double lastUpdateTime) {
+        if(lastUpdateTime > 0){
+            this.lastUpdateTime = lastUpdateTime;
+        }
     }
 
     public DriverBehaviour getDriverBehaviour() {
@@ -35,15 +48,17 @@ public class Car implements ICar {
     }
 
     public void setLength(double length) {
-        this.length = length;
+        if(length > 0) {
+            this.length = length;
+        }
     }
 
-    public StreetSection getStreetSection() {
-        return streetSection;
+    public StreetSection getDestination() {
+        return destination;
     }
 
-    public void setStreetSection(StreetSection streetSection) {
-        this.streetSection = streetSection;
+    public void setDestination(StreetSection destination) {
+        this.destination = destination;
     }
 
     public List<StreetSection> getRoute() {
@@ -59,6 +74,8 @@ public class Car implements ICar {
     }
 
     public void setActualSection(StreetSection actualSection) {
-        this.actualSection = actualSection;
+        if(route.contains(actualSection) && route.indexOf(actualSection) >= route.indexOf(this.actualSection)){
+            this.actualSection = actualSection;
+        }
     }
 }
