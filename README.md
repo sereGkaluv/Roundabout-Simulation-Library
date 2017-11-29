@@ -1,1 +1,4 @@
-# S2_ITM3_SHARED
+# S2 ITM3 Shared Project
+Cosists of 2 sub modules:
+- Roundabout API
+- Roundabout Core
