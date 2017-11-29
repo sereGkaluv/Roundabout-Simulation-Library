@@ -6,6 +6,7 @@ Consists of 2 sub modules:
 ## Usage
 
 ## Entities
+![Entities](images/Entities.svg)
 
 ## Event Diagram
 ![Event Diagram](images/EventDiagram.svg)
