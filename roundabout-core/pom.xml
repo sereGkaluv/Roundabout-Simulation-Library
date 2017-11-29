@@ -35,6 +35,12 @@
             <scope>system</scope>
             <systemPath>${local.repository.folder}/desmoj-2.5.1e-bin.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>at.fhv.itm3.s2.project</groupId>
+            <artifactId>roundabout-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>
