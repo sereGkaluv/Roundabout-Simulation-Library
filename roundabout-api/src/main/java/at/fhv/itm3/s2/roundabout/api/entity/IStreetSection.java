@@ -2,7 +2,7 @@ package at.fhv.itm3.s2.roundabout.api.entity;
 
 import java.util.Map;
 
-public interface StreetSection {
+public interface IStreetSection {
 
     /**
      * Gets physical length of the street section.
