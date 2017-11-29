@@ -7,14 +7,26 @@ public class DriverBehaviour implements IDriverBehaviour {
     private double speed;
     private double minDistanceToNextCar;
     private double maxDistanceToNextCar;
-    private double behaviourFactor;
+    private double mergeFactor;
+
+    public DriverBehaviour(){}
+
+    public DriverBehaviour(double speed, double minDistanceToNextCar, double maxDistanceToNextCar, double mergeFactor){
+        this.speed = speed;
+        this.minDistanceToNextCar = minDistanceToNextCar;
+        this.maxDistanceToNextCar = maxDistanceToNextCar;
+        this.mergeFactor = mergeFactor;
+    }
+
 
     public double getSpeed() {
         return speed;
     }
 
     public void setSpeed(double speed) {
-        this.speed = speed;
+        if(speed > 0){
+            this.speed = speed;
+        }
     }
 
     public double getMinDistanceToNextCar() {
@@ -22,7 +34,9 @@ public class DriverBehaviour implements IDriverBehaviour {
     }
 
     public void setMinDistanceToNextCar(double minDistanceToNextCar) {
-        this.minDistanceToNextCar = minDistanceToNextCar;
+        if(minDistanceToNextCar > 0){
+            this.minDistanceToNextCar = minDistanceToNextCar;
+        }
     }
 
     public double getMaxDistanceToNextCar() {
@@ -30,14 +44,17 @@ public class DriverBehaviour implements IDriverBehaviour {
     }
 
     public void setMaxDistanceToNextCar(double maxDistanceToNextCar) {
-        this.maxDistanceToNextCar = maxDistanceToNextCar;
+        if(maxDistanceToNextCar > 0){
+            this.maxDistanceToNextCar = maxDistanceToNextCar;
+        }
     }
 
-    public double getBehaviourFactor() {
-        return behaviourFactor;
+    public double getMergeFactor() {
+        return mergeFactor;
     }
 
-    public void setBehaviourFactor(double behaviourFactor) {
-        this.behaviourFactor = behaviourFactor;
+    public void setMergeFactor(double mergeFactor) {
+        this.mergeFactor = mergeFactor;
     }
+
 }
