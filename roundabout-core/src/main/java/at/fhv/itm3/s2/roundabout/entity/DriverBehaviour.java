@@ -24,8 +24,10 @@ public class DriverBehaviour implements IDriverBehaviour {
     }
 
     public void setSpeed(double speed) {
-        if(speed > 0){
+        if (speed >= 0) {
             this.speed = speed;
+        } else {
+            throw new IllegalArgumentException("speed should be greater or equal than 0");
         }
     }
 
@@ -36,6 +38,8 @@ public class DriverBehaviour implements IDriverBehaviour {
     public void setMinDistanceToNextCar(double minDistanceToNextCar) {
         if(minDistanceToNextCar > 0){
             this.minDistanceToNextCar = minDistanceToNextCar;
+        } else {
+            throw new IllegalArgumentException("min distance must be positive");
         }
     }
 
@@ -46,6 +50,8 @@ public class DriverBehaviour implements IDriverBehaviour {
     public void setMaxDistanceToNextCar(double maxDistanceToNextCar) {
         if(maxDistanceToNextCar > 0){
             this.maxDistanceToNextCar = maxDistanceToNextCar;
+        } else {
+            throw new IllegalArgumentException("max distance must be positive");
         }
     }
 
