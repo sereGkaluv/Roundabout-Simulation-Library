@@ -56,6 +56,13 @@ public class StreetSection extends Entity implements IStreetSection {
 
     }
 
+    public IStreetSection getNextSectionOfFirstCar() { return null; }
+
+    @Override
+    public ICar getFirstCar() {
+        return null;
+    }
+
     @Override
     public void addCar(ICar car) {
 
