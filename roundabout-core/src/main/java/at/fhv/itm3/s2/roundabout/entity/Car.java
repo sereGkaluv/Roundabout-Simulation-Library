@@ -1,28 +1,22 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
-import desmoj.core.simulator.Entity;
 
 import java.util.List;
 
 public class Car implements ICar {
-
+    private double length;
     private double lastUpdateTime;
     private DriverBehaviour driverBehaviour;
-    private double length;
-    private StreetSection destination;
-    private List<StreetSection> route;
-    private StreetSection actualSection;
+    private final List<StreetSection> route;
+    private StreetSection currentSection;
 
-    public Car(){}
-
-    public Car(long lastUpdateTime, DriverBehaviour driverBehaviour, double length, StreetSection destination, List<StreetSection> route, StreetSection actualSection ){
-        this.lastUpdateTime = lastUpdateTime;
-        this.driverBehaviour = driverBehaviour;
-        this.length = length;
-        this.destination = destination;
+    public Car(double length, DriverBehaviour driverBehaviour, List<StreetSection> route) {
+        this.setLength(length);
+        this.setLastUpdateTime(0);
+        this.setDriverBehaviour(driverBehaviour);
+        this.setCurrentSection(!route.isEmpty() ? route.get(0) : null);
         this.route = route;
-        this.actualSection = actualSection;
     }
 
     public double getLastUpdateTime() {
@@ -32,6 +26,8 @@ public class Car implements ICar {
     public void setLastUpdateTime(double lastUpdateTime) {
         if(lastUpdateTime > 0){
             this.lastUpdateTime = lastUpdateTime;
+        } else {
+            throw new IllegalArgumentException("last update time must be positive");
         }
     }
 
@@ -50,32 +46,28 @@ public class Car implements ICar {
     public void setLength(double length) {
         if(length > 0) {
             this.length = length;
+        } else {
+            throw new IllegalArgumentException("length must be positive");
         }
     }
 
     public StreetSection getDestination() {
-        return destination;
-    }
-
-    public void setDestination(StreetSection destination) {
-        this.destination = destination;
+        return !route.isEmpty() ? route.get(route.size() - 1) : null;
     }
 
     public List<StreetSection> getRoute() {
         return route;
     }
 
-    public void setRoute(List<StreetSection> route) {
-        this.route = route;
+    public StreetSection getCurrentSection() {
+        return currentSection;
     }
 
-    public StreetSection getActualSection() {
-        return actualSection;
-    }
-
-    public void setActualSection(StreetSection actualSection) {
-        if(route.contains(actualSection) && route.indexOf(actualSection) >= route.indexOf(this.actualSection)){
-            this.actualSection = actualSection;
+    public void setCurrentSection(StreetSection currentSection) {
+        if (route.contains(currentSection) && route.indexOf(currentSection) >= route.indexOf(this.currentSection)) {
+            this.currentSection = currentSection;
+        } else {
+            throw new IllegalArgumentException("actual street section must be in route and must follow last section");
         }
     }
 }
