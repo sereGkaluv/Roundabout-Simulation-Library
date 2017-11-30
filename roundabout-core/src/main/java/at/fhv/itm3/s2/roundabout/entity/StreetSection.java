@@ -14,44 +14,44 @@ import java.util.Queue;
 
 public class StreetSection extends Entity implements IStreetSection {
 
-    private double _lengthInMeters;
-    private IStreetConnector _nextStreetConnector;
-    private IStreetConnector _previousStreetConnector;
-    private Map<ICar, Double> _carPositions;
-    private Queue<ICar> _carQueue;
+    private double lengthInMeters;
+    private IStreetConnector nextStreetConnector;
+    private IStreetConnector previousStreetConnector;
+    private Map<ICar, Double> carPositions;
+    private Queue<ICar> carQueue;
 
     public StreetSection(double lengthInMeters, IStreetConnector previousStreetConnector, IStreetConnector nextStreetConnector, Model model, String s, boolean b) {
         super(model, s, b);
-        _lengthInMeters = lengthInMeters;
-        _carQueue = new LinkedList<>();
-        _carPositions = new HashMap<>();
-        _previousStreetConnector = previousStreetConnector;
-        _nextStreetConnector = nextStreetConnector;
+        this.lengthInMeters = lengthInMeters;
+        carQueue = new LinkedList<>();
+        carPositions = new HashMap<>();
+        this.previousStreetConnector = previousStreetConnector;
+        this.nextStreetConnector = nextStreetConnector;
     }
 
     @Override
     public double getLengthInMeters() {
-        return _lengthInMeters;
+        return lengthInMeters;
     }
 
     @Override
     public boolean isEmpty() {
-        return _carQueue.isEmpty();
+        return carQueue.isEmpty();
     }
 
     @Override
     public IStreetConnector getNextStreetConnector() {
-        return _nextStreetConnector;
+        return nextStreetConnector;
     }
 
     @Override
     public IStreetConnector getPreviousStreetConnector() {
-        return _previousStreetConnector;
+        return previousStreetConnector;
     }
 
     @Override
     public Map<ICar, Double> getCarPositions() {
-        return _carPositions;
+        return carPositions;
     }
 
     public void updateAllCarsPositions() {
