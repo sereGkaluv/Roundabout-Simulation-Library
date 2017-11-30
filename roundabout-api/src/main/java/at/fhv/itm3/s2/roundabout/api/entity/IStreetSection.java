@@ -68,8 +68,6 @@ public interface IStreetSection {
      */
     void addCar(ICar car);
 
-    IStreetSection getNextSectionOfFirstCar();
-
     ICar getFirstCar();
 
 }

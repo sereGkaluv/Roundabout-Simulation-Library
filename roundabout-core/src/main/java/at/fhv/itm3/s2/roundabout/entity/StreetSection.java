@@ -70,8 +70,6 @@ public class StreetSection extends Entity implements IStreetSection {
         throw new NotImplementedException();
     }
 
-    public IStreetSection getNextSectionOfFirstCar() { return null; }
-
     @Override
     public ICar getFirstCar() {
         return null;

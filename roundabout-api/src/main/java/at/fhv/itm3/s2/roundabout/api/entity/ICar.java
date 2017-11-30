@@ -3,15 +3,31 @@ package at.fhv.itm3.s2.roundabout.api.entity;
 public interface ICar {
 
     /**
-     * Calculates the time a car needs to traverse the current street section it is standing on
+     * Calculates the time the car needs to traverse the current street section it is standing on
      *
      * @return  the traverse time in seconds
      */
     double getTimeToTraverseSection();
 
+    /**
+     * Calculates the time the car needs to traverse a given street section
+     *
+     * @param section   the street section we are interested in how long the car needs to traverse it
+     * @return          the traverse time in seconds
+     */
     double getTimeToTraverseSection(IStreetSection section);
 
-    IStreetSection getNextStreetSectionOfFirstCar();
-
+    /**
+     * Calculates the time the car needs until it has moved away from its current spot
+     *
+     * @return  the transition time in seconds
+     */
     double getTransitionTime();
+
+    /**
+     * Returns the next section the car will be standing on
+     *
+     * @return  the next section as IStreetSection
+     */
+    IStreetSection getNextSection();
 }

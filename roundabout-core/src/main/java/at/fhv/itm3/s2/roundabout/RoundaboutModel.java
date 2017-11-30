@@ -11,16 +11,21 @@ public class RoundaboutModel extends Model {
     private static double MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
 
     /**
-     * Random number stream used to draw a delivery lag for an order.
-     * Describes the time an order of goods needs to arrive in the
-     * warehouse after ordering.
+     * Random number stream used to draw a time between two car arrivals.
      * See init() method for stream parameters.
      */
     private ContDistUniform timeBetweenCarArrivals;
 
-
-    public RoundaboutModel(Model model, String s, boolean b, boolean b1) {
-        super(model, s, b, b1);
+    /**
+     * Constructs a new RoundaboutModel
+     *
+     * @param model         the model this model is part of (set to null when there is no such model)
+     * @param name          this model's name
+     * @param showInReport  flag to indicate if this model shall produce output to the report file
+     * @param showInTrace   flag to indicate if this model shall produce output to the trace file
+     */
+    public RoundaboutModel(Model model, String name, boolean showInReport, boolean showInTrace) {
+        super(model, name, showInReport, showInTrace);
     }
 
     @Override
