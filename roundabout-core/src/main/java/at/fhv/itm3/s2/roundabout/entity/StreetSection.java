@@ -7,10 +7,7 @@ import desmoj.core.simulator.Entity;
 import desmoj.core.simulator.Model;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 public class StreetSection extends Entity implements IStreetSection {
 
@@ -64,24 +61,25 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public boolean firstCarCouldEnterNextSection() {
-        // car knows its route (next section)
-
-        // update position in next section
-        // if is enough space in next section
-        // update pos in previous roundabout section
-        // if no car entering from previous roundabout section && enough space in previous section
-
-        if (isFirstCarOnExitPoint()) {
-            ICar firstCarInQueue = carQueue.peek();
+        if (this.isFirstCarOnExitPoint()) {
+            ICar firstCarInQueue = carQueue.peek(); // TODO use getFirstCar from sabi
 
             if (firstCarInQueue != null) {
                 IStreetSection nextStreetSection = firstCarInQueue.getNextStreetSection();
+
                 if (nextStreetSection.isEnoughSpace(firstCarInQueue.getLength())) {
-                    //IStreetSection precendenceSection = previousStreetConnector;
+                    Set<IStreetSection> precendenceSections = previousStreetConnector.getPreviousSections();
+                    precendenceSections.remove(this);
+
+                    for (IStreetSection precendenceSection : precendenceSections) {
+                        if (precendenceSection.isFirstCarOnExitPoint()) {
+                            return false;
+                        }
+                    }
+
+                    return true;
                 }
             }
-
-            return true;
         }
 
         return false;
