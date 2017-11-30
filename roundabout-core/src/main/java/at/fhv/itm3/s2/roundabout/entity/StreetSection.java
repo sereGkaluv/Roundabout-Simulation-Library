@@ -17,8 +17,8 @@ public class StreetSection extends Entity implements IStreetSection {
     private Map<ICar, Double> carPositions;
     private Queue<ICar> carQueue;
 
-    public StreetSection(double lengthInMeters, IStreetConnector previousStreetConnector, IStreetConnector nextStreetConnector, Model model, String s, boolean b) {
-        super(model, s, b);
+    public StreetSection(double lengthInMeters, IStreetConnector previousStreetConnector, IStreetConnector nextStreetConnector, Model model, String modelDescription, boolean showInTrace) {
+        super(model, modelDescription, showInTrace);
         this.lengthInMeters = lengthInMeters;
         carQueue = new LinkedList<>();
         carPositions = new HashMap<>();
@@ -96,10 +96,14 @@ public class StreetSection extends Entity implements IStreetSection {
         this.updateAllCarsPositions();
 
         ICar lastCar = ((LinkedList<ICar>) carQueue).getLast();
-        double lastCarPosition = carPositions.get(lastCar);
-        double freeSpace = this.getLengthInMeters() - lastCarPosition;
+        if (lastCar != null) {
+            double lastCarPosition = carPositions.get(lastCar);
+            double freeSpace = this.getLengthInMeters() - lastCarPosition;
 
-        return freeSpace;
+            return freeSpace;
+        }
+
+        return 0;
     }
 
     public void moveFirstCarToNextSection() {
