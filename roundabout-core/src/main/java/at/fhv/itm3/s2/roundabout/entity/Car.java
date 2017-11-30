@@ -1,6 +1,8 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
+import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 
 import java.util.List;
 
@@ -8,14 +10,14 @@ public class Car implements ICar {
     private double length;
     private double lastUpdateTime;
     private DriverBehaviour driverBehaviour;
-    private final List<StreetSection> route;
+    private final List<IStreetSection> route;
     private StreetSection currentSection;
 
-    public Car(double length, DriverBehaviour driverBehaviour, List<StreetSection> route) {
+    public Car(double length, IDriverBehaviour driverBehaviour, List<IStreetSection> route) {
         this.setLength(length);
         this.setLastUpdateTime(0);
-        this.setDriverBehaviour(driverBehaviour);
-        this.setCurrentSection(!route.isEmpty() ? route.get(0) : null);
+        this.setDriverBehaviour((DriverBehaviour) driverBehaviour);
+        this.setCurrentSection(!route.isEmpty() ? (StreetSection) route.get(0) : null);
         this.route = route;
     }
 
@@ -24,19 +26,24 @@ public class Car implements ICar {
     }
 
     public void setLastUpdateTime(double lastUpdateTime) {
-        if(lastUpdateTime > 0){
+        if (lastUpdateTime >= 0) {
             this.lastUpdateTime = lastUpdateTime;
         } else {
             throw new IllegalArgumentException("last update time must be positive");
         }
     }
 
-    public DriverBehaviour getDriverBehaviour() {
+    public IDriverBehaviour getDriverBehaviour() {
         return driverBehaviour;
     }
 
-    public void setDriverBehaviour(DriverBehaviour driverBehaviour) {
-        this.driverBehaviour = driverBehaviour;
+    public void setDriverBehaviour(IDriverBehaviour driverBehaviour) {
+        this.driverBehaviour = (DriverBehaviour) driverBehaviour;
+    }
+
+    @Override
+    public IStreetSection getNextStreetSection() {
+        return null;
     }
 
     public double getLength() {
@@ -51,15 +58,15 @@ public class Car implements ICar {
         }
     }
 
-    public StreetSection getDestination() {
+    public IStreetSection getDestination() {
         return !route.isEmpty() ? route.get(route.size() - 1) : null;
     }
 
-    public List<StreetSection> getRoute() {
+    public List<IStreetSection> getRoute() {
         return route;
     }
 
-    public StreetSection getCurrentSection() {
+    public IStreetSection getCurrentSection() {
         return currentSection;
     }
 

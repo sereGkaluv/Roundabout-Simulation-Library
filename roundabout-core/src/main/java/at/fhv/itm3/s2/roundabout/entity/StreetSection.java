@@ -62,13 +62,13 @@ public class StreetSection extends Entity implements IStreetSection {
     @Override
     public boolean firstCarCouldEnterNextSection() {
         if (this.isFirstCarOnExitPoint()) {
-            ICar firstCarInQueue = carQueue.peek(); // TODO use getFirstCar from sabi
+            ICar firstCarInQueue = this.getFirstCar();
 
             if (firstCarInQueue != null) {
                 IStreetSection nextStreetSection = firstCarInQueue.getNextStreetSection();
 
                 if (nextStreetSection.isEnoughSpace(firstCarInQueue.getLength())) {
-                    Set<IStreetSection> precendenceSections = previousStreetConnector.getPreviousSections();
+                    Set<IStreetSection> precendenceSections = this.getPreviousStreetConnector().getPreviousSections();
                     precendenceSections.remove(this);
 
                     for (IStreetSection precendenceSection : precendenceSections) {
@@ -95,9 +95,9 @@ public class StreetSection extends Entity implements IStreetSection {
     private double getFreeSpace() {
         this.updateAllCarsPositions();
 
-        ICar lastCar = ((LinkedList<ICar>) carQueue).getLast();
+        ICar lastCar = this.getLastCar();
         if (lastCar != null) {
-            double lastCarPosition = carPositions.get(lastCar);
+            double lastCarPosition = this.getCarPositions().get(lastCar);
             double freeSpace = this.getLengthInMeters() - lastCarPosition;
 
             return freeSpace;
@@ -113,5 +113,15 @@ public class StreetSection extends Entity implements IStreetSection {
     @Override
     public void addCar(ICar car) {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public ICar getFirstCar() {
+        return carQueue.peek();
+    }
+
+    @Override
+    public ICar getLastCar() {
+        return ((LinkedList<ICar>) carQueue).getLast();
     }
 }

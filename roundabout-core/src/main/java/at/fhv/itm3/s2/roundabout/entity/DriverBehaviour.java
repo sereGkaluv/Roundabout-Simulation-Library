@@ -9,8 +9,6 @@ public class DriverBehaviour implements IDriverBehaviour {
     private double maxDistanceToNextCar;
     private double mergeFactor;
 
-    public DriverBehaviour(){}
-
     public DriverBehaviour(double speed, double minDistanceToNextCar, double maxDistanceToNextCar, double mergeFactor){
         this.speed = speed;
         this.minDistanceToNextCar = minDistanceToNextCar;

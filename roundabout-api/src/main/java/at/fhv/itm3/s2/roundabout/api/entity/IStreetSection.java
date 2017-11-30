@@ -77,4 +77,18 @@ public interface IStreetSection {
      * @param car The car to add.
      */
     void addCar(ICar car);
+
+    /**
+     * Gets first car in Section.
+     *
+     * @return first car in section
+     */
+    ICar getFirstCar();
+
+    /**
+     * Gets last car in Section.
+     *
+     * @return last car in section
+     */
+    ICar getLastCar();
 }
