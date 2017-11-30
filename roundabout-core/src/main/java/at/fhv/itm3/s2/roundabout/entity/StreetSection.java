@@ -62,11 +62,7 @@ public class StreetSection extends Entity implements IStreetSection {
         return false;
     }
 
-    /**
-     * Checks, if first car in street section is able to enter the next section, depending on its predefined route.
-     *
-     * @return true = car can enter next section, false = car can not enter next section
-     */
+    @Override
     public boolean firstCarCouldEnterNextSection() {
         // car knows its route (next section)
 
@@ -76,12 +72,36 @@ public class StreetSection extends Entity implements IStreetSection {
         // if no car entering from previous roundabout section && enough space in previous section
 
         if (isFirstCarOnExitPoint()) {
-            Car firstCar = null; // TODO get car from queue
+            ICar firstCarInQueue = carQueue.peek();
+
+            if (firstCarInQueue != null) {
+                IStreetSection nextStreetSection = firstCarInQueue.getNextStreetSection();
+                if (nextStreetSection.isEnoughSpace(firstCarInQueue.getLength())) {
+                    //IStreetSection precendenceSection = previousStreetConnector;
+                }
+            }
 
             return true;
         }
 
         return false;
+    }
+
+    @Override
+    public boolean isEnoughSpace(double length) {
+        double freeSpace = this.getFreeSpace();
+
+        return length < freeSpace;
+    }
+
+    private double getFreeSpace() {
+        this.updateAllCarsPositions();
+
+        ICar lastCar = ((LinkedList<ICar>) carQueue).getLast();
+        double lastCarPosition = carPositions.get(lastCar);
+        double freeSpace = this.getLengthInMeters() - lastCarPosition;
+
+        return freeSpace;
     }
 
     public void moveFirstCarToNextSection() {
