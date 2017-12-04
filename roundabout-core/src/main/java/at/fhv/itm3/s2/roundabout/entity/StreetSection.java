@@ -122,6 +122,11 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public ICar getLastCar() {
-        return ((LinkedList<ICar>) carQueue).getLast();
+        if (carQueue == null || !(carQueue instanceof List)) {
+            return null;
+        }
+
+        int indexLastCar = carQueue.size() - 1;
+        return ((List<ICar>) carQueue).get(indexLastCar);
     }
 }
