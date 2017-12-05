@@ -8,6 +8,7 @@ class CarCouldLeaveSectionEventTest {
 
     @Test
     void eventRoutineTest() {
+        
     }
 
 }

@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class RoundaboutModel extends Model {
 
-    private static double MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
-    private static double MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
+    public static final double MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
+    public static final double MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
 
     /**
      * Random number stream used to draw a time between two car arrivals.
