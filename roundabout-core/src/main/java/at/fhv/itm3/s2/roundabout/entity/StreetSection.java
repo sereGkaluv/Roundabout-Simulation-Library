@@ -58,8 +58,8 @@ public class StreetSection extends Entity implements IStreetSection {
         throw new NotImplementedException();
     }
 
-    public boolean isFirstCarOnExitPoint() {
-        throw new NotImplementedException();
+    public boolean isFirstCarOnExitPoint(ICar car) {
+        return Math.floor(carPositions.get(car) * 100) == 0.0; // also almost zero
     }
 
     public boolean carCouldEnterNextSection() {
