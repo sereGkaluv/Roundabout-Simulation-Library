@@ -67,6 +67,10 @@ public class StreetSection extends Entity implements IStreetSection {
             if (firstCarInQueue != null) {
                 IStreetSection nextStreetSection = firstCarInQueue.getNextStreetSection();
 
+                if (nextStreetSection == null) { // car at destination
+                    return true;
+                }
+
                 if (nextStreetSection.isEnoughSpace(firstCarInQueue.getLength())) {
                     Set<IStreetSection> precendenceSections = this.getPreviousStreetConnector().getPreviousSections();
                     precendenceSections.remove(this);

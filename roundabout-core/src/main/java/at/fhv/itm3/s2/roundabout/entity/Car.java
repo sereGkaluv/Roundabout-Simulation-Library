@@ -9,9 +9,9 @@ import java.util.List;
 public class Car implements ICar {
     private double length;
     private double lastUpdateTime;
-    private DriverBehaviour driverBehaviour;
+    private IDriverBehaviour driverBehaviour;
     private final List<IStreetSection> route;
-    private StreetSection currentSection;
+    private IStreetSection currentSection;
 
     public Car(double length, IDriverBehaviour driverBehaviour, List<IStreetSection> route) {
         this.setLength(length);
@@ -21,10 +21,12 @@ public class Car implements ICar {
         this.route = route;
     }
 
+    @Override
     public double getLastUpdateTime() {
         return lastUpdateTime;
     }
 
+    @Override
     public void setLastUpdateTime(double lastUpdateTime) {
         if (lastUpdateTime >= 0) {
             this.lastUpdateTime = lastUpdateTime;
@@ -33,12 +35,14 @@ public class Car implements ICar {
         }
     }
 
+    @Override
     public IDriverBehaviour getDriverBehaviour() {
         return driverBehaviour;
     }
 
+    @Override
     public void setDriverBehaviour(IDriverBehaviour driverBehaviour) {
-        this.driverBehaviour = (DriverBehaviour) driverBehaviour;
+        this.driverBehaviour = driverBehaviour;
     }
 
     @Override
@@ -46,10 +50,12 @@ public class Car implements ICar {
         return null;
     }
 
+    @Override
     public double getLength() {
         return length;
     }
 
+    @Override
     public void setLength(double length) {
         if(length > 0) {
             this.length = length;
@@ -58,19 +64,23 @@ public class Car implements ICar {
         }
     }
 
+    @Override
     public IStreetSection getDestination() {
         return !route.isEmpty() ? route.get(route.size() - 1) : null;
     }
 
+    @Override
     public List<IStreetSection> getRoute() {
         return route;
     }
 
+    @Override
     public IStreetSection getCurrentSection() {
         return currentSection;
     }
 
-    public void setCurrentSection(StreetSection currentSection) {
+    @Override
+    public void setCurrentSection(IStreetSection currentSection) {
         if (route.contains(currentSection) && route.indexOf(currentSection) >= route.indexOf(this.currentSection)) {
             this.currentSection = currentSection;
         } else {
