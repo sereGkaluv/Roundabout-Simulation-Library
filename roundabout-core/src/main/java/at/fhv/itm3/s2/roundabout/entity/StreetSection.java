@@ -55,7 +55,7 @@ public class StreetSection extends Entity implements IStreetSection {
     }
 
     public boolean isFirstCarOnExitPoint() {
-        return false;
+        throw new NotImplementedException();
     }
 
     @Override
