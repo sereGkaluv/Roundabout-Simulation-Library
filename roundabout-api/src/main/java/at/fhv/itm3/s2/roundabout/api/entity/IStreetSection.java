@@ -9,7 +9,7 @@ public interface IStreetSection {
      *
      * @return The length in meters.
      */
-    double getLengthInMeters();
+    double getLength();
 
     /**
      * Checks if the street section is empty.

@@ -11,15 +11,15 @@ import java.util.*;
 
 public class StreetSection extends Entity implements IStreetSection {
 
-    private double lengthInMeters;
+    private double length;
     private IStreetConnector nextStreetConnector;
     private IStreetConnector previousStreetConnector;
     private Map<ICar, Double> carPositions;
     private Queue<ICar> carQueue;
 
-    public StreetSection(double lengthInMeters, IStreetConnector previousStreetConnector, IStreetConnector nextStreetConnector, Model model, String modelDescription, boolean showInTrace) {
+    public StreetSection(double length, IStreetConnector previousStreetConnector, IStreetConnector nextStreetConnector, Model model, String modelDescription, boolean showInTrace) {
         super(model, modelDescription, showInTrace);
-        this.lengthInMeters = lengthInMeters;
+        this.length = length;
         carQueue = new LinkedList<>();
         carPositions = new HashMap<>();
         this.previousStreetConnector = previousStreetConnector;
@@ -27,8 +27,8 @@ public class StreetSection extends Entity implements IStreetSection {
     }
 
     @Override
-    public double getLengthInMeters() {
-        return lengthInMeters;
+    public double getLength() {
+        return length;
     }
 
     @Override
@@ -98,13 +98,13 @@ public class StreetSection extends Entity implements IStreetSection {
         ICar lastCar = this.getLastCar();
         if (lastCar != null) {
             double lastCarPosition = this.getCarPositions().get(lastCar);
-            double freeSpace = this.getLengthInMeters() - lastCarPosition;
+            double freeSpace = this.getLength() - lastCarPosition;
 
             return freeSpace;
         }
 
         if (this.isEmpty()) {
-            return this.getLengthInMeters();
+            return this.getLength();
         }
 
         throw new IllegalStateException("street section is not empty, but last car could not be determined");

@@ -69,15 +69,15 @@ public class StreetSectionTest {
         when(streetSectionMock.isEnoughSpace(car.getLength())).thenCallRealMethod();
 
         double streetSectionLengthBigger = 10.0;
-        when(streetSectionMock.getLengthInMeters()).thenReturn(streetSectionLengthBigger);
+        when(streetSectionMock.getLength()).thenReturn(streetSectionLengthBigger);
         assertTrue(streetSectionMock.isEnoughSpace(car.getLength()));
 
         double streetSectionLengthEquals = 8.0;
-        when(streetSectionMock.getLengthInMeters()).thenReturn(streetSectionLengthEquals);
+        when(streetSectionMock.getLength()).thenReturn(streetSectionLengthEquals);
         assertFalse(streetSectionMock.isEnoughSpace(car.getLength()));
 
         double streetSectionLengthSmaller = 6.0;
-        when(streetSectionMock.getLengthInMeters()).thenReturn(streetSectionLengthSmaller);
+        when(streetSectionMock.getLength()).thenReturn(streetSectionLengthSmaller);
         assertFalse(streetSectionMock.isEnoughSpace(car.getLength()));
 
     }
