@@ -103,7 +103,11 @@ public class StreetSection extends Entity implements IStreetSection {
             return freeSpace;
         }
 
-        return 0;
+        if (this.isEmpty()) {
+            return this.getLengthInMeters();
+        }
+
+        throw new IllegalStateException("street section is not empty, but last car could not be determined");
     }
 
     public void moveFirstCarToNextSection() {
@@ -117,13 +121,19 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public ICar getFirstCar() {
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        }
+
         return carQueue.peek();
     }
 
     @Override
     public ICar getLastCar() {
-        if (carQueue == null || !(carQueue instanceof List)) {
-            return null;
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        } else if (!(carQueue instanceof List)) {
+            throw new IllegalStateException("carQueue must be an implementation of List");
         }
 
         int indexLastCar = carQueue.size() - 1;
