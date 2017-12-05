@@ -12,7 +12,7 @@
 
     <properties>
         <project.tests.junit.version>4.12</project.tests.junit.version>
-        <project.tests.mockito.version>1.10.19</project.tests.mockito.version>
+        <project.tests.mockito.version>1.9.5</project.tests.mockito.version>
         <project.tests.awaitility.version>3.0.0</project.tests.awaitility.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -49,7 +49,7 @@
             <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
             <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
+                <artifactId>mockito-core</artifactId>
                 <version>${project.tests.mockito.version}</version>
                 <scope>test</scope>
             </dependency>
