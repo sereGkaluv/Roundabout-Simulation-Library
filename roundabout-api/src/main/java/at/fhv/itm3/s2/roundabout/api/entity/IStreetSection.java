@@ -53,6 +53,7 @@ public interface IStreetSection {
 
     /**
      * Checks if a car could enter the next available section.
+     *
      * @return
      */
     boolean carCouldEnterNextSection();
@@ -64,7 +65,13 @@ public interface IStreetSection {
 
     /**
      * Adds a new car to the street section.
+     *
      * @param car The car to add.
      */
     void addCar(ICar car);
+
+    /**
+     * removes the first car of the queue and returns the first Car
+     */
+    ICar removeFirstCar();
 }

@@ -73,12 +73,12 @@ public class StreetSection extends Entity implements IStreetSection {
      * If the current streetSection was the last one of the route the car disappears in a sink.
      */
     public void moveFirstCarToNextSection() {
-        Car firstCar = (Car)carQueue.poll();
+        ICar firstCar = removeFirstCar();
         if (firstCar!=null){
-            StreetSection currentSection = firstCar.getCurrentSection();
-            int currentSectionIndex = firstCar.getRoute().indexOf(currentSection);
+            //StreetSection currentSection = firstCar.getCurrentSection();
+            int currentSectionIndex = firstCar.getCurrentIndexOfRoute();
             if (currentSectionIndex < (firstCar.getRoute().size()-1)){
-                StreetSection nextSection = firstCar.getRoute().get(currentSectionIndex+1);
+                IStreetSection nextSection = firstCar.getNextStreetSection();
                 nextSection.addCar(firstCar);
                 firstCar.setCurrentSection(nextSection);
             }
@@ -92,5 +92,15 @@ public class StreetSection extends Entity implements IStreetSection {
     @Override
     public void addCar(ICar car) {
         carQueue.add(car);
+    }
+
+    /**
+     * removes the first car of the queue and returns the first Car
+     * @return
+     */
+    @Override
+    public ICar removeFirstCar() {
+
+        return null;
     }
 }

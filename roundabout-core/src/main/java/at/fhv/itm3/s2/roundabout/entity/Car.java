@@ -1,6 +1,7 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 
 import java.util.List;
 
@@ -8,10 +9,10 @@ public class Car implements ICar {
     private double length;
     private double lastUpdateTime;
     private DriverBehaviour driverBehaviour;
-    private final List<StreetSection> route;
-    private StreetSection currentSection;
+    private final List<IStreetSection> route;
+    private IStreetSection currentSection;
 
-    public Car(double length, DriverBehaviour driverBehaviour, List<StreetSection> route) {
+    public Car(double length, DriverBehaviour driverBehaviour, List<IStreetSection> route) {
         this.setLength(length);
         this.setLastUpdateTime(0);
         this.setDriverBehaviour(driverBehaviour);
@@ -51,19 +52,29 @@ public class Car implements ICar {
         }
     }
 
-    public StreetSection getDestination() {
+    public IStreetSection getDestination() {
         return !route.isEmpty() ? route.get(route.size() - 1) : null;
     }
 
-    public List<StreetSection> getRoute() {
+    @Override
+    public int getCurrentIndexOfRoute() {
+     return 0;
+    }
+
+    public List<IStreetSection> getRoute() {
         return route;
     }
 
-    public StreetSection getCurrentSection() {
+    @Override
+    public IStreetSection getNextStreetSection() {
+    return null;
+    }
+
+    public IStreetSection getCurrentSection() {
         return currentSection;
     }
 
-    public void setCurrentSection(StreetSection currentSection) {
+    public void setCurrentSection(IStreetSection currentSection) {
         if (route.contains(currentSection) && route.indexOf(currentSection) >= route.indexOf(this.currentSection)) {
             this.currentSection = currentSection;
         } else {
