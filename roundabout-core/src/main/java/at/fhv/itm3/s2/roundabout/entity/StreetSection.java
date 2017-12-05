@@ -66,12 +66,31 @@ public class StreetSection extends Entity implements IStreetSection {
         throw new NotImplementedException();
     }
 
+
+    /**
+     * moveFirstCarToNextSection removes the first car from the queue and puts it into the
+     * queue of the next streetSection of the route of the car, if there is one.
+     * If the current streetSection was the last one of the route the car disappears in a sink.
+     */
     public void moveFirstCarToNextSection() {
-        throw new NotImplementedException();
+        Car firstCar = (Car)carQueue.poll();
+        if (firstCar!=null){
+            StreetSection currentSection = firstCar.getCurrentSection();
+            int currentSectionIndex = firstCar.getRoute().indexOf(currentSection);
+            if (currentSectionIndex < (firstCar.getRoute().size()-1)){
+                StreetSection nextSection = firstCar.getRoute().get(currentSectionIndex+1);
+                nextSection.addCar(firstCar);
+                firstCar.setCurrentSection(nextSection);
+            }
+        }
     }
 
+    /**
+     * addCar adds a car to the queue of the streetSection
+     * @param car The car to add.
+     */
     @Override
     public void addCar(ICar car) {
-        throw new NotImplementedException();
+        carQueue.add(car);
     }
 }
