@@ -3,6 +3,7 @@ package at.fhv.itm3.s2.roundabout.entity;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
+import com.google.common.math.DoubleMath;
 import desmoj.core.simulator.Entity;
 import desmoj.core.simulator.Model;
 
@@ -55,7 +56,11 @@ public class StreetSection extends Entity implements IStreetSection {
     }
 
     public boolean isFirstCarOnExitPoint() {
-        throw new NotImplementedException();
+        ICar firstCar = this.getFirstCar();
+        if(firstCar == null){
+            return false;
+        }
+        return DoubleMath.fuzzyEquals(this.getCarPositions().get(firstCar), this.getLength(), 0.5); // Todo: sergii firstCar.getDriverBehaviour().getMaxDistance()
     }
 
     @Override
