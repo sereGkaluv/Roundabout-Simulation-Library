@@ -15,6 +15,66 @@ import static org.mockito.Mockito.when;
 
 public class StreetSectionTest {
     @Test
+    public void isFirstCarOnExitPoint_positiv(){
+        IStreetSection streetSectionMock = mock(StreetSection.class);
+        when(streetSectionMock.isFirstCarOnExitPoint()).thenCallRealMethod();
+
+        // no car in queue
+        when(streetSectionMock.getFirstCar()).thenReturn(null);
+        assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
+
+        // verify car pos
+        ICar carMock = mock(ICar.class);
+        HashMap<ICar, Double> carPosition = new HashMap<>();
+        when(streetSectionMock.getFirstCar()).thenReturn(carMock);
+
+        carPosition.put(carMock, 0.0); ////TODO Sergii
+        when(streetSectionMock.getCarPositions()).thenReturn(carPosition);
+
+        assertTrue(streetSectionMock.isFirstCarOnExitPoint());
+    }
+
+    @Test
+    public void isFirstCarOnExitPoint_negativ(){
+        IStreetSection streetSectionMock = mock(StreetSection.class);
+        when(streetSectionMock.isFirstCarOnExitPoint()).thenCallRealMethod();
+
+        // no car in queue
+        when(streetSectionMock.getFirstCar()).thenReturn(null);
+        assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
+
+        // verify car pos
+        ICar carMock = mock(ICar.class);
+        HashMap<ICar, Double> carPosition = new HashMap<>();
+        when(streetSectionMock.getFirstCar()).thenReturn(carMock);
+
+        carPosition.put(carMock, 1.0); ////TODO Sergii
+        when(streetSectionMock.getCarPositions()).thenReturn(carPosition);
+
+        assertFalse(streetSectionMock.isFirstCarOnExitPoint());
+    }
+
+    @Test
+    public void isFirstCarOnExitPoint_boundary(){
+        IStreetSection streetSectionMock = mock(StreetSection.class);
+        when(streetSectionMock.isFirstCarOnExitPoint()).thenCallRealMethod();
+
+        // no car in queue
+        when(streetSectionMock.getFirstCar()).thenReturn(null);
+        assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
+
+        // verify car pos
+        ICar carMock = mock(ICar.class);
+        HashMap<ICar, Double> carPosition = new HashMap<>();
+        when(streetSectionMock.getFirstCar()).thenReturn(carMock);
+
+        carPosition.put(carMock, 0.5); ////TODO Sergii
+        when(streetSectionMock.getCarPositions()).thenReturn(carPosition);
+
+        assertFalse(streetSectionMock.isFirstCarOnExitPoint());
+    }
+
+    @Test
     public void firstCarCouldEnterNextSection() throws Exception {
         IStreetSection streetSectionMock = mock(StreetSection.class);
         when(streetSectionMock.firstCarCouldEnterNextSection()).thenCallRealMethod();
