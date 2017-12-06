@@ -32,7 +32,7 @@ public interface ICar {
 
     /**
      * sets the currentStreetSection to the StreetSection of the parameter
-     * @param streetSection - new current StreetSection
+     * @param currentSection - new current StreetSection
      */
     void setCurrentSection(IStreetSection currentSection);
 }
