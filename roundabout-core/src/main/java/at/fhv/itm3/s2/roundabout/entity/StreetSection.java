@@ -23,7 +23,14 @@ public class StreetSection extends Entity implements IStreetSection {
     private final IStreetConnector previousStreetConnector;
 
 
-    public StreetSection(double length, IStreetConnector previousStreetConnector, IStreetConnector nextStreetConnector, Model model, String modelDescription, boolean showInTrace) {
+    public StreetSection(
+        double length,
+        IStreetConnector previousStreetConnector,
+        IStreetConnector nextStreetConnector,
+        Model model,
+        String modelDescription,
+        boolean showInTrace
+    ) {
         super(model, modelDescription, showInTrace);
 
         this.length = length;
@@ -46,6 +53,34 @@ public class StreetSection extends Entity implements IStreetSection {
     }
 
     @Override
+    public void addCar(ICar car) {
+        carQueue.addLast(car);
+    }
+
+    @Override
+    public ICar removeFirstCar() {
+        return carQueue.removeFirst();
+    }
+
+    @Override
+    public ICar getFirstCar() {
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        }
+
+        return carQueue.getFirst();
+    }
+
+    @Override
+    public ICar getLastCar() {
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        }
+
+        return carQueue.getLast();
+    }
+
+    @Override
     public boolean isEmpty() {
         return carQueue.isEmpty();
     }
@@ -62,7 +97,7 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public Map<ICar, Double> getCarPositions() {
-        return carPositions;
+        return Collections.unmodifiableMap(carPositions);
     }
 
     @Override
@@ -74,7 +109,7 @@ public class StreetSection extends Entity implements IStreetSection {
         for (ICar currentCar : carQueue) {
             final double carLastUpdateTime = currentCar.getLastUpdateTime();
             final double carSpeed = currentCar.getDriverBehaviour().getSpeed();
-            final double carPosition = carPositions.getOrDefault(currentCar, INITIAL_CAR_POSITION);
+            final double carPosition = getCarPositions().getOrDefault(currentCar, INITIAL_CAR_POSITION);
 
             // Calculate distance to next car / end of street section based on distributed driver behaviour values.
             final double distanceToNextCar = 0; //TODO finish.
@@ -84,7 +119,7 @@ public class StreetSection extends Entity implements IStreetSection {
             final double maxTheoreticallyPossiblePositionValue = getMaxPossibleCarPosition(
                 getLength(),
                 distanceToNextCar,
-                carPositions.get(previousCar),
+                getCarPositions().get(previousCar),
                 previousCar
             );
 
@@ -98,6 +133,7 @@ public class StreetSection extends Entity implements IStreetSection {
 
             currentCar.setLastUpdateTime(currentTime);
             carPositions.put(currentCar, newCarPosition);
+
             previousCar = currentCar;
         }
     }
@@ -109,8 +145,8 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public boolean firstCarCouldEnterNextSection() {
-        if (this.isFirstCarOnExitPoint()) {
-            ICar firstCarInQueue = this.getFirstCar();
+        if (isFirstCarOnExitPoint()) {
+            ICar firstCarInQueue = getFirstCar();
 
             if (firstCarInQueue != null) {
                 IStreetSection nextStreetSection = firstCarInQueue.getNextStreetSection();
@@ -120,11 +156,11 @@ public class StreetSection extends Entity implements IStreetSection {
                 }
 
                 if (nextStreetSection.isEnoughSpace(firstCarInQueue.getLength())) {
-                    Set<IStreetSection> precendenceSections = this.getPreviousStreetConnector().getPreviousSections();
-                    precendenceSections.remove(this);
+                    Set<IStreetSection> precedenceSections = getPreviousStreetConnector().getPreviousSections();
+                    precedenceSections.remove(this);
 
-                    for (IStreetSection precendenceSection : precendenceSections) {
-                        if (precendenceSection.isFirstCarOnExitPoint()) {
+                    for (IStreetSection precedenceSection : precedenceSections) {
+                        if (precedenceSection.isFirstCarOnExitPoint()) {
                             return false;
                         }
                     }
@@ -139,36 +175,11 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public boolean isEnoughSpace(double length) {
-        double freeSpace = this.getFreeSpace();
-
+        final double freeSpace = getFreeSpace();
         return length < freeSpace;
     }
 
-    private double getFreeSpace() {
-        this.updateAllCarsPositions();
-
-        ICar lastCar = this.getLastCar();
-        if (lastCar != null) {
-            double lastCarPosition = this.getCarPositions().get(lastCar);
-            return this.getLength() - lastCarPosition;
-        }
-
-        if (this.isEmpty()) {
-            return this.getLength();
-        }
-
     @Override
-    public boolean carCouldEnterNextSection() {
-        throw new NotImplementedException();
-        throw new IllegalStateException("street section is not empty, but last car could not be determined");
-    }
-
-    @Override
-    /**
-     * moveFirstCarToNextSection removes the first car from the queue and puts it into the
-     * queue of the next streetSection of the route of the car, if there is one.
-     * If the current streetSection was the last one of the route the car disappears in a sink.
-     */
     public void moveFirstCarToNextSection() {
         ICar firstCar = removeFirstCar();
         if (firstCar != null) {
@@ -180,49 +191,22 @@ public class StreetSection extends Entity implements IStreetSection {
         }
     }
 
-    /**
-     * addCar adds a car to the queue of the streetSection
-     *
-     * @param car The car to add.
-     */
     @Override
-    public void addCar(ICar car) {
-        carQueue.add(car);
+    public boolean carCouldEnterNextSection() {
+        throw new IllegalStateException("street section is not empty, but last car could not be determined");
     }
 
-    /**
-     * removes the first car of the queue and returns the first Car
-     *
-     * @return
-     */
-    @Override
-    public ICar removeFirstCar() {
-        return carQueue.poll();
-    }
+    private double getFreeSpace() {
+        updateAllCarsPositions();
 
-    @Override
-    public ICar getFirstCar() {
-        if (carQueue == null) {
-            throw new IllegalStateException("carQueue in section cannot be null");
+        ICar lastCar = getLastCar();
+        if (lastCar != null) {
+            double lastCarPosition = getCarPositions().get(lastCar);
+            return lastCarPosition - lastCar.getLength();
         }
 
-        return carQueue.peek();
-    }
-
-    @Override
-    public ICar getLastCar() {
-        if (carQueue == null) {
-            throw new IllegalStateException("carQueue in section cannot be null");
-        } else if (!(carQueue instanceof List)) {
-            throw new IllegalStateException("carQueue must be an implementation of List");
-        }
-
-        int indexLastCar = carQueue.size() - 1;
-        return ((List<ICar>) carQueue).get(indexLastCar);
-    }
-
-    private double getCurrentTime() {
-        return currentModel().getExperiment().getSimClock().getTime().getTimeAsDouble();
+        // Otherwise whole section is empty.
+        return getLength();
     }
 
     private static double getMaxPossibleCarPosition(
@@ -236,5 +220,10 @@ public class StreetSection extends Entity implements IStreetSection {
         } else {
             return lengthInMeters - distanceToNextCar;
         }
+    }
+
+    private double getCurrentTime() {
+        //TODO consider refactoring (moving) to RoundAbountModel.
+        return currentModel().getExperiment().getSimClock().getTime().getTimeAsDouble();
     }
 }

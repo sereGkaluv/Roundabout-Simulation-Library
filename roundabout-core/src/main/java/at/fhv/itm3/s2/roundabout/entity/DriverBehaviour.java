@@ -16,7 +16,6 @@ public class DriverBehaviour implements IDriverBehaviour {
         this.mergeFactor = mergeFactor;
     }
 
-
     @Override
     public double getSpeed() {
         return speed;
