@@ -92,4 +92,8 @@ public interface IStreetSection {
      */
     ICar getLastCar();
 
+    /**
+     * removes the first car of the queue and returns the first Car
+     */
+    ICar removeFirstCar();
 }
