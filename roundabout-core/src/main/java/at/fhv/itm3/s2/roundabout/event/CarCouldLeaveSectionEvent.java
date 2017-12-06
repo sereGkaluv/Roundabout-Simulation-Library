@@ -26,7 +26,9 @@ public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
      */
     public CarCouldLeaveSectionEvent(Model model, String name, boolean showInTrace) {
         super(model, name, showInTrace);
-        myModel = (RoundaboutModel)model;
+        if (model instanceof RoundaboutModel) {
+            myModel = (RoundaboutModel)model;
+        }
     }
 
     /**
@@ -47,17 +49,28 @@ public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
      * @throws SuspendExecution
      */
     public void eventRoutine(StreetSection section) throws SuspendExecution {
-        if(section.isFirstCarOnExitPoint()) {
-            if(section.carCouldEnterNextSection()) {
+        if(section.firstCarCouldEnterNextSection()) {
+
+            // schedule a CarCouldLeaveSectionEvent for the next section, so it is thrown when the car should be able to
+            // leave the next section under optimal conditions
+            IStreetSection nextSection = section.getFirstCar().getNextSection();
+            if (nextSection instanceof StreetSection) {
                 new CarCouldLeaveSectionEvent(myModel, "CarCouldLeaveSectionEvent", true).schedule((StreetSection)section.getFirstCar().getNextSection(), new TimeSpan(section.getFirstCar().getTimeToTraverseSection(section.getFirstCar().getNextSection()), TimeUnit.SECONDS));
                 section.moveFirstCarToNextSection();
+            }
 
-                if(!section.isEmpty()) {
-                    section.updateAllCarsPositions();
-                    new CarCouldLeaveSectionEvent(myModel, "CarCouldLeaveSectionEvent", true).schedule(section, new TimeSpan(section.getFirstCar().getTransitionTime(), TimeUnit.SECONDS));
-                }
+            // if the current section is not empty, schedule a new CarCouldLeaveSectionEvent after the time the first car
+            // in the section needs to move away from its current position (this time is depending on whether the car is
+            // standing or driving
+            if(!section.isEmpty()) {
+                section.updateAllCarsPositions();
+                new CarCouldLeaveSectionEvent(myModel, "CarCouldLeaveSectionEvent", true).schedule(section, new TimeSpan(section.getFirstCar().getTransitionTime(), TimeUnit.SECONDS));
+            }
 
-                for (IStreetSection prevSection : section.getPreviousStreetConnector().getPreviousSections()) {
+            // schedule a new CarCouldLeaveSectionEvent for the previous sections (if there are any) so the previous section
+            // check if they have a car which could enter the current section because there might be space for a new car
+            for (IStreetSection prevSection : section.getPreviousStreetConnector().getPreviousSections()) {
+                if (prevSection instanceof StreetSection) {
                     new CarCouldLeaveSectionEvent(myModel, "CarCouldLeaveSectionEvent", true).schedule((StreetSection)prevSection, new TimeSpan(0, TimeUnit.SECONDS));
                 }
             }

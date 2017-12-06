@@ -9,25 +9,6 @@ import java.util.List;
 
 public class Car implements ICar {
 
-    @Override
-    public double getTimeToTraverseSection() {
-        return 0;
-    }
-
-    @Override
-    public double getTimeToTraverseSection(IStreetSection section) {
-        return 0;
-    }
-
-    @Override
-    public double getTransitionTime() {
-        return 0;
-    }
-
-    @Override
-    public IStreetSection getNextSection() {
-        return null;
-    }
     private double length;
     private double lastUpdateTime;
     private IDriverBehaviour driverBehaviour;
@@ -107,5 +88,25 @@ public class Car implements ICar {
         } else {
             throw new IllegalArgumentException("actual street section must be in route and must follow last section");
         }
+    }
+
+    @Override
+    public double getTimeToTraverseSection() {
+        return 0;
+    }
+
+    @Override
+    public double getTimeToTraverseSection(IStreetSection section) {
+        return 0;
+    }
+
+    @Override
+    public double getTransitionTime() {
+        return 0;
+    }
+
+    @Override
+    public IStreetSection getNextSection() {
+        return null;
     }
 }

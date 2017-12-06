@@ -28,7 +28,9 @@ public class CarGenerateEvent extends Event<StreetSection> {
      */
     public CarGenerateEvent(Model model, String name, boolean showInTrace) {
         super(model, name, showInTrace);
-        myModel = (RoundaboutModel)model;
+        if (model instanceof RoundaboutModel) {
+            myModel = (RoundaboutModel)model;
+        }
     }
 
     /**
@@ -46,7 +48,7 @@ public class CarGenerateEvent extends Event<StreetSection> {
     public void eventRoutine(StreetSection section) throws SuspendExecution {
         ICar car = new Car(0, null, null); // TODO: use meaningful values!!
         section.addCar(car);
-        new CarCouldLeaveSectionEvent(this.getModel(), "CarCouldLeaveSectionEvent", true).schedule(section, new TimeSpan(car.getTimeToTraverseSection(), TimeUnit.SECONDS));
-        new CarGenerateEvent(this.getModel(), "CarGenerateEvent", true).schedule(section, new TimeSpan(myModel.getTimeBetweenCarArrivals(), TimeUnit.SECONDS));
+        new CarCouldLeaveSectionEvent(myModel, "CarCouldLeaveSectionEvent", true).schedule(section, new TimeSpan(car.getTimeToTraverseSection(), TimeUnit.SECONDS));
+        new CarGenerateEvent(myModel, "CarGenerateEvent", true).schedule(section, new TimeSpan(myModel.getTimeBetweenCarArrivals(), TimeUnit.SECONDS));
     }
 }

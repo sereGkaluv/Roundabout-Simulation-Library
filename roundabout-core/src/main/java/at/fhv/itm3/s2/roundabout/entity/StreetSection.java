@@ -119,11 +119,6 @@ public class StreetSection extends Entity implements IStreetSection {
     }
 
     @Override
-    public ICar getFirstCar() {
-        return null;
-    }
-
-    @Override
     public void addCar(ICar car) {
         throw new NotImplementedException();
     }

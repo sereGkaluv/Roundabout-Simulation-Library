@@ -30,7 +30,7 @@ public class RoundaboutModel extends Model {
 
     @Override
     public String description() {
-        return null;
+        return "Roundabout simulation model";
     }
 
     @Override
@@ -40,7 +40,6 @@ public class RoundaboutModel extends Model {
 
     @Override
     public void init() {
-
         timeBetweenCarArrivals = new ContDistUniform(this, "TimeBetweenCarArrivalsStream", MIN_TIME_BETWEEN_CAR_ARRIVALS, MAX_TIME_BETWEEN_CAR_ARRIVALS, true, false);
         timeBetweenCarArrivals.setSeed(new Random().nextLong());
     }
