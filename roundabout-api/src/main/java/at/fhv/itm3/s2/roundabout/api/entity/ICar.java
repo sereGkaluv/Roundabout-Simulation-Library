@@ -11,6 +11,10 @@ public interface ICar {
 
     void setDriverBehaviour(IDriverBehaviour driverBehaviour);
 
+    /**
+     * returns the next streetSection in the route after the current StreetSection
+     * returns null, if the currentStreetSection is the last StreetSection in the route
+     */
     IStreetSection getNextStreetSection();
 
     double getLength();
@@ -19,9 +23,16 @@ public interface ICar {
 
     IStreetSection getDestination();
 
+    /**
+     * returns the route of the car, which is a list<StreetSection>
+     */
     List<IStreetSection> getRoute();
 
     IStreetSection getCurrentSection();
 
+    /**
+     * sets the currentStreetSection to the StreetSection of the parameter
+     * @param streetSection - new current StreetSection
+     */
     void setCurrentSection(IStreetSection currentSection);
 }

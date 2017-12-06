@@ -16,8 +16,8 @@ public class Car implements ICar {
     public Car(double length, IDriverBehaviour driverBehaviour, List<IStreetSection> route) {
         this.setLength(length);
         this.setLastUpdateTime(0);
-        this.setDriverBehaviour((DriverBehaviour) driverBehaviour);
-        this.setCurrentSection(!route.isEmpty() ? (StreetSection) route.get(0) : null);
+        this.setDriverBehaviour(driverBehaviour);
+        this.setCurrentSection(!route.isEmpty() ? route.get(0) : null);
         this.route = route;
     }
 
@@ -46,11 +46,6 @@ public class Car implements ICar {
     }
 
     @Override
-    public IStreetSection getNextStreetSection() {
-        return null;
-    }
-
-    @Override
     public double getLength() {
         return length;
     }
@@ -75,6 +70,10 @@ public class Car implements ICar {
     }
 
     @Override
+    public IStreetSection getNextStreetSection() {
+        return null;
+    }
+
     public IStreetSection getCurrentSection() {
         return currentSection;
     }
