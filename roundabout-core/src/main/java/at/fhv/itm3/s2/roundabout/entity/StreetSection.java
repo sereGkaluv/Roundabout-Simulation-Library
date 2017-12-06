@@ -7,22 +7,19 @@ import desmoj.core.simulator.Entity;
 import desmoj.core.simulator.Model;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 public class StreetSection extends Entity implements IStreetSection {
 
-    private double lengthInMeters;
+    private double length;
     private IStreetConnector nextStreetConnector;
     private IStreetConnector previousStreetConnector;
     private Map<ICar, Double> carPositions;
     private Queue<ICar> carQueue;
 
-    public StreetSection(double lengthInMeters, IStreetConnector previousStreetConnector, IStreetConnector nextStreetConnector, Model model, String s, boolean b) {
-        super(model, s, b);
-        this.lengthInMeters = lengthInMeters;
+    public StreetSection(double length, IStreetConnector previousStreetConnector, IStreetConnector nextStreetConnector, Model model, String modelDescription, boolean showInTrace) {
+        super(model, modelDescription, showInTrace);
+        this.length = length;
         carQueue = new LinkedList<>();
         carPositions = new HashMap<>();
         this.previousStreetConnector = previousStreetConnector;
@@ -30,8 +27,8 @@ public class StreetSection extends Entity implements IStreetSection {
     }
 
     @Override
-    public double getLengthInMeters() {
-        return lengthInMeters;
+    public double getLength() {
+        return length;
     }
 
     @Override
@@ -55,7 +52,7 @@ public class StreetSection extends Entity implements IStreetSection {
     }
 
     public void updateAllCarsPositions() {
-        throw new NotImplementedException();
+
     }
 
     public boolean isFirstCarOnExitPoint() {
@@ -63,21 +60,116 @@ public class StreetSection extends Entity implements IStreetSection {
         return Math.floor(carPositions.get(firstCar) * 100) == carPositions.get(firstCar); // also almost one the exit
     }
 
-    public boolean carCouldEnterNextSection() {
-        throw new NotImplementedException();
-    }
+    @Override
+    public boolean firstCarCouldEnterNextSection() {
+        if (this.isFirstCarOnExitPoint()) {
+            ICar firstCarInQueue = this.getFirstCar();
 
-    public void moveFirstCarToNextSection() {
-        throw new NotImplementedException();
+            if (firstCarInQueue != null) {
+                IStreetSection nextStreetSection = firstCarInQueue.getNextStreetSection();
+
+                if (nextStreetSection == null) { // car at destination
+                    return true;
+                }
+
+                if (nextStreetSection.isEnoughSpace(firstCarInQueue.getLength())) {
+                    Set<IStreetSection> precendenceSections = this.getPreviousStreetConnector().getPreviousSections();
+                    precendenceSections.remove(this);
+
+                    for (IStreetSection precendenceSection : precendenceSections) {
+                        if (precendenceSection.isFirstCarOnExitPoint()) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     @Override
-    public void addCar(ICar car) {
-        throw new NotImplementedException();
+    public boolean isEnoughSpace(double length) {
+        double freeSpace = this.getFreeSpace();
+
+        return length < freeSpace;
     }
 
-    public boolean isEmpty(){
+    private double getFreeSpace() {
+        this.updateAllCarsPositions();
 
-        return false;
+        ICar lastCar = this.getLastCar();
+        if (lastCar != null) {
+            double lastCarPosition = this.getCarPositions().get(lastCar);
+            double freeSpace = this.getLength() - lastCarPosition;
+
+            return freeSpace;
+        }
+
+        if (this.isEmpty()) {
+            return this.getLength();
+        }
+
+        throw new IllegalStateException("street section is not empty, but last car could not be determined");
+    }
+
+
+    /**
+     * moveFirstCarToNextSection removes the first car from the queue and puts it into the
+     * queue of the next streetSection of the route of the car, if there is one.
+     * If the current streetSection was the last one of the route the car disappears in a sink.
+     */
+    public void moveFirstCarToNextSection() {
+        ICar firstCar = removeFirstCar();
+        if (firstCar != null) {
+            if (firstCar.getCurrentSection() != firstCar.getDestination()) {
+                IStreetSection nextSection = firstCar.getNextStreetSection();
+                nextSection.addCar(firstCar);
+                firstCar.setCurrentSection(nextSection);
+            }
+        }
+    }
+
+    /**
+     * addCar adds a car to the queue of the streetSection
+     *
+     * @param car The car to add.
+     */
+    @Override
+    public void addCar(ICar car) {
+        carQueue.add(car);
+    }
+
+    /**
+     * removes the first car of the queue and returns the first Car
+     *
+     * @return
+     */
+    @Override
+    public ICar removeFirstCar() {
+        return carQueue.poll();
+    }
+
+    @Override
+    public ICar getFirstCar() {
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        }
+
+        return carQueue.peek();
+    }
+
+    @Override
+    public ICar getLastCar() {
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        } else if (!(carQueue instanceof List)) {
+            throw new IllegalStateException("carQueue must be an implementation of List");
+        }
+
+        int indexLastCar = carQueue.size() - 1;
+        return ((List<ICar>) carQueue).get(indexLastCar);
     }
 }

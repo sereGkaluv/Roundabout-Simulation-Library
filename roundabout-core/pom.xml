@@ -35,11 +35,18 @@
             <scope>system</scope>
             <systemPath>${local.repository.folder}/desmoj-2.5.1e-bin.jar</systemPath>
         </dependency>
-
         <dependency>
             <groupId>at.fhv.itm3.s2.roundabout</groupId>
             <artifactId>roundabout-api</artifactId>
             <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
         </dependency>
     </dependencies>
 
