@@ -25,7 +25,5 @@ public class CarGenerateEventTest {
 
         event.eventRoutine(section);
         Assert.assertFalse(section.isEmpty());
-
-        // TODO: check if other Events are scheduled
     }
 }
