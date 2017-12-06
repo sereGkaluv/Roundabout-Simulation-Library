@@ -1,69 +1,79 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
+import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Car implements ICar {
-    private double length;
-    private double lastUpdateTime;
-    private DriverBehaviour driverBehaviour;
-    private final List<StreetSection> route;
-    private StreetSection currentSection;
 
-    public Car(double length, DriverBehaviour driverBehaviour, List<StreetSection> route) {
-        this.setLength(length);
-        this.setLastUpdateTime(0);
-        this.setDriverBehaviour(driverBehaviour);
-        this.setCurrentSection(!route.isEmpty() ? route.get(0) : null);
+    private final double length;
+    private final IDriverBehaviour driverBehaviour;
+    private final List<IStreetSection> route;
+
+    private double lastUpdateTimestamp;
+    private IStreetSection currentSection;
+
+
+    public Car(double length, IDriverBehaviour driverBehaviour, List<IStreetSection> route) {
+        this.length = length;
+        this.driverBehaviour = driverBehaviour;
         this.route = route;
+
+        this.setLastUpdateTime(0);
+        this.setCurrentSection(!route.isEmpty() ? route.get(0) : null);
     }
 
+    @Override
     public double getLastUpdateTime() {
-        return lastUpdateTime;
+        return lastUpdateTimestamp;
     }
 
-    public void setLastUpdateTime(double lastUpdateTime) {
-        if(lastUpdateTime > 0){
-            this.lastUpdateTime = lastUpdateTime;
+    @Override
+    public void setLastUpdateTime(double lastUpdateTimestamp)
+    throws IllegalArgumentException {
+        if(lastUpdateTimestamp > 0){
+            this.lastUpdateTimestamp = lastUpdateTimestamp;
         } else {
-            throw new IllegalArgumentException("last update time must be positive");
+            throw new IllegalArgumentException("last update timestamp must be greater than 0.");
         }
     }
 
-    public DriverBehaviour getDriverBehaviour() {
+    @Override
+    public IDriverBehaviour getDriverBehaviour() {
         return driverBehaviour;
     }
 
-    public void setDriverBehaviour(DriverBehaviour driverBehaviour) {
-        this.driverBehaviour = driverBehaviour;
+    @Override
+    public IStreetSection getNextStreetSection() {
+        throw new NotImplementedException();
     }
 
     public double getLength() {
         return length;
     }
 
-    public void setLength(double length) {
-        if(length > 0) {
-            this.length = length;
-        } else {
-            throw new IllegalArgumentException("length must be positive");
-        }
-    }
-
-    public StreetSection getDestination() {
+    @Override
+    public IStreetSection getDestination() {
         return !route.isEmpty() ? route.get(route.size() - 1) : null;
     }
 
-    public List<StreetSection> getRoute() {
-        return route;
+    @Override
+    public List<IStreetSection> getRoute() {
+        return Collections.unmodifiableList(route);
     }
 
-    public StreetSection getCurrentSection() {
+    @Override
+    public IStreetSection getCurrentSection() {
         return currentSection;
     }
 
-    public void setCurrentSection(StreetSection currentSection) {
+    @Override
+    public void setCurrentSection(IStreetSection currentSection)
+    throws IllegalArgumentException {
         if (route.contains(currentSection) && route.indexOf(currentSection) >= route.indexOf(this.currentSection)) {
             this.currentSection = currentSection;
         } else {

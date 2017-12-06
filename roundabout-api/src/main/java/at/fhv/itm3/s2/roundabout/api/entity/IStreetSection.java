@@ -40,7 +40,8 @@ public interface IStreetSection {
     Map<ICar, Double> getCarPositions();
 
     /**
-     * Recalculates all car positions in the street section.
+     * Recalculates all car positions in the street section,
+     * starting from the very first car to very last car in section.
      */
     void updateAllCarsPositions();
 
