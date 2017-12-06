@@ -3,6 +3,7 @@ package at.fhv.itm3.s2.roundabout.entity;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
+import com.google.common.math.DoubleMath;
 import desmoj.core.simulator.Entity;
 import desmoj.core.simulator.Model;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -56,8 +57,11 @@ public class StreetSection extends Entity implements IStreetSection {
     }
 
     public boolean isFirstCarOnExitPoint() {
-      //  ICar firstCar =
-        return Math.floor(carPositions.get(firstCar) * 100) == carPositions.get(firstCar); // also almost one the exit
+       ICar firstCar = this.getFirstCar();
+        if(firstCar == null){
+            return false;
+        }
+        return DoubleMath.fuzzyEquals(this.getCarPositions().get(firstCar), this.getLength(), 0.5); // Todo: sergii firstCar.getDriverBehaviour().getMaxDistance()
     }
 
     @Override
@@ -122,54 +126,11 @@ public class StreetSection extends Entity implements IStreetSection {
      * If the current streetSection was the last one of the route the car disappears in a sink.
      */
     public void moveFirstCarToNextSection() {
-        ICar firstCar = removeFirstCar();
-        if (firstCar != null) {
-            if (firstCar.getCurrentSection() != firstCar.getDestination()) {
-                IStreetSection nextSection = firstCar.getNextStreetSection();
-                nextSection.addCar(firstCar);
-                firstCar.setCurrentSection(nextSection);
-            }
-        }
+        throw new NotImplementedException();
     }
 
-    /**
-     * addCar adds a car to the queue of the streetSection
-     *
-     * @param car The car to add.
-     */
     @Override
     public void addCar(ICar car) {
-        carQueue.add(car);
-    }
-
-    /**
-     * removes the first car of the queue and returns the first Car
-     *
-     * @return
-     */
-    @Override
-    public ICar removeFirstCar() {
-        return carQueue.poll();
-    }
-
-    @Override
-    public ICar getFirstCar() {
-        if (carQueue == null) {
-            throw new IllegalStateException("carQueue in section cannot be null");
-        }
-
-        return carQueue.peek();
-    }
-
-    @Override
-    public ICar getLastCar() {
-        if (carQueue == null) {
-            throw new IllegalStateException("carQueue in section cannot be null");
-        } else if (!(carQueue instanceof List)) {
-            throw new IllegalStateException("carQueue must be an implementation of List");
-        }
-
-        int indexLastCar = carQueue.size() - 1;
-        return ((List<ICar>) carQueue).get(indexLastCar);
+        throw new NotImplementedException();
     }
 }
