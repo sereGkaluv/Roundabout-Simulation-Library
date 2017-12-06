@@ -9,7 +9,7 @@ public interface IStreetSection {
      *
      * @return The length in meters.
      */
-    double getLengthInMeters();
+    double getLength();
 
     /**
      * Checks if the street section is empty.
@@ -53,10 +53,19 @@ public interface IStreetSection {
     boolean isFirstCarOnExitPoint();
 
     /**
-     * Checks if a car could enter the next available section.
-     * @return
+     * Checks if first car in street section is able to enter the next section, depending on its predefined route.
+     *
+     * @return true = car can enter next section, false = car can not enter next section
      */
-    boolean carCouldEnterNextSection();
+    boolean firstCarCouldEnterNextSection();
+
+    /**
+     * Checks if there is enough space in the section, depending on the car's length.
+     *
+     * @param length length of the car
+     * @return true = enough space, false = not enough space
+     */
+    boolean isEnoughSpace(double length);
 
     /**
      * Moves the first car in the section to the next section.
@@ -65,7 +74,27 @@ public interface IStreetSection {
 
     /**
      * Adds a new car to the street section.
+     *
      * @param car The car to add.
      */
     void addCar(ICar car);
+
+    /**
+     * Gets first car in Section.
+     *
+     * @return first car in section
+     */
+    ICar getFirstCar();
+
+    /**
+     * Gets last car in Section.
+     *
+     * @return last car in section
+     */
+    ICar getLastCar();
+
+    /**
+     * removes the first car of the queue and returns the first Car
+     */
+    ICar removeFirstCar();
 }

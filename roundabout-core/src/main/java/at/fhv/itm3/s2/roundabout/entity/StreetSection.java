@@ -5,11 +5,8 @@ import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 import desmoj.core.simulator.Entity;
 import desmoj.core.simulator.Model;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class StreetSection extends Entity implements IStreetSection {
 
@@ -17,7 +14,7 @@ public class StreetSection extends Entity implements IStreetSection {
 
     private final Model model;
 
-    private final double lengthInMeters;
+    private final double length;
 
     private final LinkedList<ICar> carQueue;
     private final Map<ICar, Double> carPositions;
@@ -26,10 +23,10 @@ public class StreetSection extends Entity implements IStreetSection {
     private final IStreetConnector previousStreetConnector;
 
 
-    public StreetSection(double lengthInMeters, IStreetConnector previousStreetConnector, IStreetConnector nextStreetConnector, Model model, String s, boolean b) {
-        super(model, s, b);
+    public StreetSection(double length, IStreetConnector previousStreetConnector, IStreetConnector nextStreetConnector, Model model, String modelDescription, boolean showInTrace) {
+        super(model, modelDescription, showInTrace);
 
-        this.lengthInMeters = lengthInMeters;
+        this.length = length;
         this.previousStreetConnector = previousStreetConnector;
         this.nextStreetConnector = nextStreetConnector;
 
@@ -44,8 +41,8 @@ public class StreetSection extends Entity implements IStreetSection {
     }
 
     @Override
-    public double getLengthInMeters() {
-        return lengthInMeters;
+    public double getLength() {
+        return length;
     }
 
     @Override
@@ -85,7 +82,7 @@ public class StreetSection extends Entity implements IStreetSection {
             currentCar.getDriverBehaviour().getMaxDistanceToNextCar();
 
             final double maxTheoreticallyPossiblePositionValue = getMaxPossibleCarPosition(
-                getLengthInMeters(),
+                getLength(),
                 distanceToNextCar,
                 carPositions.get(previousCar),
                 previousCar
@@ -107,22 +104,121 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public boolean isFirstCarOnExitPoint() {
-        throw new NotImplementedException();
+        return false;
     }
+
+    @Override
+    public boolean firstCarCouldEnterNextSection() {
+        if (this.isFirstCarOnExitPoint()) {
+            ICar firstCarInQueue = this.getFirstCar();
+
+            if (firstCarInQueue != null) {
+                IStreetSection nextStreetSection = firstCarInQueue.getNextStreetSection();
+
+                if (nextStreetSection == null) { // car at destination
+                    return true;
+                }
+
+                if (nextStreetSection.isEnoughSpace(firstCarInQueue.getLength())) {
+                    Set<IStreetSection> precendenceSections = this.getPreviousStreetConnector().getPreviousSections();
+                    precendenceSections.remove(this);
+
+                    for (IStreetSection precendenceSection : precendenceSections) {
+                        if (precendenceSection.isFirstCarOnExitPoint()) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isEnoughSpace(double length) {
+        double freeSpace = this.getFreeSpace();
+
+        return length < freeSpace;
+    }
+
+    private double getFreeSpace() {
+        this.updateAllCarsPositions();
+
+        ICar lastCar = this.getLastCar();
+        if (lastCar != null) {
+            double lastCarPosition = this.getCarPositions().get(lastCar);
+            return this.getLength() - lastCarPosition;
+        }
+
+        if (this.isEmpty()) {
+            return this.getLength();
+        }
 
     @Override
     public boolean carCouldEnterNextSection() {
         throw new NotImplementedException();
+        throw new IllegalStateException("street section is not empty, but last car could not be determined");
     }
 
     @Override
+    /**
+     * moveFirstCarToNextSection removes the first car from the queue and puts it into the
+     * queue of the next streetSection of the route of the car, if there is one.
+     * If the current streetSection was the last one of the route the car disappears in a sink.
+     */
     public void moveFirstCarToNextSection() {
-        throw new NotImplementedException();
+        ICar firstCar = removeFirstCar();
+        if (firstCar != null) {
+            if (firstCar.getCurrentSection() != firstCar.getDestination()) {
+                IStreetSection nextSection = firstCar.getNextStreetSection();
+                nextSection.addCar(firstCar);
+                firstCar.setCurrentSection(nextSection);
+            }
+        }
     }
 
+    /**
+     * addCar adds a car to the queue of the streetSection
+     *
+     * @param car The car to add.
+     */
     @Override
     public void addCar(ICar car) {
-        throw new NotImplementedException();
+        carQueue.add(car);
+    }
+
+    /**
+     * removes the first car of the queue and returns the first Car
+     *
+     * @return
+     */
+    @Override
+    public ICar removeFirstCar() {
+        return carQueue.poll();
+    }
+
+    @Override
+    public ICar getFirstCar() {
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        }
+
+        return carQueue.peek();
+    }
+
+    @Override
+    public ICar getLastCar() {
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        } else if (!(carQueue instanceof List)) {
+            throw new IllegalStateException("carQueue must be an implementation of List");
+        }
+
+        int indexLastCar = carQueue.size() - 1;
+        return ((List<ICar>) carQueue).get(indexLastCar);
     }
 
     private double getCurrentTime() {

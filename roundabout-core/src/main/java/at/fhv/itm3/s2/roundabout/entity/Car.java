@@ -3,7 +3,6 @@ package at.fhv.itm3.s2.roundabout.entity;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +13,7 @@ public class Car implements ICar {
     private final IDriverBehaviour driverBehaviour;
     private final List<IStreetSection> route;
 
-    private double lastUpdateTimestamp;
+    private double lastUpdateTime;
     private IStreetSection currentSection;
 
 
@@ -29,16 +28,16 @@ public class Car implements ICar {
 
     @Override
     public double getLastUpdateTime() {
-        return lastUpdateTimestamp;
+        return lastUpdateTime;
     }
 
     @Override
-    public void setLastUpdateTime(double lastUpdateTimestamp)
+    public void setLastUpdateTime(double lastUpdateTime)
     throws IllegalArgumentException {
-        if(lastUpdateTimestamp > 0){
-            this.lastUpdateTimestamp = lastUpdateTimestamp;
+        if (lastUpdateTime >= 0) {
+            this.lastUpdateTime = lastUpdateTime;
         } else {
-            throw new IllegalArgumentException("last update timestamp must be greater than 0.");
+            throw new IllegalArgumentException("last update time must be positive");
         }
     }
 
@@ -49,9 +48,10 @@ public class Car implements ICar {
 
     @Override
     public IStreetSection getNextStreetSection() {
-        throw new NotImplementedException();
+        return null;
     }
 
+    @Override
     public double getLength() {
         return length;
     }
