@@ -1,8 +1,6 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
-import at.fhv.itm3.s2.roundabout.api.entity.ICar;
-import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
+import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 
 import java.util.List;
@@ -12,15 +10,15 @@ public class Car implements ICar {
     private double length;
     private double lastUpdateTime;
     private IDriverBehaviour driverBehaviour;
-    private final List<IStreetSection> route;
+    private final IRoute route;
     private IStreetSection currentSection;
 
-    public Car(double length, IDriverBehaviour driverBehaviour, List<IStreetSection> route) {
+    public Car(double length, IDriverBehaviour driverBehaviour, IRoute route) {
+        this.route = route;
         this.setLength(length);
         this.setLastUpdateTime(0);
         this.setDriverBehaviour((DriverBehaviour) driverBehaviour);
-        this.setCurrentSection(!route.isEmpty() ? (StreetSection) route.get(0) : null);
-        this.route = route;
+        this.setCurrentSection(!route.isEmpty() ? (StreetSection) route.getSection(0) : null);
     }
 
     @Override
@@ -48,11 +46,6 @@ public class Car implements ICar {
     }
 
     @Override
-    public IStreetSection getNextStreetSection() {
-        return null;
-    }
-
-    @Override
     public double getLength() {
         return length;
     }
@@ -68,11 +61,11 @@ public class Car implements ICar {
 
     @Override
     public IStreetSection getDestination() {
-        return !route.isEmpty() ? route.get(route.size() - 1) : null;
+        return !route.isEmpty() ? route.getSection(route.getNumberOfSections() - 1) : null;
     }
 
     @Override
-    public List<IStreetSection> getRoute() {
+    public IRoute getRoute() {
         return route;
     }
 
@@ -83,7 +76,7 @@ public class Car implements ICar {
 
     @Override
     public void setCurrentSection(IStreetSection currentSection) {
-        if (route.contains(currentSection) && route.indexOf(currentSection) >= route.indexOf(this.currentSection)) {
+        if (this.currentSection == null || route.isNewSectionBehindOldSection(currentSection, this.currentSection)) {
             this.currentSection = currentSection;
         } else {
             throw new IllegalArgumentException("actual street section must be in route and must follow last section");

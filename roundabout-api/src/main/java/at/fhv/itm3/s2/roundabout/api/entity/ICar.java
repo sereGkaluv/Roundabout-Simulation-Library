@@ -41,15 +41,13 @@ public interface ICar {
 
     void setDriverBehaviour(IDriverBehaviour driverBehaviour);
 
-    IStreetSection getNextStreetSection();
-
     double getLength();
 
     void setLength(double length);
 
     IStreetSection getDestination();
 
-    List<IStreetSection> getRoute();
+    IRoute getRoute();
 
     IStreetSection getCurrentSection();
 

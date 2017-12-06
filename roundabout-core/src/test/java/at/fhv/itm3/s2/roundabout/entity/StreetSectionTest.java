@@ -32,7 +32,7 @@ public class StreetSectionTest {
         ICar firstCar = mock(Car.class);
         when(streetSectionMock.getFirstCar()).thenReturn(firstCar);
         IStreetSection nextStreetSection = mock(StreetSection.class);
-        when(firstCar.getNextStreetSection()).thenReturn(nextStreetSection);
+        when(firstCar.getNextSection()).thenReturn(nextStreetSection);
         when(firstCar.getLength()).thenReturn(5.0);
         when(nextStreetSection.isEnoughSpace(firstCar.getLength())).thenReturn(false);
         assertFalse(streetSectionMock.firstCarCouldEnterNextSection());

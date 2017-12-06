@@ -2,9 +2,10 @@ package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.Car;
+import at.fhv.itm3.s2.roundabout.entity.DriverBehaviour;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
-import co.paralleluniverse.fibers.SuspendExecution;
 import desmoj.core.simulator.Event;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.TimeSpan;
@@ -42,11 +43,12 @@ public class CarGenerateEvent extends Event<StreetSection> {
      * it without the need to stop and after this time the section checks if a car could leave the section.
      * At the end the event routine schedules a new CarGenerateEvent with a normally distributed time.
      *
-     * @param section               the section the car is added
-     * @throws SuspendExecution
+     * @param section           the section the car is added
      */
-    public void eventRoutine(StreetSection section) throws SuspendExecution {
-        ICar car = new Car(0, null, null); // TODO: use meaningful values!!
+    @Override
+    public void eventRoutine(StreetSection section) {
+        // TODO: use meaningful values!!
+        ICar car = new Car(1, new DriverBehaviour(1, 1, 1, 1), RouteController.getInstance(myModel).generateNewRoute());
         section.addCar(car);
         new CarCouldLeaveSectionEvent(myModel, "CarCouldLeaveSectionEvent", true).schedule(section, new TimeSpan(car.getTimeToTraverseSection(), TimeUnit.SECONDS));
         new CarGenerateEvent(myModel, "CarGenerateEvent", true).schedule(section, new TimeSpan(myModel.getTimeBetweenCarArrivals(), TimeUnit.SECONDS));
