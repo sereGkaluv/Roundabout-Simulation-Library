@@ -44,7 +44,7 @@ public class CarGenerateEvent extends Event<StreetSection> {
      * @throws SuspendExecution
      */
     public void eventRoutine(StreetSection section) throws SuspendExecution {
-        ICar car = new Car();
+        ICar car = new Car(0, null, null); // TODO: use meaningful values!!
         section.addCar(car);
         new CarCouldLeaveSectionEvent(this.getModel(), "CarCouldLeaveSectionEvent", true).schedule(section, new TimeSpan(car.getTimeToTraverseSection(), TimeUnit.SECONDS));
         new CarGenerateEvent(this.getModel(), "CarGenerateEvent", true).schedule(section, new TimeSpan(myModel.getTimeBetweenCarArrivals(), TimeUnit.SECONDS));
