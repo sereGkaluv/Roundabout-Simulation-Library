@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 public class StreetSectionTest {
     @Test
-    public void isFirstCarOnExitPoint_positiv(){
+    public void isFirstCarOnExitPoint_positiv() throws Exception{
         IStreetSection streetSectionMock = mock(StreetSection.class);
         when(streetSectionMock.isFirstCarOnExitPoint()).thenCallRealMethod();
 
@@ -35,7 +35,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void isFirstCarOnExitPoint_negativ(){
+    public void isFirstCarOnExitPoint_negativ() throws Exception{
         IStreetSection streetSectionMock = mock(StreetSection.class);
         when(streetSectionMock.isFirstCarOnExitPoint()).thenCallRealMethod();
 
@@ -55,7 +55,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void isFirstCarOnExitPoint_boundary(){
+    public void isFirstCarOnExitPoint_boundary() throws Exception{
         IStreetSection streetSectionMock = mock(StreetSection.class);
         when(streetSectionMock.isFirstCarOnExitPoint()).thenCallRealMethod();
 

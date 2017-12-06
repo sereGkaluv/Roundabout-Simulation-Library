@@ -55,6 +55,7 @@ public class StreetSection extends Entity implements IStreetSection {
 
     }
 
+    @Override
     public boolean isFirstCarOnExitPoint() {
         ICar firstCar = this.getFirstCar();
         if(firstCar == null){
