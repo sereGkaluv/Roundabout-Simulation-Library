@@ -121,8 +121,8 @@ public class StreetSection extends Entity implements IStreetSection {
      */
     public void moveFirstCarToNextSection() {
         ICar firstCar = removeFirstCar();
-        if (firstCar!=null){
-            if (firstCar.getCurrentSection()!=firstCar.getDestination()){
+        if (firstCar != null) {
+            if (firstCar.getCurrentSection() != firstCar.getDestination()) {
                 IStreetSection nextSection = firstCar.getNextStreetSection();
                 nextSection.addCar(firstCar);
                 firstCar.setCurrentSection(nextSection);
@@ -132,6 +132,7 @@ public class StreetSection extends Entity implements IStreetSection {
 
     /**
      * addCar adds a car to the queue of the streetSection
+     *
      * @param car The car to add.
      */
     @Override
@@ -141,6 +142,7 @@ public class StreetSection extends Entity implements IStreetSection {
 
     /**
      * removes the first car of the queue and returns the first Car
+     *
      * @return
      */
     @Override
