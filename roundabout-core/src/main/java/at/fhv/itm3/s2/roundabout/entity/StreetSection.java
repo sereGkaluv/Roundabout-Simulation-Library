@@ -5,7 +5,6 @@ import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 import desmoj.core.simulator.Entity;
 import desmoj.core.simulator.Model;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 
@@ -123,9 +122,7 @@ public class StreetSection extends Entity implements IStreetSection {
     public void moveFirstCarToNextSection() {
         ICar firstCar = removeFirstCar();
         if (firstCar!=null){
-            //StreetSection currentSection = firstCar.getCurrentSection();
-            int currentSectionIndex = firstCar.getCurrentIndexOfRoute();
-            if (currentSectionIndex < (firstCar.getRoute().size()-1)){
+            if (firstCar.getCurrentSection()!=firstCar.getDestination()){
                 IStreetSection nextSection = firstCar.getNextStreetSection();
                 nextSection.addCar(firstCar);
                 firstCar.setCurrentSection(nextSection);
@@ -148,8 +145,7 @@ public class StreetSection extends Entity implements IStreetSection {
      */
     @Override
     public ICar removeFirstCar() {
-
-        return null;
+        return carQueue.poll();
     }
 
     @Override
