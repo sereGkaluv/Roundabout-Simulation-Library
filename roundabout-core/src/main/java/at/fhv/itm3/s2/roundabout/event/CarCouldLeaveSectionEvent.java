@@ -28,6 +28,8 @@ public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
         super(model, name, showInTrace);
         if (model instanceof RoundaboutModel) {
             myModel = (RoundaboutModel)model;
+        } else {
+            throw new IllegalArgumentException("No suitable model given over.");
         }
     }
 

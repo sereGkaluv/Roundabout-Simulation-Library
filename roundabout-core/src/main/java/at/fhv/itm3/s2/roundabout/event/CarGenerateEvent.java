@@ -31,6 +31,8 @@ public class CarGenerateEvent extends Event<StreetSection> {
         super(model, name, showInTrace);
         if (model instanceof RoundaboutModel) {
             myModel = (RoundaboutModel)model;
+        } else {
+            throw new IllegalArgumentException("No suitable model given over.");
         }
     }
 
@@ -51,6 +53,6 @@ public class CarGenerateEvent extends Event<StreetSection> {
         ICar car = new Car(1, new DriverBehaviour(1, 1, 1, 1), RouteController.getInstance(myModel).generateNewRoute());
         section.addCar(car);
         new CarCouldLeaveSectionEvent(myModel, "CarCouldLeaveSectionEvent", true).schedule(section, new TimeSpan(car.getTimeToTraverseSection(), TimeUnit.SECONDS));
-        new CarGenerateEvent(myModel, "CarGenerateEvent", true).schedule(section, new TimeSpan(myModel.getTimeBetweenCarArrivals(), TimeUnit.SECONDS));
+        new CarGenerateEvent(myModel, "CarGenerateEvent", true).schedule(section, new TimeSpan(myModel.getRandomTimeBetweenCarArrivals(), TimeUnit.SECONDS));
     }
 }

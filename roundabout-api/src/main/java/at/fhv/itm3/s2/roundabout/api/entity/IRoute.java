@@ -24,7 +24,7 @@ public interface IRoute {
      * @param index     the index the IStreetSection should be returned from the route
      * @return          an IStreetSection
      */
-    IStreetSection getSection(int index);
+    IStreetSection getSectionAt(int index);
 
     /**
      * Checks if there are sections in the route defined
@@ -43,9 +43,9 @@ public interface IRoute {
     /**
      * Checks if the newSection is behind the oldSection in the route
      *
-     * @param newSection    bla
-     * @param oldSection    bla
-     * @return              bla (method is deleted later anyway)
+     * @param sectionA    bla
+     * @param sectionB    bla
+     * @return            bla (method is deleted later anyway)
      */
-    boolean isNewSectionBehindOldSection(IStreetSection newSection, IStreetSection oldSection);
+    boolean isSectionABehindSectionB(IStreetSection sectionA, IStreetSection sectionB);
 }

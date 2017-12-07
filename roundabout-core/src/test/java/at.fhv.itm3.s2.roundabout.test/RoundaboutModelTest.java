@@ -8,7 +8,7 @@ import org.junit.Test;
 public class RoundaboutModelTest {
 
     @Test
-    public void getTimeBetweenCarArrivalsTest() {
+    public void getTimeBetweenCarArrivalsTest_validTimeBoundary() {
         RoundaboutModel model = new RoundaboutModel(null, "", false, false);
 
         // create experiment and connect it with the model
@@ -16,7 +16,7 @@ public class RoundaboutModelTest {
         Experiment exp = new Experiment("RoundaboutModel Experiment");
         model.connectToExperiment(exp);
 
-        double sample = model.getTimeBetweenCarArrivals();
+        double sample = model.getRandomTimeBetweenCarArrivals();
         Assert.assertTrue(sample >= RoundaboutModel.MIN_TIME_BETWEEN_CAR_ARRIVALS);
         Assert.assertTrue(sample <= RoundaboutModel.MAX_TIME_BETWEEN_CAR_ARRIVALS);
     }

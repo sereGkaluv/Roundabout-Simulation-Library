@@ -23,7 +23,7 @@ public class Route implements IRoute {
         return route;
     }
 
-    public IStreetSection getSection(int index) {
+    public IStreetSection getSectionAt(int index) {
         if (index >= route.size()) {
             throw new IllegalArgumentException("Index for accessing a section in a route is too high");
         }
@@ -40,11 +40,11 @@ public class Route implements IRoute {
     }
 
     @Override
-    public boolean isNewSectionBehindOldSection(IStreetSection newSection, IStreetSection oldSection) {
-        if (!route.contains(newSection) || ! route.contains(oldSection)) {
+    public boolean isSectionABehindSectionB(IStreetSection sectionA, IStreetSection sectionB) {
+        if (!route.contains(sectionA) || ! route.contains(sectionB)) {
             throw new IllegalArgumentException("Both sections must be part of the route");
         }
 
-        return (route.indexOf(newSection) > route.indexOf(oldSection));
+        return (route.indexOf(sectionA) > route.indexOf(sectionB));
     }
 }

@@ -54,15 +54,15 @@ public interface ICar {
     IStreetSection getDestination();
 
     /**
-     * returns the route of the car, which is a list<StreetSection>
+     * Returns the route of the car, which is a list<StreetSection>
      */
     IRoute getRoute();
 
     IStreetSection getCurrentSection();
 
     /**
-     * sets the currentStreetSection to the StreetSection of the parameter
-     * @param currentSection - new current StreetSection
+     * Sets the currentStreetSection to the StreetSection of the parameter
+     * @param currentSection - the IStreetSection the car stands on
      */
     void setCurrentSection(IStreetSection currentSection);
 }

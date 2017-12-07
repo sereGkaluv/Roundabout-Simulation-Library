@@ -16,7 +16,7 @@ public class Car implements ICar {
         this.setLength(length);
         this.setLastUpdateTime(0);
         this.setDriverBehaviour(driverBehaviour);
-        this.setCurrentSection(!route.isEmpty() ? (StreetSection) route.getSection(0) : null);
+        this.setCurrentSection(!route.isEmpty() ? (StreetSection) route.getSectionAt(0) : null);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class Car implements ICar {
 
     @Override
     public IStreetSection getDestination() {
-        return !route.isEmpty() ? route.getSection(route.getNumberOfSections() - 1) : null;
+        return !route.isEmpty() ? route.getSectionAt(route.getNumberOfSections() - 1) : null;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class Car implements ICar {
 
     @Override
     public void setCurrentSection(IStreetSection currentSection) {
-        if (this.currentSection == null || route.isNewSectionBehindOldSection(currentSection, this.currentSection)) {
+        if (this.currentSection == null || route.isSectionABehindSectionB(currentSection, this.currentSection)) {
             this.currentSection = currentSection;
         } else {
             throw new IllegalArgumentException("actual street section must be in route and must follow last section");
