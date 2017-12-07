@@ -21,6 +21,11 @@ public class CarGenerateEvent extends Event<StreetSection> {
     private RoundaboutModel myModel;
 
     /**
+     * Instance of RoundaboutEventFactory for creating new events
+     */
+    private RoundaboutEventFactory roundaboutEventFactory;
+
+    /**
      * Constructs a new CarCouldLeaveSectionEvent
      *
      * @param model         the model this event belongs to
@@ -29,11 +34,15 @@ public class CarGenerateEvent extends Event<StreetSection> {
      */
     public CarGenerateEvent(Model model, String name, boolean showInTrace) {
         super(model, name, showInTrace);
+
+        roundaboutEventFactory = RoundaboutEventFactory.getInstance();
+
         if (model instanceof RoundaboutModel) {
             myModel = (RoundaboutModel)model;
         } else {
             throw new IllegalArgumentException("No suitable model given over.");
         }
+
     }
 
     /**
@@ -52,7 +61,7 @@ public class CarGenerateEvent extends Event<StreetSection> {
         // TODO: use meaningful values!!
         ICar car = new Car(1, new DriverBehaviour(1, 1, 1, 1), RouteController.getInstance(myModel).generateNewRoute());
         section.addCar(car);
-        new CarCouldLeaveSectionEvent(myModel, "CarCouldLeaveSectionEvent", true).schedule(section, new TimeSpan(car.getTimeToTraverseSection(), TimeUnit.SECONDS));
-        new CarGenerateEvent(myModel, "CarGenerateEvent", true).schedule(section, new TimeSpan(myModel.getRandomTimeBetweenCarArrivals(), TimeUnit.SECONDS));
+        roundaboutEventFactory.createCarCouldLeaveSectionEvent(myModel).schedule(section, new TimeSpan(car.getTimeToTraverseSection(), TimeUnit.SECONDS));
+        roundaboutEventFactory.createCarGenerateEvent(myModel).schedule(section, new TimeSpan(myModel.getRandomTimeBetweenCarArrivals(), TimeUnit.SECONDS));
     }
 }
