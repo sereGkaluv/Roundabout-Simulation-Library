@@ -4,6 +4,7 @@ import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.entity.Route;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
+import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 import desmoj.core.simulator.Model;
 
 public class RouteController {
@@ -12,10 +13,10 @@ public class RouteController {
     private static RouteController instance;
 
     /**
-     * Returns a singleton of RouteController
+     * Returns a singleton of {@link RouteController}.
      *
-     * @param model     the model the RouteController and its IStreetSections are part of
-     * @return          the singleton RouteController object
+     * @param model     the model the RouteController and its {@link IStreetSection}s are part of.
+     * @return          the singleton RouteController object.
      */
     public static RouteController getInstance(RoundaboutSimulationModel model) {
         if (instance == null) {
@@ -25,10 +26,10 @@ public class RouteController {
     }
 
     /**
-     * Private constructor for RouteController. Use getInstance(...) instead
+     * Private constructor for {@link RouteController}. Use getInstance(...) instead.
      *
-     * @param model                         the model the RouteController and its IStreetSections are part of
-     * @throws IllegalArgumentException     when the given model is not of type RoundaboutSimulationModel
+     * @param model                         the model the {@link RouteController} and its {@link IStreetSection}s are part of.
+     * @throws IllegalArgumentException     when the given model is not of type {@link RoundaboutSimulationModel}.
      */
     private RouteController(Model model)
     throws IllegalArgumentException {
@@ -40,9 +41,9 @@ public class RouteController {
     }
 
     /**
-     * Generates a new route a car could take
+     * Generates a new route a car could take.
      *
-     * @return  a generated route as IRoute object
+     * @return  a generated route as {@link IRoute} object.
      */
     public IRoute generateNewRoute() {
         // TODO: implement

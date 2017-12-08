@@ -25,10 +25,12 @@ public class SectionMock {
     private boolean isSectionEmpty;
     private int nrOfPreviousSections;
 
-    public SectionMock(boolean firstCarCouldEnterNextSection,
-                       boolean returnValidNextSection,
-                       boolean isSectionEmpty,
-                       int nrOfPreviousSections) {
+    public SectionMock(
+        boolean firstCarCouldEnterNextSection,
+        boolean returnValidNextSection,
+        boolean isSectionEmpty,
+        int nrOfPreviousSections
+    ) {
         this.firstCarCouldEnterNextSection = firstCarCouldEnterNextSection;
         this.returnValidNextSection = returnValidNextSection;
         this.isSectionEmpty = isSectionEmpty;

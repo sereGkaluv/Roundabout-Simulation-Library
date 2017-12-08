@@ -13,22 +13,22 @@ import java.util.concurrent.TimeUnit;
 public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
 
     /**
-     * A reference to the RoundaboutSimulationModel the CarCouldLeaveSectionEvent is part of
+     * A reference to the {@link RoundaboutSimulationModel} the {@link CarCouldLeaveSectionEvent} is part of.
      */
     private RoundaboutSimulationModel roundaboutSimulationModel;
 
     /**
-     * Instance of RoundaboutEventFactory for creating new events
+     * Instance of {@link RoundaboutEventFactory} for creating new events.
      * (protected because of testing)
      */
     protected RoundaboutEventFactory roundaboutEventFactory;
 
     /**
-     * Constructs a new CarCouldLeaveSectionEvent
+     * Constructs a new {@link CarCouldLeaveSectionEvent}.
      *
-     * @param model         the model this event belongs to
-     * @param name          this event's name
-     * @param showInTrace   flag to indicate if this event shall produce output for the trace
+     * @param model         the model this event belongs to.
+     * @param name          this event's name.
+     * @param showInTrace   flag to indicate if this event shall produce output for the trace.
      */
     public CarCouldLeaveSectionEvent(Model model, String name, boolean showInTrace) {
         super(model, name, showInTrace);
@@ -46,18 +46,18 @@ public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
      * The event routine describes the moving of a car from one section to the next section.
      *
      * If the given section has a car at its exit point, it is checked if this car could leave this
-     * section and enter the next one. If that is true, a new CarCouldLeaveSectionEvent for the next
+     * section and enter the next one. If that is true, a new {@link CarCouldLeaveSectionEvent} for the next
      * section (the section the car enters) is scheduled after the time the car needs to traverse that
      * section. After that the car is moved from this section to the next one.
      * If the current section (the section in which the car was before moving) is not empty, a new
      * CarCouldLeaveSectionEvent is scheduled for the current section after the transition time of the
      * first car (only if this time is passed it makes sense to update all car positions on this time and
      * check if there is another car to leave the section).
-     * Moreover for all previous sections of the current section a new CarCouldLeaveSectionEvent is immediately
+     * Moreover for all previous sections of the current section a new {@link CarCouldLeaveSectionEvent} is immediately
      * scheduled to check if the previous sections have a car which could enter the current section.
      *
-     * @param donorSection
-     * @throws SuspendExecution
+     * @param donorSection the section car will move away from.
+     * @throws SuspendExecution Marker exception for Quasar (inherited).
      */
     @Override
     public void eventRoutine(StreetSection donorSection) throws SuspendExecution {

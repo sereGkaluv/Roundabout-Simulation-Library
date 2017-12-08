@@ -11,21 +11,35 @@ import org.junit.Test;
 
 public class CarGenerateEventTest {
 
-    private RoundaboutSimulationModel model;
+    private RoundaboutSimulationModel roundaboutSimulationModel;
 
     @Before
     public void setUp() {
-        model = new RoundaboutSimulationModel(null, "", false, false);
+        roundaboutSimulationModel = new RoundaboutSimulationModel(
+            null,
+            "",
+            false,
+            false
+        );
+
         Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
-        model.connectToExperiment(exp);
+        roundaboutSimulationModel.connectToExperiment(exp);
     }
 
     @Test
     public void eventRoutineTest() throws Exception {
-        StreetSection section = new StreetSection(10.0, null, null, model, null, false);
+        StreetSection section = new StreetSection(
+            10.0,
+            null,
+            null,
+                roundaboutSimulationModel,
+            null,
+            false
+        );
+
         Assert.assertTrue(section.isEmpty());
 
-        CarGenerateEvent event = RoundaboutEventFactory.getInstance().createCarGenerateEvent(model);
+        CarGenerateEvent event = RoundaboutEventFactory.getInstance().createCarGenerateEvent(roundaboutSimulationModel);
         event.eventRoutine(section);
 
         Assert.assertFalse(section.isEmpty());

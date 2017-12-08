@@ -3,6 +3,7 @@ package at.fhv.itm3.s2.roundabout.entity;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Route implements IRoute {
     }
 
     public List<IStreetSection> getRoute() {
-        return route;
+        return Collections.unmodifiableList(route);
     }
 
     public IStreetSection getSectionAt(int index) {
