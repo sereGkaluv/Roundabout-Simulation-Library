@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.event;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutModel;
+import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.Car;
@@ -16,9 +16,9 @@ import java.util.concurrent.TimeUnit;
 public class CarGenerateEvent extends Event<StreetSection> {
 
     /**
-     * A reference to the RoundaboutModel the CarCouldLeaveSectionEvent is part of
+     * A reference to the RoundaboutSimulationModel the CarCouldLeaveSectionEvent is part of
      */
-    private RoundaboutModel myModel;
+    private RoundaboutSimulationModel roundaboutSimulationModel;
 
     /**
      * Instance of RoundaboutEventFactory for creating new events
@@ -37,8 +37,8 @@ public class CarGenerateEvent extends Event<StreetSection> {
 
         roundaboutEventFactory = RoundaboutEventFactory.getInstance();
 
-        if (model instanceof RoundaboutModel) {
-            myModel = (RoundaboutModel)model;
+        if (model instanceof RoundaboutSimulationModel) {
+            roundaboutSimulationModel = (RoundaboutSimulationModel)model;
         } else {
             throw new IllegalArgumentException("No suitable model given over.");
         }
@@ -59,9 +59,9 @@ public class CarGenerateEvent extends Event<StreetSection> {
     @Override
     public void eventRoutine(StreetSection section) {
         // TODO: use meaningful values!!
-        ICar car = new Car(1, new DriverBehaviour(1, 1, 1, 1), RouteController.getInstance(myModel).generateNewRoute());
+        ICar car = new Car(1, new DriverBehaviour(1, 1, 1, 1), RouteController.getInstance(roundaboutSimulationModel).generateNewRoute());
         section.addCar(car);
-        roundaboutEventFactory.createCarCouldLeaveSectionEvent(myModel).schedule(section, new TimeSpan(car.getTimeToTraverseSection(), TimeUnit.SECONDS));
-        roundaboutEventFactory.createCarGenerateEvent(myModel).schedule(section, new TimeSpan(myModel.getRandomTimeBetweenCarArrivals(), TimeUnit.SECONDS));
+        roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(section, new TimeSpan(car.getTimeToTraverseSection(), TimeUnit.SECONDS));
+        roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel).schedule(section, new TimeSpan(roundaboutSimulationModel.getRandomTimeBetweenCarArrivals(), TimeUnit.SECONDS));
     }
 }

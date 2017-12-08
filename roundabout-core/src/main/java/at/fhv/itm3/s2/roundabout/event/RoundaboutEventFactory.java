@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.event;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutModel;
+import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 
 public class RoundaboutEventFactory {
 
@@ -35,7 +35,7 @@ public class RoundaboutEventFactory {
      * @param model     the model the event is part of
      * @return          the newly created CarCouldLeaveSectionEvent
      */
-    public CarCouldLeaveSectionEvent createCarCouldLeaveSectionEvent(RoundaboutModel model) {
+    public CarCouldLeaveSectionEvent createCarCouldLeaveSectionEvent(RoundaboutSimulationModel model) {
         return new CarCouldLeaveSectionEvent(model, "CarCouldLeaveSectionEvent", true);
     }
 
@@ -45,7 +45,7 @@ public class RoundaboutEventFactory {
      * @param model     the model the event is part of
      * @return          the newly created CarGenerateEvent
      */
-    public CarGenerateEvent createCarGenerateEvent(RoundaboutModel model) {
+    public CarGenerateEvent createCarGenerateEvent(RoundaboutSimulationModel model) {
         return new CarGenerateEvent(model, "CarGenerateEvent", true);
     }
 }

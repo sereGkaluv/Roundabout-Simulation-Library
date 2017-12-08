@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.test.event;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutModel;
+import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.test.event.mocks.CarCouldLeaveSectionEventMock;
 import at.fhv.itm3.s2.roundabout.test.event.mocks.SectionMock;
@@ -11,12 +11,12 @@ import org.junit.Test;
 
 public class CarCouldLeaveSectionEventTest {
 
-    private RoundaboutModel model;
+    private RoundaboutSimulationModel model;
 
     @Before
     public void setUp() {
-        model = new RoundaboutModel(null, "", false, false);
-        Experiment exp = new Experiment("RoundaboutModel Experiment");
+        model = new RoundaboutSimulationModel(null, "", false, false);
+        Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
     }
 

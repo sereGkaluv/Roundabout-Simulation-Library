@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.test.event.mocks;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutModel;
+import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import desmoj.core.simulator.Model;
@@ -14,7 +14,7 @@ public class CarCouldLeaveSectionEventMock extends CarCouldLeaveSectionEvent{
 
     private int createCarCouldLeaveSectionEventCounter = 0;
 
-    private RoundaboutModel model;
+    private RoundaboutSimulationModel model;
 
     /**
      * Constructs a new CarCouldLeaveSectionEvent
@@ -25,7 +25,7 @@ public class CarCouldLeaveSectionEventMock extends CarCouldLeaveSectionEvent{
      */
     public CarCouldLeaveSectionEventMock(Model model, String name, boolean showInTrace) {
         super(model, name, showInTrace);
-        this.model = (RoundaboutModel)model;
+        this.model = (RoundaboutSimulationModel)model;
         initMockingComponents();
     }
 
@@ -33,7 +33,7 @@ public class CarCouldLeaveSectionEventMock extends CarCouldLeaveSectionEvent{
 
         this.roundaboutEventFactory = Mockito.mock(RoundaboutEventFactory.class);
 
-        when(this.roundaboutEventFactory.createCarCouldLeaveSectionEvent((RoundaboutModel)notNull())).then(invocationOnMock -> {
+        when(this.roundaboutEventFactory.createCarCouldLeaveSectionEvent((RoundaboutSimulationModel)notNull())).then(invocationOnMock -> {
             createCarCouldLeaveSectionEventCounter++;
             return new CarCouldLeaveSectionEvent(this.model, "", false);
         });

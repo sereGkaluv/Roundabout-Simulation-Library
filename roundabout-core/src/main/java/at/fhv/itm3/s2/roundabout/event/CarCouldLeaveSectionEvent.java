@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.event;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutModel;
+import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import co.paralleluniverse.fibers.SuspendExecution;
@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
 
     /**
-     * A reference to the RoundaboutModel the CarCouldLeaveSectionEvent is part of
+     * A reference to the RoundaboutSimulationModel the CarCouldLeaveSectionEvent is part of
      */
-    private RoundaboutModel myModel;
+    private RoundaboutSimulationModel roundaboutSimulationModel;
 
     /**
      * Instance of RoundaboutEventFactory for creating new events
@@ -35,8 +35,8 @@ public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
 
         roundaboutEventFactory = RoundaboutEventFactory.getInstance();
 
-        if (model instanceof RoundaboutModel) {
-            myModel = (RoundaboutModel)model;
+        if (model instanceof RoundaboutSimulationModel) {
+            roundaboutSimulationModel = (RoundaboutSimulationModel) model;
         } else {
             throw new IllegalArgumentException("No suitable model given over.");
         }
@@ -56,33 +56,43 @@ public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
      * Moreover for all previous sections of the current section a new CarCouldLeaveSectionEvent is immediately
      * scheduled to check if the previous sections have a car which could enter the current section.
      *
-     * @param section
+     * @param donorSection
      * @throws SuspendExecution
      */
-    public void eventRoutine(StreetSection section) throws SuspendExecution {
-        if(section.firstCarCouldEnterNextSection()) {
+    @Override
+    public void eventRoutine(StreetSection donorSection) throws SuspendExecution {
+        if(donorSection.firstCarCouldEnterNextSection()) {
 
             // schedule a CarCouldLeaveSectionEvent for the next section, so it is thrown when the car should be able to
             // leave the next section under optimal conditions
-            IStreetSection nextSection = section.getFirstCar().getNextSection();
-            if (nextSection instanceof StreetSection) {
-                roundaboutEventFactory.createCarCouldLeaveSectionEvent(myModel).schedule((StreetSection)section.getFirstCar().getNextSection(), new TimeSpan(section.getFirstCar().getTimeToTraverseSection(section.getFirstCar().getNextSection()), TimeUnit.SECONDS));
-                section.moveFirstCarToNextSection();
+            IStreetSection nextSection = donorSection.getFirstCar().getNextSection();
+            if (nextSection != null && nextSection instanceof StreetSection) {
+                roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
+                    (StreetSection) nextSection,
+                    new TimeSpan(donorSection.getFirstCar().getTimeToTraverseSection(nextSection), TimeUnit.SECONDS)
+                );
+                donorSection.moveFirstCarToNextSection();
             }
 
-            // if the current section is not empty, schedule a new CarCouldLeaveSectionEvent after the time the first car
-            // in the section needs to move away from its current position (this time is depending on whether the car is
-            // standing or driving
-            if(!section.isEmpty()) {
-                section.updateAllCarsPositions();
-                roundaboutEventFactory.createCarCouldLeaveSectionEvent(myModel).schedule(section, new TimeSpan(section.getFirstCar().getTransitionTime(), TimeUnit.SECONDS));
+            // if the current section is not empty, schedule a new CarCouldLeaveSectionEvent after the time the first
+            // car in the section needs to move away from its current position (this time is depending on whether the
+            // car is standing or driving
+            if(!donorSection.isEmpty()) {
+                donorSection.updateAllCarsPositions();
+                roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
+                    donorSection,
+                    new TimeSpan(donorSection.getFirstCar().getTransitionTime(), TimeUnit.SECONDS)
+                );
             }
 
             // schedule a new CarCouldLeaveSectionEvent for the previous sections (if there are any) so the previous section
             // check if they have a car which could enter the current section because there might be space for a new car
-            for (IStreetSection prevSection : section.getPreviousStreetConnector().getPreviousSections()) {
-                if (prevSection instanceof StreetSection) {
-                    roundaboutEventFactory.createCarCouldLeaveSectionEvent(myModel).schedule((StreetSection)prevSection, new TimeSpan(0, TimeUnit.SECONDS));
+            for (IStreetSection previousSection : donorSection.getPreviousStreetConnector().getPreviousSections()) {
+                if (previousSection != null && previousSection instanceof StreetSection) {
+                    roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
+                        (StreetSection) previousSection,
+                        new TimeSpan(0, TimeUnit.SECONDS)
+                    );
                 }
             }
         }

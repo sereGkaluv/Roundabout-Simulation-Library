@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.controller;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutModel;
+import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.entity.Route;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
@@ -8,7 +8,7 @@ import desmoj.core.simulator.Model;
 
 public class RouteController {
 
-    private final RoundaboutModel model;
+    private final RoundaboutSimulationModel model;
     private static RouteController instance;
 
     /**
@@ -17,7 +17,7 @@ public class RouteController {
      * @param model     the model the RouteController and its IStreetSections are part of
      * @return          the singleton RouteController object
      */
-    public static RouteController getInstance(RoundaboutModel model) {
+    public static RouteController getInstance(RoundaboutSimulationModel model) {
         if (instance == null) {
             instance = new RouteController(model);
         }
@@ -28,12 +28,12 @@ public class RouteController {
      * Private constructor for RouteController. Use getInstance(...) instead
      *
      * @param model                         the model the RouteController and its IStreetSections are part of
-     * @throws IllegalArgumentException     when the given model is not of type RoundaboutModel
+     * @throws IllegalArgumentException     when the given model is not of type RoundaboutSimulationModel
      */
     private RouteController(Model model)
     throws IllegalArgumentException {
-        if (model != null && model instanceof RoundaboutModel) {
-            this.model = (RoundaboutModel) model;
+        if (model != null && model instanceof RoundaboutSimulationModel) {
+            this.model = (RoundaboutSimulationModel) model;
         } else {
             throw new IllegalArgumentException("No suitable model given over.");
         }
