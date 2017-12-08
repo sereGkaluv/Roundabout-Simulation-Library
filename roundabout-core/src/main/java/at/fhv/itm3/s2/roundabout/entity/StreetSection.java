@@ -54,7 +54,11 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public void addCar(ICar car) {
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        }
         carQueue.addLast(car);
+        carPositions.put(car, INITIAL_CAR_POSITION);
     }
 
     @Override
@@ -149,7 +153,7 @@ public class StreetSection extends Entity implements IStreetSection {
             ICar firstCarInQueue = getFirstCar();
 
             if (firstCarInQueue != null) {
-                IStreetSection nextStreetSection = firstCarInQueue.getNextStreetSection();
+                IStreetSection nextStreetSection = firstCarInQueue.getNextSection();
 
                 if (nextStreetSection == null) { // car at destination
                     return true;

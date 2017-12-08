@@ -1,7 +1,5 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
-import java.util.List;
-
 public interface ICar {
 
     /**
@@ -29,6 +27,28 @@ public interface ICar {
     throws IllegalArgumentException;
 
     /**
+     * Calculates the time the car needs to traverse the current street section it is standing on.
+     *
+     * @return the traverse time in seconds.
+     */
+    double getTimeToTraverseSection();
+
+    /**
+     * Calculates the time the car needs to traverse a given street section.
+     *
+     * @param section the street section we are interested in how long the car needs to traverse it.
+     * @return the traverse time in seconds.
+     */
+    double getTimeToTraverseSection(IStreetSection section);
+
+    /**
+     * Calculates the time the car needs until it has moved away from its current spot.
+     *
+     * @return the transition time in seconds.
+     */
+    double getTransitionTime();
+
+    /**
      * Returns (reference) car driver behavior {@link IDriverBehaviour}.
      *
      * @return instance of {@link IDriverBehaviour}.
@@ -42,7 +62,6 @@ public interface ICar {
      * @return reference to {@link IStreetSection} where car is currently located.
      */
     IStreetSection getCurrentSection();
-
 
     /**
      * Sets {@link IStreetSection} (should be present in car route), where car currently belongs to.
@@ -59,7 +78,7 @@ public interface ICar {
      *
      * @return reference to next {@link IStreetSection}.
      */
-    IStreetSection getNextStreetSection();
+    IStreetSection getNextSection();
 
     /**
      * Return the last available section specified in car route.
@@ -69,9 +88,9 @@ public interface ICar {
     IStreetSection getDestination();
 
     /**
-     * Returns predefined, unmodifiable, ordered collection of {@link List<IStreetSection>}.
+     * Returns predefined car route.
      *
-     * @return car route in form of {@link List<IStreetSection>}.
+     * @return car route in form of {@link IRoute}.
      */
-    List<IStreetSection> getRoute();
+    IRoute getRoute();
 }
