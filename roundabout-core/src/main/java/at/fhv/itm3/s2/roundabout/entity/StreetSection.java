@@ -201,8 +201,8 @@ public class StreetSection extends Entity implements IStreetSection {
 
         ICar lastCar = getLastCar();
         if (lastCar != null) {
-            double lastCarPosition = getCarPositions().get(lastCar);
-            return lastCarPosition - lastCar.getLength();
+            final double lastCarPosition = getCarPositions().get(lastCar);
+            return Math.max(lastCarPosition - lastCar.getLength(), 0);
         }
 
         // Otherwise whole section is empty.

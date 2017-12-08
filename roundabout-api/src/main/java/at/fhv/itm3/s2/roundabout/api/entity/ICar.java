@@ -36,7 +36,7 @@ public interface ICar {
     IDriverBehaviour getDriverBehaviour();
 
     /**
-     * Return a reference to a current {@link IStreetSection} present in car root,
+     * Return a reference to a current {@link IStreetSection} present in car route,
      * where car currently belongs to.
      *
      * @return reference to {@link IStreetSection} where car is currently located.
@@ -45,7 +45,7 @@ public interface ICar {
 
 
     /**
-     * Sets {@link IStreetSection} (should be present in car root), where car currently belongs to.
+     * Sets {@link IStreetSection} (should be present in car route), where car currently belongs to.
      *
      * @param currentSection reference of {@link IStreetSection} to be stored.
      * @throws IllegalArgumentException when given {@link IStreetSection} does not belong to current car route.
