@@ -1,6 +1,8 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
+import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 import desmoj.core.simulator.Entity;
@@ -12,7 +14,7 @@ public class StreetSection extends Entity implements IStreetSection {
 
     private static final double INITIAL_CAR_POSITION = 0;
 
-    private final Model model;
+    private final RoundaboutSimulationModel roundaboutSimulationModel;
 
     private final double length;
 
@@ -40,10 +42,10 @@ public class StreetSection extends Entity implements IStreetSection {
         this.carQueue = new LinkedList<>();
         this.carPositions = new HashMap<>();
 
-        if (model != null && model instanceof Model) {
-            this.model = model;
+        if (model instanceof RoundaboutSimulationModel) {
+            this.roundaboutSimulationModel = (RoundaboutSimulationModel) model;
         } else {
-            throw new IllegalArgumentException("Not suitable model.");
+            throw new IllegalArgumentException("Not suitable roundaboutSimulationModel.");
         }
     }
 
@@ -106,21 +108,25 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public void updateAllCarsPositions() {
-        final double currentTime = getCurrentTime();
+        final double currentTime = roundaboutSimulationModel.getCurrentTime();
 
         // Updating positions for all cars.
         ICar previousCar = null;
         for (ICar currentCar : carQueue) {
+            final IDriverBehaviour carDriverBehaviour = currentCar.getDriverBehaviour();
             final double carLastUpdateTime = currentCar.getLastUpdateTime();
-            final double carSpeed = currentCar.getDriverBehaviour().getSpeed();
+            final double carSpeed = carDriverBehaviour.getSpeed();
             final double carPosition = getCarPositions().getOrDefault(currentCar, INITIAL_CAR_POSITION);
 
             // Calculate distance to next car / end of street section based on distributed driver behaviour values.
-            final double distanceToNextCar = 0; //TODO finish.
-            currentCar.getDriverBehaviour().getMinDistanceToNextCar();
-            currentCar.getDriverBehaviour().getMaxDistanceToNextCar();
+            final double distanceToNextCar = calculateDistanceToNextCar(
+                carDriverBehaviour.getMinDistanceToNextCar(),
+                carDriverBehaviour.getMaxDistanceToNextCar(),
+                roundaboutSimulationModel.getRandomDistanceFactorBetweenCars()
+            );
 
-            final double maxTheoreticallyPossiblePositionValue = getMaxPossibleCarPosition(
+            // Calculate possible car positions.
+            final double maxTheoreticallyPossiblePositionValue = calculateMaxPossibleCarPosition(
                 getLength(),
                 distanceToNextCar,
                 getCarPositions().get(previousCar),
@@ -179,7 +185,7 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public boolean isEnoughSpace(double length) {
-        final double freeSpace = getFreeSpace();
+        final double freeSpace = calculateFreeSpace();
         return length < freeSpace;
     }
 
@@ -188,7 +194,7 @@ public class StreetSection extends Entity implements IStreetSection {
         ICar firstCar = removeFirstCar();
         if (firstCar != null) {
             if (firstCar.getCurrentSection() != firstCar.getDestination()) {
-                IStreetSection nextSection = firstCar.getNextStreetSection();
+                IStreetSection nextSection = firstCar.getNextSection();
                 nextSection.addCar(firstCar);
                 firstCar.setCurrentSection(nextSection);
             }
@@ -200,7 +206,7 @@ public class StreetSection extends Entity implements IStreetSection {
         throw new IllegalStateException("street section is not empty, but last car could not be determined");
     }
 
-    private double getFreeSpace() {
+    private double calculateFreeSpace() {
         updateAllCarsPositions();
 
         ICar lastCar = getLastCar();
@@ -213,7 +219,16 @@ public class StreetSection extends Entity implements IStreetSection {
         return getLength();
     }
 
-    private static double getMaxPossibleCarPosition(
+    private static double calculateDistanceToNextCar(
+        double carMinDistanceToNextCar,
+        double carMaxDistanceToNextCar,
+        double randomDistanceFactorBetweenCars
+    ) {
+        final double carVariationDistanceToNextCar = carMaxDistanceToNextCar - carMinDistanceToNextCar;
+        return carMinDistanceToNextCar + carVariationDistanceToNextCar * randomDistanceFactorBetweenCars;
+    }
+
+    private static double calculateMaxPossibleCarPosition(
         double lengthInMeters,
         double distanceToNextCar,
         double previousCarPosition,
@@ -224,10 +239,5 @@ public class StreetSection extends Entity implements IStreetSection {
         } else {
             return lengthInMeters - distanceToNextCar;
         }
-    }
-
-    private double getCurrentTime() {
-        //TODO consider refactoring (moving) to RoundAbountModel.
-        return currentModel().getExperiment().getSimClock().getTime().getTimeAsDouble();
     }
 }

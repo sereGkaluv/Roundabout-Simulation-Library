@@ -9,21 +9,18 @@ import java.util.List;
 
 public class Route implements IRoute {
 
-    private List<IStreetSection> route;
+    private LinkedList<IStreetSection> route;
 
     public Route() {
         route = new LinkedList<>();
     }
 
-
-    public void addSection(IStreetSection section) {
-        route.add(section);
-    }
-
+    @Override
     public List<IStreetSection> getRoute() {
         return Collections.unmodifiableList(route);
     }
 
+    @Override
     public IStreetSection getSectionAt(int index) {
         if (index >= route.size()) {
             throw new IllegalArgumentException("Index for accessing a section in a route is too high");
@@ -31,13 +28,29 @@ public class Route implements IRoute {
         return route.get(index);
     }
 
-    public boolean isEmpty() {
-        return route.isEmpty();
+    @Override
+    public IStreetSection getStartSection() {
+        return route.getFirst();
+    }
+
+    @Override
+    public IStreetSection getDestinationSection() {
+        return route.getLast();
     }
 
     @Override
     public int getNumberOfSections() {
         return route.size();
+    }
+
+    @Override
+    public void addSection(IStreetSection section) {
+        route.addLast(section);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return route.isEmpty();
     }
 
     @Override

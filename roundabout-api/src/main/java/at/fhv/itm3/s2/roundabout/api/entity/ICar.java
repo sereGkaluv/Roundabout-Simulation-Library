@@ -3,13 +3,6 @@ package at.fhv.itm3.s2.roundabout.api.entity;
 public interface ICar {
 
     /**
-     * Returns actual length of {@code this} car.
-     *
-     * @return the length of the car.
-     */
-    double getLength();
-
-    /**
      * Returns the last update time.
      * This value will be changed every time car attributes will be somehow modified.
      *
@@ -27,26 +20,33 @@ public interface ICar {
     throws IllegalArgumentException;
 
     /**
-     * Calculates the time the car needs to traverse the current street section it is standing on.
+     * Calculates the time the car needs to traverse the current {@link IStreetSection} it is standing on.
      *
-     * @return the traverse time in seconds.
+     * @return the traverse time in model time units.
      */
     double getTimeToTraverseSection();
 
     /**
-     * Calculates the time the car needs to traverse a given street section.
+     * Calculates the time the car needs to traverse a given {@link IStreetSection}.
      *
-     * @param section the street section we are interested in how long the car needs to traverse it.
-     * @return the traverse time in seconds.
+     * @param section the {@link IStreetSection} we are interested in how long the car needs to traverse it.
+     * @return the traverse time in model time units.
      */
     double getTimeToTraverseSection(IStreetSection section);
 
     /**
      * Calculates the time the car needs until it has moved away from its current spot.
      *
-     * @return the transition time in seconds.
+     * @return the transition time in model time units.
      */
     double getTransitionTime();
+
+    /**
+     * Returns actual length of {@code this} car.
+     *
+     * @return the length of the car.
+     */
+    double getLength();
 
     /**
      * Returns (reference) car driver behavior {@link IDriverBehaviour}.
@@ -54,6 +54,13 @@ public interface ICar {
      * @return instance of {@link IDriverBehaviour}.
      */
     IDriverBehaviour getDriverBehaviour();
+
+    /**
+     * Returns predefined car route.
+     *
+     * @return car route in form of {@link IRoute}.
+     */
+    IRoute getRoute();
 
     /**
      * Return a reference to a current {@link IStreetSection} present in car route,
@@ -86,11 +93,4 @@ public interface ICar {
      * @return reference to last instance of {@link IStreetSection} in route.
      */
     IStreetSection getDestination();
-
-    /**
-     * Returns predefined car route.
-     *
-     * @return car route in form of {@link IRoute}.
-     */
-    IRoute getRoute();
 }

@@ -18,7 +18,7 @@ public class Car implements ICar {
         this.route = route;
 
         this.setLastUpdateTime(0);
-        this.setCurrentSection(!route.isEmpty() ? route.getSectionAt(0) : null);
+        this.setCurrentSection(route.getStartSection());
     }
 
     @Override
@@ -35,12 +35,6 @@ public class Car implements ICar {
             throw new IllegalArgumentException("last update time must be positive");
         }
     }
-
-    @Override
-    public IDriverBehaviour getDriverBehaviour() {
-        return driverBehaviour;
-    }
-
 
     @Override
     public double getTimeToTraverseSection() {
@@ -63,9 +57,10 @@ public class Car implements ICar {
     }
 
     @Override
-    public IStreetSection getDestination() {
-        return !route.isEmpty() ? route.getSectionAt(route.getNumberOfSections() - 1) : null;
+    public IDriverBehaviour getDriverBehaviour() {
+        return driverBehaviour;
     }
+
 
     @Override
     public IRoute getRoute() {
@@ -89,5 +84,10 @@ public class Car implements ICar {
         } else {
             throw new IllegalArgumentException("actual street section must be in route and must follow last section");
         }
+    }
+
+    @Override
+    public IStreetSection getDestination() {
+        return route.getDestinationSection();
     }
 }
