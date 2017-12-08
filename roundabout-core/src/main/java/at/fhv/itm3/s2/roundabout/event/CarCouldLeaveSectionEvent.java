@@ -26,9 +26,9 @@ public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
     /**
      * Constructs a new {@link CarCouldLeaveSectionEvent}.
      *
-     * @param model         the model this event belongs to.
-     * @param name          this event's name.
-     * @param showInTrace   flag to indicate if this event shall produce output for the trace.
+     * @param model the model this event belongs to.
+     * @param name this event's name.
+     * @param showInTrace flag to indicate if this event shall produce output for the trace.
      */
     public CarCouldLeaveSectionEvent(Model model, String name, boolean showInTrace) {
         super(model, name, showInTrace);

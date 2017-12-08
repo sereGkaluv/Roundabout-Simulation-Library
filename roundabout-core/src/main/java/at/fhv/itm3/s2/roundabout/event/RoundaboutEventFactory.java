@@ -32,8 +32,8 @@ public class RoundaboutEventFactory {
     /**
      * Creates a new {@link CarCouldLeaveSectionEvent} with the given model.
      *
-     * @param model     the model the event is part of.
-     * @return          the newly created {@link CarCouldLeaveSectionEvent}.
+     * @param model the model the event is part of.
+     * @return the newly created {@link CarCouldLeaveSectionEvent}.
      */
     public CarCouldLeaveSectionEvent createCarCouldLeaveSectionEvent(RoundaboutSimulationModel model) {
         return new CarCouldLeaveSectionEvent(model, "CarCouldLeaveSectionEvent", true);
@@ -42,8 +42,8 @@ public class RoundaboutEventFactory {
     /**
      * Creates a new {@link CarGenerateEvent} with the given model.
      *
-     * @param model     the model the event is part of.
-     * @return          the newly created {@link CarGenerateEvent}.
+     * @param model the model the event is part of.
+     * @return the newly created {@link CarGenerateEvent}.
      */
     public CarGenerateEvent createCarGenerateEvent(RoundaboutSimulationModel model) {
         return new CarGenerateEvent(model, "CarGenerateEvent", true);

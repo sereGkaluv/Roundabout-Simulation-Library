@@ -21,10 +21,10 @@ public class RoundaboutSimulationModel extends Model {
     /**
      * Constructs a new RoundaboutSimulationModel
      *
-     * @param model         the model this model is part of (set to null when there is no such model)
-     * @param name          this model's name
-     * @param showInReport  flag to indicate if this model shall produce output to the report file
-     * @param showInTrace   flag to indicate if this model shall produce output to the trace file
+     * @param model the model this model is part of (set to null when there is no such model)
+     * @param name this model's name
+     * @param showInReport flag to indicate if this model shall produce output to the report file
+     * @param showInTrace flag to indicate if this model shall produce output to the trace file
      */
     public RoundaboutSimulationModel(Model model, String name, boolean showInReport, boolean showInTrace) {
         super(model, name, showInReport, showInTrace);
@@ -56,7 +56,7 @@ public class RoundaboutSimulationModel extends Model {
     /**
      * Returns a sample of the random stream used to determine the time between car arrivals.
      *
-     * @return  a timeBetweenCarArrivals sample as double
+     * @return a timeBetweenCarArrivals sample as double
      */
     public double getRandomTimeBetweenCarArrivals() {
         return timeBetweenCarArrivals.sample();

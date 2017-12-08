@@ -15,8 +15,8 @@ public class RouteController {
     /**
      * Returns a singleton of {@link RouteController}.
      *
-     * @param model     the model the RouteController and its {@link IStreetSection}s are part of.
-     * @return          the singleton RouteController object.
+     * @param model the model the RouteController and its {@link IStreetSection}s are part of.
+     * @return the singleton RouteController object.
      */
     public static RouteController getInstance(RoundaboutSimulationModel model) {
         if (instance == null) {
@@ -28,8 +28,8 @@ public class RouteController {
     /**
      * Private constructor for {@link RouteController}. Use getInstance(...) instead.
      *
-     * @param model                         the model the {@link RouteController} and its {@link IStreetSection}s are part of.
-     * @throws IllegalArgumentException     when the given model is not of type {@link RoundaboutSimulationModel}.
+     * @param model the model the {@link RouteController} and its {@link IStreetSection}s are part of.
+     * @throws IllegalArgumentException when the given model is not of type {@link RoundaboutSimulationModel}.
      */
     private RouteController(Model model)
     throws IllegalArgumentException {
@@ -43,7 +43,7 @@ public class RouteController {
     /**
      * Generates a new route a car could take.
      *
-     * @return  a generated route as {@link IRoute} object.
+     * @return a generated route as {@link IRoute} object.
      */
     public IRoute generateNewRoute() {
         // TODO: implement

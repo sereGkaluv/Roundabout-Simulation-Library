@@ -29,9 +29,9 @@ public class CarGenerateEvent extends Event<StreetSection> {
     /**
      * Constructs a new {@link CarCouldLeaveSectionEvent}.
      *
-     * @param model         the model this event belongs to.
-     * @param name          this event's name.
-     * @param showInTrace   flag to indicate if this event shall produce output for the trace.
+     * @param model the model this event belongs to.
+     * @param name this event's name.
+     * @param showInTrace flag to indicate if this event shall produce output for the trace.
      */
     public CarGenerateEvent(Model model, String name, boolean showInTrace) {
         super(model, name, showInTrace);
@@ -55,7 +55,7 @@ public class CarGenerateEvent extends Event<StreetSection> {
      * it without the need to stop and after this time the section checks if a car could leave the section.
      * At the end the event routine schedules a new {@link CarGenerateEvent} with a normally distributed time.
      *
-     * @param section        instance of {@link IStreetSection} to which the car will be added.
+     * @param section instance of {@link IStreetSection} to which the car will be added.
      */
     @Override
     public void eventRoutine(StreetSection section) {
