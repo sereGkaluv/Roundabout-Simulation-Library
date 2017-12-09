@@ -1,14 +1,17 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
-import at.fhv.itm3.s2.roundabout.api.entity.*;
+import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
+import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
+
 
 public class Car implements ICar {
 
     private double length;
     private double lastUpdateTime;
     private IDriverBehaviour driverBehaviour;
-    private final IRoute route;
+    private IRoute route;
     private IStreetSection currentSection;
 
     public Car(double length, IDriverBehaviour driverBehaviour, IRoute route) {
@@ -67,11 +70,6 @@ public class Car implements ICar {
         return route;
     }
 
-    @Override
-    public IStreetSection getNextStreetSection() {
-        return null;
-    }
-
     public IStreetSection getCurrentSection() {
         return currentSection;
     }
@@ -102,6 +100,18 @@ public class Car implements ICar {
 
     @Override
     public IStreetSection getNextSection() {
-        return null;
+        if ((currentSection == null) || (currentSection == this.getDestination())) {
+            return null;
+        }
+        int index = route.getIndexOfSection(currentSection);
+        System.out.println("index: " + index);
+        System.out.println("route(index): " + route.getSectionAt(index));
+        return (route.getSectionAt(route.getIndexOfSection(currentSection) + 1));
     }
+
+    @Override
+    public void setRoute(IRoute route) {
+        this.route = route;
+    }
+
 }

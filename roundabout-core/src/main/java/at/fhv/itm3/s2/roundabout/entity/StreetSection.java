@@ -122,8 +122,8 @@ public class StreetSection extends Entity implements IStreetSection {
     public void moveFirstCarToNextSection() {
         ICar firstCar = removeFirstCar();
         if (firstCar != null) {
-            if (this != firstCar.getDestination()) {
-                IStreetSection nextSection = firstCar.getNextStreetSection();
+            if (firstCar.getCurrentSection() != firstCar.getDestination()) {
+                IStreetSection nextSection = firstCar.getNextSection();
                 nextSection.addCar(firstCar);
                 firstCar.setCurrentSection(nextSection);
             }
@@ -175,13 +175,5 @@ public class StreetSection extends Entity implements IStreetSection {
         return ((List<ICar>) carQueue).get(indexLastCar);
     }
 
-    /**
-     * removes the first car of the queue and returns the first Car
-     *
-     * @return
-     */
-    @Override
-    public ICar removeFirstCar() {
-        return carQueue.poll();
-    }
+
 }

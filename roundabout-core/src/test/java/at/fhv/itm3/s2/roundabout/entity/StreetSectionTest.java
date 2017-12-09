@@ -89,7 +89,7 @@ public class StreetSectionTest {
         when(streetSectionMock.removeFirstCar()).thenReturn(null);
         doCallRealMethod().when(streetSectionMock).moveFirstCarToNextSection();
         streetSectionMock.moveFirstCarToNextSection();
-        verify(firstCarMock, times(0)).getNextStreetSection();
+        verify(firstCarMock, times(0)).getNextSection();
     }
 
     @Test
@@ -102,7 +102,7 @@ public class StreetSectionTest {
         when(firstCarMock.getDestination()).thenReturn(streetSectionMock);
         doCallRealMethod().when(streetSectionMock).moveFirstCarToNextSection();
         streetSectionMock.moveFirstCarToNextSection();
-        verify(firstCarMock, times(0)).getNextStreetSection();
+        verify(firstCarMock, times(0)).getNextSection();
     }
 
     @Test
@@ -115,10 +115,10 @@ public class StreetSectionTest {
         ICar firstCarMock = mock(Car.class);
         when(streetSectionMock.removeFirstCar()).thenReturn(firstCarMock);
         when(firstCarMock.getDestination()).thenReturn(destinationMock);
-        when(firstCarMock.getNextStreetSection()).thenReturn(nextSectionMock);
+        when(firstCarMock.getNextSection()).thenReturn(nextSectionMock);
         doCallRealMethod().when(streetSectionMock).moveFirstCarToNextSection();
         streetSectionMock.moveFirstCarToNextSection();
-        verify(firstCarMock, times(1)).getNextStreetSection();
+        verify(firstCarMock, times(1)).getNextSection();
     }
 
 }

@@ -48,4 +48,11 @@ public class Route implements IRoute {
 
         return (route.indexOf(sectionA) > route.indexOf(sectionB));
     }
+
+    public int getIndexOfSection(IStreetSection streetSection) {
+        if (!route.contains(streetSection)) {
+            throw new IllegalArgumentException("Section must be part of the route");
+        }
+        return route.indexOf(streetSection);
+    }
 }

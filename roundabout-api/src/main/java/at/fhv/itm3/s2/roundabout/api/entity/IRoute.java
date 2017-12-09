@@ -48,4 +48,12 @@ public interface IRoute {
      * @return bla (method is deleted later anyway).
      */
     boolean isSectionABehindSectionB(IStreetSection sectionA, IStreetSection sectionB);
+
+    /**
+     * Returns the index in the route of given {@link IStreetSection}
+     *
+     * @param streetSection is the {@link IStreetSection} from which the index should be returned
+     * @return the index of streetSection in the route
+     */
+    public int getIndexOfSection(IStreetSection streetSection);
 }

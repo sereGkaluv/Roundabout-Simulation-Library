@@ -1,7 +1,5 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
-import java.util.List;
-
 public interface ICar {
 
     /**
@@ -29,7 +27,8 @@ public interface ICar {
     /**
      * Returns the next section the car will be standing on
      *
-     * @return  the next section as IStreetSection
+     * @return the next section as IStreetSection or null
+     * if the currentStreetSection is the last StreetSection in the route
      */
     IStreetSection getNextSection();
 
@@ -41,11 +40,6 @@ public interface ICar {
 
     void setDriverBehaviour(IDriverBehaviour driverBehaviour);
 
-    /**
-     * returns the next streetSection in the route after the current StreetSection
-     * returns null, if the currentStreetSection is the last StreetSection in the route
-     */
-    IStreetSection getNextStreetSection();
 
     double getLength();
 
@@ -65,4 +59,11 @@ public interface ICar {
      * @param currentSection - the IStreetSection the car stands on
      */
     void setCurrentSection(IStreetSection currentSection);
+
+    /**
+     * Sets the route of a car
+     *
+     * @param route the route {@link IRoute} to be set
+     */
+    void setRoute(IRoute route);
 }
