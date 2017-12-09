@@ -64,7 +64,7 @@ public class StreetSection extends Entity implements IStreetSection {
             ICar firstCarInQueue = this.getFirstCar();
 
             if (firstCarInQueue != null) {
-                IStreetSection nextStreetSection = firstCarInQueue.getNextStreetSection();
+                IStreetSection nextStreetSection = firstCarInQueue.getNextSection();
 
                 if (nextStreetSection == null) { // car at destination
                     return true;
@@ -131,13 +131,17 @@ public class StreetSection extends Entity implements IStreetSection {
     }
 
     /**
-     * addCar adds a car to the queue of the streetSection
+     * Adds a car to the section and places it at the physical position 0.0 (regarding the length of the section)
      *
      * @param car The car to add.
      */
     @Override
     public void addCar(ICar car) {
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        }
         carQueue.add(car);
+        carPositions.put(car, 0.0);
     }
 
     /**
@@ -169,5 +173,15 @@ public class StreetSection extends Entity implements IStreetSection {
 
         int indexLastCar = carQueue.size() - 1;
         return ((List<ICar>) carQueue).get(indexLastCar);
+    }
+
+    /**
+     * removes the first car of the queue and returns the first Car
+     *
+     * @return
+     */
+    @Override
+    public ICar removeFirstCar() {
+        return carQueue.poll();
     }
 }
