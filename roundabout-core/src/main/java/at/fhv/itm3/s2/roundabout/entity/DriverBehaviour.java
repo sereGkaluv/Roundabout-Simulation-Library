@@ -16,12 +16,14 @@ public class DriverBehaviour implements IDriverBehaviour {
         this.mergeFactor = mergeFactor;
     }
 
-
+    @Override
     public double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(double speed) {
+    @Override
+    public void setSpeed(double speed)
+    throws IllegalArgumentException {
         if (speed >= 0) {
             this.speed = speed;
         } else {
@@ -29,11 +31,14 @@ public class DriverBehaviour implements IDriverBehaviour {
         }
     }
 
+    @Override
     public double getMinDistanceToNextCar() {
         return minDistanceToNextCar;
     }
 
-    public void setMinDistanceToNextCar(double minDistanceToNextCar) {
+    @Override
+    public void setMinDistanceToNextCar(double minDistanceToNextCar)
+    throws IllegalArgumentException {
         if(minDistanceToNextCar > 0){
             this.minDistanceToNextCar = minDistanceToNextCar;
         } else {
@@ -41,11 +46,14 @@ public class DriverBehaviour implements IDriverBehaviour {
         }
     }
 
+    @Override
     public double getMaxDistanceToNextCar() {
         return maxDistanceToNextCar;
     }
 
-    public void setMaxDistanceToNextCar(double maxDistanceToNextCar) {
+    @Override
+    public void setMaxDistanceToNextCar(double maxDistanceToNextCar)
+    throws IllegalArgumentException {
         if(maxDistanceToNextCar > 0){
             this.maxDistanceToNextCar = maxDistanceToNextCar;
         } else {
@@ -53,10 +61,12 @@ public class DriverBehaviour implements IDriverBehaviour {
         }
     }
 
+    @Override
     public double getMergeFactor() {
         return mergeFactor;
     }
 
+    @Override
     public void setMergeFactor(double mergeFactor) {
         this.mergeFactor = mergeFactor;
     }
