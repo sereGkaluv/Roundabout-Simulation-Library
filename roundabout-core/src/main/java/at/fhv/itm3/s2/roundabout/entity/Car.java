@@ -3,22 +3,31 @@ package at.fhv.itm3.s2.roundabout.entity;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.stream.Stream;
+
 public class Car implements ICar {
 
     private final double length;
     private final IDriverBehaviour driverBehaviour;
     private final IRoute route;
+    private final Iterator<IStreetSection> routeIterator;
 
     private double lastUpdateTime;
     private IStreetSection currentSection;
+    private IStreetSection nextSection;
 
     public Car(double length, IDriverBehaviour driverBehaviour, IRoute route) {
         this.length = length;
         this.driverBehaviour = driverBehaviour;
         this.route = route;
+        this.routeIterator = route.getRoute().iterator();
+        // The below order is important!
+        this.currentSection = retrieveNextRouteSection();
+        this.nextSection = retrieveNextRouteSection();
 
         this.setLastUpdateTime(0);
-        this.setCurrentSection(route.getStartSection());
     }
 
     @Override
@@ -61,7 +70,6 @@ public class Car implements ICar {
         return driverBehaviour;
     }
 
-
     @Override
     public IRoute getRoute() {
         return route;
@@ -74,20 +82,21 @@ public class Car implements ICar {
 
     @Override
     public IStreetSection getNextSection() {
-        return null;
+        return nextSection;
     }
 
     @Override
-    public void setCurrentSection(IStreetSection currentSection) {
-        if (this.currentSection == null || route.isSectionABehindSectionB(currentSection, this.currentSection)) {
-            this.currentSection = currentSection;
-        } else {
-            throw new IllegalArgumentException("actual street section must be in route and must follow last section");
-        }
+    public void traverseToNextSection() {
+        this.currentSection = this.nextSection;
+        this.nextSection = retrieveNextRouteSection();
     }
 
     @Override
     public IStreetSection getDestination() {
         return route.getDestinationSection();
+    }
+
+    private IStreetSection retrieveNextRouteSection() {
+        return routeIterator.hasNext() ? routeIterator.next() : null;
     }
 }
