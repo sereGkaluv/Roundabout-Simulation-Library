@@ -18,7 +18,13 @@ public class Car implements ICar {
     private IStreetSection currentSection;
     private IStreetSection nextSection;
 
-    public Car(double length, IDriverBehaviour driverBehaviour, IRoute route) {
+    public Car(double length, IDriverBehaviour driverBehaviour, IRoute route)
+            throws IllegalArgumentException {
+
+        if(route == null) {
+            throw new IllegalArgumentException("route should not be null");
+        }
+
         this.length = length;
         this.driverBehaviour = driverBehaviour;
         this.route = route;

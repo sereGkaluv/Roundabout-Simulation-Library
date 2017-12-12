@@ -9,8 +9,9 @@ public class DriverBehaviour implements IDriverBehaviour {
     private double maxDistanceToNextCar;
     private double mergeFactor;
 
-    public DriverBehaviour(double speed, double minDistanceToNextCar, double maxDistanceToNextCar, double mergeFactor){
-        this.speed = speed;
+    public DriverBehaviour(double speed, double minDistanceToNextCar, double maxDistanceToNextCar, double mergeFactor)
+            throws IllegalArgumentException{
+        setSpeed(speed);
         this.minDistanceToNextCar = minDistanceToNextCar;
         this.maxDistanceToNextCar = maxDistanceToNextCar;
         this.mergeFactor = mergeFactor;

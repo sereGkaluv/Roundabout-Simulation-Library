@@ -196,7 +196,7 @@ public class StreetSection extends Entity implements IStreetSection {
             if (firstCar.getCurrentSection() != firstCar.getDestination()) {
                 IStreetSection nextSection = firstCar.getNextSection();
                 nextSection.addCar(firstCar);
-                firstCar.setCurrentSection(nextSection);
+                //TODO firstCar.setCversturrentSection(nextSection);
             }
         }
     }
