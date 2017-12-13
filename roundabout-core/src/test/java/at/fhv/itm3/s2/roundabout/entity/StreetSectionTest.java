@@ -23,7 +23,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void firstCarCouldEnterNextSection_firstCarNotOnExitPoint() throws Exception {
+    public void firstCarCouldEnterNextSection_firstCarNotOnExitPoint() {
         IStreetSection streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
         when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(false);
@@ -32,7 +32,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void firstCarCouldEnterNextSection_noCarInQueue() throws Exception {
+    public void firstCarCouldEnterNextSection_noCarInQueue() {
         IStreetSection streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
         when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
@@ -42,7 +42,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void firstCarCouldEnterNextSection_notEnoughSpace() throws Exception {
+    public void firstCarCouldEnterNextSection_notEnoughSpace() {
         IStreetSection streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
         when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
@@ -59,7 +59,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void firstCarCouldEnterNextSection_precedenceSectionHasCarOnExitPoint() throws Exception {
+    public void firstCarCouldEnterNextSection_precedenceSectionHasCarOnExitPoint() {
         IStreetSection streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
         when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
@@ -91,7 +91,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void firstCarCouldEnterNextSection_couldEnterNextSection() throws Exception {
+    public void firstCarCouldEnterNextSection_couldEnterNextSection() {
         IStreetSection streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
         when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
@@ -123,7 +123,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void isEnoughSpace_spaceBiggerThenCar() throws Exception {
+    public void isEnoughSpace_spaceBiggerThenCar() {
         IStreetSection streetSectionMock = mock(StreetSection.class);
 
         ICar car = mock(Car.class);
@@ -143,7 +143,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void isEnoughSpace_spaceEqualsCar() throws Exception {
+    public void isEnoughSpace_spaceEqualsCar() {
         IStreetSection streetSectionMock = mock(StreetSection.class);
 
         ICar car = mock(Car.class);
@@ -163,7 +163,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void isEnoughSpace_spaceSmallerThenCar() throws Exception {
+    public void isEnoughSpace_spaceSmallerThenCar() {
         IStreetSection streetSectionMock = mock(StreetSection.class);
 
         ICar car = mock(Car.class);

@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 public class CarTest {
 
     @Test
-    public void shouldInitializeCorrectly(){
+    public void shouldInitializeCorrectly() {
         double length = 10.0;
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0,5.0, 1.5);
         IRoute route = new Route();
@@ -31,13 +31,13 @@ public class CarTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void shouldThrowIfRouteIsNull(){
+    public void shouldThrowIfRouteIsNull() {
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
         new Car(10.0, driverBehaviour, null);
     }
 
     @Test
-    public void lastUpdateTimeGreaterThanZero(){
+    public void lastUpdateTimeGreaterThanZero() {
         ICar car = createCar();
         double lastUpdateTime = 20.0;
         car.setLastUpdateTime(lastUpdateTime);
@@ -45,14 +45,14 @@ public class CarTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void shouldThrowIfUpdateTimeLessThanZero(){
+    public void shouldThrowIfUpdateTimeLessThanZero() {
         ICar car = createCar();
         double lastUpdateTime = -20.0;
         car.setLastUpdateTime(lastUpdateTime);
         Assert.assertEquals(lastUpdateTime, car.getLastUpdateTime(), 0.0);
     }
 
-    private ICar createCar(){
+    private ICar createCar() {
         double length = 10.0;
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0,5.0, 1.5);
         IRoute route = new Route();
