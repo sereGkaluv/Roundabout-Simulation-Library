@@ -99,8 +99,11 @@ public interface IStreetSection {
      * Moves the first car from the current section to the next section.
      * In background removes the first car (if there is one) from the queue and puts it into the
      * queue of the next {@link IStreetSection} present in car route.
+     *
+     * @throws IllegalStateException if car cannot move further e.g. next section is null.
      */
-    void moveFirstCarToNextSection();
+    void moveFirstCarToNextSection()
+    throws IllegalStateException;
 
     @Deprecated // TODO consider removal i think this logic can be packed into addCar method, othervise consider rename to isCarAbleToEnter()
     boolean carCouldEnterNextSection();

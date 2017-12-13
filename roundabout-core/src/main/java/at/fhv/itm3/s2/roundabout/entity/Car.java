@@ -1,8 +1,6 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
-import at.fhv.itm3.s2.roundabout.api.entity.ICar;
-import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
-import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
+import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 import desmoj.core.simulator.Model;
 
@@ -11,11 +9,12 @@ import java.util.Iterator;
 public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar {
 
     private final double length;
-    private final IDriverBehaviour driverBehaviour;
     private final IRoute route;
+    private final IDriverBehaviour driverBehaviour;
     private final Iterator<IStreetSection> routeIterator;
 
     private double lastUpdateTime;
+
     private IStreetSection currentSection;
     private IStreetSection nextSection;
 

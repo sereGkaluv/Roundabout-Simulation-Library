@@ -6,14 +6,13 @@ import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 import org.junit.Test;
 
+import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class StreetSectionTest {
 
@@ -251,5 +250,57 @@ public class StreetSectionTest {
 
         when(streetSectionMock.getCarPositions()).thenReturn(carPositions);
         assertFalse(streetSectionMock.isFirstCarOnExitPoint());
+    }
+
+
+    @Test
+    public void moveFirstCarToNextSection_firstCarEqualNull() throws Exception {
+        // if firstCar is null, the method getNextStreetSection should not be called
+        IStreetSection streetSectionMock = mock(StreetSection.class);
+        ICar firstCarMock = mock(Car.class);
+
+        when(streetSectionMock.removeFirstCar()).thenReturn(null);
+        doCallRealMethod().when(streetSectionMock).moveFirstCarToNextSection();
+
+        streetSectionMock.moveFirstCarToNextSection();
+        verify(firstCarMock, times(0)).getNextSection();
+    }
+
+    @Test
+    public void moveFirstCarToNextSection_currentSectionIsEqualDestination() throws Exception {
+        // if currentSection (=this) is the same as destination of the car
+        // the method getNextStreetSection should not be called
+        IStreetSection currentSectionMock = mock(StreetSection.class);
+        ICar firstCarMock = mock(Car.class);
+
+        when(currentSectionMock.removeFirstCar()).thenReturn(firstCarMock);
+        when(firstCarMock.getCurrentSection()).thenReturn(currentSectionMock);
+        when(firstCarMock.getDestination()).thenReturn(currentSectionMock);
+        doCallRealMethod().when(currentSectionMock).moveFirstCarToNextSection();
+
+        currentSectionMock.moveFirstCarToNextSection();
+        verify(firstCarMock, times(0)).getNextSection();
+        verify(firstCarMock, times(0)).traverseToNextSection();
+    }
+
+    @Test
+    public void moveFirstCarToNextSection_currentSectionIsNotEqualDestination() throws Exception {
+        // if currentSection (=this) is not the same as destination of the car
+        // the method getNextStreetSection should be called once
+        ICar firstCarMock = mock(Car.class);
+
+        IStreetSection currentSectionMock = mock(StreetSection.class);
+        when(currentSectionMock.removeFirstCar()).thenReturn(firstCarMock);
+
+        IStreetSection nextSectionMock = mock(StreetSection.class);
+        when(firstCarMock.getNextSection()).thenReturn(nextSectionMock);
+
+        IStreetSection destinationMock = mock(StreetSection.class);
+        when(firstCarMock.getDestination()).thenReturn(destinationMock);
+
+        doCallRealMethod().when(currentSectionMock).moveFirstCarToNextSection();
+
+        currentSectionMock.moveFirstCarToNextSection();
+        verify(firstCarMock, times(1)).getNextSection();
     }
 }

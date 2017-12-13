@@ -9,6 +9,7 @@ import desmoj.core.simulator.Experiment;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 
@@ -16,6 +17,14 @@ import static org.mockito.Mockito.mock;
  * Created by manue on 12.12.2017.
  */
 public class CarTest {
+
+    private RoundaboutSimulationModel getPrepareModel() {
+        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
+        Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
+        model.connectToExperiment(exp);
+
+        return model;
+    }
 
     @Test
     public void shouldInitializeCorrectly() {
@@ -25,17 +34,13 @@ public class CarTest {
         IStreetSection streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
-        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
-        Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
-        model.connectToExperiment(exp);
-
-        ICar car = new Car(length, driverBehaviour, route, model, "description", false);
+        ICar car = new Car(length, driverBehaviour, route, getPrepareModel(), "description", false);
         Assert.assertNotNull(car);
 
         //test attributes
-        Assert.assertEquals(driverBehaviour, car.getDriverBehaviour());
-        Assert.assertEquals(route, car.getRoute());
-        Assert.assertEquals(length, car.getLength(), 0.0);
+        assertEquals(driverBehaviour, car.getDriverBehaviour());
+        assertEquals(route, car.getRoute());
+        assertEquals(length, car.getLength(), 0.0);
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -54,7 +59,7 @@ public class CarTest {
         ICar car = createCar();
         double lastUpdateTime = 20.0;
         car.setLastUpdateTime(lastUpdateTime);
-        Assert.assertEquals(lastUpdateTime, car.getLastUpdateTime(), 0.0);
+        assertEquals(lastUpdateTime, car.getLastUpdateTime(), 0.0);
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -62,13 +67,14 @@ public class CarTest {
         ICar car = createCar();
         double lastUpdateTime = -20.0;
         car.setLastUpdateTime(lastUpdateTime);
-        Assert.assertEquals(lastUpdateTime, car.getLastUpdateTime(), 0.0);
+        assertEquals(lastUpdateTime, car.getLastUpdateTime(), 0.0);
     }
 
     private ICar createCar() {
         double length = 10.0;
-        IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0,5.0, 1.5);
+        IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
         IRoute route = new Route();
+
         IStreetSection streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
@@ -77,5 +83,47 @@ public class CarTest {
         model.connectToExperiment(exp);
 
         return new Car(length, driverBehaviour, route, model, "description", false);
+    }
+
+    @Test
+    public void getNextSection_currentSectionIsEqualDestination() {
+        IRoute route = new Route();
+
+        IStreetSection currentSectionMock = mock(StreetSection.class);
+        route.addSection(currentSectionMock);
+
+        IStreetSection destinationMock = mock(StreetSection.class);
+        route.addSection(destinationMock);
+
+        IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
+        ICar car = new Car(10, driverBehaviourMock, route, getPrepareModel(), "description", false);
+
+        assertEquals(car.getCurrentSection(), currentSectionMock);
+        assertEquals(car.getNextSection(), destinationMock);
+
+        car.traverseToNextSection();
+
+        assertEquals(car.getCurrentSection(), destinationMock);
+        assertNull(car.getNextSection());
+    }
+
+    @Test
+    public void getNextSection_currentSectionNotEqualDestination() {
+        IRoute route = new Route();
+
+        IStreetSection currentSectionMock = mock(StreetSection.class);
+        route.addSection(currentSectionMock);
+
+        IStreetSection nextSectionMock = mock(StreetSection.class);
+        route.addSection(nextSectionMock);
+
+        IStreetSection destinationMock = mock(StreetSection.class);
+        route.addSection(destinationMock);
+
+        IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
+        ICar car = new Car(10, driverBehaviourMock, route, getPrepareModel(), "description", false);
+
+        assertEquals(car.getCurrentSection(), currentSectionMock);
+        assertNotEquals(car.getCurrentSection(), destinationMock);
     }
 }
