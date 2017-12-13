@@ -116,7 +116,7 @@ public class StreetSection extends Entity implements IStreetSection {
             final IDriverBehaviour carDriverBehaviour = currentCar.getDriverBehaviour();
             final double carLastUpdateTime = currentCar.getLastUpdateTime();
             final double carSpeed = carDriverBehaviour.getSpeed();
-            final double carPosition = getCarPositions().getOrDefault(currentCar, INITIAL_CAR_POSITION);
+            final double carPosition = getCarPositionOrDefault(currentCar, INITIAL_CAR_POSITION);
 
             // Calculate distance to next car / end of street section based on distributed driver behaviour values.
             final double distanceToNextCar = calculateDistanceToNextCar(
@@ -129,7 +129,7 @@ public class StreetSection extends Entity implements IStreetSection {
             final double maxTheoreticallyPossiblePositionValue = calculateMaxPossibleCarPosition(
                 getLength(),
                 distanceToNextCar,
-                getCarPositions().get(previousCar),
+                getCarPosition(previousCar),
                 previousCar
             );
 
@@ -150,6 +150,11 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public boolean isFirstCarOnExitPoint() {
+        final ICar firstCar = getFirstCar();
+        if (firstCar != null && firstCar.getDriverBehaviour() != null) {
+            final double distanceToSectionEnd = Math.abs(getLength() - getCarPosition(firstCar));
+            return distanceToSectionEnd <= firstCar.getDriverBehaviour().getMaxDistanceToNextCar();
+        }
         return false;
     }
 
@@ -208,12 +213,20 @@ public class StreetSection extends Entity implements IStreetSection {
         throw new IllegalStateException("Street section is not empty, but last car could not be determined.");
     }
 
+    private double getCarPosition(ICar car) {
+        return getCarPositions().get(car);
+    }
+
+    private double getCarPositionOrDefault(ICar car, double defaultValue) {
+        return getCarPositions().getOrDefault(car, defaultValue);
+    }
+
     private double calculateFreeSpace() {
         updateAllCarsPositions();
 
         ICar lastCar = getLastCar();
         if (lastCar != null) {
-            final double lastCarPosition = getCarPositions().get(lastCar);
+            final double lastCarPosition = getCarPosition(lastCar);
             return Math.max(lastCarPosition - lastCar.getLength(), 0);
         }
 
