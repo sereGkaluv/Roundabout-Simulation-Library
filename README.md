@@ -1,5 +1,4 @@
-# Roundabout Simulation Library
-Build status: ![Build Status](https://travis-ci.org/sereGkaluv/Roundabout-Simulation-Library.svg?branch=master)
+# Roundabout Simulation Library ![Build Status](https://travis-ci.org/sereGkaluv/Roundabout-Simulation-Library.svg?branch=master)
 
 Consists of 2 sub modules:
 - Roundabout API
