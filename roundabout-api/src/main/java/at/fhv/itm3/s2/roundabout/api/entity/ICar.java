@@ -1,38 +1,92 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
-import java.util.List;
-
 public interface ICar {
+
+    /**
+     * Returns the last update time.
+     * This value will be changed every time car attributes will be somehow modified.
+     *
+     * @return last update time.
+     */
     double getLastUpdateTime();
 
-    void setLastUpdateTime(double lastUpdateTime);
-
-    IDriverBehaviour getDriverBehaviour();
-
-    void setDriverBehaviour(IDriverBehaviour driverBehaviour);
+    /**
+     * Sets the last update time.
+     *
+     * @param lastUpdateTime time value to be set.
+     * @throws IllegalArgumentException when given time is not > 0.
+     */
+    void setLastUpdateTime(double lastUpdateTime)
+    throws IllegalArgumentException;
 
     /**
-     * returns the next streetSection in the route after the current StreetSection
-     * returns null, if the currentStreetSection is the last StreetSection in the route
+     * Calculates the time the car needs to traverse the current {@link IStreetSection} it is standing on.
+     *
+     * @return the traverse time in model time units.
      */
-    IStreetSection getNextStreetSection();
+    double getTimeToTraverseSection();
 
+    /**
+     * Calculates the time the car needs to traverse a given {@link IStreetSection}.
+     *
+     * @param section the {@link IStreetSection} we are interested in how long the car needs to traverse it.
+     * @return the traverse time in model time units.
+     */
+    double getTimeToTraverseSection(IStreetSection section);
+
+    /**
+     * Calculates the time the car needs until it has moved away from its current spot.
+     *
+     * @return the transition time in model time units.
+     */
+    double getTransitionTime();
+
+    /**
+     * Returns actual length of {@code this} car.
+     *
+     * @return the length of the car.
+     */
     double getLength();
 
-    void setLength(double length);
-
-    IStreetSection getDestination();
+    /**
+     * Returns (reference) car driver behavior {@link IDriverBehaviour}.
+     *
+     * @return instance of {@link IDriverBehaviour}.
+     */
+    IDriverBehaviour getDriverBehaviour();
 
     /**
-     * returns the route of the car, which is a list<StreetSection>
+     * Returns predefined car route.
+     *
+     * @return car route in form of {@link IRoute}.
      */
-    List<IStreetSection> getRoute();
+    IRoute getRoute();
 
+    /**
+     * Return a reference to a current {@link IStreetSection} present in car route,
+     * where car currently belongs to.
+     *
+     * @return reference to {@link IStreetSection} where car is currently located.
+     */
     IStreetSection getCurrentSection();
 
     /**
-     * sets the currentStreetSection to the StreetSection of the parameter
-     * @param streetSection - new current StreetSection
+     * Car will be logically traversed to next (following) {@link IStreetSection} in predefined route.
      */
-    void setCurrentSection(IStreetSection currentSection);
+    void traverseToNextSection();
+
+    /**
+     * Returns reference to the next {@link IStreetSection} scheduled
+     * in car pre-calculated route.
+     *
+     * @return reference to next {@link IStreetSection}.
+     */
+    IStreetSection getNextSection();
+
+    /**
+     * Return the last available section specified in car route.
+     *
+     * @return reference to last instance of {@link IStreetSection} in route.
+     */
+    IStreetSection getDestination();
 }

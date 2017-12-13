@@ -50,8 +50,7 @@ public class StreetSectionTest {
         when(streetSectionMock.getFirstCar()).thenReturn(firstCar);
 
         IStreetSection nextStreetSection = mock(StreetSection.class);
-        when(firstCar.getNextStreetSection()).thenReturn(nextStreetSection);
-
+        when(firstCar.getNextSection()).thenReturn(nextStreetSection);
         when(firstCar.getLength()).thenReturn(5.0);
         when(nextStreetSection.isEnoughSpace(firstCar.getLength())).thenReturn(false);
 
@@ -59,7 +58,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void firstCarCouldEnterNextSection_precendenceSectionHasCarOnExitPoint() throws Exception {
+    public void firstCarCouldEnterNextSection_precedenceSectionHasCarOnExitPoint() throws Exception {
         IStreetSection streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
         when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
@@ -68,7 +67,7 @@ public class StreetSectionTest {
         when(streetSectionMock.getFirstCar()).thenReturn(firstCar);
 
         IStreetSection nextStreetSection = mock(StreetSection.class);
-        when(firstCar.getNextStreetSection()).thenReturn(nextStreetSection);
+        when(firstCar.getNextSection()).thenReturn(nextStreetSection);
         when(firstCar.getLength()).thenReturn(5.0);
         when(nextStreetSection.isEnoughSpace(firstCar.getLength())).thenReturn(true);
 
@@ -100,7 +99,7 @@ public class StreetSectionTest {
         when(streetSectionMock.getFirstCar()).thenReturn(firstCar);
 
         IStreetSection nextStreetSection = mock(StreetSection.class);
-        when(firstCar.getNextStreetSection()).thenReturn(nextStreetSection);
+        when(firstCar.getNextSection()).thenReturn(nextStreetSection);
         when(firstCar.getLength()).thenReturn(5.0);
         when(nextStreetSection.isEnoughSpace(firstCar.getLength())).thenReturn(true);
 
