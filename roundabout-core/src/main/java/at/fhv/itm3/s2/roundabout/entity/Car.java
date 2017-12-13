@@ -1,11 +1,11 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
-import at.fhv.itm3.s2.roundabout.api.entity.*;
+import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
+import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 
 import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.stream.Stream;
 
 public class Car implements ICar {
 
@@ -19,19 +19,24 @@ public class Car implements ICar {
     private IStreetSection nextSection;
 
     public Car(double length, IDriverBehaviour driverBehaviour, IRoute route)
-            throws IllegalArgumentException {
+    throws IllegalArgumentException {
+        this.length = length;
 
-        if(route == null) {
-            throw new IllegalArgumentException("route should not be null");
+        if (driverBehaviour != null) {
+            this.driverBehaviour = driverBehaviour;
+        } else {
+            throw new IllegalArgumentException("Driver behaviour should not be null.");
         }
 
-        this.length = length;
-        this.driverBehaviour = driverBehaviour;
-        this.route = route;
-        this.routeIterator = route.getRoute().iterator();
-        // The below order is important!
-        this.currentSection = retrieveNextRouteSection();
-        this.nextSection = retrieveNextRouteSection();
+        if (route != null) {
+            this.route = route;
+            this.routeIterator = route.getRoute().iterator();
+            // The below order is important!
+            this.currentSection = retrieveNextRouteSection();
+            this.nextSection = retrieveNextRouteSection();
+        } else {
+            throw new IllegalArgumentException("Route should not be null.");
+        }
 
         this.setLastUpdateTime(0);
     }
