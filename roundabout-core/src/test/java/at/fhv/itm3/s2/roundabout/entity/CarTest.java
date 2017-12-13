@@ -74,6 +74,7 @@ public class CarTest {
         double length = 10.0;
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
         IRoute route = new Route();
+
         IStreetSection streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
@@ -86,16 +87,16 @@ public class CarTest {
 
     @Test
     public void getNextSection_currentSectionIsEqualDestination() {
-        IRoute routeMock = new Route();
+        IRoute route = new Route();
 
         IStreetSection currentSectionMock = mock(StreetSection.class);
-        routeMock.addSection(currentSectionMock);
+        route.addSection(currentSectionMock);
 
         IStreetSection destinationMock = mock(StreetSection.class);
-        routeMock.addSection(destinationMock);
+        route.addSection(destinationMock);
 
         IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
-        ICar car = new Car(10, driverBehaviourMock, routeMock, getPrepareModel(), "description", false);
+        ICar car = new Car(10, driverBehaviourMock, route, getPrepareModel(), "description", false);
 
         assertEquals(car.getCurrentSection(), currentSectionMock);
         assertEquals(car.getNextSection(), destinationMock);
@@ -108,19 +109,19 @@ public class CarTest {
 
     @Test
     public void getNextSection_currentSectionNotEqualDestination() {
-        IRoute routeMock = new Route();
+        IRoute route = new Route();
 
         IStreetSection currentSectionMock = mock(StreetSection.class);
-        routeMock.addSection(currentSectionMock);
+        route.addSection(currentSectionMock);
 
         IStreetSection nextSectionMock = mock(StreetSection.class);
-        routeMock.addSection(nextSectionMock);
+        route.addSection(nextSectionMock);
 
         IStreetSection destinationMock = mock(StreetSection.class);
-        routeMock.addSection(destinationMock);
+        route.addSection(destinationMock);
 
         IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
-        ICar car = new Car(10, driverBehaviourMock, routeMock, getPrepareModel(), "description", false);
+        ICar car = new Car(10, driverBehaviourMock, route, getPrepareModel(), "description", false);
 
         assertEquals(car.getCurrentSection(), currentSectionMock);
         assertNotEquals(car.getCurrentSection(), destinationMock);
