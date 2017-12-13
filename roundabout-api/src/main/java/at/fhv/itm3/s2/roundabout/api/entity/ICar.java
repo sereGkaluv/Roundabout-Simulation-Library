@@ -71,13 +71,9 @@ public interface ICar {
     IStreetSection getCurrentSection();
 
     /**
-     * Sets {@link IStreetSection} (should be present in car route), where car currently belongs to.
-     *
-     * @param currentSection reference of {@link IStreetSection} to be stored.
-     * @throws IllegalArgumentException when given {@link IStreetSection} does not belong to current car route.
+     * Car will be logically traversed to next (following) {@link IStreetSection} in predefined route.
      */
-    void setCurrentSection(IStreetSection currentSection)
-    throws IllegalArgumentException;
+    void traverseToNextSection();
 
     /**
      * Returns reference to the next {@link IStreetSection} scheduled

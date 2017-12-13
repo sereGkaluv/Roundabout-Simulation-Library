@@ -3,16 +3,17 @@ package at.fhv.itm3.s2.roundabout.entity;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Route implements IRoute {
 
-    private LinkedList<IStreetSection> route;
+    private List<IStreetSection> route;
 
     public Route() {
-        route = new LinkedList<>();
+        route = new ArrayList<>();
     }
 
     @Override
@@ -23,19 +24,19 @@ public class Route implements IRoute {
     @Override
     public IStreetSection getSectionAt(int index) {
         if (index >= route.size()) {
-            throw new IllegalArgumentException("Index for accessing a section in a route is too high");
+            throw new IllegalArgumentException("Index value for accessing a section in a route is too big.");
         }
         return route.get(index);
     }
 
     @Override
     public IStreetSection getStartSection() {
-        return route.getFirst();
+        return !isEmpty() ? route.get(0) : null;
     }
 
     @Override
     public IStreetSection getDestinationSection() {
-        return route.getLast();
+        return !isEmpty() ? route.get(route.size() - 1) : null;
     }
 
     @Override
@@ -45,7 +46,8 @@ public class Route implements IRoute {
 
     @Override
     public void addSection(IStreetSection section) {
-        route.addLast(section);
+        // Adds as a last element to list.
+        route.add(section);
     }
 
     @Override

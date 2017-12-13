@@ -195,15 +195,17 @@ public class StreetSection extends Entity implements IStreetSection {
         if (firstCar != null) {
             if (firstCar.getCurrentSection() != firstCar.getDestination()) {
                 IStreetSection nextSection = firstCar.getNextSection();
+                // Move physically first car to next section.
                 nextSection.addCar(firstCar);
-                firstCar.setCurrentSection(nextSection);
+                // Move logically first car to next section.
+                firstCar.traverseToNextSection();
             }
         }
     }
 
     @Override
     public boolean carCouldEnterNextSection() {
-        throw new IllegalStateException("street section is not empty, but last car could not be determined");
+        throw new IllegalStateException("Street section is not empty, but last car could not be determined.");
     }
 
     private double calculateFreeSpace() {
