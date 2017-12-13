@@ -1,25 +1,42 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
-import at.fhv.itm3.s2.roundabout.api.entity.ICar;
-import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
-import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
+import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 
+import java.util.Iterator;
 
 public class Car implements ICar {
 
-    private double length;
+    private final double length;
+    private final Iterator<IStreetSection> routeIterator;
+
     private double lastUpdateTime;
-    private IDriverBehaviour driverBehaviour;
+    private final IDriverBehaviour driverBehaviour;
     private IRoute route;
     private IStreetSection currentSection;
+    private IStreetSection nextSection;
 
-    public Car(double length, IDriverBehaviour driverBehaviour, IRoute route) {
-        this.route = route;
-        this.setLength(length);
+    public Car(double length, IDriverBehaviour driverBehaviour, IRoute route)
+    throws IllegalArgumentException {
+        this.length = length;
+
+        if (driverBehaviour != null) {
+            this.driverBehaviour = driverBehaviour;
+        } else {
+            throw new IllegalArgumentException("Driver behaviour should not be null.");
+        }
+
+        if (route != null) {
+            this.route = route;
+            this.routeIterator = route.getRoute().iterator();
+            // The below order is important!
+            this.currentSection = retrieveNextRouteSection();
+            this.nextSection = retrieveNextRouteSection();
+        } else {
+            throw new IllegalArgumentException("Route should not be null.");
+        }
+
         this.setLastUpdateTime(0);
-        this.setDriverBehaviour(driverBehaviour);
-        this.setCurrentSection(!route.isEmpty() ? (StreetSection) route.getSectionAt(0) : null);
     }
 
     @Override
@@ -28,7 +45,8 @@ public class Car implements ICar {
     }
 
     @Override
-    public void setLastUpdateTime(double lastUpdateTime) {
+    public void setLastUpdateTime(double lastUpdateTime)
+    throws IllegalArgumentException {
         if (lastUpdateTime >= 0) {
             this.lastUpdateTime = lastUpdateTime;
         } else {
@@ -37,13 +55,21 @@ public class Car implements ICar {
     }
 
     @Override
-    public IDriverBehaviour getDriverBehaviour() {
-        return driverBehaviour;
+    public double getTimeToTraverseSection() {
+        //TODO getTimeToTraverseSection()
+        return 0;
     }
 
     @Override
-    public void setDriverBehaviour(IDriverBehaviour driverBehaviour) {
-        this.driverBehaviour = driverBehaviour;
+    public double getTimeToTraverseSection(IStreetSection section) {
+        //TODO getTimeToTraverseSection(IStreetSection section)
+        return 0;
+    }
+
+    @Override
+    public double getTransitionTime() {
+        //TODO getTransitionTime()
+        return 0;
     }
 
     @Override
@@ -52,17 +78,8 @@ public class Car implements ICar {
     }
 
     @Override
-    public void setLength(double length) {
-        if(length > 0) {
-            this.length = length;
-        } else {
-            throw new IllegalArgumentException("length must be positive");
-        }
-    }
-
-    @Override
-    public IStreetSection getDestination() {
-        return !route.isEmpty() ? route.getSectionAt(route.getNumberOfSections() - 1) : null;
+    public IDriverBehaviour getDriverBehaviour() {
+        return driverBehaviour;
     }
 
     @Override
@@ -70,43 +87,25 @@ public class Car implements ICar {
         return route;
     }
 
+    @Override
     public IStreetSection getCurrentSection() {
         return currentSection;
     }
 
     @Override
-    public void setCurrentSection(IStreetSection currentSection) {
-        if (this.currentSection == null || route.isSectionABehindSectionB(currentSection, this.currentSection)) {
-            this.currentSection = currentSection;
-        } else {
-            throw new IllegalArgumentException("actual street section must be in route and must follow last section");
-        }
-    }
-
-    @Override
-    public double getTimeToTraverseSection() {
-        return 0;
-    }
-
-    @Override
-    public double getTimeToTraverseSection(IStreetSection section) {
-        return 0;
-    }
-
-    @Override
-    public double getTransitionTime() {
-        return 0;
-    }
-
-    @Override
     public IStreetSection getNextSection() {
-        if ((currentSection == null) || (currentSection == this.getDestination())) {
-            return null;
-        }
-        int index = route.getIndexOfSection(currentSection);
-        System.out.println("index: " + index);
-        System.out.println("route(index): " + route.getSectionAt(index));
-        return (route.getSectionAt(route.getIndexOfSection(currentSection) + 1));
+        return nextSection;
+    }
+
+    @Override
+    public void traverseToNextSection() {
+        this.currentSection = this.nextSection;
+        this.nextSection = retrieveNextRouteSection();
+    }
+
+    @Override
+    public IStreetSection getDestination() {
+        return route.getDestinationSection();
     }
 
     @Override
@@ -114,4 +113,7 @@ public class Car implements ICar {
         this.route = route;
     }
 
+    private IStreetSection retrieveNextRouteSection() {
+        return routeIterator.hasNext() ? routeIterator.next() : null;
+    }
 }

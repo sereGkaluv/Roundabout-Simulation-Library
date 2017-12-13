@@ -5,13 +5,6 @@ import java.util.List;
 public interface IRoute {
 
     /**
-     * Adds a new {@link IStreetSection} to the route.
-     *
-     * @param section the section that is added to the route at the end.
-     */
-    void addSection(IStreetSection section);
-
-    /**
      * Returns the route as unmodifiable list of {@link IStreetSection}.
      *
      * @return the route as unmodifiable list of {@link IStreetSection}.
@@ -27,11 +20,18 @@ public interface IRoute {
     IStreetSection getSectionAt(int index);
 
     /**
-     * Checks if there are {@link IStreetSection}s in the route defined.
+     * Returns a start {@link IStreetSection} of the route.
      *
-     * @return true if there are {@link IStreetSection} in the route, otherwise false.
+     * @return start {@link IStreetSection} of the route if present, otherwise null.
      */
-    boolean isEmpty();
+    IStreetSection getStartSection();
+
+    /**
+     * Returns a destination {@link IStreetSection} of the route.
+     *
+     * @return start {@link IStreetSection} of the route if present, otherwise null.
+     */
+    IStreetSection getDestinationSection();
 
     /**
      * Returns the number of {@link IStreetSection} in the route.
@@ -39,6 +39,20 @@ public interface IRoute {
      * @return the number of {@link IStreetSection} in the route as int.
      */
     int getNumberOfSections();
+
+    /**
+     * Adds a new {@link IStreetSection} to the route.
+     *
+     * @param section the section that is added to the route at the end.
+     */
+    void addSection(IStreetSection section);
+
+    /**
+     * Checks if there are {@link IStreetSection}s in the route defined.
+     *
+     * @return true if there are {@link IStreetSection} in the route, otherwise false.
+     */
+    boolean isEmpty();
 
     /**
      * Checks if the {@link IStreetSection} #A is behind the {@link IStreetSection} #B in the route.

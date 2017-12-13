@@ -3,67 +3,98 @@ package at.fhv.itm3.s2.roundabout.api.entity;
 public interface ICar {
 
     /**
-     * Calculates the time the car needs to traverse the current street section it is standing on
+     * Returns the last update time.
+     * This value will be changed every time car attributes will be somehow modified.
      *
-     * @return  the traverse time in seconds
+     * @return last update time.
+     */
+    double getLastUpdateTime();
+
+    /**
+     * Sets the last update time.
+     *
+     * @param lastUpdateTime time value to be set.
+     * @throws IllegalArgumentException when given time is not > 0.
+     */
+    void setLastUpdateTime(double lastUpdateTime)
+    throws IllegalArgumentException;
+
+    /**
+     * Calculates the time the car needs to traverse the current {@link IStreetSection} it is standing on.
+     *
+     * @return the traverse time in model time units.
      */
     double getTimeToTraverseSection();
 
     /**
-     * Calculates the time the car needs to traverse a given street section
+     * Calculates the time the car needs to traverse a given {@link IStreetSection}.
      *
-     * @param section   the street section we are interested in how long the car needs to traverse it
-     * @return          the traverse time in seconds
+     * @param section the {@link IStreetSection} we are interested in how long the car needs to traverse it.
+     * @return the traverse time in model time units.
      */
     double getTimeToTraverseSection(IStreetSection section);
 
     /**
-     * Calculates the time the car needs until it has moved away from its current spot
+     * Calculates the time the car needs until it has moved away from its current spot.
      *
-     * @return  the transition time in seconds
+     * @return the transition time in model time units.
      */
     double getTransitionTime();
 
     /**
-     * Returns the next section the car will be standing on
+     * Returns actual length of {@code this} car.
      *
-     * @return the next section as IStreetSection or null
-     * if the currentStreetSection is the last StreetSection in the route
+     * @return the length of the car.
      */
-    IStreetSection getNextSection();
-
-    double getLastUpdateTime();
-
-    void setLastUpdateTime(double lastUpdateTime);
-
-    IDriverBehaviour getDriverBehaviour();
-
-    void setDriverBehaviour(IDriverBehaviour driverBehaviour);
-
-
     double getLength();
 
-    void setLength(double length);
-
-    IStreetSection getDestination();
+    /**
+     * Returns (reference) car driver behavior {@link IDriverBehaviour}.
+     *
+     * @return instance of {@link IDriverBehaviour}.
+     */
+    IDriverBehaviour getDriverBehaviour();
 
     /**
-     * Returns the route of the car, which is a list<StreetSection>
+     * Returns predefined car route.
+     *
+     * @return car route in form of {@link IRoute}.
      */
     IRoute getRoute();
 
+    /**
+     * Return a reference to a current {@link IStreetSection} present in car route,
+     * where car currently belongs to.
+     *
+     * @return reference to {@link IStreetSection} where car is currently located.
+     */
     IStreetSection getCurrentSection();
 
     /**
-     * Sets the currentStreetSection to the StreetSection of the parameter
-     * @param currentSection - the IStreetSection the car stands on
+     * Car will be logically traversed to next (following) {@link IStreetSection} in predefined route.
      */
-    void setCurrentSection(IStreetSection currentSection);
+    void traverseToNextSection();
 
     /**
-     * Sets the route of a car
+     * Returns reference to the next {@link IStreetSection} scheduled
+     * in car pre-calculated route.
      *
-     * @param route the route {@link IRoute} to be set
+     * @return reference to next {@link IStreetSection}.
+     */
+    IStreetSection getNextSection();
+
+    /**
+     * Return the last available section specified in car route.
+     *
+     * @return reference to last instance of {@link IStreetSection} in route.
+     */
+    IStreetSection getDestination();
+
+
+    /**
+     * Sets / defines the a given route for a car.
+     *
+     * @param route the {@link IRoute} to be set.
      */
     void setRoute(IRoute route);
 }
