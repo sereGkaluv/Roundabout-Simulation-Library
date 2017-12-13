@@ -14,6 +14,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class StreetSectionTest {
+
     private IStreetSection prepareStreetSectionCarCouldEnterNextSectionMock() {
         IStreetSection streetSectionMock = mock(StreetSection.class);
         when(streetSectionMock.firstCarCouldEnterNextSection()).thenCallRealMethod();
