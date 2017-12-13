@@ -9,7 +9,7 @@ import org.junit.*;
 public class DriverBehaviourTest {
 
     @Test
-    public void shouldInitializeCorrectly(){
+    public void shouldInitializeCorrectly() {
         double speed = 10.0;
         double minDistanceToNextCar = 2.0;
         double maxDistanceToNextCar = 5.0;
@@ -23,7 +23,7 @@ public class DriverBehaviourTest {
     }
 
     @Test
-    public void setSpeedIfGreaterOrEqualsZero(){
+    public void setSpeedIfGreaterOrEqualsZero() {
         double speed = 50.0;
         IDriverBehaviour driverBehaviour = createDriverBehaviour();
         driverBehaviour.setSpeed(speed);
@@ -31,13 +31,13 @@ public class DriverBehaviourTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void shouldThrowIfSpeedIsLessThanZero(){
+    public void shouldThrowIfSpeedIsLessThanZero() {
         IDriverBehaviour driverBehaviour = createDriverBehaviour();
         driverBehaviour.setSpeed(-50);
     }
 
     @Test
-    public void setMinDistanceToNextCarIfGreaterThanZero(){
+    public void setMinDistanceToNextCarIfGreaterThanZero() {
         double minDistanceToNextCar = 5;
         IDriverBehaviour driverBehaviour = createDriverBehaviour();
         driverBehaviour.setMinDistanceToNextCar(minDistanceToNextCar);
@@ -45,19 +45,19 @@ public class DriverBehaviourTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void shouldThrowIfMinDistanceToNextCarIsZero(){
+    public void shouldThrowIfMinDistanceToNextCarIsZero() {
         IDriverBehaviour driverBehaviour = createDriverBehaviour();
         driverBehaviour.setMinDistanceToNextCar(0);
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void shouldThrowIfMinDistanceToNextCarIsLessThanZero(){
+    public void shouldThrowIfMinDistanceToNextCarIsLessThanZero() {
         IDriverBehaviour driverBehaviour = createDriverBehaviour();
         driverBehaviour.setMinDistanceToNextCar(-1);
     }
 
     @Test
-    public void setMaxDistanceToNextCarIfGreaterThanZero(){
+    public void setMaxDistanceToNextCarIfGreaterThanZero() {
         double maxDistanceToNextCar = 5;
         IDriverBehaviour driverBehaviour = createDriverBehaviour();
         driverBehaviour.setMaxDistanceToNextCar(maxDistanceToNextCar);
@@ -65,18 +65,18 @@ public class DriverBehaviourTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void shouldThrowIfMaxDistanceToNextCarIsZero(){
+    public void shouldThrowIfMaxDistanceToNextCarIsZero() {
         IDriverBehaviour driverBehaviour = createDriverBehaviour();
         driverBehaviour.setMaxDistanceToNextCar(0);
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void shouldThrowIfMaxDistanceToNextCarIsLessThanZero(){
+    public void shouldThrowIfMaxDistanceToNextCarIsLessThanZero() {
         IDriverBehaviour driverBehaviour = createDriverBehaviour();
         driverBehaviour.setMaxDistanceToNextCar(-1);
     }
 
-    private IDriverBehaviour createDriverBehaviour(){
+    private IDriverBehaviour createDriverBehaviour() {
         return  new DriverBehaviour(10.0, 2.0,5.0, 1.5);
     }
 
