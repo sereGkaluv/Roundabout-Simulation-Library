@@ -58,16 +58,19 @@ public class Car implements ICar {
 
     @Override
     public double getTimeToTraverseSection() {
+        //TODO getTimeToTraverseSection()
         return 0;
     }
 
     @Override
     public double getTimeToTraverseSection(IStreetSection section) {
+        //TODO getTimeToTraverseSection(IStreetSection section)
         return 0;
     }
 
     @Override
     public double getTransitionTime() {
+        //TODO getTransitionTime()
         return 0;
     }
 
