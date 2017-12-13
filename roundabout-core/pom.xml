@@ -29,6 +29,13 @@
 
     <dependencies>
         <dependency>
+            <groupId>trafsim</groupId>
+            <artifactId>trafsim</artifactId>
+            <version>0.1</version>
+            <scope>system</scope>
+            <systemPath>${local.repository.folder}/trafsim-0.1.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>desmoj</groupId>
             <artifactId>desmoj</artifactId>
             <version>2.5.1e</version>

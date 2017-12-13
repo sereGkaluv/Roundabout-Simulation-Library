@@ -7,7 +7,7 @@ import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 
 import java.util.Iterator;
 
-public class Car implements ICar {
+public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar {
 
     private final double length;
     private final IDriverBehaviour driverBehaviour;
@@ -20,6 +20,8 @@ public class Car implements ICar {
 
     public Car(double length, IDriverBehaviour driverBehaviour, IRoute route)
     throws IllegalArgumentException {
+        super(null, null, false); //TODO set model and description
+
         this.length = length;
 
         if (driverBehaviour != null) {
