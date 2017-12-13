@@ -2,10 +2,11 @@ package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
+import desmoj.core.simulator.Model;
 
 import java.util.Iterator;
 
-public class Car implements ICar {
+public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar {
 
     private final double length;
     private final IRoute route;
@@ -17,8 +18,10 @@ public class Car implements ICar {
     private IStreetSection currentSection;
     private IStreetSection nextSection;
 
-    public Car(double length, IDriverBehaviour driverBehaviour, IRoute route)
+    public Car(double length, IDriverBehaviour driverBehaviour, IRoute route, Model model, String description, boolean showInTrace)
     throws IllegalArgumentException {
+        super(model, description, showInTrace);
+
         this.length = length;
 
         if (driverBehaviour != null) {
