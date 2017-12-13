@@ -5,11 +5,13 @@ import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 import org.junit.*;
-import static org.mockito.Mockito.mock;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 
 /**
  * Created by manue on 12.12.2017.
@@ -28,9 +30,9 @@ public class CarTest {
         Assert.assertNotNull(car);
 
         //test attributes
-        Assert.assertEquals(driverBehaviour, car.getDriverBehaviour());
-        Assert.assertEquals(route, car.getRoute());
-        Assert.assertEquals(length, car.getLength(), 0.0);
+        assertEquals(driverBehaviour, car.getDriverBehaviour());
+        assertEquals(route, car.getRoute());
+        assertEquals(length, car.getLength(), 0.0);
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -44,7 +46,7 @@ public class CarTest {
         ICar car = createCar();
         double lastUpdateTime = 20.0;
         car.setLastUpdateTime(lastUpdateTime);
-        Assert.assertEquals(lastUpdateTime, car.getLastUpdateTime(), 0.0);
+        assertEquals(lastUpdateTime, car.getLastUpdateTime(), 0.0);
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -52,7 +54,7 @@ public class CarTest {
         ICar car = createCar();
         double lastUpdateTime = -20.0;
         car.setLastUpdateTime(lastUpdateTime);
-        Assert.assertEquals(lastUpdateTime, car.getLastUpdateTime(), 0.0);
+        assertEquals(lastUpdateTime, car.getLastUpdateTime(), 0.0);
     }
 
     private ICar createCar() {
@@ -66,39 +68,44 @@ public class CarTest {
     }
 
     @Test
-    public void getNextSection_currentSectionIsNull() throws Exception {
-        ICar carMock = mock(Car.class);
-        carMock.setCurrentSection(null);
-        when(carMock.getNextSection()).thenCallRealMethod();
-        assertEquals(carMock.getNextSection(), null);
-    }
+    public void getNextSection_currentSectionIsEqualDestination() {
+        IRoute routeMock = new Route();
 
-    @Test
-    public void getNextSection_currentSectionIsEqualDestination() throws Exception {
-        Car carMock = mock(Car.class);
         IStreetSection currentSectionMock = mock(StreetSection.class);
-        IStreetSection destinationMock = currentSectionMock;
-        carMock.setCurrentSection(currentSectionMock);
-        IRoute routeMock = mock(Route.class);
-        routeMock.addSection(destinationMock);
-        when(carMock.getNextSection()).thenCallRealMethod();
-        assertEquals(carMock.getNextSection(), null);
-    }
-
-    @Test
-    public void getNextSection_currentSectionNotEqualDestination() throws Exception {
-
-        IRoute routeMock = mock(Route.class);
-        IStreetSection currentSectionMock = mock(StreetSection.class);
-        IStreetSection nextSectionMock = mock(StreetSection.class);
-        IStreetSection destinationMock = mock(StreetSection.class);
         routeMock.addSection(currentSectionMock);
-        routeMock.addSection(nextSectionMock);
+
+        IStreetSection destinationMock = mock(StreetSection.class);
         routeMock.addSection(destinationMock);
+
         IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
-        ICar carMock = new Car(10, driverBehaviourMock, routeMock);
-        carMock.setCurrentSection(currentSectionMock);
-        carMock.setRoute(routeMock);
-        when(carMock.getNextSection()).thenCallRealMethod();
+        ICar car = new Car(10, driverBehaviourMock, routeMock);
+
+        assertEquals(car.getCurrentSection(), currentSectionMock);
+        assertEquals(car.getNextSection(), destinationMock);
+
+        car.traverseToNextSection();
+
+        assertEquals(car.getCurrentSection(), destinationMock);
+        assertNull(car.getNextSection());
+    }
+
+    @Test
+    public void GetNextSection_currentSectionNotEqualDestination() {
+        IRoute routeMock = new Route();
+
+        IStreetSection currentSectionMock = mock(StreetSection.class);
+        routeMock.addSection(currentSectionMock);
+
+        IStreetSection nextSectionMock = mock(StreetSection.class);
+        routeMock.addSection(nextSectionMock);
+
+        IStreetSection destinationMock = mock(StreetSection.class);
+        routeMock.addSection(destinationMock);
+
+        IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
+        ICar car = new Car(10, driverBehaviourMock, routeMock);
+
+        assertEquals(car.getCurrentSection(), currentSectionMock);
+        assertNotEquals(car.getCurrentSection(), destinationMock);
     }
 }

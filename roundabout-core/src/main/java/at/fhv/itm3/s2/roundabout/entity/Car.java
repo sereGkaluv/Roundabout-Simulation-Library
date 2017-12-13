@@ -8,11 +8,12 @@ import java.util.Iterator;
 public class Car implements ICar {
 
     private final double length;
+    private final IRoute route;
+    private final IDriverBehaviour driverBehaviour;
     private final Iterator<IStreetSection> routeIterator;
 
     private double lastUpdateTime;
-    private final IDriverBehaviour driverBehaviour;
-    private IRoute route;
+
     private IStreetSection currentSection;
     private IStreetSection nextSection;
 
@@ -106,11 +107,6 @@ public class Car implements ICar {
     @Override
     public IStreetSection getDestination() {
         return route.getDestinationSection();
-    }
-
-    @Override
-    public void setRoute(IRoute route) {
-        this.route = route;
     }
 
     private IStreetSection retrieveNextRouteSection() {

@@ -89,12 +89,4 @@ public interface ICar {
      * @return reference to last instance of {@link IStreetSection} in route.
      */
     IStreetSection getDestination();
-
-
-    /**
-     * Sets / defines the a given route for a car.
-     *
-     * @param route the {@link IRoute} to be set.
-     */
-    void setRoute(IRoute route);
 }
