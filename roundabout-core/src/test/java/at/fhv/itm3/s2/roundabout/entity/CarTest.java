@@ -5,6 +5,7 @@ import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
+import desmoj.core.simulator.Experiment;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,6 +26,8 @@ public class CarTest {
         route.addSection(streetSectionMock);
 
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
+        Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
+        model.connectToExperiment(exp);
 
         ICar car = new Car(length, driverBehaviour, route, model, "description", false);
         Assert.assertNotNull(car);
@@ -38,7 +41,11 @@ public class CarTest {
     @Test (expected = IllegalArgumentException.class)
     public void shouldThrowIfRouteIsNull() {
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
+
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
+        Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
+        model.connectToExperiment(exp);
+
         new Car(10.0, driverBehaviour, null, model, "description", false);
     }
 
@@ -66,6 +73,9 @@ public class CarTest {
         route.addSection(streetSectionMock);
 
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
+        Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
+        model.connectToExperiment(exp);
+
         return new Car(length, driverBehaviour, route, model, "description", false);
     }
 }
