@@ -90,7 +90,7 @@ public class CarTest {
     }
 
     @Test
-    public void GetNextSection_currentSectionNotEqualDestination() {
+    public void getNextSection_currentSectionNotEqualDestination() {
         IRoute routeMock = new Route();
 
         IStreetSection currentSectionMock = mock(StreetSection.class);

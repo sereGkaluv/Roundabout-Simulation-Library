@@ -198,12 +198,14 @@ public class StreetSection extends Entity implements IStreetSection {
     public void moveFirstCarToNextSection() {
         ICar firstCar = removeFirstCar();
         if (firstCar != null) {
-            if (firstCar.getCurrentSection() != firstCar.getDestination()) {
+            if (!Objects.equals(firstCar.getCurrentSection(), firstCar.getDestination())) {
                 IStreetSection nextSection = firstCar.getNextSection();
-                // Move physically first car to next section.
-                nextSection.addCar(firstCar);
-                // Move logically first car to next section.
-                firstCar.traverseToNextSection();
+                if (nextSection != null) {
+                    // Move physically first car to next section.
+                    nextSection.addCar(firstCar);
+                    // Move logically first car to next section.
+                    firstCar.traverseToNextSection();
+                }
             }
         }
     }

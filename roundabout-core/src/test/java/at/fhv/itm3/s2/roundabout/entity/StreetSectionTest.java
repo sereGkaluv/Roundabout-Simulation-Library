@@ -258,8 +258,10 @@ public class StreetSectionTest {
         // if firstCar is null, the method getNextStreetSection should not be called
         IStreetSection streetSectionMock = mock(StreetSection.class);
         ICar firstCarMock = mock(Car.class);
+
         when(streetSectionMock.removeFirstCar()).thenReturn(null);
         doCallRealMethod().when(streetSectionMock).moveFirstCarToNextSection();
+
         streetSectionMock.moveFirstCarToNextSection();
         verify(firstCarMock, times(0)).getNextSection();
     }
@@ -268,28 +270,37 @@ public class StreetSectionTest {
     public void moveFirstCarToNextSection_currentSectionIsEqualDestination() throws Exception {
         // if currentSection (=this) is the same as destination of the car
         // the method getNextStreetSection should not be called
-        IStreetSection streetSectionMock = mock(StreetSection.class);
+        IStreetSection currentSectionMock = mock(StreetSection.class);
         ICar firstCarMock = mock(Car.class);
-        when(streetSectionMock.removeFirstCar()).thenReturn(firstCarMock);
-        when(firstCarMock.getDestination()).thenReturn(streetSectionMock);
-        doCallRealMethod().when(streetSectionMock).moveFirstCarToNextSection();
-        streetSectionMock.moveFirstCarToNextSection();
+
+        when(currentSectionMock.removeFirstCar()).thenReturn(firstCarMock);
+        when(firstCarMock.getCurrentSection()).thenReturn(currentSectionMock);
+        when(firstCarMock.getDestination()).thenReturn(currentSectionMock);
+        doCallRealMethod().when(currentSectionMock).moveFirstCarToNextSection();
+
+        currentSectionMock.moveFirstCarToNextSection();
         verify(firstCarMock, times(0)).getNextSection();
+        verify(firstCarMock, times(0)).traverseToNextSection();
     }
 
     @Test
     public void moveFirstCarToNextSection_currentSectionIsNotEqualDestination() throws Exception {
         // if currentSection (=this) is not the same as destination of the car
         // the method getNextStreetSection should be called once
-        IStreetSection streetSectionMock = mock(StreetSection.class);
-        IStreetSection destinationMock = mock(StreetSection.class);
-        IStreetSection nextSectionMock = mock(StreetSection.class);
         ICar firstCarMock = mock(Car.class);
-        when(streetSectionMock.removeFirstCar()).thenReturn(firstCarMock);
-        when(firstCarMock.getDestination()).thenReturn(destinationMock);
+
+        IStreetSection currentSectionMock = mock(StreetSection.class);
+        when(currentSectionMock.removeFirstCar()).thenReturn(firstCarMock);
+
+        IStreetSection nextSectionMock = mock(StreetSection.class);
         when(firstCarMock.getNextSection()).thenReturn(nextSectionMock);
-        doCallRealMethod().when(streetSectionMock).moveFirstCarToNextSection();
-        streetSectionMock.moveFirstCarToNextSection();
+
+        IStreetSection destinationMock = mock(StreetSection.class);
+        when(firstCarMock.getDestination()).thenReturn(destinationMock);
+
+        doCallRealMethod().when(currentSectionMock).moveFirstCarToNextSection();
+
+        currentSectionMock.moveFirstCarToNextSection();
         verify(firstCarMock, times(1)).getNextSection();
     }
 }
