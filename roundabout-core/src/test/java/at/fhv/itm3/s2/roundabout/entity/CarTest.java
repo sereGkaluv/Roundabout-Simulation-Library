@@ -1,10 +1,14 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
+import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
-import org.junit.*;
+import desmoj.core.simulator.Experiment;
+import org.junit.Assert;
+import org.junit.Test;
+
 import static org.mockito.Mockito.mock;
 
 
@@ -21,7 +25,11 @@ public class CarTest {
         IStreetSection streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
-        ICar car = new Car(length, driverBehaviour, route);
+        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
+        Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
+        model.connectToExperiment(exp);
+
+        ICar car = new Car(length, driverBehaviour, route, model, "description", false);
         Assert.assertNotNull(car);
 
         //test attributes
@@ -33,7 +41,12 @@ public class CarTest {
     @Test (expected = IllegalArgumentException.class)
     public void shouldThrowIfRouteIsNull() {
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
-        new Car(10.0, driverBehaviour, null);
+
+        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
+        Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
+        model.connectToExperiment(exp);
+
+        new Car(10.0, driverBehaviour, null, model, "description", false);
     }
 
     @Test
@@ -59,6 +72,10 @@ public class CarTest {
         IStreetSection streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
-        return new Car(length, driverBehaviour, route);
+        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
+        Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
+        model.connectToExperiment(exp);
+
+        return new Car(length, driverBehaviour, route, model, "description", false);
     }
 }

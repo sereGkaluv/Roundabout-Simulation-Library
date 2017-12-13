@@ -60,7 +60,7 @@ public class CarGenerateEvent extends Event<StreetSection> {
     @Override
     public void eventRoutine(StreetSection section) {
         // TODO: use meaningful values!!
-        ICar car = new Car(1, new DriverBehaviour(1, 1, 1, 1), RouteController.getInstance(roundaboutSimulationModel).generateNewRoute());
+        ICar car = new Car(1, new DriverBehaviour(1, 1, 1, 1), RouteController.getInstance(roundaboutSimulationModel).generateNewRoute(), roundaboutSimulationModel, "car description", false);
         section.addCar(car);
         roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(section, new TimeSpan(car.getTimeToTraverseSection(), TimeUnit.SECONDS));
         roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel).schedule(section, new TimeSpan(roundaboutSimulationModel.getRandomTimeBetweenCarArrivals(), TimeUnit.SECONDS));
