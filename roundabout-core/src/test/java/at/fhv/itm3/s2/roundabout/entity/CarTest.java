@@ -15,32 +15,29 @@ public class CarTest {
 
     @Test
     public void shouldInitializeCorrectly(){
-
         double length = 10.0;
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0,5.0, 1.5);
         IRoute route = new Route();
         IStreetSection streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
-        ICar car = new Car(length,driverBehaviour,route);
+        ICar car = new Car(length, driverBehaviour, route);
         Assert.assertNotNull(car);
 
         //test attributes
-        Assert.assertEquals(driverBehaviour,car.getDriverBehaviour());
+        Assert.assertEquals(driverBehaviour, car.getDriverBehaviour());
         Assert.assertEquals(route, car.getRoute());
-        Assert.assertEquals(length, car.getLength(),0.0);
+        Assert.assertEquals(length, car.getLength(), 0.0);
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void shouldThrowIfRouteIsNull(){
-
-        IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0,5.0, 1.5);
-        new Car(10.0,driverBehaviour,null);
+        IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
+        new Car(10.0, driverBehaviour, null);
     }
 
     @Test
     public void lastUpdateTimeGreaterThanZero(){
-
         ICar car = createCar();
         double lastUpdateTime = 20.0;
         car.setLastUpdateTime(lastUpdateTime);
@@ -62,6 +59,6 @@ public class CarTest {
         IStreetSection streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
-        return new Car(length,driverBehaviour,route);
+        return new Car(length, driverBehaviour, route);
     }
 }

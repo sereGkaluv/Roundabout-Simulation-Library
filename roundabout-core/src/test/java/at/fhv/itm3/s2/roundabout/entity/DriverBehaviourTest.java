@@ -32,8 +32,8 @@ public class DriverBehaviourTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void shouldThrowIfSpeedIsLessThanZero(){
-     IDriverBehaviour driverBehaviour = createDriverBehaviour();
-     driverBehaviour.setSpeed(-50);
+        IDriverBehaviour driverBehaviour = createDriverBehaviour();
+        driverBehaviour.setSpeed(-50);
     }
 
     @Test
