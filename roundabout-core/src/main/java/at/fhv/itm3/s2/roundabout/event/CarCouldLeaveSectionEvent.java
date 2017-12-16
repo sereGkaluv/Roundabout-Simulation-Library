@@ -1,7 +1,11 @@
 package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
+import at.fhv.itm3.s2.roundabout.Sink;
+import at.fhv.itm3.s2.roundabout.adapter.Street;
+import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
+import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
+import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import co.paralleluniverse.fibers.SuspendExecution;
 import desmoj.core.simulator.Event;
@@ -10,7 +14,7 @@ import desmoj.core.simulator.TimeSpan;
 
 import java.util.concurrent.TimeUnit;
 
-public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
+public class CarCouldLeaveSectionEvent extends Event<Street> {
 
     /**
      * A reference to the {@link RoundaboutSimulationModel} the {@link CarCouldLeaveSectionEvent} is part of.
@@ -60,17 +64,19 @@ public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
      * @throws SuspendExecution Marker exception for Quasar (inherited).
      */
     @Override
-    public void eventRoutine(StreetSection donorSection) throws SuspendExecution {
+    public void eventRoutine(Street donorSection) throws SuspendExecution {
         if(donorSection.firstCarCouldEnterNextSection()) {
 
             // schedule a CarCouldLeaveSectionEvent for the next section, so it is thrown when the car should be able to
             // leave the next section under optimal conditions
-            IStreetSection nextSection = donorSection.getFirstCar().getNextSection();
+            IStreet nextSection = donorSection.getFirstCar().getNextSection();
             if (nextSection != null && nextSection instanceof StreetSection) {
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
                     (StreetSection) nextSection,
                     new TimeSpan(donorSection.getFirstCar().getTimeToTraverseSection(nextSection), TimeUnit.SECONDS)
                 );
+                donorSection.moveFirstCarToNextSection();
+            } else if (nextSection != null && nextSection instanceof Sink) {
                 donorSection.moveFirstCarToNextSection();
             }
 
@@ -87,12 +93,15 @@ public class CarCouldLeaveSectionEvent extends Event<StreetSection> {
 
             // schedule a new CarCouldLeaveSectionEvent for the previous sections (if there are any) so the previous section
             // check if they have a car which could enter the current section because there might be space for a new car
-            for (IStreetSection previousSection : donorSection.getPreviousStreetConnector().getPreviousSections()) {
-                if (previousSection != null && previousSection instanceof StreetSection) {
-                    roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                        (StreetSection) previousSection,
-                        new TimeSpan(0, TimeUnit.SECONDS)
-                    );
+            IStreetConnector previousStreetConnector = donorSection.getPreviousStreetConnector();
+            if (previousStreetConnector != null) {
+                for (IStreet previousSection : previousStreetConnector.getPreviousSections()) {
+                    if (previousSection != null && previousSection instanceof StreetSection) {
+                        roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
+                                (StreetSection) previousSection,
+                                new TimeSpan(0, TimeUnit.SECONDS)
+                        );
+                    }
                 }
             }
         }

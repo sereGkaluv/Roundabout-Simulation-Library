@@ -1,26 +1,32 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
+import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
-import desmoj.core.simulator.Model;
+import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
 
 import java.util.Iterator;
 
-public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar {
+public class RoundaboutCar implements ICar {
 
+    private final Car car;
     private final double length;
     private final IRoute route;
     private final IDriverBehaviour driverBehaviour;
-    private final Iterator<IStreetSection> routeIterator;
+    private final Iterator<IStreet> routeIterator;
 
     private double lastUpdateTime;
 
-    private IStreetSection currentSection;
-    private IStreetSection nextSection;
+    private IStreet currentSection;
+    private IStreet nextSection;
 
-    public Car(double length, IDriverBehaviour driverBehaviour, IRoute route, Model model, String description, boolean showInTrace)
+    public RoundaboutCar(Car car, double length, IDriverBehaviour driverBehaviour, IRoute route)
             throws IllegalArgumentException {
-        super(model, description, showInTrace);
+
+        if (car != null) {
+            this.car = car;
+        } else {
+            throw new IllegalArgumentException("Car should not be null.");
+        }
 
         this.length = length;
 
@@ -41,6 +47,10 @@ public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar
         }
 
         this.setLastUpdateTime(0);
+    }
+
+    public Car getOldImplementationCar() {
+        return car;
     }
 
     @Override
@@ -65,7 +75,7 @@ public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar
     }
 
     @Override
-    public double getTimeToTraverseSection(IStreetSection section) {
+    public double getTimeToTraverseSection(IStreet section) {
 
         double carPosition = 0;
 
@@ -80,7 +90,7 @@ public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar
     @Override
     public double getTransitionTime() {
         //TODO getTransitionTime()
-        return 0;
+        return 3;
     }
 
     @Override
@@ -99,12 +109,12 @@ public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar
     }
 
     @Override
-    public IStreetSection getCurrentSection() {
+    public IStreet getCurrentSection() {
         return currentSection;
     }
 
     @Override
-    public IStreetSection getNextSection() {
+    public IStreet getNextSection() {
         return nextSection;
     }
 
@@ -115,11 +125,11 @@ public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar
     }
 
     @Override
-    public IStreetSection getDestination() {
+    public IStreet getDestination() {
         return route.getDestinationSection();
     }
 
-    private IStreetSection retrieveNextRouteSection() {
+    private IStreet retrieveNextRouteSection() {
         return routeIterator.hasNext() ? routeIterator.next() : null;
     }
 }

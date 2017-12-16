@@ -30,8 +30,6 @@ public class CarGenerateEventTest {
     public void eventRoutineTest() throws Exception {
         StreetSection section = new StreetSection(
             10.0,
-            null,
-            null,
                 roundaboutSimulationModel,
             null,
             false

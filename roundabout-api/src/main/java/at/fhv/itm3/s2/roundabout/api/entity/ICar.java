@@ -20,19 +20,19 @@ public interface ICar {
     throws IllegalArgumentException;
 
     /**
-     * Calculates the time the car needs to traverse the current {@link IStreetSection} it is standing on.
+     * Calculates the time the car needs to traverse the current {@link IStreet} it is standing on.
      *
      * @return the traverse time in model time units.
      */
     double getTimeToTraverseCurrentSection();
 
     /**
-     * Calculates the time the car needs to traverse a given {@link IStreetSection}.
+     * Calculates the time the car needs to traverse a given {@link IStreet}.
      *
-     * @param section the {@link IStreetSection} we are interested in how long the car needs to traverse it.
+     * @param section the {@link IStreet} we are interested in how long the car needs to traverse it.
      * @return the traverse time in model time units.
      */
-    double getTimeToTraverseSection(IStreetSection section);
+    double getTimeToTraverseSection(IStreet section);
 
     /**
      * Calculates the time the car needs until it has moved away from its current spot.
@@ -63,30 +63,30 @@ public interface ICar {
     IRoute getRoute();
 
     /**
-     * Return a reference to a current {@link IStreetSection} present in car route,
+     * Return a reference to a current {@link IStreet} present in car route,
      * where car currently belongs to.
      *
-     * @return reference to {@link IStreetSection} where car is currently located.
+     * @return reference to {@link IStreet} where car is currently located.
      */
-    IStreetSection getCurrentSection();
+    IStreet getCurrentSection();
 
     /**
-     * Car will be logically traversed to next (following) {@link IStreetSection} in predefined route.
+     * Car will be logically traversed to next (following) {@link IStreet} in predefined route.
      */
     void traverseToNextSection();
 
     /**
-     * Returns reference to the next {@link IStreetSection} scheduled
+     * Returns reference to the next {@link IStreet} scheduled
      * in car pre-calculated route.
      *
-     * @return reference to next {@link IStreetSection}.
+     * @return reference to next {@link IStreet}.
      */
-    IStreetSection getNextSection();
+    IStreet getNextSection();
 
     /**
      * Return the last available section specified in car route.
      *
-     * @return reference to last instance of {@link IStreetSection} in route.
+     * @return reference to last instance of {@link IStreet} in route.
      */
-    IStreetSection getDestination();
+    IStreet getDestination();
 }

@@ -1,7 +1,7 @@
-package at.fhv.itm3.s2.roundabout.test.event.mocks;
+package mocks;
 
-import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
-import at.fhv.itm3.s2.roundabout.entity.Car;
+import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutCar;
 import at.fhv.itm3.s2.roundabout.entity.StreetConnector;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import org.mockito.Mockito;
@@ -17,7 +17,7 @@ public class SectionMock {
     private StreetSection section;
     private StreetSection nextSection;
     private StreetSection previousSection;
-    private Car firstCar;
+    private RoundaboutCar firstCar;
     private StreetConnector previousStreetConnector;
 
     private boolean firstCarCouldEnterNextSection;
@@ -46,7 +46,7 @@ public class SectionMock {
         this.section = Mockito.mock(StreetSection.class);
         this.nextSection = Mockito.mock(StreetSection.class);
         this.previousSection = Mockito.mock(StreetSection.class);
-        this.firstCar = Mockito.mock(Car.class);
+        this.firstCar = Mockito.mock(RoundaboutCar.class);
         this.previousStreetConnector = Mockito.mock(StreetConnector.class);
 
         when(this.section.firstCarCouldEnterNextSection()).thenReturn(this.firstCarCouldEnterNextSection);
@@ -64,7 +64,7 @@ public class SectionMock {
         when(this.section.getPreviousStreetConnector()).thenReturn(this.previousStreetConnector);
 
         when(this.previousStreetConnector.getPreviousSections()).then(invocation -> {
-            Set<IStreetSection> previousSections = new HashSet<>();
+            Set<IStreet> previousSections = new HashSet<>();
             for (int i = 0; i < nrOfPreviousSections; i++) {
                 previousSections.add(Mockito.mock(StreetSection.class));
             }

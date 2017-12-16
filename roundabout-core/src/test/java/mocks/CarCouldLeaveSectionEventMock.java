@@ -1,8 +1,10 @@
-package at.fhv.itm3.s2.roundabout.test.event.mocks;
+package mocks;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.adapter.Street;
 import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
+import co.paralleluniverse.fibers.SuspendExecution;
 import desmoj.core.simulator.Model;
 
 import org.mockito.Mockito;
@@ -35,12 +37,17 @@ public class CarCouldLeaveSectionEventMock extends CarCouldLeaveSectionEvent{
 
         when(this.roundaboutEventFactory.createCarCouldLeaveSectionEvent((RoundaboutSimulationModel)notNull())).then(invocationOnMock -> {
             createCarCouldLeaveSectionEventCounter++;
-            return new CarCouldLeaveSectionEvent(this.model, "", false);
+            return new CarCouldLeaveSectionEventMock(this.model, "", false);
         });
     }
 
     public int getCreateCarCouldLeaveSectionEventCounter() {
         return createCarCouldLeaveSectionEventCounter;
+    }
+
+    @Override
+    public void eventRoutine(Street donorSection) throws SuspendExecution {
+        super.eventRoutine(donorSection);
     }
 
 }

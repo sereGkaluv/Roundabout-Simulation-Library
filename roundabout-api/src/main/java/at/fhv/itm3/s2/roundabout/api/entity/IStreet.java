@@ -1,8 +1,10 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
+import at.fhv.itm14.trafsim.model.entities.Car;
+
 import java.util.Map;
 
-public interface IStreetSection {
+public interface IStreet {
 
     /**
      * Gets physical length of the street section.
@@ -17,6 +19,13 @@ public interface IStreetSection {
      * @param car The car to add.
      */
     void addCar(ICar car);
+
+    /**
+     * Adds a new car of the old implementation.
+     *
+     * @param car   the car to add
+     */
+    void addCar(Car car);
 
     /**
      * Gets first car in Section.
@@ -61,6 +70,20 @@ public interface IStreetSection {
     IStreetConnector getPreviousStreetConnector();
 
     /**
+     * Sets the previous street connector
+     *
+     * @param previousStreetConnector
+     */
+    void setPreviousStreetConnector(IStreetConnector previousStreetConnector);
+
+    /**
+     *  Sets the next street connector
+     *
+     * @param nextStreetConnector
+     */
+    void setNextStreetConnector(IStreetConnector nextStreetConnector);
+
+    /**
      * Gets all car positions of the street section.
      *
      * @return unmodifiable map of car positions.
@@ -98,7 +121,7 @@ public interface IStreetSection {
     /**
      * Moves the first car from the current section to the next section.
      * In background removes the first car (if there is one) from the queue and puts it into the
-     * queue of the next {@link IStreetSection} present in car route.
+     * queue of the next {@link IStreet} present in car route.
      *
      * @throws IllegalStateException if car cannot move further e.g. next section is null.
      */
@@ -107,4 +130,11 @@ public interface IStreetSection {
 
     @Deprecated // TODO consider removal i think this logic can be packed into addCar method, othervise consider rename to isCarAbleToEnter()
     boolean carCouldEnterNextSection();
+
+    /**
+     * Returns the number of cars that have entered the sink
+     *
+     * @return  the number of cars as int
+     */
+    int getNrOfEnteredCars();
 }

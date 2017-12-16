@@ -1,28 +1,29 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
+import at.fhv.itm3.s2.roundabout.api.entity.ISource;
+import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Route implements IRoute {
 
-    private List<IStreetSection> route;
+    private List<IStreet> route;
+    private ISource source;
 
     public Route() {
         route = new ArrayList<>();
     }
 
     @Override
-    public List<IStreetSection> getRoute() {
+    public List<IStreet> getRoute() {
         return Collections.unmodifiableList(route);
     }
 
     @Override
-    public IStreetSection getSectionAt(int index) {
+    public IStreet getSectionAt(int index) {
         if (index >= route.size()) {
             throw new IllegalArgumentException("Index value for accessing a section in a route is too big.");
         }
@@ -30,12 +31,12 @@ public class Route implements IRoute {
     }
 
     @Override
-    public IStreetSection getStartSection() {
+    public IStreet getStartSection() {
         return !isEmpty() ? route.get(0) : null;
     }
 
     @Override
-    public IStreetSection getDestinationSection() {
+    public IStreet getDestinationSection() {
         return !isEmpty() ? route.get(route.size() - 1) : null;
     }
 
@@ -45,9 +46,14 @@ public class Route implements IRoute {
     }
 
     @Override
-    public void addSection(IStreetSection section) {
+    public void addSection(IStreet section) {
         // Adds as a last element to list.
         route.add(section);
+    }
+
+    @Override
+    public void addSource(ISource source) {
+        this.source = source;
     }
 
     @Override
@@ -56,7 +62,7 @@ public class Route implements IRoute {
     }
 
     @Override
-    public boolean isSectionABehindSectionB(IStreetSection sectionA, IStreetSection sectionB) {
+    public boolean isSectionABehindSectionB(IStreet sectionA, IStreet sectionB) {
         if (!route.contains(sectionA) || ! route.contains(sectionB)) {
             throw new IllegalArgumentException("Both sections must be part of the route");
         }
@@ -64,10 +70,20 @@ public class Route implements IRoute {
         return (route.indexOf(sectionA) > route.indexOf(sectionB));
     }
 
-    public int getIndexOfSection(IStreetSection streetSection) {
+    public int getIndexOfSection(IStreet streetSection) {
         if (!route.contains(streetSection)) {
             throw new IllegalArgumentException("Section must be part of the route");
         }
         return route.indexOf(streetSection);
+    }
+
+    @Override
+    public ISource getSource() {
+        return this.source;
+    }
+
+    @Override
+    public IStreet getSink() {
+        return route.get(route.size()-1);
     }
 }
