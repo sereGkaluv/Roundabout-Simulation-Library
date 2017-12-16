@@ -19,7 +19,7 @@ public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar
     private IStreetSection nextSection;
 
     public Car(double length, IDriverBehaviour driverBehaviour, IRoute route, Model model, String description, boolean showInTrace)
-    throws IllegalArgumentException {
+            throws IllegalArgumentException {
         super(model, description, showInTrace);
 
         this.length = length;
@@ -50,7 +50,7 @@ public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar
 
     @Override
     public void setLastUpdateTime(double lastUpdateTime)
-    throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (lastUpdateTime >= 0) {
             this.lastUpdateTime = lastUpdateTime;
         } else {
@@ -59,15 +59,22 @@ public class Car extends at.fhv.itm14.trafsim.model.entities.Car implements ICar
     }
 
     @Override
-    public double getTimeToTraverseSection() {
-        //TODO getTimeToTraverseSection()
-        return 0;
+    public double getTimeToTraverseCurrentSection() {
+
+        return getTimeToTraverseSection(this.getCurrentSection());
     }
 
     @Override
     public double getTimeToTraverseSection(IStreetSection section) {
-        //TODO getTimeToTraverseSection(IStreetSection section)
-        return 0;
+
+        double carPosition = 0;
+
+        if (section.getCarPositions().containsKey(this)) {
+            carPosition = section.getCarPositions().get(this);
+        }
+
+        double remainingLength = section.getLength() - carPosition;
+        return remainingLength / this.getDriverBehaviour().getSpeed();
     }
 
     @Override
