@@ -220,7 +220,7 @@ public class StreetSection extends Entity implements IStreetSection {
     }
 
     private double getCarPosition(ICar car) {
-        return getCarPositions().get(car);
+        return getCarPositions().getOrDefault(car, INITIAL_CAR_POSITION);
     }
 
     private double getCarPositionOrDefault(ICar car, double defaultValue) {
