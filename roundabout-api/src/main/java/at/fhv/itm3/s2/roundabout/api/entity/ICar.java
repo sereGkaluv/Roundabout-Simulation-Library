@@ -24,7 +24,7 @@ public interface ICar {
      *
      * @return the traverse time in model time units.
      */
-    double getTimeToTraverseSection();
+    double getTimeToTraverseCurrentSection();
 
     /**
      * Calculates the time the car needs to traverse a given {@link IStreetSection}.

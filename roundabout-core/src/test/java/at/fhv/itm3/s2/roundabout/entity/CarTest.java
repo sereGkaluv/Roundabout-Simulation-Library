@@ -29,7 +29,7 @@ public class CarTest {
     @Test
     public void shouldInitializeCorrectly() {
         double length = 10.0;
-        IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0,5.0, 1.5);
+        IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
         IRoute route = new Route();
         IStreetSection streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
@@ -43,7 +43,7 @@ public class CarTest {
         assertEquals(length, car.getLength(), 0.0);
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIfRouteIsNull() {
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
 
@@ -62,7 +62,7 @@ public class CarTest {
         assertEquals(lastUpdateTime, car.getLastUpdateTime(), 0.0);
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIfUpdateTimeLessThanZero() {
         ICar car = createCar();
         double lastUpdateTime = -20.0;
@@ -125,5 +125,35 @@ public class CarTest {
 
         assertEquals(car.getCurrentSection(), currentSectionMock);
         assertNotEquals(car.getCurrentSection(), destinationMock);
+    }
+
+    @Test
+    public void getTimeToTraverseCurrentSection_isExpectedTime() {
+        RoundaboutSimulationModel model = getPrepareModel();
+        IStreetSection section = new StreetSection(10.0, null, null, model, "", false);
+        IDriverBehaviour driverBehaviour = new DriverBehaviour(5.0, 2.0, 2.0, 1.5);
+
+        IRoute route = new Route();
+        route.addSection(section);
+
+        ICar car = new Car(2, driverBehaviour, route, model, "", false);
+
+        Assert.assertEquals(2.0, car.getTimeToTraverseCurrentSection(), 0.0);
+    }
+
+    @Test
+    public void getTimeToTraverseSection_carIsNotOnThisSection(){
+        RoundaboutSimulationModel model = getPrepareModel();
+        IStreetSection currentSection = new StreetSection(10.0, null, null, model, "", false);
+        IStreetSection otherSection = new StreetSection(20.0, null, null, model, "", false);
+        IDriverBehaviour driverBehaviour = new DriverBehaviour(5.0, 2.0, 2.0, 1.5);
+
+        IRoute route = new Route();
+        route.addSection(currentSection);
+
+        ICar car = new Car(2, driverBehaviour, route, model, "", false);
+
+        Assert.assertEquals(4, car.getTimeToTraverseSection(otherSection), 0.0);
+
     }
 }
