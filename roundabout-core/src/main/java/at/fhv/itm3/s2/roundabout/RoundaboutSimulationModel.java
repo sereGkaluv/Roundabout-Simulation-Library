@@ -2,7 +2,6 @@ package at.fhv.itm3.s2.roundabout;
 
 import at.fhv.itm14.trafsim.model.ModelFactory;
 import desmoj.core.dist.ContDist;
-import desmoj.core.dist.ContDistConstant;
 import desmoj.core.dist.ContDistUniform;
 import desmoj.core.simulator.Model;
 

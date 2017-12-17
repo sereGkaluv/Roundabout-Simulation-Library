@@ -11,7 +11,8 @@
 
     <artifactId>roundabout-core</artifactId>
 
-    <properties><local.repository.folder>${pom.basedir}/libs/</local.repository.folder>
+    <properties>
+        <local.repository.folder>${project.basedir}/../libs/</local.repository.folder>
     </properties>
 
     <repositories>
@@ -28,20 +29,6 @@
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>trafsim</groupId>
-            <artifactId>trafsim</artifactId>
-            <version>0.1</version>
-            <scope>system</scope>
-            <systemPath>${local.repository.folder}/trafsim-0.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>desmoj</groupId>
-            <artifactId>desmoj</artifactId>
-            <version>2.5.1e</version>
-            <scope>system</scope>
-            <systemPath>${local.repository.folder}/desmoj-2.5.1e-bin.jar</systemPath>
-        </dependency>
         <dependency>
             <groupId>at.fhv.itm3.s2.roundabout</groupId>
             <artifactId>roundabout-api</artifactId>

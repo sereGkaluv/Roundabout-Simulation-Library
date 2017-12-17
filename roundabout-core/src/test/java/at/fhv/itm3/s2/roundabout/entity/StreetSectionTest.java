@@ -6,9 +6,9 @@ import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import org.junit.Test;
 
-import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

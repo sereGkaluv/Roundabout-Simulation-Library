@@ -15,6 +15,7 @@
         <project.tests.mockito.version>1.9.5</project.tests.mockito.version>
         <project.tests.awaitility.version>3.0.0</project.tests.awaitility.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <local.repository.folder>${project.basedir}/libs/</local.repository.folder>
     </properties>
 
     <modules>
@@ -36,6 +37,36 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>local-maven-repository</id>
+            <url>file://${local.repository.folder}</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>trafsim</groupId>
+            <artifactId>trafsim</artifactId>
+            <version>0.1</version>
+            <scope>system</scope>
+            <systemPath>${local.repository.folder}/trafsim-0.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>desmoj</groupId>
+            <artifactId>desmoj</artifactId>
+            <version>2.5.1e</version>
+            <scope>system</scope>
+            <systemPath>${local.repository.folder}/desmoj-2.5.1e-bin.jar</systemPath>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>

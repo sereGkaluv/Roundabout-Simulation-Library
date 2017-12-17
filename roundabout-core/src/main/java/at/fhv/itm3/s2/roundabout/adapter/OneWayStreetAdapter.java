@@ -7,8 +7,6 @@ import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutCar;
-import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import desmoj.core.simulator.Model;
 
 import java.util.LinkedList;

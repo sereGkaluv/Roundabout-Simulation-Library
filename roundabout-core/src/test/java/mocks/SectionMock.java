@@ -9,8 +9,8 @@ import org.mockito.Mockito;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 public class SectionMock {
 

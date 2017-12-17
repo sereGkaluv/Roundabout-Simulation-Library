@@ -1,8 +1,6 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
 import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
-import at.fhv.itm14.trafsim.model.entities.Car;
-import desmoj.core.simulator.Entity;
 import desmoj.core.simulator.Model;
 
 import java.util.Map;

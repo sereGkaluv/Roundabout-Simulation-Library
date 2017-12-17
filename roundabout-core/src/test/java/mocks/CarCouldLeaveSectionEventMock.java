@@ -6,7 +6,6 @@ import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import co.paralleluniverse.fibers.SuspendExecution;
 import desmoj.core.simulator.Model;
-
 import org.mockito.Mockito;
 
 import static org.mockito.Matchers.notNull;
