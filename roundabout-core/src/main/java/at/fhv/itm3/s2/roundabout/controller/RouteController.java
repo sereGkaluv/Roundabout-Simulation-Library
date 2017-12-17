@@ -1,11 +1,9 @@
 package at.fhv.itm3.s2.roundabout.controller;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.ISource;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
-import at.fhv.itm3.s2.roundabout.entity.Route;
-import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import desmoj.core.simulator.Model;
 
 import java.util.*;
@@ -15,8 +13,8 @@ public class RouteController {
     private final RoundaboutSimulationModel model;
     private static RouteController instance;
 
-    private Map<ISource, List<IRoute>> routes;
-    private List<ISource> sources;
+    private Map<AbstractSource, List<IRoute>> routes;
+    private List<AbstractSource> sources;
 
     /**
      * Returns a singleton of {@link RouteController}.
@@ -65,7 +63,7 @@ public class RouteController {
 
     public IRoute getRandomRoute() {
         int randNr = new Random().nextInt(this.routes.size());
-        ISource source =  this.sources.get(randNr);
+        AbstractSource source =  this.sources.get(randNr);
 
         List<IRoute> routes = this.routes.get(source);
 

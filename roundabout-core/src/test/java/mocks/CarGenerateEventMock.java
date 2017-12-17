@@ -1,8 +1,8 @@
 package mocks;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
-import at.fhv.itm3.s2.roundabout.api.entity.ISource;
 import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.event.CarGenerateEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
@@ -55,7 +55,7 @@ public class CarGenerateEventMock extends CarGenerateEvent {
 
     }
 
-    public ISource getSource() {
+    public AbstractSource getSource() {
         return routeGenerator.getRoute(this.type).getSource();
     }
 

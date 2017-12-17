@@ -1,6 +1,5 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
-import javax.xml.transform.Source;
 import java.util.List;
 
 public interface IRoute {
@@ -64,11 +63,11 @@ public interface IRoute {
      int getIndexOfSection(Street streetSection);
 
     /**
-     * Returns the {@link ISource} source of the route
+     * Returns the {@link AbstractSource} source of the route
      *
-     * @return  the source of the route as {@link ISource}
+     * @return  the source of the route as {@link AbstractSource}
      */
-    ISource getSource();
+    AbstractSource getSource();
 
     /**
      * Returns the {@link Street} sink of the route
@@ -77,5 +76,5 @@ public interface IRoute {
      */
     Street getSink();
 
-    void addSource(ISource source);
+    void addSource(AbstractSource source);
 }

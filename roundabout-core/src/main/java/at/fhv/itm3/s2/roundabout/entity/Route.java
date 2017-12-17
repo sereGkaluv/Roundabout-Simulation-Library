@@ -1,7 +1,7 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.ISource;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 public class Route implements IRoute {
 
     private List<Street> route;
-    private ISource source;
+    private AbstractSource source;
 
     public Route() {
         route = new ArrayList<>();
@@ -52,7 +52,7 @@ public class Route implements IRoute {
     }
 
     @Override
-    public void addSource(ISource source) {
+    public void addSource(AbstractSource source) {
         this.source = source;
     }
 
@@ -69,7 +69,7 @@ public class Route implements IRoute {
     }
 
     @Override
-    public ISource getSource() {
+    public AbstractSource getSource() {
         return this.source;
     }
 

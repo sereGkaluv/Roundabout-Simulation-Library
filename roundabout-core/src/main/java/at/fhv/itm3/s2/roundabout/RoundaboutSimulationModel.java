@@ -1,5 +1,8 @@
 package at.fhv.itm3.s2.roundabout;
 
+import at.fhv.itm14.trafsim.model.ModelFactory;
+import desmoj.core.dist.ContDist;
+import desmoj.core.dist.ContDistConstant;
 import desmoj.core.dist.ContDistUniform;
 import desmoj.core.simulator.Model;
 
@@ -14,6 +17,8 @@ public class RoundaboutSimulationModel extends Model {
     public static final double MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
     public static final double MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
 
+    private static final double MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS = 0.2;
+
     private static final long MODEL_SEED = new Random().nextLong();
     private static final TimeUnit MODEL_TIME_UNIT = TimeUnit.SECONDS;
 
@@ -22,6 +27,8 @@ public class RoundaboutSimulationModel extends Model {
      * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
      */
     private ContDistUniform distanceFactorBetweenCars;
+
+    private ContDist timeBetweenCarArrivalsOnOneWayStreets;
 
     /**
      * Random number stream used to draw a time between two car arrivals.
@@ -71,6 +78,8 @@ public class RoundaboutSimulationModel extends Model {
             false
         );
         timeBetweenCarArrivals.setSeed(MODEL_SEED);
+
+        timeBetweenCarArrivalsOnOneWayStreets = ModelFactory.getInstance(this).createContDistConstant(MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS);
     }
 
     /**
@@ -107,5 +116,9 @@ public class RoundaboutSimulationModel extends Model {
      */
     public double getCurrentTime() {
         return currentModel().getExperiment().getSimClock().getTime().getTimeAsDouble(getModelTimeUnit());
+    }
+
+    public ContDist getTimeBetweenCarArrivalsOnOneWayStreets() {
+        return timeBetweenCarArrivalsOnOneWayStreets;
     }
 }

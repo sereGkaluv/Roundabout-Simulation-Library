@@ -2,8 +2,10 @@ package mocks;
 
 import at.fhv.itm14.trafsim.model.entities.OneWayStreet;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.RoundaboutSource;
 import at.fhv.itm3.s2.roundabout.Sink;
-import at.fhv.itm3.s2.roundabout.Source;
+import at.fhv.itm3.s2.roundabout.adapter.SourceAdapter;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.adapter.OneWayStreetAdapter;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
@@ -76,7 +78,7 @@ public class RouteGenerator {
         sink1.setPreviousStreetConnector(connector1_2);
 
         // initialize source and route
-        Source source1 = new Source(street1_1, model);
+        AbstractSource source1 = new RoundaboutSourceMock(model, "", false, street1_1, 2, this, RouteType.TWO_STREETSECTIONS);
 
         IRoute route1 = new Route();
         route1.addSource(source1);
@@ -117,7 +119,7 @@ public class RouteGenerator {
         sink2.setPreviousStreetConnector(connector2_2);
 
         // initialize source and route
-        Source source2 = new Source(street2_1, model);
+        AbstractSource source2 = new SourceAdapter(model, "", false, street2_1);
 
         IRoute route2 = new Route();
         route2.addSource(source2);
