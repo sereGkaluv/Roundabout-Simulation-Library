@@ -87,9 +87,10 @@ public class RoundaboutCar implements ICar {
             double remainingLength = section.getLength() - carPosition;
             return remainingLength / this.getDriverBehaviour().getSpeed();
         } else if (section instanceof OneWayStreetAdapter) {
-            return 0;
+            return 0; // TODO: is that enough?
+        } else {
+            throw new IllegalStateException("Street needs to be instance of StreetSection or OneWayStreetAdapter.");
         }
-        return -1;
     }
 
     @Override

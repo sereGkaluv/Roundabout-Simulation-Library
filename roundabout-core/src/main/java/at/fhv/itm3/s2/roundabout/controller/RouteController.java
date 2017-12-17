@@ -49,6 +49,7 @@ public class RouteController {
         initializeRoutes();
     }
 
+    // TODO: specify more attributes for random route
     public IRoute getRandomRoute() {
         if (this.routes.isEmpty()) {
             throw new IllegalStateException("Routes must not be empty");
