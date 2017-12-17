@@ -305,7 +305,7 @@ public class StreetSectionTest {
         currentSectionMock.moveFirstCarToNextSection();
         verify(firstCarMock, times(1)).getNextSection();
     }
-    
+
     @Test
     public void updateAllCarsPositions_noCars() {
         Street streetSectionMock = mock(StreetSection.class);
