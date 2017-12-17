@@ -1,16 +1,22 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
+import at.fhv.itm14.trafsim.model.entities.Car;
+import at.fhv.itm14.trafsim.persistence.model.DTO;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
-import desmoj.core.simulator.Entity;
+import at.fhv.itm3.s2.roundabout.controller.CarController;
+import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
+import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import desmoj.core.simulator.Model;
+import desmoj.core.simulator.TimeSpan;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
-public class StreetSection extends Entity implements IStreetSection {
+public class StreetSection extends Street {
 
     private static final double INITIAL_CAR_POSITION = 0;
 
@@ -21,14 +27,12 @@ public class StreetSection extends Entity implements IStreetSection {
     private final LinkedList<ICar> carQueue;
     private final Map<ICar, Double> carPositions;
 
-    private final IStreetConnector nextStreetConnector;
-    private final IStreetConnector previousStreetConnector;
+    private IStreetConnector nextStreetConnector;
+    private IStreetConnector previousStreetConnector;
 
 
     public StreetSection(
         double length,
-        IStreetConnector previousStreetConnector,
-        IStreetConnector nextStreetConnector,
         Model model,
         String modelDescription,
         boolean showInTrace
@@ -36,8 +40,6 @@ public class StreetSection extends Entity implements IStreetSection {
         super(model, modelDescription, showInTrace);
 
         this.length = length;
-        this.previousStreetConnector = previousStreetConnector;
-        this.nextStreetConnector = nextStreetConnector;
 
         this.carQueue = new LinkedList<>();
         this.carPositions = new HashMap<>();
@@ -61,6 +63,7 @@ public class StreetSection extends Entity implements IStreetSection {
         }
         carQueue.addLast(car);
         carPositions.put(car, INITIAL_CAR_POSITION);
+        this.carCounter++;
     }
 
     @Override
@@ -74,7 +77,10 @@ public class StreetSection extends Entity implements IStreetSection {
             throw new IllegalStateException("carQueue in section cannot be null");
         }
 
-        return carQueue.getFirst();
+        if (carQueue.size() > 0) {
+            return carQueue.getFirst();
+        }
+        return null;
     }
 
     @Override
@@ -83,7 +89,10 @@ public class StreetSection extends Entity implements IStreetSection {
             throw new IllegalStateException("carQueue in section cannot be null");
         }
 
-        return carQueue.getLast();
+        if (carQueue.size() > 0) {
+            return carQueue.getLast();
+        }
+        return null;
     }
 
     @Override
@@ -99,6 +108,16 @@ public class StreetSection extends Entity implements IStreetSection {
     @Override
     public IStreetConnector getPreviousStreetConnector() {
         return previousStreetConnector;
+    }
+
+    @Override
+    public void setPreviousStreetConnector(IStreetConnector previousStreetConnector) {
+        this.previousStreetConnector = previousStreetConnector;
+    }
+
+    @Override
+    public void setNextStreetConnector(IStreetConnector nextStreetConnector) {
+        this.nextStreetConnector = nextStreetConnector;
     }
 
     @Override
@@ -135,7 +154,7 @@ public class StreetSection extends Entity implements IStreetSection {
 
             final double maxActuallyPossiblePositionValue = carPosition + (currentTime - carLastUpdateTime) * carSpeed;
 
-            // Select the new Car position based on previous calculations.
+            // Select the new RoundaboutCar position based on previous calculations.
             final double newCarPosition = Math.min(
                 maxTheoreticallyPossiblePositionValue,
                 maxActuallyPossiblePositionValue
@@ -160,23 +179,27 @@ public class StreetSection extends Entity implements IStreetSection {
 
     @Override
     public boolean firstCarCouldEnterNextSection() {
+        updateAllCarsPositions();
         if (isFirstCarOnExitPoint()) {
             ICar firstCarInQueue = getFirstCar();
 
             if (firstCarInQueue != null) {
-                IStreetSection nextStreetSection = firstCarInQueue.getNextSection();
+                Street nextStreetSection = firstCarInQueue.getNextSection();
 
                 if (nextStreetSection == null) { // car at destination
                     return true;
                 }
 
                 if (nextStreetSection.isEnoughSpace(firstCarInQueue.getLength())) {
-                    Set<IStreetSection> precedenceSections = getPreviousStreetConnector().getPreviousSections();
-                    precedenceSections.remove(this);
+                    IStreetConnector previousStreetConnector = getPreviousStreetConnector();
+                    if (previousStreetConnector != null) {
+                        Set<Street> precedenceSections = getPreviousStreetConnector().getNextSections();
+                        precedenceSections.remove(this);
 
-                    for (IStreetSection precedenceSection : precedenceSections) {
-                        if (precedenceSection.isFirstCarOnExitPoint()) {
-                            return false;
+                        for (Street precedenceSection : precedenceSections) {
+                            if (precedenceSection.isFirstCarOnExitPoint()) {
+                                return false;
+                            }
                         }
                     }
 
@@ -200,14 +223,14 @@ public class StreetSection extends Entity implements IStreetSection {
         ICar firstCar = removeFirstCar();
         if (firstCar != null) {
             if (!Objects.equals(firstCar.getCurrentSection(), firstCar.getDestination())) {
-                IStreetSection nextSection = firstCar.getNextSection();
+                Street nextSection = firstCar.getNextSection();
                 if (nextSection != null) {
                     // Move physically first car to next section.
                     nextSection.addCar(firstCar);
                     // Move logically first car to next section.
                     firstCar.traverseToNextSection();
                 } else {
-                    throw new IllegalStateException("Car can not move further. Next section does not exist.");
+                    throw new IllegalStateException("RoundaboutCar can not move further. Next section does not exist.");
                 }
             }
         }
@@ -219,8 +242,16 @@ public class StreetSection extends Entity implements IStreetSection {
         throw new IllegalStateException("Street section is not empty, but last car could not be determined.");
     }
 
+    @Override
+    public int getNrOfEnteredCars() {
+        return this.carCounter;
+    }
+
     private double getCarPosition(ICar car) {
-        return getCarPositions().getOrDefault(car, INITIAL_CAR_POSITION);
+        if (car != null) {
+            return getCarPositions().getOrDefault(car, INITIAL_CAR_POSITION);
+        }
+        return -1;
     }
 
     private double getCarPositionOrDefault(ICar car, double defaultValue) {
@@ -260,5 +291,25 @@ public class StreetSection extends Entity implements IStreetSection {
         } else {
             return lengthInMeters - distanceToNextCar;
         }
+    }
+
+    @Override
+    public void carEnter(Car car) {
+        ICar iCar = CarController.getICar(car);
+        addCar(iCar);
+        iCar.traverseToNextSection();
+        double traverseTime = iCar.getTimeToTraverseCurrentSection();
+        CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
+        carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, TimeUnit.SECONDS));
+    }
+
+    @Override
+    public boolean isFull() {
+        return false; // TODO: implement
+    }
+
+    @Override
+    public DTO toDTO() {
+        return null;
     }
 }

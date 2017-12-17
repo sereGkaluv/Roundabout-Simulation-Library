@@ -1,10 +1,11 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
+import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import desmoj.core.simulator.Experiment;
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,16 +32,17 @@ public class CarTest {
         double length = 10.0;
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
         IRoute route = new Route();
-        IStreetSection streetSectionMock = mock(StreetSection.class);
+        Street streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
-        ICar car = new Car(length, driverBehaviour, route, getPrepareModel(), "description", false);
+        Car car = new Car(getPrepareModel(), "", false);
+        ICar iCar = new RoundaboutCar(car, length, driverBehaviour, route);
         Assert.assertNotNull(car);
 
         //test attributes
-        assertEquals(driverBehaviour, car.getDriverBehaviour());
-        assertEquals(route, car.getRoute());
-        assertEquals(length, car.getLength(), 0.0);
+        assertEquals(driverBehaviour, iCar.getDriverBehaviour());
+        assertEquals(route, iCar.getRoute());
+        assertEquals(length, iCar.getLength(), 0.0);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -51,7 +53,8 @@ public class CarTest {
         Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
 
-        new Car(10.0, driverBehaviour, null, model, "description", false);
+        Car car = new Car(model, "", false);
+        new RoundaboutCar(car,10.0, driverBehaviour, null);
     }
 
     @Test
@@ -75,85 +78,90 @@ public class CarTest {
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
         IRoute route = new Route();
 
-        IStreetSection streetSectionMock = mock(StreetSection.class);
+        Street streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
         Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
 
-        return new Car(length, driverBehaviour, route, model, "description", false);
+        Car car = new Car(model, "", false);
+        return new RoundaboutCar(car, length, driverBehaviour, route);
     }
 
     @Test
     public void getNextSection_currentSectionIsEqualDestination() {
         IRoute route = new Route();
 
-        IStreetSection currentSectionMock = mock(StreetSection.class);
+        Street currentSectionMock = mock(StreetSection.class);
         route.addSection(currentSectionMock);
 
-        IStreetSection destinationMock = mock(StreetSection.class);
+        Street destinationMock = mock(StreetSection.class);
         route.addSection(destinationMock);
 
         IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
-        ICar car = new Car(10, driverBehaviourMock, route, getPrepareModel(), "description", false);
+        Car car = new Car(getPrepareModel(), "", false);
+        ICar iCar = new RoundaboutCar(car,10, driverBehaviourMock, route);
 
-        assertEquals(car.getCurrentSection(), currentSectionMock);
-        assertEquals(car.getNextSection(), destinationMock);
+        assertEquals(iCar.getCurrentSection(), currentSectionMock);
+        assertEquals(iCar.getNextSection(), destinationMock);
 
-        car.traverseToNextSection();
+        iCar.traverseToNextSection();
 
-        assertEquals(car.getCurrentSection(), destinationMock);
-        assertNull(car.getNextSection());
+        assertEquals(iCar.getCurrentSection(), destinationMock);
+        assertNull(iCar.getNextSection());
     }
 
     @Test
     public void getNextSection_currentSectionNotEqualDestination() {
         IRoute route = new Route();
 
-        IStreetSection currentSectionMock = mock(StreetSection.class);
+        Street currentSectionMock = mock(StreetSection.class);
         route.addSection(currentSectionMock);
 
-        IStreetSection nextSectionMock = mock(StreetSection.class);
+        Street nextSectionMock = mock(StreetSection.class);
         route.addSection(nextSectionMock);
 
-        IStreetSection destinationMock = mock(StreetSection.class);
+        Street destinationMock = mock(StreetSection.class);
         route.addSection(destinationMock);
 
         IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
-        ICar car = new Car(10, driverBehaviourMock, route, getPrepareModel(), "description", false);
+        Car car = new Car(getPrepareModel(), "", false);
+        ICar iCar = new RoundaboutCar(car,10, driverBehaviourMock, route);
 
-        assertEquals(car.getCurrentSection(), currentSectionMock);
-        assertNotEquals(car.getCurrentSection(), destinationMock);
+        assertEquals(iCar.getCurrentSection(), currentSectionMock);
+        assertNotEquals(iCar.getCurrentSection(), destinationMock);
     }
 
     @Test
     public void getTimeToTraverseCurrentSection_isExpectedTime() {
         RoundaboutSimulationModel model = getPrepareModel();
-        IStreetSection section = new StreetSection(10.0, null, null, model, "", false);
+        Street section = new StreetSection(10.0, model, "", false);
         IDriverBehaviour driverBehaviour = new DriverBehaviour(5.0, 2.0, 2.0, 1.5);
 
         IRoute route = new Route();
         route.addSection(section);
 
-        ICar car = new Car(2, driverBehaviour, route, model, "", false);
+        Car car = new Car(model, "", false);
+        ICar iCar = new RoundaboutCar(car,2, driverBehaviour, route);
 
-        Assert.assertEquals(2.0, car.getTimeToTraverseCurrentSection(), 0.0);
+        Assert.assertEquals(2.0, iCar.getTimeToTraverseCurrentSection(), 0.0);
     }
 
     @Test
     public void getTimeToTraverseSection_carIsNotOnThisSection(){
         RoundaboutSimulationModel model = getPrepareModel();
-        IStreetSection currentSection = new StreetSection(10.0, null, null, model, "", false);
-        IStreetSection otherSection = new StreetSection(20.0, null, null, model, "", false);
+        Street currentSection = new StreetSection(10.0, model, "", false);
+        Street otherSection = new StreetSection(20.0, model, "", false);
         IDriverBehaviour driverBehaviour = new DriverBehaviour(5.0, 2.0, 2.0, 1.5);
 
         IRoute route = new Route();
         route.addSection(currentSection);
 
-        ICar car = new Car(2, driverBehaviour, route, model, "", false);
+        Car car = new Car(model, "", false);
+        ICar iCar = new RoundaboutCar(car,2, driverBehaviour, route);
 
-        Assert.assertEquals(4, car.getTimeToTraverseSection(otherSection), 0.0);
+        Assert.assertEquals(4, iCar.getTimeToTraverseSection(otherSection), 0.0);
 
     }
 }

@@ -5,69 +5,76 @@ import java.util.List;
 public interface IRoute {
 
     /**
-     * Returns the route as unmodifiable list of {@link IStreetSection}.
+     * Returns the route as unmodifiable list of {@link Street}.
      *
-     * @return the route as unmodifiable list of {@link IStreetSection}.
+     * @return the route as unmodifiable list of {@link Street}.
      */
-    List<IStreetSection> getRoute();
+    List<Street> getRoute();
 
     /**
-     * Returns an {@link IStreetSection} at the given index of the route.
+     * Returns an {@link Street} at the given index of the route.
      *
-     * @param index the index the {@link IStreetSection} should be returned from the route.
-     * @return an {@link IStreetSection} located at given index.
+     * @param index the index the {@link Street} should be returned from the route.
+     * @return an {@link Street} located at given index.
      */
-    IStreetSection getSectionAt(int index);
+    Street getSectionAt(int index);
 
     /**
-     * Returns a start {@link IStreetSection} of the route.
+     * Returns a start {@link Street} of the route.
      *
-     * @return start {@link IStreetSection} of the route if present, otherwise null.
+     * @return start {@link Street} of the route if present, otherwise null.
      */
-    IStreetSection getStartSection();
+    Street getStartSection();
 
     /**
-     * Returns a destination {@link IStreetSection} of the route.
+     * Returns a destination {@link Street} of the route.
      *
-     * @return start {@link IStreetSection} of the route if present, otherwise null.
+     * @return start {@link Street} of the route if present, otherwise null.
      */
-    IStreetSection getDestinationSection();
+    Street getDestinationSection();
 
     /**
-     * Returns the number of {@link IStreetSection} in the route.
+     * Returns the number of {@link Street} in the route.
      *
-     * @return the number of {@link IStreetSection} in the route as int.
+     * @return the number of {@link Street} in the route as int.
      */
     int getNumberOfSections();
 
     /**
-     * Adds a new {@link IStreetSection} to the route.
+     * Adds a new {@link Street} to the route.
      *
      * @param section the section that is added to the route at the end.
      */
-    void addSection(IStreetSection section);
+    void addSection(Street section);
 
     /**
-     * Checks if there are {@link IStreetSection}s in the route defined.
+     * Checks if there are {@link Street}s in the route defined.
      *
-     * @return true if there are {@link IStreetSection} in the route, otherwise false.
+     * @return true if there are {@link Street} in the route, otherwise false.
      */
     boolean isEmpty();
 
     /**
-     * Checks if the {@link IStreetSection} #A is behind the {@link IStreetSection} #B in the route.
+     * Returns the index in the route of given {@link Street}
      *
-     * @param sectionA bla.
-     * @param sectionB bla.
-     * @return bla (method is deleted later anyway).
-     */
-    boolean isSectionABehindSectionB(IStreetSection sectionA, IStreetSection sectionB);
-
-    /**
-     * Returns the index in the route of given {@link IStreetSection}
-     *
-     * @param streetSection is the {@link IStreetSection} from which the index should be returned
+     * @param streetSection is the {@link Street} from which the index should be returned
      * @return the index of streetSection in the route
      */
-    public int getIndexOfSection(IStreetSection streetSection);
+     int getIndexOfSection(Street streetSection);
+
+    /**
+     * Returns the {@link AbstractSource} source of the route
+     *
+     * @return  the source of the route as {@link AbstractSource}
+     */
+    AbstractSource getSource();
+
+    /**
+     * Returns the {@link Street} sink of the route
+     *
+     * @return  the sink of the route as {@link Street}
+     */
+    Street getSink();
+
+    void addSource(AbstractSource source);
 }

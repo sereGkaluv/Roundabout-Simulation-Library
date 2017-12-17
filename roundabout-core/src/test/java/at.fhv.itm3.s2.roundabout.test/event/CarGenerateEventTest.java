@@ -5,6 +5,8 @@ import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.event.CarGenerateEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import desmoj.core.simulator.Experiment;
+import mocks.CarGenerateEventMock;
+import mocks.RouteGenerator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,8 +32,6 @@ public class CarGenerateEventTest {
     public void eventRoutineTest() throws Exception {
         StreetSection section = new StreetSection(
             10.0,
-            null,
-            null,
                 roundaboutSimulationModel,
             null,
             false
@@ -39,7 +39,8 @@ public class CarGenerateEventTest {
 
         Assert.assertTrue(section.isEmpty());
 
-        CarGenerateEvent event = RoundaboutEventFactory.getInstance().createCarGenerateEvent(roundaboutSimulationModel);
+        RouteGenerator routeGenerator = new RouteGenerator(roundaboutSimulationModel);
+        CarGenerateEvent event = new CarGenerateEventMock(roundaboutSimulationModel, "", false, routeGenerator);
         event.eventRoutine(section);
 
         Assert.assertFalse(section.isEmpty());
