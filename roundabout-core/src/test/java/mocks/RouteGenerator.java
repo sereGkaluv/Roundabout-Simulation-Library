@@ -36,6 +36,8 @@ public class RouteGenerator {
         return routes.get(1);
     }
 
+    private IRoute getRouteWithOneStreetSectionAndOneOneWayStreet() { return routes.get(2); }
+
     public IRoute getRoute(RouteType type) {
         switch (type) {
             case TWO_STREETSECTIONS:
@@ -43,6 +45,8 @@ public class RouteGenerator {
             case ONE_ONEWAYSTREET_ONE_STREETSECTION:
                 return getRouteWithOneWayStreetAndStreetSection();
             case ONE_STREETSECTION_ONE_ONEWAYSTREET:
+                return getRouteWithOneStreetSectionAndOneOneWayStreet();
+            case TWO_ONEWAYSTREETS:
                 return null;
         }
         return null;
@@ -128,5 +132,45 @@ public class RouteGenerator {
         route2.addSection(sink2);
 
         routes.put(1, route2);
+
+
+        // INITIALIZE ROUTE WITH STREETSECTION AND ONEWAYSTREET
+        // initialize streets and sink
+        Sink sink3 = new Sink(model, "", false);
+        Street street3_1 = new StreetSection(10.0, model, "", false);
+        OneWayStreet oneWayStreet3_2 = new OneWayStreet(model, "", false, 2, sink3, 10);
+        Street street3_2 = new OneWayStreetAdapter(oneWayStreet3_2, model, "", false);
+
+        // initialize connectors
+        Set<Street> prevStreetsForConnector3_1 = new HashSet<>();
+        prevStreetsForConnector3_1.add(street3_1);
+
+        Set<Street> nextStreetsForConnector3_1 = new HashSet<>();
+        nextStreetsForConnector3_1.add(street3_2);
+
+        StreetConnector connector3_1 = new StreetConnector(prevStreetsForConnector3_1, nextStreetsForConnector3_1);
+        street3_1.setNextStreetConnector(connector3_1);
+        street3_2.setPreviousStreetConnector(connector3_1);
+
+        Set<Street> prevStreetsForConnector3_2 = new HashSet<>();
+        prevStreetsForConnector3_2.add(street3_2);
+
+        Set<Street> nextStreetsForConnector3_2 = new HashSet<>();
+        nextStreetsForConnector3_2.add(sink3);
+
+        StreetConnector connector3_2 = new StreetConnector(prevStreetsForConnector3_2, nextStreetsForConnector3_2);
+        street3_2.setNextStreetConnector(connector3_2);
+        sink3.setPreviousStreetConnector(connector3_2);
+
+        // initialize source and route
+        AbstractSource source3 = new RoundaboutSourceMock(model, "", false, street3_1, 2, this, RouteType.ONE_STREETSECTION_ONE_ONEWAYSTREET);
+
+        IRoute route3 = new Route();
+        route3.addSource(source3);
+        route3.addSection(street3_1);
+        route3.addSection(street3_2);
+        route3.addSection(sink3);
+
+        routes.put(2, route3);
     }
 }

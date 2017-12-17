@@ -29,7 +29,7 @@ public class IntegrationTest {
         model.connectToExperiment(exp);
     }
 
-//    @Test
+    @Test
     public void twoStreetSectionsTwoCars_carsShouldEnterSinks() {
 
         exp.stop(new TimeInstant(60,TimeUnit.SECONDS));
@@ -58,6 +58,28 @@ public class IntegrationTest {
         RouteGenerator routeGenerator = new RouteGenerator(model);
 
         IRoute route = routeGenerator.getRoute(RouteType.ONE_ONEWAYSTREET_ONE_STREETSECTION);
+        AbstractSource source = route.getSource();
+
+        source.startGeneratingCars();
+
+        Street sink = route.getSink();
+
+        exp.start();
+
+        exp.finish();
+
+        Assert.assertEquals(2, sink.getNrOfEnteredCars());
+
+    }
+
+    @Test
+    public void oneStreetSectionOneOneWayStreetTwoCars_carsShouldEnterSinks() {
+
+        exp.stop(new TimeInstant(60,TimeUnit.SECONDS));
+
+        RouteGenerator routeGenerator = new RouteGenerator(model);
+
+        IRoute route = routeGenerator.getRoute(RouteType.ONE_STREETSECTION_ONE_ONEWAYSTREET);
         AbstractSource source = route.getSource();
 
         source.startGeneratingCars();
