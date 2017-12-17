@@ -1,10 +1,9 @@
-package at.fhv.itm3.s2.roundabout.test.event.mocks;
+package at.fhv.itm3.s2.roundabout.event.mocks;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import desmoj.core.simulator.Model;
-
 import org.mockito.Mockito;
 
 import static org.mockito.Matchers.notNull;

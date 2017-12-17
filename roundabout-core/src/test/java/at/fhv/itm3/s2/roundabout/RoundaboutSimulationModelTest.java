@@ -1,6 +1,5 @@
-package at.fhv.itm3.s2.roundabout.test;
+package at.fhv.itm3.s2.roundabout;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import desmoj.core.simulator.Experiment;
 import org.junit.Assert;
 import org.junit.Test;
