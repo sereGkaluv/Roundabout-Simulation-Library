@@ -1,4 +1,4 @@
-package at.fhv.itm3.s2.roundabout.test.event.mocks;
+package at.fhv.itm3.s2.roundabout.event.mocks;
 
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetSection;
 import at.fhv.itm3.s2.roundabout.entity.Car;
@@ -9,8 +9,8 @@ import org.mockito.Mockito;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 public class SectionMock {
 

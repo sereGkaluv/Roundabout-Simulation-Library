@@ -1,9 +1,7 @@
-package at.fhv.itm3.s2.roundabout.test.event;
+package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
-import at.fhv.itm3.s2.roundabout.event.CarGenerateEvent;
-import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import desmoj.core.simulator.Experiment;
 import org.junit.Assert;
 import org.junit.Before;
