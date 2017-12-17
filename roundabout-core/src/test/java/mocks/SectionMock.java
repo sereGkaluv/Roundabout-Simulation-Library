@@ -1,6 +1,6 @@
 package mocks;
 
-import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutCar;
 import at.fhv.itm3.s2.roundabout.entity.StreetConnector;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
@@ -64,7 +64,7 @@ public class SectionMock {
         when(this.section.getPreviousStreetConnector()).thenReturn(this.previousStreetConnector);
 
         when(this.previousStreetConnector.getPreviousSections()).then(invocation -> {
-            Set<IStreet> previousSections = new HashSet<>();
+            Set<Street> previousSections = new HashSet<>();
             for (int i = 0; i < nrOfPreviousSections; i++) {
                 previousSections.add(Mockito.mock(StreetSection.class));
             }

@@ -2,10 +2,8 @@ package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.Sink;
-import at.fhv.itm3.s2.roundabout.adapter.Street;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
-import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import co.paralleluniverse.fibers.SuspendExecution;
 import desmoj.core.simulator.Event;
@@ -69,7 +67,7 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
 
             // schedule a CarCouldLeaveSectionEvent for the next section, so it is thrown when the car should be able to
             // leave the next section under optimal conditions
-            IStreet nextSection = donorSection.getFirstCar().getNextSection();
+            Street nextSection = donorSection.getFirstCar().getNextSection();
             if (nextSection != null && nextSection instanceof StreetSection) {
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
                     (StreetSection) nextSection,
@@ -95,7 +93,7 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
             // check if they have a car which could enter the current section because there might be space for a new car
             IStreetConnector previousStreetConnector = donorSection.getPreviousStreetConnector();
             if (previousStreetConnector != null) {
-                for (IStreet previousSection : previousStreetConnector.getPreviousSections()) {
+                for (Street previousSection : previousStreetConnector.getPreviousSections()) {
                     if (previousSection != null && previousSection instanceof StreetSection) {
                         roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
                                 (StreetSection) previousSection,

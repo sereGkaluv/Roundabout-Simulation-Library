@@ -1,26 +1,26 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 
 import java.util.Set;
 
 public class StreetConnector implements IStreetConnector {
-    private Set<IStreet> nextSections;
-    private Set<IStreet> previousSections;
+    private Set<Street> nextSections;
+    private Set<Street> previousSections;
 
-    public StreetConnector(Set<IStreet> previousSections, Set<IStreet> nextSections){
+    public StreetConnector(Set<Street> previousSections, Set<Street> nextSections){
         this.previousSections = previousSections;
         this.nextSections = nextSections;
     }
 
     @Override
-    public Set<IStreet> getNextSections() {
+    public Set<Street> getNextSections() {
         return nextSections;
     }
 
     @Override
-    public Set<IStreet> getPreviousSections() {
+    public Set<Street> getPreviousSections() {
         return previousSections;
     }
 }

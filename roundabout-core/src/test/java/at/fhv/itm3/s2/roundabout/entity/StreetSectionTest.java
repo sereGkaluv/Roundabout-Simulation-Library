@@ -3,7 +3,7 @@ package at.fhv.itm3.s2.roundabout.entity;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import org.junit.Test;
 
 import java.util.Map;
@@ -16,15 +16,15 @@ import static org.mockito.Mockito.*;
 
 public class StreetSectionTest {
 
-    private IStreet prepareStreetSectionCarCouldEnterNextSectionMock() {
-        IStreet streetSectionMock = mock(StreetSection.class);
+    private Street prepareStreetSectionCarCouldEnterNextSectionMock() {
+        Street streetSectionMock = mock(StreetSection.class);
         when(streetSectionMock.firstCarCouldEnterNextSection()).thenCallRealMethod();
 
         return streetSectionMock;
     }
 
-    private IStreet prepareStreetSectionIsFirstCarOnExitPointMock() {
-        IStreet streetSectionMock = mock(StreetSection.class);
+    private Street prepareStreetSectionIsFirstCarOnExitPointMock() {
+        Street streetSectionMock = mock(StreetSection.class);
         when(streetSectionMock.isFirstCarOnExitPoint()).thenCallRealMethod();
 
         return streetSectionMock;
@@ -32,7 +32,7 @@ public class StreetSectionTest {
 
     @Test
     public void firstCarCouldEnterNextSection_firstCarNotOnExitPoint() {
-        IStreet streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
+        Street streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
         when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(false);
 
@@ -41,7 +41,7 @@ public class StreetSectionTest {
 
     @Test
     public void firstCarCouldEnterNextSection_noCarInQueue() {
-        IStreet streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
+        Street streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
         when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
         when(streetSectionMock.getFirstCar()).thenReturn(null);
@@ -51,14 +51,14 @@ public class StreetSectionTest {
 
     @Test
     public void firstCarCouldEnterNextSection_notEnoughSpace() {
-        IStreet streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
+        Street streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
         when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
 
         ICar firstCar = mock(RoundaboutCar.class);
         when(streetSectionMock.getFirstCar()).thenReturn(firstCar);
 
-        IStreet nextStreetSection = mock(StreetSection.class);
+        Street nextStreetSection = mock(StreetSection.class);
         when(firstCar.getNextSection()).thenReturn(nextStreetSection);
         when(firstCar.getLength()).thenReturn(5.0);
         when(nextStreetSection.isEnoughSpace(firstCar.getLength())).thenReturn(false);
@@ -68,14 +68,14 @@ public class StreetSectionTest {
 
     @Test
     public void firstCarCouldEnterNextSection_precedenceSectionHasCarOnExitPoint() {
-        IStreet streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
+        Street streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
         when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
 
         ICar firstCar = mock(RoundaboutCar.class);
         when(streetSectionMock.getFirstCar()).thenReturn(firstCar);
 
-        IStreet nextStreetSection = mock(StreetSection.class);
+        Street nextStreetSection = mock(StreetSection.class);
         when(firstCar.getNextSection()).thenReturn(nextStreetSection);
         when(firstCar.getLength()).thenReturn(5.0);
         when(nextStreetSection.isEnoughSpace(firstCar.getLength())).thenReturn(true);
@@ -83,11 +83,11 @@ public class StreetSectionTest {
         IStreetConnector streetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getPreviousStreetConnector()).thenReturn(streetConnector);
 
-        HashSet<IStreet> precedenceSections = new HashSet<>();
+        HashSet<Street> precedenceSections = new HashSet<>();
 
-        IStreet streetSectionOne = mock(StreetSection.class);
+        Street streetSectionOne = mock(StreetSection.class);
         when(streetSectionOne.isFirstCarOnExitPoint()).thenReturn(true);
-        IStreet streetSectionTwo = mock(StreetSection.class);
+        Street streetSectionTwo = mock(StreetSection.class);
         when(streetSectionTwo.isFirstCarOnExitPoint()).thenReturn(false);
 
         precedenceSections.add(streetSectionMock);
@@ -100,14 +100,14 @@ public class StreetSectionTest {
 
     @Test
     public void firstCarCouldEnterNextSection_couldEnterNextSection() {
-        IStreet streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
+        Street streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
         when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
 
         ICar firstCar = mock(RoundaboutCar.class);
         when(streetSectionMock.getFirstCar()).thenReturn(firstCar);
 
-        IStreet nextStreetSection = mock(StreetSection.class);
+        Street nextStreetSection = mock(StreetSection.class);
         when(firstCar.getNextSection()).thenReturn(nextStreetSection);
         when(firstCar.getLength()).thenReturn(5.0);
         when(nextStreetSection.isEnoughSpace(firstCar.getLength())).thenReturn(true);
@@ -115,11 +115,11 @@ public class StreetSectionTest {
         IStreetConnector streetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getPreviousStreetConnector()).thenReturn(streetConnector);
 
-        HashSet<IStreet> precedenceSections = new HashSet<>();
+        HashSet<Street> precedenceSections = new HashSet<>();
 
-        IStreet streetSectionOne = mock(StreetSection.class);
+        Street streetSectionOne = mock(StreetSection.class);
         when(streetSectionOne.isFirstCarOnExitPoint()).thenReturn(false);
-        IStreet streetSectionTwo = mock(StreetSection.class);
+        Street streetSectionTwo = mock(StreetSection.class);
         when(streetSectionTwo.isFirstCarOnExitPoint()).thenReturn(false);
 
         precedenceSections.add(streetSectionMock);
@@ -132,7 +132,7 @@ public class StreetSectionTest {
 
     @Test
     public void isEnoughSpace_spaceBiggerThenCar() {
-        IStreet streetSectionMock = mock(StreetSection.class);
+        Street streetSectionMock = mock(StreetSection.class);
 
         ICar car = mock(RoundaboutCar.class);
         when(car.getLength()).thenReturn(4.5);
@@ -152,7 +152,7 @@ public class StreetSectionTest {
 
     @Test
     public void isEnoughSpace_spaceEqualsCar() {
-        IStreet streetSectionMock = mock(StreetSection.class);
+        Street streetSectionMock = mock(StreetSection.class);
 
         ICar car = mock(RoundaboutCar.class);
         when(car.getLength()).thenReturn(4.5);
@@ -172,7 +172,7 @@ public class StreetSectionTest {
 
     @Test
     public void isEnoughSpace_spaceSmallerThenCar() {
-        IStreet streetSectionMock = mock(StreetSection.class);
+        Street streetSectionMock = mock(StreetSection.class);
 
         ICar car = mock(RoundaboutCar.class);
         when(car.getLength()).thenReturn(4.5);
@@ -192,7 +192,7 @@ public class StreetSectionTest {
 
     @Test
     public void isFirstCarOnExitPoint_firstCarIsNull() {
-        IStreet streetSectionMock = prepareStreetSectionIsFirstCarOnExitPointMock();
+        Street streetSectionMock = prepareStreetSectionIsFirstCarOnExitPointMock();
 
         // no car in queue
         when(streetSectionMock.getFirstCar()).thenReturn(null);
@@ -201,7 +201,7 @@ public class StreetSectionTest {
 
     @Test
     public void isFirstCarOnExitPoint_carDriverBehaviourIsNull() {
-        IStreet streetSectionMock = prepareStreetSectionIsFirstCarOnExitPointMock();
+        Street streetSectionMock = prepareStreetSectionIsFirstCarOnExitPointMock();
 
         ICar carMock = mock(ICar.class);
         when(carMock.getDriverBehaviour()).thenReturn(null);
@@ -222,7 +222,7 @@ public class StreetSectionTest {
         ICar carMock = mock(ICar.class);
         when(carMock.getDriverBehaviour()).thenReturn(driverBehaviour);
 
-        IStreet streetSectionMock = prepareStreetSectionIsFirstCarOnExitPointMock();
+        Street streetSectionMock = prepareStreetSectionIsFirstCarOnExitPointMock();
         when(streetSectionMock.getFirstCar()).thenReturn(carMock);
 
         Map<ICar, Double> carPositions = new HashMap<>();
@@ -242,7 +242,7 @@ public class StreetSectionTest {
         ICar carMock = mock(ICar.class);
         when(carMock.getDriverBehaviour()).thenReturn(driverBehaviour);
 
-        IStreet streetSectionMock = prepareStreetSectionIsFirstCarOnExitPointMock();
+        Street streetSectionMock = prepareStreetSectionIsFirstCarOnExitPointMock();
         when(streetSectionMock.getFirstCar()).thenReturn(carMock);
 
         Map<ICar, Double> carPositions = new HashMap<>();
@@ -256,7 +256,7 @@ public class StreetSectionTest {
     @Test
     public void moveFirstCarToNextSection_firstCarEqualNull() throws Exception {
         // if firstCar is null, the method getNextStreetSection should not be called
-        IStreet streetSectionMock = mock(StreetSection.class);
+        Street streetSectionMock = mock(StreetSection.class);
         ICar firstCarMock = mock(RoundaboutCar.class);
 
         when(streetSectionMock.removeFirstCar()).thenReturn(null);
@@ -270,7 +270,7 @@ public class StreetSectionTest {
     public void moveFirstCarToNextSection_currentSectionIsEqualDestination() throws Exception {
         // if currentSection (=this) is the same as destination of the car
         // the method getNextStreetSection should not be called
-        IStreet currentSectionMock = mock(StreetSection.class);
+        Street currentSectionMock = mock(StreetSection.class);
         ICar firstCarMock = mock(RoundaboutCar.class);
 
         when(currentSectionMock.removeFirstCar()).thenReturn(firstCarMock);
@@ -289,13 +289,13 @@ public class StreetSectionTest {
         // the method getNextStreetSection should be called once
         ICar firstCarMock = mock(RoundaboutCar.class);
 
-        IStreet currentSectionMock = mock(StreetSection.class);
+        Street currentSectionMock = mock(StreetSection.class);
         when(currentSectionMock.removeFirstCar()).thenReturn(firstCarMock);
 
-        IStreet nextSectionMock = mock(StreetSection.class);
+        Street nextSectionMock = mock(StreetSection.class);
         when(firstCarMock.getNextSection()).thenReturn(nextSectionMock);
 
-        IStreet destinationMock = mock(StreetSection.class);
+        Street destinationMock = mock(StreetSection.class);
         when(firstCarMock.getDestination()).thenReturn(destinationMock);
 
         doCallRealMethod().when(currentSectionMock).moveFirstCarToNextSection();

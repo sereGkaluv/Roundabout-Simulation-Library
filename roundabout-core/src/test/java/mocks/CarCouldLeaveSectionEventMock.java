@@ -1,7 +1,7 @@
 package mocks;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.adapter.Street;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import co.paralleluniverse.fibers.SuspendExecution;

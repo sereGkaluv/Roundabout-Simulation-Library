@@ -10,7 +10,7 @@ public interface ISource {
     /**
      * Returns the street to which the newly generated cars are added
      *
-     * @return  the connected street as {@link IStreet}
+     * @return  the connected street as {@link Street}
      */
-    IStreet getConnectedStreet();
+    Street getConnectedStreet();
 }

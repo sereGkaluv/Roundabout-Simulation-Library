@@ -5,7 +5,7 @@ import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import desmoj.core.simulator.Experiment;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class CarTest {
         double length = 10.0;
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
         IRoute route = new Route();
-        IStreet streetSectionMock = mock(StreetSection.class);
+        Street streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
         Car car = new Car(getPrepareModel(), "", false);
@@ -78,7 +78,7 @@ public class CarTest {
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5);
         IRoute route = new Route();
 
-        IStreet streetSectionMock = mock(StreetSection.class);
+        Street streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
@@ -93,10 +93,10 @@ public class CarTest {
     public void getNextSection_currentSectionIsEqualDestination() {
         IRoute route = new Route();
 
-        IStreet currentSectionMock = mock(StreetSection.class);
+        Street currentSectionMock = mock(StreetSection.class);
         route.addSection(currentSectionMock);
 
-        IStreet destinationMock = mock(StreetSection.class);
+        Street destinationMock = mock(StreetSection.class);
         route.addSection(destinationMock);
 
         IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
@@ -116,13 +116,13 @@ public class CarTest {
     public void getNextSection_currentSectionNotEqualDestination() {
         IRoute route = new Route();
 
-        IStreet currentSectionMock = mock(StreetSection.class);
+        Street currentSectionMock = mock(StreetSection.class);
         route.addSection(currentSectionMock);
 
-        IStreet nextSectionMock = mock(StreetSection.class);
+        Street nextSectionMock = mock(StreetSection.class);
         route.addSection(nextSectionMock);
 
-        IStreet destinationMock = mock(StreetSection.class);
+        Street destinationMock = mock(StreetSection.class);
         route.addSection(destinationMock);
 
         IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
@@ -136,7 +136,7 @@ public class CarTest {
     @Test
     public void getTimeToTraverseCurrentSection_isExpectedTime() {
         RoundaboutSimulationModel model = getPrepareModel();
-        IStreet section = new StreetSection(10.0, model, "", false);
+        Street section = new StreetSection(10.0, model, "", false);
         IDriverBehaviour driverBehaviour = new DriverBehaviour(5.0, 2.0, 2.0, 1.5);
 
         IRoute route = new Route();
@@ -151,8 +151,8 @@ public class CarTest {
     @Test
     public void getTimeToTraverseSection_carIsNotOnThisSection(){
         RoundaboutSimulationModel model = getPrepareModel();
-        IStreet currentSection = new StreetSection(10.0, model, "", false);
-        IStreet otherSection = new StreetSection(20.0, model, "", false);
+        Street currentSection = new StreetSection(10.0, model, "", false);
+        Street otherSection = new StreetSection(20.0, model, "", false);
         IDriverBehaviour driverBehaviour = new DriverBehaviour(5.0, 2.0, 2.0, 1.5);
 
         IRoute route = new Route();

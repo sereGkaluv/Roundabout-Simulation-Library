@@ -1,12 +1,12 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
+import at.fhv.itm14.trafsim.persistence.model.DTO;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.adapter.Street;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
 import desmoj.core.simulator.Model;
 
@@ -60,12 +60,6 @@ public class StreetSection extends Street {
         carQueue.addLast(car);
         carPositions.put(car, INITIAL_CAR_POSITION);
         this.carCounter++;
-    }
-
-    @Override
-    public void addCar(Car car) {
-        ICar iCar = CarController.getICar(car);
-        addCar(iCar);
     }
 
     @Override
@@ -186,7 +180,7 @@ public class StreetSection extends Street {
             ICar firstCarInQueue = getFirstCar();
 
             if (firstCarInQueue != null) {
-                IStreet nextStreetSection = firstCarInQueue.getNextSection();
+                Street nextStreetSection = firstCarInQueue.getNextSection();
 
                 if (nextStreetSection == null) { // car at destination
                     return true;
@@ -195,10 +189,10 @@ public class StreetSection extends Street {
                 if (nextStreetSection.isEnoughSpace(firstCarInQueue.getLength())) {
                     IStreetConnector previousStreetConnector = getPreviousStreetConnector();
                     if (previousStreetConnector != null) {
-                        Set<IStreet> precedenceSections = getPreviousStreetConnector().getNextSections();
+                        Set<Street> precedenceSections = getPreviousStreetConnector().getNextSections();
                         precedenceSections.remove(this);
 
-                        for (IStreet precedenceSection : precedenceSections) {
+                        for (Street precedenceSection : precedenceSections) {
                             if (precedenceSection.isFirstCarOnExitPoint()) {
                                 return false;
                             }
@@ -225,7 +219,7 @@ public class StreetSection extends Street {
         ICar firstCar = removeFirstCar();
         if (firstCar != null) {
             if (!Objects.equals(firstCar.getCurrentSection(), firstCar.getDestination())) {
-                IStreet nextSection = firstCar.getNextSection();
+                Street nextSection = firstCar.getNextSection();
                 if (nextSection != null) {
                     // Move physically first car to next section.
                     nextSection.addCar(firstCar);
@@ -293,5 +287,21 @@ public class StreetSection extends Street {
         } else {
             return lengthInMeters - distanceToNextCar;
         }
+    }
+
+    @Override
+    public void carEnter(Car car) {
+        ICar iCar = CarController.getICar(car);
+        addCar(iCar);
+    }
+
+    @Override
+    public boolean isFull() {
+        return false; // TODO: implement
+    }
+
+    @Override
+    public DTO toDTO() {
+        return null;
     }
 }

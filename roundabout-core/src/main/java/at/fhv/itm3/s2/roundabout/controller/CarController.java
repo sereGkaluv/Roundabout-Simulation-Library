@@ -17,6 +17,18 @@ public class CarController {
         iCarToCarMap.put(iCar, car);
     }
 
+    public static void removeCarMapping(Car car) {
+        ICar iCar = carToICarMap.get(car);
+        carToICarMap.remove(car);
+        iCarToCarMap.remove(iCar);
+    }
+
+    public static void removeCarMapping(ICar iCar) {
+        Car car = iCarToCarMap.get(iCar);
+        iCarToCarMap.remove(iCar);
+        carToICarMap.remove(car);
+    }
+
     public static ICar getICar(Car car) {
         if (!carToICarMap.containsKey(car)) {
             throw new IllegalArgumentException("carToICarMap does not contain car");

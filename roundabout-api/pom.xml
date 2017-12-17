@@ -34,7 +34,21 @@
             <version>0.1</version>
             <scope>system</scope>
             <systemPath>${local.repository.folder}/trafsim-0.1.jar</systemPath>
-            </dependency>
+        </dependency>
+        <dependency>
+            <groupId>trafsim</groupId>
+            <artifactId>trafsim-persistence</artifactId>
+            <version>0.1</version>
+            <scope>system</scope>
+            <systemPath>${local.repository.folder}/trafsim-persistence-0.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>desmoj</groupId>
+            <artifactId>desmoj</artifactId>
+            <version>2.5.1e</version>
+            <scope>system</scope>
+            <systemPath>${local.repository.folder}/desmoj-2.5.1e-bin.jar</systemPath>
+        </dependency>
     </dependencies>
 
 </project>

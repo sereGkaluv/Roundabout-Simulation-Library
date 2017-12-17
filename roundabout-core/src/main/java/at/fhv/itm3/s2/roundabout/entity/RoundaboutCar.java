@@ -1,8 +1,8 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
+import at.fhv.itm3.s2.roundabout.adapter.OneWayStreetAdapter;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
 
 import java.util.Iterator;
 
@@ -12,12 +12,12 @@ public class RoundaboutCar implements ICar {
     private final double length;
     private final IRoute route;
     private final IDriverBehaviour driverBehaviour;
-    private final Iterator<IStreet> routeIterator;
+    private final Iterator<Street> routeIterator;
 
     private double lastUpdateTime;
 
-    private IStreet currentSection;
-    private IStreet nextSection;
+    private Street currentSection;
+    private Street nextSection;
 
     public RoundaboutCar(Car car, double length, IDriverBehaviour driverBehaviour, IRoute route)
             throws IllegalArgumentException {
@@ -75,16 +75,21 @@ public class RoundaboutCar implements ICar {
     }
 
     @Override
-    public double getTimeToTraverseSection(IStreet section) {
+    public double getTimeToTraverseSection(Street section) {
 
-        double carPosition = 0;
+        if (section instanceof StreetSection) {
+            double carPosition = 0;
 
-        if (section.getCarPositions().containsKey(this)) {
-            carPosition = section.getCarPositions().get(this);
+            if (section.getCarPositions().containsKey(this)) {
+                carPosition = section.getCarPositions().get(this);
+            }
+
+            double remainingLength = section.getLength() - carPosition;
+            return remainingLength / this.getDriverBehaviour().getSpeed();
+        } else if (section instanceof OneWayStreetAdapter) {
+            return 0;
         }
-
-        double remainingLength = section.getLength() - carPosition;
-        return remainingLength / this.getDriverBehaviour().getSpeed();
+        return -1;
     }
 
     @Override
@@ -109,12 +114,12 @@ public class RoundaboutCar implements ICar {
     }
 
     @Override
-    public IStreet getCurrentSection() {
+    public Street getCurrentSection() {
         return currentSection;
     }
 
     @Override
-    public IStreet getNextSection() {
+    public Street getNextSection() {
         return nextSection;
     }
 
@@ -125,11 +130,11 @@ public class RoundaboutCar implements ICar {
     }
 
     @Override
-    public IStreet getDestination() {
+    public Street getDestination() {
         return route.getDestinationSection();
     }
 
-    private IStreet retrieveNextRouteSection() {
+    private Street retrieveNextRouteSection() {
         return routeIterator.hasNext() ? routeIterator.next() : null;
     }
 }

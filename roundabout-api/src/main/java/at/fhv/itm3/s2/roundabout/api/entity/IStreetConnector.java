@@ -5,16 +5,16 @@ import java.util.Set;
 public interface IStreetConnector {
 
     /**
-     * Gets the next connected {@link IStreet}s, which are accessible via this connector.
+     * Gets the next connected {@link Street}s, which are accessible via this connector.
      *
-     * @return The further connected sections in form of {@link Set< IStreet >}.
+     * @return The further connected sections in form of {@link Set< Street >}.
      */
-    Set<IStreet> getNextSections();
+    Set<Street> getNextSections();
 
     /**
-     * Gets the previous connected {@link IStreet}s, which are accessible through this connector.
+     * Gets the previous connected {@link Street}s, which are accessible through this connector.
      *
-     * @return The previous connected sections in form of {@link Set< IStreet >}.
+     * @return The previous connected sections in form of {@link Set< Street >}.
      */
-    Set<IStreet> getPreviousSections();
+    Set<Street> getPreviousSections();
 }

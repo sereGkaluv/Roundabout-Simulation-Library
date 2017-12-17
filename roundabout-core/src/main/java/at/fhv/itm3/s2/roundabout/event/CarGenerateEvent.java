@@ -2,10 +2,10 @@ package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.adapter.Street;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreet;
+import at.fhv.itm3.s2.roundabout.controller.CarController;
 import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutCar;
 import at.fhv.itm3.s2.roundabout.entity.DriverBehaviour;
@@ -65,15 +65,16 @@ public class CarGenerateEvent extends Event<Street> {
      * it without the need to stop and after this time the section checks if a car could leave the section.
      * At the end the event routine schedules a new {@link CarGenerateEvent} with a normally distributed time.
      *
-     * @param section instance of {@link IStreet} to which the car will be added.
+     * @param section instance of {@link Street} to which the car will be added.
      */
     @Override
     public void eventRoutine(Street section) {
         // TODO: use meaningful values!!
         Car car = new Car(roundaboutSimulationModel, "", false);
-        IRoute route = this.routeController.generateNewRoute();
+        IRoute route = this.routeController.getRandomRoute();
         DriverBehaviour driverBehaviour = new DriverBehaviour(6.0, 0.5, 1, 1);
         ICar roundaboutCar = new RoundaboutCar(car, 2.0, driverBehaviour, route);
+        CarController.addCarMapping(car, roundaboutCar);
         section.addCar(roundaboutCar);
 
         double traverseTime = roundaboutCar.getTimeToTraverseCurrentSection();

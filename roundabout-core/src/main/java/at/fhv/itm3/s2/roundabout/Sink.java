@@ -1,9 +1,11 @@
 package at.fhv.itm3.s2.roundabout;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
-import at.fhv.itm3.s2.roundabout.adapter.Street;
+import at.fhv.itm14.trafsim.persistence.model.DTO;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
+import at.fhv.itm3.s2.roundabout.controller.CarController;
 import desmoj.core.simulator.Model;
 
 import java.util.Map;
@@ -24,11 +26,7 @@ public class Sink extends Street {
     @Override
     public void addCar(ICar car) {
         this.carCounter++;
-    }
-
-    @Override
-    public void addCar(Car car) {
-        this.carCounter++;
+        CarController.removeCarMapping(car);
     }
 
     @Override
@@ -109,5 +107,21 @@ public class Sink extends Street {
     @Override
     public int getNrOfEnteredCars() {
         return this.carCounter;
+    }
+
+    @Override
+    public void carEnter(Car car) {
+        this.carCounter++;
+        CarController.removeCarMapping(car);
+    }
+
+    @Override
+    public boolean isFull() {
+        return false;
+    }
+
+    @Override
+    public DTO toDTO() {
+        return null;
     }
 }
