@@ -24,6 +24,7 @@ public class IntegrationTest {
         model = new RoundaboutSimulationModel(null, "", false, false);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
+        exp.setShowProgressBar(false);
     }
 
     @Test
