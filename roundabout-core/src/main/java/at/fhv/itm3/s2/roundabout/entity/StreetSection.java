@@ -171,11 +171,10 @@ public class StreetSection extends Entity implements IStreetSection {
                 }
 
                 if (nextStreetSection.isEnoughSpace(firstCarInQueue.getLength())) {
-                    Set<IStreetSection> precedenceSections = getPreviousStreetConnector().getPreviousSections();
-                    precedenceSections.remove(this);
+                    Set<IStreetSection> precedenceSections = nextStreetSection.getPreviousStreetConnector().getPreviousSections();
 
                     for (IStreetSection precedenceSection : precedenceSections) {
-                        if (precedenceSection.isFirstCarOnExitPoint()) {
+                        if (precedenceSection != this && precedenceSection.isFirstCarOnExitPoint()) {
                             return false;
                         }
                     }
