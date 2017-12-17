@@ -4,6 +4,9 @@ Consists of 2 sub modules:
 - Roundabout API
 - Roundabout Core
 
+## UML Class Diagram
+[UML Class Diagram](UMLClassDiagram.md)
+
 ## Usage
 
 ## Entities
