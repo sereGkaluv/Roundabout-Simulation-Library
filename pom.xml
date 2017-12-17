@@ -55,7 +55,7 @@
                             </docletArtifact>
                             <additionalparam>
                                 -umlIncludeProtectedFields false
-                                -umlImageFormat SVG
+                                -umlImageFormat PNG
                                 -umlImageDirectory ../../../images/uml-class
                             </additionalparam>
                         </configuration>
