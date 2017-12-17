@@ -71,7 +71,7 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
             Street nextSection = donorSection.getFirstCar().getNextSection();
             if (nextSection != null && nextSection instanceof StreetSection) {
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                    (StreetSection) nextSection,
+                    nextSection,
                     new TimeSpan(donorSection.getFirstCar().getTimeToTraverseSection(nextSection), TimeUnit.SECONDS)
                 );
                 donorSection.moveFirstCarToNextSection();
@@ -97,7 +97,7 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
                 for (Street previousSection : previousStreetConnector.getPreviousSections()) {
                     if (previousSection != null && previousSection instanceof StreetSection) {
                         roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                                (StreetSection) previousSection,
+                                previousSection,
                                 new TimeSpan(0, TimeUnit.SECONDS)
                         );
                     }

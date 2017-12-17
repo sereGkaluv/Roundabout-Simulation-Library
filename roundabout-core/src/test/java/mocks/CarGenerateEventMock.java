@@ -37,6 +37,18 @@ public class CarGenerateEventMock extends CarGenerateEvent {
         initMockingComponents();
     }
 
+    public CarGenerateEventMock(Model model, String name, boolean showInTrace, RouteGenerator routeGenerator) {
+        super(model, name, showInTrace);
+        this.model = (RoundaboutSimulationModel)model;
+        this.remainingCarsToGenerate = 1;
+        this.routeGenerator = routeGenerator;
+        this.type = RouteType.TWO_STREETSECTIONS;
+
+        initMockingComponents();
+    }
+
+
+
     private void initMockingComponents() {
 
         this.routeController = Mockito.mock(RouteController.class);

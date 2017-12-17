@@ -112,6 +112,7 @@ public class Sink extends Street {
     @Override
     public void carEnter(Car car) {
         this.carCounter++;
+        car.leaveSystem();
         CarController.removeCarMapping(car);
     }
 

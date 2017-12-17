@@ -135,7 +135,7 @@ public class OneWayStreetAdapter extends Street {
 
     @Override
     public int getNrOfEnteredCars() {
-        return 0;
+        return this.carCounter;
     }
 
     @Override

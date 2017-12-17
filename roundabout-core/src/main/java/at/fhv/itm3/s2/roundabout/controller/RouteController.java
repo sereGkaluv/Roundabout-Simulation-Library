@@ -49,18 +49,6 @@ public class RouteController {
         initializeRoutes();
     }
 
-    /**
-     * Generates a new route a car could take.
-     *
-     * @return a generated route as {@link IRoute} object.
-     */
-//    public IRoute generateNewRoute() {
-//        // TODO: implement
-//        Route route = new Route();
-//        route.addSection(new StreetSection(10.0, model, "", false));
-//        return route;
-//    }
-
     public IRoute getRandomRoute() {
         if (this.routes.isEmpty()) {
             throw new IllegalStateException("Routes must not be empty");
@@ -75,6 +63,6 @@ public class RouteController {
     }
 
     private void initializeRoutes() {
-
+        // TODO implement
     }
 }

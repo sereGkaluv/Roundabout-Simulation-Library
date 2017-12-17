@@ -2,9 +2,7 @@ package mocks;
 
 import at.fhv.itm14.trafsim.model.entities.OneWayStreet;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.RoundaboutSource;
 import at.fhv.itm3.s2.roundabout.Sink;
-import at.fhv.itm3.s2.roundabout.adapter.SourceAdapter;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.adapter.OneWayStreetAdapter;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
@@ -38,6 +36,8 @@ public class RouteGenerator {
 
     private IRoute getRouteWithOneStreetSectionAndOneOneWayStreet() { return routes.get(2); }
 
+    private IRoute getRouteWithTwoOneWayStreets() { return routes.get(3); }
+
     public IRoute getRoute(RouteType type) {
         switch (type) {
             case TWO_STREETSECTIONS:
@@ -47,7 +47,7 @@ public class RouteGenerator {
             case ONE_STREETSECTION_ONE_ONEWAYSTREET:
                 return getRouteWithOneStreetSectionAndOneOneWayStreet();
             case TWO_ONEWAYSTREETS:
-                return null;
+                return getRouteWithTwoOneWayStreets();
         }
         return null;
     }
@@ -172,5 +172,46 @@ public class RouteGenerator {
         route3.addSection(sink3);
 
         routes.put(2, route3);
+
+
+        // INITIALIZE ROUTE WITH TWO ONEWAYSTREETS
+        // initialize streets and sink
+        Sink sink4 = new Sink(model, "", false);
+        OneWayStreet oneWayStreet4_2 = new OneWayStreet(model, "", false, 2, sink4, 10);
+        Street street4_2 = new OneWayStreetAdapter(oneWayStreet4_2, model, "", false);
+        OneWayStreet oneWayStreet4_1 = new OneWayStreet(model, "", false, 2, street4_2, 10);
+        Street street4_1 = new OneWayStreetAdapter(oneWayStreet4_1, model, "", false);
+
+        // initialize connectors
+        Set<Street> prevStreetsForConnector4_1 = new HashSet<>();
+        prevStreetsForConnector4_1.add(street4_1);
+
+        Set<Street> nextStreetsForConnector4_1 = new HashSet<>();
+        nextStreetsForConnector4_1.add(street4_2);
+
+        StreetConnector connector4_1 = new StreetConnector(prevStreetsForConnector4_1, nextStreetsForConnector4_1);
+        street4_1.setNextStreetConnector(connector4_1);
+        street4_2.setPreviousStreetConnector(connector4_1);
+
+        Set<Street> prevStreetsForConnector4_2 = new HashSet<>();
+        prevStreetsForConnector4_2.add(street4_2);
+
+        Set<Street> nextStreetsForConnector4_2 = new HashSet<>();
+        nextStreetsForConnector4_2.add(sink4);
+
+        StreetConnector connector4_2 = new StreetConnector(prevStreetsForConnector4_2, nextStreetsForConnector4_2);
+        street4_2.setNextStreetConnector(connector4_2);
+        sink4.setPreviousStreetConnector(connector4_2);
+
+        // initialize source and route
+        AbstractSource source4 = new RoundaboutSourceMock(model, "", false, street4_1, 2, this, RouteType.TWO_ONEWAYSTREETS);
+
+        IRoute route4 = new Route();
+        route4.addSource(source4);
+        route4.addSection(street4_1);
+        route4.addSection(street4_2);
+        route4.addSection(sink4);
+
+        routes.put(3, route4);
     }
 }
