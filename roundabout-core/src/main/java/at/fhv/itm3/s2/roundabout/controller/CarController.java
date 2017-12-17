@@ -17,6 +17,14 @@ public class CarController {
         iCarToCarMap.put(iCar, car);
     }
 
+    public static boolean containsCar(Car car) {
+        return carToICarMap.containsKey(car);
+    }
+
+    public static boolean containsICar(Car iCar) {
+        return iCarToCarMap.containsKey(iCar);
+    }
+
     public static void removeCarMapping(Car car) {
         ICar iCar = carToICarMap.get(car);
         carToICarMap.remove(car);

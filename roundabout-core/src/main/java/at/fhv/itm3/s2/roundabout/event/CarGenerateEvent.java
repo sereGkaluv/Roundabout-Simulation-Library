@@ -9,6 +9,7 @@ import at.fhv.itm3.s2.roundabout.controller.CarController;
 import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutCar;
 import at.fhv.itm3.s2.roundabout.entity.DriverBehaviour;
+import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import desmoj.core.simulator.Event;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.TimeSpan;
@@ -77,10 +78,13 @@ public class CarGenerateEvent extends Event<Street> {
         CarController.addCarMapping(car, roundaboutCar);
         section.addCar(roundaboutCar);
 
-        double traverseTime = roundaboutCar.getTimeToTraverseCurrentSection();
+        if (section instanceof StreetSection) {
+            double traverseTime = roundaboutCar.getTimeToTraverseCurrentSection();
+            CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
+            carCouldLeaveSectionEvent.schedule(section, new TimeSpan(traverseTime, TimeUnit.SECONDS));
+        }
+
         double timeBetweenCarArrivals = roundaboutSimulationModel.getRandomTimeBetweenCarArrivals();
-        CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
-        carCouldLeaveSectionEvent.schedule(section, new TimeSpan(traverseTime, TimeUnit.SECONDS));
         CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);
         carGenerateEvent.schedule(section, new TimeSpan(timeBetweenCarArrivals, TimeUnit.SECONDS));
     }

@@ -17,7 +17,7 @@ public class RoundaboutSimulationModel extends Model {
     public static final double MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
     public static final double MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
 
-    private static final double MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS = 0.2;
+    private static final double MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS = 1;
 
     private static final long MODEL_SEED = new Random().nextLong();
     private static final TimeUnit MODEL_TIME_UNIT = TimeUnit.SECONDS;

@@ -62,6 +62,9 @@ public class RouteController {
 //    }
 
     public IRoute getRandomRoute() {
+        if (this.routes.isEmpty()) {
+            throw new IllegalStateException("Routes must not be empty");
+        }
         int randNr = new Random().nextInt(this.routes.size());
         AbstractSource source =  this.sources.get(randNr);
 

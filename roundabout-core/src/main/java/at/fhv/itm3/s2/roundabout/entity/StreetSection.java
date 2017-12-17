@@ -8,9 +8,13 @@ import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
+import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
+import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import desmoj.core.simulator.Model;
+import desmoj.core.simulator.TimeSpan;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class StreetSection extends Street {
 
@@ -293,6 +297,10 @@ public class StreetSection extends Street {
     public void carEnter(Car car) {
         ICar iCar = CarController.getICar(car);
         addCar(iCar);
+        iCar.traverseToNextSection();
+        double traverseTime = iCar.getTimeToTraverseCurrentSection();
+        CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
+        carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, TimeUnit.SECONDS));
     }
 
     @Override

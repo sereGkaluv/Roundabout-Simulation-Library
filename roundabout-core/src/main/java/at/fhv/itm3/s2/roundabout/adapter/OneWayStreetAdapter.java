@@ -7,6 +7,8 @@ import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutCar;
+import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import desmoj.core.simulator.Model;
 
 import java.util.LinkedList;
@@ -118,6 +120,7 @@ public class OneWayStreetAdapter extends Street {
                     nextSection.addCar(firstCar);
                     // Move logically first car to next section.
                     firstCar.traverseToNextSection();
+
                 } else {
                     throw new IllegalStateException("RoundaboutCar can not move further. Next section does not exist.");
                 }

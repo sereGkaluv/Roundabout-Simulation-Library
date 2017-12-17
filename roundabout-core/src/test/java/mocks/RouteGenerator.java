@@ -119,7 +119,7 @@ public class RouteGenerator {
         sink2.setPreviousStreetConnector(connector2_2);
 
         // initialize source and route
-        AbstractSource source2 = new SourceAdapter(model, "", false, street2_1);
+        AbstractSource source2 = new RoundaboutSourceMock(model, "", false, street2_1, 2, this, RouteType.ONE_ONEWAYSTREET_ONE_STREETSECTION);
 
         IRoute route2 = new Route();
         route2.addSource(source2);
