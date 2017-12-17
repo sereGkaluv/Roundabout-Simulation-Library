@@ -249,7 +249,7 @@ public class StreetSection extends Street {
 
     private double getCarPosition(ICar car) {
         if (car != null) {
-            return getCarPositions().get(car);
+            return getCarPositions().getOrDefault(car, INITIAL_CAR_POSITION);
         }
         return -1;
     }
