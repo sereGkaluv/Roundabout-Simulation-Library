@@ -1,7 +1,8 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Created by manue on 12.12.2017.

@@ -2,9 +2,9 @@ package at.fhv.itm3.s2.roundabout;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.persistence.model.DTO;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
 import desmoj.core.simulator.Model;
 

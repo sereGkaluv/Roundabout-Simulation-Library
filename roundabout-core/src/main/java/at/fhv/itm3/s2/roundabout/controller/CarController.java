@@ -2,7 +2,6 @@ package at.fhv.itm3.s2.roundabout.controller;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutCar;
 
 import java.util.HashMap;
 import java.util.Map;
