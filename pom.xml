@@ -35,6 +35,33 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
+                            <docletArtifact>
+                                <groupId>nl.talsmasoftware</groupId>
+                                <artifactId>umldoclet</artifactId>
+                                <version>1.0.14</version>
+                            </docletArtifact>
+                            <additionalparam>
+                                -umlIncludeProtectedFields false
+                                -umlImageFormat PNG
+                                -umlImageDirectory ../../../images/uml-class
+                            </additionalparam>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -65,6 +92,18 @@
             <version>2.5.1e</version>
             <scope>system</scope>
             <systemPath>${local.repository.folder}/desmoj-2.5.1e-bin.jar</systemPath>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/nl.talsmasoftware/umldoclet -->
+        <dependency>
+            <groupId>nl.talsmasoftware</groupId>
+            <artifactId>umldoclet</artifactId>
+            <version>1.0.14</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.sourceforge.plantuml/plantuml -->
+        <dependency>
+            <groupId>net.sourceforge.plantuml</groupId>
+            <artifactId>plantuml</artifactId>
+            <version>8059</version>
         </dependency>
     </dependencies>
 
