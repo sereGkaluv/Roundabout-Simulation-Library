@@ -23,7 +23,7 @@ public class RoundaboutCar implements ICar {
     private Street nextSection;
 
     public RoundaboutCar(Car car, double length, IDriverBehaviour driverBehaviour, IRoute route)
-            throws IllegalArgumentException {
+    throws IllegalArgumentException {
 
         if (car != null) {
             this.car = car;

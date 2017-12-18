@@ -3,6 +3,7 @@ package at.fhv.itm3.s2.roundabout.api.entity;
 import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
 import desmoj.core.simulator.Model;
 
+import java.util.List;
 import java.util.Map;
 
 public abstract class Street extends AbstractConsumer {
@@ -40,6 +41,15 @@ public abstract class Street extends AbstractConsumer {
      * @return last car in section.
      */
     public abstract ICar getLastCar();
+
+    /**
+     * Returns car queue of this {@link Street}.
+     *
+     * @return unmodifiable car queue.
+     * @throws IllegalStateException in case if queue equals null.
+     */
+    public abstract List<ICar> getCarQueue()
+    throws IllegalStateException;
 
     /**
      * Removes the first car of the queue and returns the first car.

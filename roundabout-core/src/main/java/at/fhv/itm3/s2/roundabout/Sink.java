@@ -8,6 +8,7 @@ import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
 import desmoj.core.simulator.Model;
 
+import java.util.List;
 import java.util.Map;
 
 public class Sink extends Street {
@@ -36,6 +37,12 @@ public class Sink extends Street {
 
     @Override
     public ICar getLastCar() {
+        return null;
+    }
+
+    @Override
+    public List<ICar> getCarQueue()
+    throws IllegalStateException {
         return null;
     }
 

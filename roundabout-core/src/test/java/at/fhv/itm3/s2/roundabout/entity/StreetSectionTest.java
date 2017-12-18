@@ -1,5 +1,6 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
+import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
@@ -8,10 +9,11 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class StreetSectionTest {
@@ -254,7 +256,7 @@ public class StreetSectionTest {
 
 
     @Test
-    public void moveFirstCarToNextSection_firstCarEqualNull() throws Exception {
+    public void moveFirstCarToNextSection_firstCarEqualNull() {
         // if firstCar is null, the method getNextStreetSection should not be called
         Street streetSectionMock = mock(StreetSection.class);
         ICar firstCarMock = mock(RoundaboutCar.class);
@@ -267,7 +269,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void moveFirstCarToNextSection_currentSectionIsEqualDestination() throws Exception {
+    public void moveFirstCarToNextSection_currentSectionIsEqualDestination() {
         // if currentSection (=this) is the same as destination of the car
         // the method getNextStreetSection should not be called
         Street currentSectionMock = mock(StreetSection.class);
@@ -284,7 +286,7 @@ public class StreetSectionTest {
     }
 
     @Test
-    public void moveFirstCarToNextSection_currentSectionIsNotEqualDestination() throws Exception {
+    public void moveFirstCarToNextSection_currentSectionIsNotEqualDestination() {
         // if currentSection (=this) is not the same as destination of the car
         // the method getNextStreetSection should be called once
         ICar firstCarMock = mock(RoundaboutCar.class);
@@ -302,5 +304,55 @@ public class StreetSectionTest {
 
         currentSectionMock.moveFirstCarToNextSection();
         verify(firstCarMock, times(1)).getNextSection();
+    }
+
+    @Test
+    public void updateAllCarsPositions_noCars() {
+        Street streetSectionMock = mock(StreetSection.class);
+        Map<ICar, Double> carPositions = streetSectionMock.getCarPositions();
+
+        streetSectionMock.updateAllCarsPositions();
+
+        // Actually nothing should happen, no exceptions should be thrown.
+        assertThat(carPositions, is(streetSectionMock.getCarPositions()));
+    }
+
+    @Test (expected = NullPointerException.class)
+    public void updateAllCarsPositions_oneCar() {
+        RoundaboutSimulationModel modelMock = mock(RoundaboutSimulationModel.class);
+        when(modelMock.getCurrentTime()).thenReturn(10.0);
+        when(modelMock.getRandomDistanceFactorBetweenCars()).thenReturn(0.5);
+
+        LinkedList<ICar> carQueue = new LinkedList<>();
+        Map<ICar, Double> carPositions = new HashMap<>();
+
+        Street streetSectionMock = mock(StreetSection.class);
+        when(streetSectionMock.getModel()).thenReturn(modelMock);
+        when(streetSectionMock.getLength()).thenReturn(100.0);
+        when(streetSectionMock.getCarQueue()).thenReturn(carQueue);
+        when(streetSectionMock.getCarPositions()).thenReturn(carPositions);
+        doCallRealMethod().when(streetSectionMock).updateAllCarsPositions();
+
+        IDriverBehaviour driverBehaviour = new DriverBehaviour(
+            5,
+            1,
+            4,
+            1.5
+        );
+
+        ICar carMock = mock(RoundaboutCar.class);
+        when(carMock.getDriverBehaviour()).thenReturn(driverBehaviour);
+        when(carMock.getLastUpdateTime()).thenReturn(0.0);
+
+        carQueue.addLast(carMock);
+        carPositions.put(carMock, 0.0);
+
+        streetSectionMock.updateAllCarsPositions();
+
+        // At this point NPE exception will be thrown, unfortunately there is no proper way
+        // to test this method functionality, because implementation relies on "carPositions" field
+        // that can not be initialised using mocks. So there is nothing more to check but only
+        // if NPE is thrown. If we are so far, logic flow may be considered to be ok, however position
+        // calculations may be absolutely wrong.
     }
 }

@@ -28,10 +28,10 @@ public class CarGenerateEventTest {
     }
 
     @Test
-    public void eventRoutineTest() throws Exception {
+    public void eventRoutineTest() {
         StreetSection section = new StreetSection(
             10.0,
-                roundaboutSimulationModel,
+            roundaboutSimulationModel,
             null,
             false
         );

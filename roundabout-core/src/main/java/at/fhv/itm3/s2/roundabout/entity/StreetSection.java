@@ -20,8 +20,6 @@ public class StreetSection extends Street {
 
     private static final double INITIAL_CAR_POSITION = 0;
 
-    private final RoundaboutSimulationModel roundaboutSimulationModel;
-
     private final double length;
 
     private final LinkedList<ICar> carQueue;
@@ -43,12 +41,6 @@ public class StreetSection extends Street {
 
         this.carQueue = new LinkedList<>();
         this.carPositions = new HashMap<>();
-
-        if (model instanceof RoundaboutSimulationModel) {
-            this.roundaboutSimulationModel = (RoundaboutSimulationModel) model;
-        } else {
-            throw new IllegalArgumentException("Not suitable roundaboutSimulationModel.");
-        }
     }
 
     @Override
@@ -61,6 +53,7 @@ public class StreetSection extends Street {
         if (carQueue == null) {
             throw new IllegalStateException("carQueue in section cannot be null");
         }
+
         carQueue.addLast(car);
         carPositions.put(car, INITIAL_CAR_POSITION);
         this.carCounter++;
@@ -73,30 +66,37 @@ public class StreetSection extends Street {
 
     @Override
     public ICar getFirstCar() {
-        if (carQueue == null) {
-            throw new IllegalStateException("carQueue in section cannot be null");
-        }
+        final List<ICar> carQueue = getCarQueue();
 
         if (carQueue.size() > 0) {
-            return carQueue.getFirst();
+            return carQueue.get(0);
         }
         return null;
     }
 
     @Override
     public ICar getLastCar() {
-        if (carQueue == null) {
-            throw new IllegalStateException("carQueue in section cannot be null");
-        }
+        final List<ICar> carQueue = getCarQueue();
 
         if (carQueue.size() > 0) {
-            return carQueue.getLast();
+            return carQueue.get(carQueue.size() - 1);
         }
         return null;
     }
 
     @Override
+    public List<ICar> getCarQueue()
+    throws IllegalStateException {
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        }
+
+        return Collections.unmodifiableList(carQueue);
+    }
+
+    @Override
     public boolean isEmpty() {
+        final List<ICar> carQueue = getCarQueue();
         return carQueue.isEmpty();
     }
 
@@ -127,7 +127,8 @@ public class StreetSection extends Street {
 
     @Override
     public void updateAllCarsPositions() {
-        final double currentTime = roundaboutSimulationModel.getCurrentTime();
+        final double currentTime = getRoundaboutModel().getCurrentTime();
+        final List<ICar> carQueue = getCarQueue();
 
         // Updating positions for all cars.
         ICar previousCar = null;
@@ -141,7 +142,7 @@ public class StreetSection extends Street {
             final double distanceToNextCar = calculateDistanceToNextCar(
                 carDriverBehaviour.getMinDistanceToNextCar(),
                 carDriverBehaviour.getMaxDistanceToNextCar(),
-                roundaboutSimulationModel.getRandomDistanceFactorBetweenCars()
+                getRoundaboutModel().getRandomDistanceFactorBetweenCars()
             );
 
             // Calculate possible car positions.
@@ -299,7 +300,9 @@ public class StreetSection extends Street {
         addCar(iCar);
         iCar.traverseToNextSection();
         double traverseTime = iCar.getTimeToTraverseCurrentSection();
-        CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
+        CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(
+            getRoundaboutModel()
+        );
         carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, TimeUnit.SECONDS));
     }
 
@@ -311,5 +314,14 @@ public class StreetSection extends Street {
     @Override
     public DTO toDTO() {
         return null;
+    }
+
+    private RoundaboutSimulationModel getRoundaboutModel() {
+        final Model model = getModel();
+        if (model instanceof RoundaboutSimulationModel) {
+            return (RoundaboutSimulationModel) model;
+        } else {
+            throw new IllegalArgumentException("Not suitable roundaboutSimulationModel.");
+        }
     }
 }
