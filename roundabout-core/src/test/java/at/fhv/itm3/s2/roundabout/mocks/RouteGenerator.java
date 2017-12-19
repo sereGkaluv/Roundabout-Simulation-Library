@@ -1,4 +1,4 @@
-package mocks;
+package at.fhv.itm3.s2.roundabout.mocks;
 
 import at.fhv.itm14.trafsim.model.entities.OneWayStreet;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;

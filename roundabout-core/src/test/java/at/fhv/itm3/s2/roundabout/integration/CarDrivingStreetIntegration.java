@@ -1,4 +1,4 @@
-package integrationTests;
+package at.fhv.itm3.s2.roundabout.integration;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
@@ -6,15 +6,15 @@ import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.TimeInstant;
-import mocks.RouteGenerator;
-import mocks.RouteType;
+import at.fhv.itm3.s2.roundabout.mocks.RouteGenerator;
+import at.fhv.itm3.s2.roundabout.mocks.RouteType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class IntegrationTest {
+public class CarDrivingStreetIntegration {
 
     private RoundaboutSimulationModel model;
     private Experiment exp;
