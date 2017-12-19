@@ -29,39 +29,6 @@ public class CarDrivingStreetIntegration {
     }
 
     @Test
-    public void destinationReached() {
-
-        long start = System.currentTimeMillis();
-        long timeout = 300000; //5 min in milliseconds
-
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
-
-        RouteGenerator routeGenerator = new RouteGenerator(model);
-        IRoute route = routeGenerator.getRoute(RouteType.TWO_STREETSECTIONS);
-        AbstractSource source = route.getSource();
-
-        Street destinationSection = route.getDestinationSection();
-        source.startGeneratingCars();
-        exp.start();
-
-        long current = System.currentTimeMillis();
-        when(destinationSection.getFirstCar().getDestination().getIdentNumber()).thenReturn(Long.valueOf(3));
-
-        while (destinationSection.isEmpty() && current < start + timeout){
-            current = System.currentTimeMillis();
-        }
-
-        if(!destinationSection.isEmpty()){
-            if(destinationSection.getFirstCar() != null) { //Problem: is always empty
-                Assert.assertEquals(destinationSection.getIdentNumber(), destinationSection.getFirstCar().getDestination().getIdentNumber());
-            }
-        }
-        exp.finish();
-        Assert.fail();
-    }
-
-
-    @Test
     public void twoStreetSectionsTwoCars_carsShouldEnterSinks() {
 
         exp.stop(new TimeInstant(60,TimeUnit.SECONDS));
