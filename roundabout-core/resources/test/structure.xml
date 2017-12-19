@@ -11,26 +11,35 @@
     <!-- structure -->
     <structure tracks="2">
         <sections>
+            <in probability="0.2"/>
             <section length="9.0" />
             <section length="10.0" />
-            <!-- adapter to trafsim library -->
-            <out streetId="" />
+            <!-- adapter to trafsim library via streetId -->
+            <out probability="0.2" streetId="" />
         </sections>
         <sections>
+            <in probability="0.2"/>
             <section length="9.0" />
             <section length="10.0" />
+            <out probability="0.2"/>
         </sections>
         <sections>
+            <in probability="0.2"/>
             <section length="9.0" />
             <section length="10.0" />
+            <out probability="0.2"/>
         </sections>
         <sections>
+            <in probability="0.2"/>
             <section length="9.0" />
             <section length="10.0" />
+            <out probability="0.2"/>
         </sections>
         <sections>
+            <in probability="0.2"/>
             <section length="9.0" />
             <section length="10.0" />
+            <out probability="0.2"/>
         </sections>
     </structure>
 </roundabout>
