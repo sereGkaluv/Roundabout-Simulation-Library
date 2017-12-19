@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<roundabout>
+    <!-- global parameters needed for simulation -->
+    <parameters>
+        <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="0.1" />
+        <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="1.0" />
+        <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="3.0" />
+        <parameter name="MAX_TIME_BETWEEN_CAR_ARRIVALS" value="10.0" />
+        <parameter name="MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS" value="1.0" />
+    </parameters>
+    <!-- structure -->
+    <structure tracks="2">
+        <sections>
+            <section length="9.0" />
+            <section length="10.0" />
+            <!-- adapter to trafsim library -->
+            <out streetId="" />
+        </sections>
+        <sections>
+            <section length="9.0" />
+            <section length="10.0" />
+        </sections>
+        <sections>
+            <section length="9.0" />
+            <section length="10.0" />
+        </sections>
+        <sections>
+            <section length="9.0" />
+            <section length="10.0" />
+        </sections>
+        <sections>
+            <section length="9.0" />
+            <section length="10.0" />
+        </sections>
+    </structure>
+</roundabout>
