@@ -2,6 +2,7 @@ package at.fhv.itm3.s2.roundabout.integration;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
+import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.mocks.RouteGenerator;
@@ -46,18 +47,15 @@ public class DestinationReachedIntegration {
         exp.start();
 
         long current = System.currentTimeMillis();
-        when(destinationSection.getFirstCar().getDestination().getIdentNumber()).thenReturn(Long.valueOf(3));
 
         while (destinationSection.isEmpty() && current < start + timeout){
             current = System.currentTimeMillis();
         }
+        exp.finish();
 
         if(!destinationSection.isEmpty()){
-            if(destinationSection.getFirstCar() != null) { //Problem: is always empty
-                Assert.assertEquals(destinationSection.getIdentNumber(), destinationSection.getFirstCar().getDestination().getIdentNumber());
-            }
+            Assert.assertEquals(3, destinationSection.getIdentNumber());
         }
-        exp.finish();
         Assert.fail();
     }
 }

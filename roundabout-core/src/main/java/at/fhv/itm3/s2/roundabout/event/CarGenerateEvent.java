@@ -54,7 +54,6 @@ public class CarGenerateEvent extends Event<Street> {
         }
 
         routeController = RouteController.getInstance(roundaboutSimulationModel);
-
     }
 
     /**
