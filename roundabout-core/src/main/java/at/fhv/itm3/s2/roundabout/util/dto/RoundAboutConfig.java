@@ -1,5 +1,6 @@
 package at.fhv.itm3.s2.roundabout.util.dto;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
@@ -7,22 +8,22 @@ import java.util.List;
         name = "roundabout"
 )
 public class RoundAboutConfig {
-    private List<Parameter> parameters;
-    private List<Sections> structure;
+    private Parameters parameters;
+    private Structure structure;
 
-    public List<Parameter> getParameters() {
+    public Parameters getParameters() {
         return parameters;
     }
 
-    public void setParameters(List<Parameter> parameters) {
+    public void setParameters(Parameters parameters) {
         this.parameters = parameters;
     }
 
-    public List<Sections> getStructure() {
+    public Structure getStructure() {
         return structure;
     }
 
-    public void setStructure(List<Sections> structure) {
+    public void setStructure(Structure structure) {
         this.structure = structure;
     }
 }
