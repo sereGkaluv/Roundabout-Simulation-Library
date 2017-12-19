@@ -46,8 +46,9 @@ public class DestinationReachedIntegration {
 
         if(!destinationSection.isEmpty()){
             Assert.assertEquals("car never reached destination.",31, destinationSection.getIdentNumber());
+        } else {
+            Assert.fail();
         }
-        Assert.fail();
     }
 }
 
