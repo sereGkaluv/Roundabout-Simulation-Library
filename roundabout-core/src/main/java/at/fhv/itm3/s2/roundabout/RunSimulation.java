@@ -31,7 +31,7 @@ public class RunSimulation implements ILogger {
     }
 
     private static String getArgOrDefault(String[] array, int index, String defaultValue){
-        if(array.length>index){
+        if(array.length > index){
             return array[index];
         }
         return defaultValue;

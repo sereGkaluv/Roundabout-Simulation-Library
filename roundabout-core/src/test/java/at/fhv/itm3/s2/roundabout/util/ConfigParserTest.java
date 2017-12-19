@@ -11,6 +11,8 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_parseExampleXml() throws ConfigParserException {
         URL path = getClass().getClassLoader().getResource("test/roundabout.xml");
+        assertNotNull(path);
+
         RoundAboutConfig roundAboutConfig = ConfigParser.loadConfig(path.getPath());
 
         assertNotNull("parameters attribute not null",roundAboutConfig.getParameters());

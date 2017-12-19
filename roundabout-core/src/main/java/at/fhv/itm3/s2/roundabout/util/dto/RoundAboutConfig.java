@@ -1,12 +1,8 @@
 package at.fhv.itm3.s2.roundabout.util.dto;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
-@XmlRootElement(
-        name = "roundabout"
-)
+@XmlRootElement(name = "roundabout")
 public class RoundAboutConfig {
     private Parameters parameters;
     private Structure structure;
