@@ -32,30 +32,22 @@ public class DestinationReachedIntegration {
 
     @Test
     public void destinationReached() {
-
-        long start = System.currentTimeMillis();
-        long timeout = 300000; //5 min in milliseconds
-
         exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
 
         RouteGenerator routeGenerator = new RouteGenerator(model);
-        IRoute route = routeGenerator.getRoute(RouteType.TWO_STREETSECTIONS);
+        IRoute route = routeGenerator.getRoute(RouteType.TWO_STREETSECTIONS_ONE_CAR);
         AbstractSource source = route.getSource();
-
         Street destinationSection = route.getDestinationSection();
+
         source.startGeneratingCars();
+
         exp.start();
-
-        long current = System.currentTimeMillis();
-
-        while (destinationSection.isEmpty() && current < start + timeout){
-            current = System.currentTimeMillis();
-        }
         exp.finish();
 
         if(!destinationSection.isEmpty()){
-            Assert.assertEquals(3, destinationSection.getIdentNumber());
+            Assert.assertEquals("car never reached destination.",31, destinationSection.getIdentNumber());
         }
         Assert.fail();
     }
 }
+
