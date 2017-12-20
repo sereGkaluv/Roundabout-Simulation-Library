@@ -2,6 +2,7 @@
 <roundabout>
     <!-- global parameters needed for simulation -->
     <parameters>
+        <parameter name="SIMULATION_SEED" value="1" />
         <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="0.1" />
         <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="1.0" />
         <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="3.0" />
