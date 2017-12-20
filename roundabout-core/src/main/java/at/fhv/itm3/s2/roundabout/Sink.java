@@ -8,15 +8,18 @@ import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
 import desmoj.core.simulator.Model;
 
-import java.util.List;
+import java.util.*;
 import java.util.Map;
 
 public class Sink extends Street {
 
     private IStreetConnector previousStreetConnector;
+    private final LinkedList<ICar> carQueue;
 
     public Sink(Model model, String s, boolean b) {
+
         super(model, s, b);
+        this.carQueue = new LinkedList<>();
     }
 
     @Override
@@ -26,12 +29,22 @@ public class Sink extends Street {
 
     @Override
     public void addCar(ICar car) {
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        }
+
+        carQueue.addLast(car);
         this.carCounter++;
         CarController.removeCarMapping(car);
     }
 
     @Override
     public ICar getFirstCar() {
+        final List<ICar> carQueue = getCarQueue();
+
+        if (carQueue.size() > 0) {
+            return carQueue.get(0);
+        }
         return null;
     }
 
@@ -43,7 +56,11 @@ public class Sink extends Street {
     @Override
     public List<ICar> getCarQueue()
     throws IllegalStateException {
-        return null;
+        if (carQueue == null) {
+            throw new IllegalStateException("carQueue in section cannot be null");
+        }
+
+        return Collections.unmodifiableList(carQueue);
     }
 
     @Override
