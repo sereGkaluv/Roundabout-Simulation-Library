@@ -14,13 +14,15 @@ import static org.junit.Assert.*;
 
 public class ConfigParserTest {
     private RoundAboutConfig roundAboutConfig;
+    private ConfigParser configParser;
 
     @Before
     public void setUp() throws ConfigParserException {
         URL path = getClass().getClassLoader().getResource("test/roundabout.xml");
         assertNotNull(path);
 
-        roundAboutConfig = ConfigParser.loadConfig(path.getPath());
+        configParser = new ConfigParser(path.getPath());
+        roundAboutConfig = configParser.loadConfig();
     }
 
     @Test
@@ -41,8 +43,9 @@ public class ConfigParserTest {
     }
 
     @Test
-    public void configParserTest_roundaboutSectionsLoaded() {
+    public void configParserTest_roundaboutDataLoaded() {
         assertNotNull("roundabout sections loaded", roundAboutConfig.getRoundabout().getSections());
+        assertEquals("roundabout correct name", "Kreisverkehr Dornbirn Süd", roundAboutConfig.getRoundabout().getName());
         assertEquals("5 sections loaded in roundabout", 5, roundAboutConfig.getRoundabout().getSections().getSection().size());
     }
 
@@ -97,13 +100,14 @@ public class ConfigParserTest {
     @Test(expected = ConfigParserException.class)
     public void configParserTest_fileNotFound() throws ConfigParserException {
         String file = "not_exists.xml";
-        ConfigParser.loadConfig(file);
+        ConfigParser configParser = new ConfigParser(file);
+        roundAboutConfig = configParser.loadConfig();
     }
 
     @Test
     public void configParserTest_generateModel() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
-        IRoundaboutStructure roundaboutStructure = ConfigParser.generateStructure(roundAboutConfig, exp);
+        IRoundaboutStructure roundaboutStructure = configParser.generateStructure(roundAboutConfig, exp);
 
         assertNotNull("has connectors", roundaboutStructure.getStreetConnectors());
         assertEquals("has 5 street connectors", 5, roundaboutStructure.getStreetConnectors().size());
@@ -115,7 +119,7 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_connectorsHaveData() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
-        IRoundaboutStructure roundaboutStructure = ConfigParser.generateStructure(roundAboutConfig, exp);
+        IRoundaboutStructure roundaboutStructure = configParser.generateStructure(roundAboutConfig, exp);
 
         for (IStreetConnector connector : roundaboutStructure.getStreetConnectors()) {
             assertNotEquals("next street sections not empty", 0, connector.getNextSections().size());

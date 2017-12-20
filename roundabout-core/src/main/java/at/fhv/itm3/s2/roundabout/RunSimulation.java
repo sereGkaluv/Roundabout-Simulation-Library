@@ -19,8 +19,9 @@ public class RunSimulation implements ILogger {
 
         String roundaboutConfigFileName = getArgOrDefault(args, 0, DEFAULT_ROUNDABOUT_CONFIG_FILENAME);
         try {
-            RoundAboutConfig roundAboutConfig = ConfigParser.loadConfig(roundaboutConfigFileName);
-            IRoundaboutStructure roundAboutModel = ConfigParser.generateStructure(roundAboutConfig, exp);
+            ConfigParser configParser = new ConfigParser(roundaboutConfigFileName);
+            RoundAboutConfig roundAboutConfig = configParser.loadConfig();
+            IRoundaboutStructure roundAboutModel = configParser.generateStructure(roundAboutConfig, exp);
         } catch (ConfigParserException e) {
             LOGGER.error(e);
         }

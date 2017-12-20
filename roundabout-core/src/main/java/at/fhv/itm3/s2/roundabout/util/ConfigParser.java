@@ -23,7 +23,11 @@ import java.util.Set;
 public class ConfigParser {
     private String filename;
 
-    public static RoundAboutConfig loadConfig(String filename) throws ConfigParserException {
+    public ConfigParser(String filename) {
+        this.filename = filename;
+    }
+
+    public RoundAboutConfig loadConfig() throws ConfigParserException {
         File configFile = new File(filename);
         if (!configFile.exists()) {
             throw new ConfigParserException("no such config file " + filename);
@@ -31,7 +35,7 @@ public class ConfigParser {
         return JAXB.unmarshal(configFile, RoundAboutConfig.class);
     }
 
-    public static IRoundaboutStructure generateStructure(RoundAboutConfig roundAboutConfig, Experiment experiment) throws ConfigParserException {
+    public IRoundaboutStructure generateStructure(RoundAboutConfig roundAboutConfig, Experiment experiment) throws ConfigParserException {
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, roundAboutConfig.getRoundabout().getName(), false, false);
         model.connectToExperiment(experiment);
 
@@ -83,7 +87,7 @@ public class ConfigParser {
         return roundaboutStructure;
     }
 
-    private static void addConnector(Set<StreetConnector> connectors, Set<Street> startPreviousSections, Set<Street> startNextSections, Set<Street> endPreviousSections, Set<Street> endNextSections, int iterationCount, int lastIteration) {
+    private void addConnector(Set<StreetConnector> connectors, Set<Street> startPreviousSections, Set<Street> startNextSections, Set<Street> endPreviousSections, Set<Street> endNextSections, int iterationCount, int lastIteration) {
         if (iterationCount == lastIteration) {
             StreetConnector streetConnector = new StreetConnector(startPreviousSections, startNextSections);
             connectors.add(streetConnector);
@@ -97,7 +101,7 @@ public class ConfigParser {
         }
     }
 
-    private static void generateExit(IRoundaboutStructure structure, Set<Street> endNextSections, Section section) throws ConfigParserException {
+    private void generateExit(IRoundaboutStructure structure, Set<Street> endNextSections, Section section) throws ConfigParserException {
         if (section.getExit() != null) {
             if (section.getExit().getConnectorId() != null) {
                 //TODO connection to trafsim intersection
@@ -112,7 +116,7 @@ public class ConfigParser {
         }
     }
 
-    private static void generateEntries(IRoundaboutStructure structure, Set<Street> startPreviousSections, Section section) throws ConfigParserException {
+    private void generateEntries(IRoundaboutStructure structure, Set<Street> startPreviousSections, Section section) throws ConfigParserException {
         for (Entry entry : section.getEntry()) {
             if (entry.getConnectorId() != null) {
                 //TODO connection from trafsim intersection
@@ -132,7 +136,7 @@ public class ConfigParser {
         }
     }
 
-    private static void generateTracks(IRoundaboutStructure structure, Set<Street> startNextSections, Set<Street> endPreviousSections, Section section) throws ConfigParserException {
+    private void generateTracks(IRoundaboutStructure structure, Set<Street> startNextSections, Set<Street> endPreviousSections, Section section) throws ConfigParserException {
         for (Track track : section.getTrack()) {
             double length;
             try {
