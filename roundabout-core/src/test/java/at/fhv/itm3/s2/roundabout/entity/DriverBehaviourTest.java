@@ -16,7 +16,7 @@ public class DriverBehaviourTest {
         double maxDistanceToNextCar = 5.0;
         double mergeFactor = 1.5;
 
-        IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0,5.0, 1.5);
+        IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0,5.0, 1.5, 1);
         Assert.assertEquals(speed, driverBehaviour.getSpeed(), 0.0);
         Assert.assertEquals(minDistanceToNextCar, driverBehaviour.getMinDistanceToNextCar(), 0.0);
         Assert.assertEquals(maxDistanceToNextCar, driverBehaviour.getMaxDistanceToNextCar(), 0.0);
@@ -78,7 +78,7 @@ public class DriverBehaviourTest {
     }
 
     private IDriverBehaviour createDriverBehaviour() {
-        return  new DriverBehaviour(10.0, 2.0,5.0, 1.5);
+        return  new DriverBehaviour(10.0, 2.0,5.0, 1.5, 1);
     }
 
 }

@@ -1,11 +1,13 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
+import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.adapter.OneWayStreetAdapter;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import desmoj.core.simulator.Model;
 
 import java.util.Iterator;
 
@@ -74,7 +76,7 @@ public class RoundaboutCar implements ICar {
     @Override
     public double getTimeToTraverseCurrentSection() {
 
-        return getTimeToTraverseSection(this.getCurrentSection());
+        return getTimeToTraverseSection(getCurrentSection());
     }
 
     @Override
@@ -88,7 +90,7 @@ public class RoundaboutCar implements ICar {
             }
 
             double remainingLength = section.getLength() - carPosition;
-            return remainingLength / this.getDriverBehaviour().getSpeed();
+            return remainingLength / getDriverBehaviour().getSpeed();
         } else if (section instanceof OneWayStreetAdapter) {
             return 0; // TODO: is that enough?
         } else {
@@ -98,8 +100,19 @@ public class RoundaboutCar implements ICar {
 
     @Override
     public double getTransitionTime() {
-        //TODO getTransitionTime()
-        return 3;
+        final double currentTime = getRoundaboutModel().getCurrentTime();
+        final double minPossibleTransitionTime = getTimeToTraverseCurrentSection();
+        final double carLastUpdateTime = getLastUpdateTime();
+
+        if ((currentTime - carLastUpdateTime) > minPossibleTransitionTime) {
+            final double standardCarAccelerationTime = getRoundaboutModel().getStandardCarAccelerationTime();
+            final double carAccelerationFactor = getDriverBehaviour().getAccelerationFactor();
+            final double carAccelerationTime = standardCarAccelerationTime * carAccelerationFactor;
+
+            return minPossibleTransitionTime + carAccelerationTime;
+        }
+
+        return minPossibleTransitionTime;
     }
 
     @Override
@@ -138,7 +151,17 @@ public class RoundaboutCar implements ICar {
         return route.getDestinationSection();
     }
 
+    private RoundaboutSimulationModel getRoundaboutModel() {
+        final Model model = getOldImplementationCar().getModel();
+        if (model instanceof RoundaboutSimulationModel) {
+            return (RoundaboutSimulationModel) model;
+        } else {
+            throw new IllegalArgumentException("Not suitable roundaboutSimulationModel.");
+        }
+    }
+
     private Street retrieveNextRouteSection() {
         return routeIterator.hasNext() ? routeIterator.next() : null;
     }
+
 }

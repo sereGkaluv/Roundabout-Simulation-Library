@@ -83,7 +83,6 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
             // car in the section needs to move away from its current position (this time is depending on whether the
             // car is standing or driving
             if(!donorSection.isEmpty()) {
-                donorSection.updateAllCarsPositions();
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
                     donorSection,
                     new TimeSpan(donorSection.getFirstCar().getTransitionTime(), TimeUnit.SECONDS)
