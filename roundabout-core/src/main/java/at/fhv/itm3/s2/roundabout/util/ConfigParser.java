@@ -24,7 +24,7 @@ public class ConfigParser {
     public RoundaboutSimulationModel generateModel() throws ConfigParserException {
         RoundAboutConfig roundAboutConfig = loadConfig(filename);
 
-        RoundaboutSimulationModel model = new RoundaboutSimulationModel();
+        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
 
         return model;
     }

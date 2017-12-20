@@ -2,14 +2,14 @@ package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
-import desmoj.core.simulator.Experiment;
 import at.fhv.itm3.s2.roundabout.mocks.CarCouldLeaveSectionEventMock;
 import at.fhv.itm3.s2.roundabout.mocks.SectionMock;
+import desmoj.core.simulator.Experiment;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CarCouldLeaveSectionEventTest {
+public class CarCouldLeaveTrackEventTest {
 
     private RoundaboutSimulationModel model;
 

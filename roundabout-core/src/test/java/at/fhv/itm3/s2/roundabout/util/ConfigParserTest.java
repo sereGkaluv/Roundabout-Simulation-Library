@@ -1,7 +1,7 @@
 package at.fhv.itm3.s2.roundabout.util;
 
 import at.fhv.itm3.s2.roundabout.util.dto.RoundAboutConfig;
-import at.fhv.itm3.s2.roundabout.util.dto.Sections;
+import at.fhv.itm3.s2.roundabout.util.dto.Section;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_parametersLoaded() {
         assertNotNull("parameters attribute not null", roundAboutConfig.getParameters());
-        assertEquals("6 parameters loaded", 6, roundAboutConfig.getParameters().getParameter().size());
+        assertEquals("6 parameters loaded", 1, roundAboutConfig.getParameters().getParameter().size());
     }
 
     @Test
@@ -33,61 +33,61 @@ public class ConfigParserTest {
     }
 
     @Test
-    public void configParserTest_structureLoaded() {
-        assertNotNull("structure loaded", roundAboutConfig.getStructure());
+    public void configParserTest_roundaboutLoaded() {
+        assertNotNull("roundabout loaded", roundAboutConfig.getRoundabout());
     }
 
     @Test
-    public void configParserTest_sectionsLoaded() {
-        assertEquals("5 sections loaded in structure", 5, roundAboutConfig.getStructure().getSections().size());
+    public void configParserTest_roundaboutSectionsLoaded() {
+        assertEquals("5 sections loaded in roundabout", 5, roundAboutConfig.getRoundabout().getSections().getSection().size());
     }
 
     @Test
     public void configParserTest_sectionsDataLoaded() {
-        assertNotNull("sections has in", roundAboutConfig.getStructure().getSections().get(0).getIn());
-        assertEquals("sections has 2 in", 2, roundAboutConfig.getStructure().getSections().get(0).getIn().size());
-        assertNotNull("sections has out", roundAboutConfig.getStructure().getSections().get(0).getOut());
-        assertNotNull("sections has section", roundAboutConfig.getStructure().getSections().get(0).getSection());
+        assertNotNull("sections has in", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry());
+        assertEquals("sections has 2 in", 2, roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry().size());
+        assertNotNull("sections has out", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getExit());
+        assertNotNull("sections has section", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack());
 
-        assertNotNull("sections id", roundAboutConfig.getStructure().getSections().get(0).getId());
-        assertNotNull("sections previous", roundAboutConfig.getStructure().getSections().get(0).getPrevious());
-        assertNotNull("sections next", roundAboutConfig.getStructure().getSections().get(0).getNext());
+        assertNotNull("sections id", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getId());
+        assertNotNull("sections previous", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getPrevious());
+        assertNotNull("sections next", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getNext());
     }
 
     @Test
     public void configParserTest_sectionDataLoaded() {
-        assertNotNull("sections has section", roundAboutConfig.getStructure().getSections().get(0).getSection());
-        assertNotEquals("sections has section", 0, roundAboutConfig.getStructure().getSections().get(0).getSection().size());
-        assertNotNull("section has length", roundAboutConfig.getStructure().getSections().get(0).getSection().get(0).getLength());
-        assertNotNull("section has trackId", roundAboutConfig.getStructure().getSections().get(0).getSection().get(0).getTrackId());
+        assertNotNull("sections has section", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack());
+        assertNotEquals("section has tracks", 0, roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack().size());
+        assertNotNull("track has length", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack().get(0).getLength());
+        assertNotNull("track has id", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack().get(0).getId());
     }
 
     @Test
     public void configParserTest_inDataLoaded() {
-        assertNotNull("in has trackId", roundAboutConfig.getStructure().getSections().get(0).getIn().get(0).getTrackId());
-        assertNotNull("in has probability", roundAboutConfig.getStructure().getSections().get(0).getIn().get(0).getProbability());
+        assertNotNull("in has trackId", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry().get(0).getTrackId());
+        assertNotNull("in has probability", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry().get(0).getProbability());
 
         boolean hasStreetId = false;
-        for (Sections sections : roundAboutConfig.getStructure().getSections()) {
-            if (sections.getIn().get(0) != null && sections.getIn().get(0).getStreetId() != null) {
+        for (Section section : roundAboutConfig.getRoundabout().getSections().getSection()) {
+            if (section.getEntry().get(0) != null && section.getEntry().get(0).getConnectorId() != null) {
                 hasStreetId = true;
             }
         }
-        assertTrue("some out has streetId", hasStreetId);
+        assertTrue("some out has connectorId", hasStreetId);
     }
 
     @Test
     public void configParserTest_outDataLoaded() {
-        assertNotNull("out has trackId", roundAboutConfig.getStructure().getSections().get(0).getOut().getTrackId());
-        assertNotNull("out has probability", roundAboutConfig.getStructure().getSections().get(0).getOut().getProbability());
+        assertNotNull("out has trackId", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getExit().getTrackId());
+        assertNotNull("out has probability", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getExit().getProbability());
 
         boolean hasStreetId = false;
-        for (Sections sections : roundAboutConfig.getStructure().getSections()) {
-            if (sections.getOut().getStreetId() != null) {
+        for (Section section : roundAboutConfig.getRoundabout().getSections().getSection()) {
+            if (section.getExit().getConnectorId() != null) {
                 hasStreetId = true;
             }
         }
-        assertTrue("some out has streetId", hasStreetId);
+        assertTrue("some exit has connectorId", hasStreetId);
     }
 
     @Test(expected = ConfigParserException.class)

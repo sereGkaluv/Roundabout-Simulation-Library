@@ -2,10 +2,10 @@ package at.fhv.itm3.s2.roundabout.util.dto;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-public class In {
+public class Entry {
     private String probability;
     private String trackId;
-    private String streetId;
+    private String connectorId;
 
     @XmlAttribute
     public String getProbability() {
@@ -26,11 +26,11 @@ public class In {
     }
 
     @XmlAttribute
-    public String getStreetId() {
-        return streetId;
+    public String getConnectorId() {
+        return connectorId;
     }
 
-    public void setStreetId(String streetId) {
-        this.streetId = streetId;
+    public void setConnectorId(String connectorId) {
+        this.connectorId = connectorId;
     }
 }
