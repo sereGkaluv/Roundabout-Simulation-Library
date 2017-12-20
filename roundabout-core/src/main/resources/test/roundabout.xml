@@ -9,37 +9,42 @@
         <parameter name="MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS" value="1.0" />
     </parameters>
     <!-- structure -->
-    <structure tracks="2">
-        <sections>
-            <in probability="0.2"/>
-            <section length="9.0" />
-            <section length="10.0" />
+    <structure>
+        <sections id="1" previous="5" next="2">
+            <in probability="0.1" trackId="1"/>
+            <in probability="0.1" trackId="2"/>
+            <section length="10.0" trackId="1" />
+            <section length="9.0" trackId="2"/>
             <!-- adapter to trafsim library via streetId -->
-            <out probability="0.2" streetId="" />
+            <out probability="0.2" trackId="1" streetId="xyz" />
         </sections>
-        <sections>
-            <in probability="0.2"/>
-            <section length="9.0" />
-            <section length="10.0" />
-            <out probability="0.2"/>
+        <sections id="2" previous="1" next="3">
+            <in probability="0.1" trackId="2"/>
+            <in probability="0.1" trackId="3"/>
+            <section length="10.0" trackId="2" />
+            <section length="9.0" trackId="3"/>
+            <out probability="0.2" trackId="2" />
         </sections>
-        <sections>
-            <in probability="0.2"/>
-            <section length="9.0" />
-            <section length="10.0" />
-            <out probability="0.2"/>
+        <sections id="3" previous="2" next="4">
+            <in probability="0.1" trackId="3"/>
+            <in probability="0.1" trackId="4"/>
+            <section length="10.0" trackId="3" />
+            <section length="9.0" trackId="4"/>
+            <out probability="0.2" trackId="3" />
         </sections>
-        <sections>
-            <in probability="0.2"/>
-            <section length="9.0" />
-            <section length="10.0" />
-            <out probability="0.2"/>
+        <sections id="4" previous="3" next="5">
+            <in probability="0.1" trackId="4"/>
+            <in probability="0.1" trackId="5"/>
+            <section length="10.0" trackId="4" />
+            <section length="9.0" trackId="5"/>
+            <out probability="0.2" trackId="4" />
         </sections>
-        <sections>
-            <in probability="0.2"/>
-            <section length="9.0" />
-            <section length="10.0" />
-            <out probability="0.2"/>
+        <sections id="5" previous="4" next="1">
+            <in probability="0.1" trackId="5"/>
+            <in probability="0.1" trackId="1"/>
+            <section length="10.0" trackId="5" />
+            <section length="9.0" trackId="1"/>
+            <out probability="0.2" trackId="5" />
         </sections>
     </structure>
 </roundabout>

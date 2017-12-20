@@ -1,17 +1,48 @@
 package at.fhv.itm3.s2.roundabout.util.dto;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import java.util.List;
 
 public class Sections {
-    private In in;
+    private String id;
+    private String previous;
+    private String next;
+    private List<In> in;
     private Out out;
-    private List<Section> sections;
+    private List<Section> section;
 
-    public In getIn() {
+    @XmlAttribute
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @XmlAttribute
+    public String getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(String previous) {
+        this.previous = previous;
+    }
+
+    @XmlAttribute
+    public String getNext() {
+        return next;
+    }
+
+    public void setNext(String next) {
+        this.next = next;
+    }
+
+    public List<In> getIn() {
         return in;
     }
 
-    public void setIn(In in) {
+    public void setIn(List<In> in) {
         this.in = in;
     }
 
@@ -23,11 +54,11 @@ public class Sections {
         this.out = out;
     }
 
-    public List<Section> getSections() {
-        return sections;
+    public List<Section> getSection() {
+        return section;
     }
 
-    public void setSections(List<Section> sections) {
-        this.sections = sections;
+    public void setSection(List<Section> section) {
+        this.section = section;
     }
 }
