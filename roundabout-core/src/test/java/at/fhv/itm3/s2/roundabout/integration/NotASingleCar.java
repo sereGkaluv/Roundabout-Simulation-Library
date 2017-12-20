@@ -35,6 +35,9 @@ public class NotASingleCar {
         IRoute route = routeGenerator.getRoute(RouteType.TWO_STREETSECTIONS_ONE_CAR);
         Street sink = route.getSink();
 
+        //no car is generated as "source.startGeneratingCars();" is not calles.
+        //the name of the route is just the name of the route. does not mean anything else
+
         exp.start();
         exp.finish();
 
