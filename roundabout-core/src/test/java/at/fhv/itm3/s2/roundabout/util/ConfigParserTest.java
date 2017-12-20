@@ -39,15 +39,16 @@ public class ConfigParserTest {
 
     @Test
     public void configParserTest_roundaboutSectionsLoaded() {
+        assertNotNull("roundabout sections loaded", roundAboutConfig.getRoundabout().getSections());
         assertEquals("5 sections loaded in roundabout", 5, roundAboutConfig.getRoundabout().getSections().getSection().size());
     }
 
     @Test
     public void configParserTest_sectionsDataLoaded() {
-        assertNotNull("sections has in", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry());
-        assertEquals("sections has 2 in", 2, roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry().size());
+        assertNotNull("sections has entry", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry());
+        assertEquals("sections has 2 entries", 2, roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry().size());
         assertNotNull("sections has out", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getExit());
-        assertNotNull("sections has section", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack());
+        assertNotNull("sections has tracks", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack());
 
         assertNotNull("sections id", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getId());
         assertNotNull("sections previous", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getPrevious());
@@ -56,16 +57,16 @@ public class ConfigParserTest {
 
     @Test
     public void configParserTest_sectionDataLoaded() {
-        assertNotNull("sections has section", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack());
+        assertNotNull("section has tracks", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack());
         assertNotEquals("section has tracks", 0, roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack().size());
         assertNotNull("track has length", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack().get(0).getLength());
         assertNotNull("track has id", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getTrack().get(0).getId());
     }
 
     @Test
-    public void configParserTest_inDataLoaded() {
-        assertNotNull("in has trackId", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry().get(0).getTrackId());
-        assertNotNull("in has probability", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry().get(0).getProbability());
+    public void configParserTest_entryDataLoaded() {
+        assertNotNull("entry has trackId", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry().get(0).getTrackId());
+        assertNotNull("entry has probability", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getEntry().get(0).getProbability());
 
         boolean hasStreetId = false;
         for (Section section : roundAboutConfig.getRoundabout().getSections().getSection()) {
@@ -73,13 +74,13 @@ public class ConfigParserTest {
                 hasStreetId = true;
             }
         }
-        assertTrue("some out has connectorId", hasStreetId);
+        assertTrue("some entry has connectorId", hasStreetId);
     }
 
     @Test
-    public void configParserTest_outDataLoaded() {
-        assertNotNull("out has trackId", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getExit().getTrackId());
-        assertNotNull("out has probability", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getExit().getProbability());
+    public void configParserTest_exitDataLoaded() {
+        assertNotNull("exit has trackId", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getExit().getTrackId());
+        assertNotNull("exit has probability", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getExit().getProbability());
 
         boolean hasStreetId = false;
         for (Section section : roundAboutConfig.getRoundabout().getSections().getSection()) {
