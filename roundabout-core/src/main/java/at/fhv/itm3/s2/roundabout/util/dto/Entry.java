@@ -6,6 +6,7 @@ public class Entry {
     private String probability;
     private String trackId;
     private String connectorId;
+    private String length;
 
     @XmlAttribute
     public String getProbability() {
@@ -32,5 +33,14 @@ public class Entry {
 
     public void setConnectorId(String connectorId) {
         this.connectorId = connectorId;
+    }
+
+    @XmlAttribute
+    public String getLength() {
+        return length;
+    }
+
+    public void setLength(String length) {
+        this.length = length;
     }
 }

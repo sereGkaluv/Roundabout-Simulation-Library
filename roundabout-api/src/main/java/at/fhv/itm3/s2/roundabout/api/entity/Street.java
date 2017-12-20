@@ -10,8 +10,8 @@ public abstract class Street extends AbstractConsumer {
 
     protected int carCounter;
 
-    public Street(Model model, String s, boolean b) {
-        super(model, s, b);
+    public Street(Model owner, String name, boolean showInTrace) {
+        super(owner, name, showInTrace);
     }
 
     /**

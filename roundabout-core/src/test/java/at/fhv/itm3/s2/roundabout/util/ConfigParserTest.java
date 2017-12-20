@@ -2,6 +2,7 @@ package at.fhv.itm3.s2.roundabout.util;
 
 import at.fhv.itm3.s2.roundabout.util.dto.RoundAboutConfig;
 import at.fhv.itm3.s2.roundabout.util.dto.Section;
+import desmoj.core.simulator.Experiment;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -95,5 +96,11 @@ public class ConfigParserTest {
     public void configParserTest_fileNotFound() throws ConfigParserException {
         String file = "not_exists.xml";
         ConfigParser.loadConfig(file);
+    }
+
+    @Test
+    public void configParserTest_generateModel() throws ConfigParserException {
+        Experiment exp = new Experiment("Experiment");
+        ConfigParser.generateModel(roundAboutConfig, exp);
     }
 }

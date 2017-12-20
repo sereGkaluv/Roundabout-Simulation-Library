@@ -11,12 +11,12 @@ import desmoj.core.simulator.Model;
 import java.util.List;
 import java.util.Map;
 
-public class Sink extends Street {
+public class RoundaboutSink extends Street {
 
     private IStreetConnector previousStreetConnector;
 
-    public Sink(Model model, String s, boolean b) {
-        super(model, s, b);
+    public RoundaboutSink(Model owner, String name, boolean showInTrace) {
+        super(owner, name, showInTrace);
     }
 
     @Override

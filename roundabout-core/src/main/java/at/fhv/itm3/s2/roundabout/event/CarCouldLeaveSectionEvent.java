@@ -1,7 +1,7 @@
 package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.Sink;
+import at.fhv.itm3.s2.roundabout.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.adapter.OneWayStreetAdapter;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
@@ -75,7 +75,7 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
                     new TimeSpan(donorSection.getFirstCar().getTimeToTraverseSection(nextSection), TimeUnit.SECONDS)
                 );
                 donorSection.moveFirstCarToNextSection();
-            }  else if (nextSection != null && (nextSection instanceof Sink || nextSection instanceof OneWayStreetAdapter)) {
+            } else if (nextSection != null && (nextSection instanceof RoundaboutSink || nextSection instanceof OneWayStreetAdapter)) {
                 donorSection.moveFirstCarToNextSection();
             }
 

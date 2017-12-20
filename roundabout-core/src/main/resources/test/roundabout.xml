@@ -16,37 +16,37 @@
         </parameters>
         <sections>
             <section id="1" previous="5" next="2">
-                <entry probability="0.1" trackId="1" connectorId="xyz"/>
-                <entry probability="0.1" trackId="2" connectorId="xyz"/>
+                <entry length="10.0" probability="0.1" trackId="1" connectorId="xyz"/>
+                <entry length="10.0" probability="0.1" trackId="2" connectorId="xyz"/>
                 <track length="10.0" id="1"/>
                 <track length="9.0" id="2"/>
                 <!-- adapter to trafsim library via streetId -->
                 <exit probability="0.2" trackId="1" connectorId="xyz"/>
             </section>
             <section id="2" previous="1" next="3">
-                <entry probability="0.1" trackId="2"/>
-                <entry probability="0.1" trackId="3"/>
+                <entry length="10.0" probability="0.1" trackId="2"/>
+                <entry length="10.0" probability="0.1" trackId="3"/>
                 <track length="10.0" id="2"/>
                 <track length="9.0" id="3"/>
                 <exit probability="0.2" trackId="2"/>
             </section>
             <section id="3" previous="2" next="4">
-                <entry probability="0.1" trackId="3"/>
-                <entry probability="0.1" trackId="4"/>
+                <entry length="10.0" probability="0.1" trackId="3"/>
+                <entry length="10.0" probability="0.1" trackId="4"/>
                 <track length="10.0" id="3"/>
                 <track length="9.0" id="4"/>
                 <exit probability="0.2" trackId="3"/>
             </section>
             <section id="4" previous="3" next="5">
-                <entry probability="0.1" trackId="4"/>
-                <entry probability="0.1" trackId="5"/>
+                <entry length="10.0" probability="0.1" trackId="4"/>
+                <entry length="10.0" probability="0.1" trackId="5"/>
                 <track length="10.0" id="4"/>
                 <track length="9.0" id="5"/>
                 <exit probability="0.2" trackId="4"/>
             </section>
             <section id="5" previous="4" next="1">
-                <entry probability="0.1" trackId="5"/>
-                <entry probability="0.1" trackId="1"/>
+                <entry length="10.0" probability="0.1" trackId="5"/>
+                <entry length="10.0" probability="0.1" trackId="1"/>
                 <track length="10.0" id="5"/>
                 <track length="9.0" id="1"/>
                 <exit probability="0.2" trackId="5"/>
