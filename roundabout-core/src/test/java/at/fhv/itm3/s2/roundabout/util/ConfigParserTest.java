@@ -1,5 +1,7 @@
 package at.fhv.itm3.s2.roundabout.util;
 
+import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
+import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.util.dto.RoundAboutConfig;
 import at.fhv.itm3.s2.roundabout.util.dto.Section;
 import desmoj.core.simulator.Experiment;
@@ -101,6 +103,23 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_generateModel() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
-        ConfigParser.generateModel(roundAboutConfig, exp);
+        IRoundaboutStructure roundaboutStructure = ConfigParser.generateStructure(roundAboutConfig, exp);
+
+        assertNotNull("has connectors", roundaboutStructure.getStreetConnectors());
+        assertEquals("has 5 street connectors", 5, roundaboutStructure.getStreetConnectors().size());
+
+        assertNotNull("has streets", roundaboutStructure.getStreets());
+        assertEquals("has 22 streets", 22, roundaboutStructure.getStreets().size());
+    }
+
+    @Test
+    public void configParserTest_connectorsHaveData() throws ConfigParserException {
+        Experiment exp = new Experiment("Experiment");
+        IRoundaboutStructure roundaboutStructure = ConfigParser.generateStructure(roundAboutConfig, exp);
+
+        for (IStreetConnector connector : roundaboutStructure.getStreetConnectors()) {
+            assertNotEquals("next street sections not empty", 0, connector.getNextSections().size());
+            assertNotEquals("previous street sections not empty", 0, connector.getPreviousSections().size());
+        }
     }
 }

@@ -3,7 +3,9 @@ package at.fhv.itm3.s2.roundabout.util;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.RoundaboutSource;
+import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.entity.StreetConnector;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.util.dto.Entry;
@@ -29,9 +31,11 @@ public class ConfigParser {
         return JAXB.unmarshal(configFile, RoundAboutConfig.class);
     }
 
-    public static RoundaboutSimulationModel generateModel(RoundAboutConfig roundAboutConfig, Experiment experiment) throws ConfigParserException {
+    public static IRoundaboutStructure generateStructure(RoundAboutConfig roundAboutConfig, Experiment experiment) throws ConfigParserException {
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, roundAboutConfig.getRoundabout().getName(), false, false);
         model.connectToExperiment(experiment);
+
+        IRoundaboutStructure roundaboutStructure = new RoundaboutStructure(model);
 
         HashMap<String, Set<Street>> previousStreetSectionsMap = new HashMap<String, Set<Street>>();
         HashMap<String, Set<Street>> nextStreetSectionsMap = new HashMap<String, Set<Street>>();
@@ -57,9 +61,9 @@ public class ConfigParser {
                 endNextStreetSections = new HashSet<Street>();
             }
 
-            generateEntries(model, startPreviousStreetSections, section);
-            generateTracks(model, startNextStreetSections, endPreviousStreetSections, section);
-            generateExit(model, endNextStreetSections, section);
+            generateEntries(roundaboutStructure, startPreviousStreetSections, section);
+            generateTracks(roundaboutStructure, startNextStreetSections, endPreviousStreetSections, section);
+            generateExit(roundaboutStructure, endNextStreetSections, section);
 
             previousStreetSectionsMap.put(startConnectorKey, startPreviousStreetSections);
             previousStreetSectionsMap.put(endConnectorKey, endPreviousStreetSections);
@@ -67,7 +71,16 @@ public class ConfigParser {
             nextStreetSectionsMap.put(endConnectorKey, endNextStreetSections);
         }
 
-        return model;
+        for (Section section : roundAboutConfig.getRoundabout().getSections().getSection()) {
+            String connectorKey = section.getPrevious() + section.getId();
+            Set<Street> previousStreetSections = previousStreetSectionsMap.get(connectorKey);
+            Set<Street> nextStreetSections = nextStreetSectionsMap.get(connectorKey);
+            roundaboutStructure.addStreetConnector(new StreetConnector(previousStreetSections, nextStreetSections));
+        }
+
+        //TODO generate tracks
+
+        return roundaboutStructure;
     }
 
     private static void addConnector(Set<StreetConnector> connectors, Set<Street> startPreviousSections, Set<Street> startNextSections, Set<Street> endPreviousSections, Set<Street> endNextSections, int iterationCount, int lastIteration) {
@@ -84,20 +97,22 @@ public class ConfigParser {
         }
     }
 
-    private static void generateExit(RoundaboutSimulationModel model, Set<Street> endNextSections, Section section) throws ConfigParserException {
+    private static void generateExit(IRoundaboutStructure structure, Set<Street> endNextSections, Section section) throws ConfigParserException {
         if (section.getExit() != null) {
             if (section.getExit().getConnectorId() != null) {
                 //TODO connection to trafsim intersection
             } else {
-                RoundaboutSink roundaboutSink = new RoundaboutSink(model, "exit from section with id " + section.getId(), false);
+                RoundaboutSink roundaboutSink = new RoundaboutSink(structure.getModel(), "exit from section with id " + section.getId(), false);
                 endNextSections.add(roundaboutSink);
+
+                structure.addStreet(roundaboutSink);
             }
         } else {
             throw new ConfigParserException("no exit defined for section with id " + section.getId());
         }
     }
 
-    private static void generateEntries(RoundaboutSimulationModel model, Set<Street> startPreviousSections, Section section) throws ConfigParserException {
+    private static void generateEntries(IRoundaboutStructure structure, Set<Street> startPreviousSections, Section section) throws ConfigParserException {
         for (Entry entry : section.getEntry()) {
             if (entry.getConnectorId() != null) {
                 //TODO connection from trafsim intersection
@@ -108,14 +123,16 @@ public class ConfigParser {
                 } catch (NumberFormatException e) {
                     throw new ConfigParserException("attribute length of entry in section with id " + section.getId() + " not parseable, error: " + e.getMessage());
                 }
-                StreetSection entryStreet = new StreetSection(length, model, "entry street to section with id " + section.getId(), false);
-                RoundaboutSource source = new RoundaboutSource(model, "entry source to section with id " + section.getId(), false, entryStreet);
+                StreetSection entryStreet = new StreetSection(length, structure.getModel(), "entry street to section with id " + section.getId(), false);
+                RoundaboutSource source = new RoundaboutSource(structure.getModel(), "entry source to section with id " + section.getId(), false, entryStreet);
                 startPreviousSections.add(entryStreet);
+
+                structure.addStreet(entryStreet);
             }
         }
     }
 
-    private static void generateTracks(RoundaboutSimulationModel model, Set<Street> startNextSections, Set<Street> endPreviousSections, Section section) throws ConfigParserException {
+    private static void generateTracks(IRoundaboutStructure structure, Set<Street> startNextSections, Set<Street> endPreviousSections, Section section) throws ConfigParserException {
         for (Track track : section.getTrack()) {
             double length;
             try {
@@ -124,9 +141,11 @@ public class ConfigParser {
                 throw new ConfigParserException("attribute length of track with id " + track.getId() + " in section with id " + section.getId() + " not parseable, error: " + e.getMessage());
             }
 
-            StreetSection streetSection = new StreetSection(length, model, "track with id " + track.getId() + " in section with id " + section.getId(), false);
+            StreetSection streetSection = new StreetSection(length, structure.getModel(), "track with id " + track.getId() + " in section with id " + section.getId(), false);
             startNextSections.add(streetSection);
             endPreviousSections.add(streetSection);
+
+            structure.addStreet(streetSection);
         }
     }
 }
