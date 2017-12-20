@@ -23,7 +23,7 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_parametersLoaded() {
         assertNotNull("parameters attribute not null", roundAboutConfig.getParameters());
-        assertEquals("5 parameters loaded", 5, roundAboutConfig.getParameters().getParameter().size());
+        assertEquals("6 parameters loaded", 6, roundAboutConfig.getParameters().getParameter().size());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_sectionsDataLoaded() {
         assertNotNull("sections has in", roundAboutConfig.getStructure().getSections().get(0).getIn());
-        assertNotNull("sections has 2 in", roundAboutConfig.getStructure().getSections().get(0).getIn().size());
+        assertEquals("sections has 2 in", 2, roundAboutConfig.getStructure().getSections().get(0).getIn().size());
         assertNotNull("sections has out", roundAboutConfig.getStructure().getSections().get(0).getOut());
         assertNotNull("sections has section", roundAboutConfig.getStructure().getSections().get(0).getSection());
 
@@ -66,6 +66,14 @@ public class ConfigParserTest {
     public void configParserTest_inDataLoaded() {
         assertNotNull("in has trackId", roundAboutConfig.getStructure().getSections().get(0).getIn().get(0).getTrackId());
         assertNotNull("in has probability", roundAboutConfig.getStructure().getSections().get(0).getIn().get(0).getProbability());
+
+        boolean hasStreetId = false;
+        for (Sections sections : roundAboutConfig.getStructure().getSections()) {
+            if (sections.getIn().get(0) != null && sections.getIn().get(0).getStreetId() != null) {
+                hasStreetId = true;
+            }
+        }
+        assertTrue("some out has streetId", hasStreetId);
     }
 
     @Test
@@ -74,8 +82,8 @@ public class ConfigParserTest {
         assertNotNull("out has probability", roundAboutConfig.getStructure().getSections().get(0).getOut().getProbability());
 
         boolean hasStreetId = false;
-        for(Sections sections : roundAboutConfig.getStructure().getSections()){
-            if(sections.getOut().getStreetId()!=null){
+        for (Sections sections : roundAboutConfig.getStructure().getSections()) {
+            if (sections.getOut().getStreetId() != null) {
                 hasStreetId = true;
             }
         }

@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class In {
     private String probability;
     private String trackId;
+    private String streetId;
 
     @XmlAttribute
     public String getProbability() {
@@ -22,5 +23,14 @@ public class In {
 
     public void setTrackId(String trackId) {
         this.trackId = trackId;
+    }
+
+    @XmlAttribute
+    public String getStreetId() {
+        return streetId;
+    }
+
+    public void setStreetId(String streetId) {
+        this.streetId = streetId;
     }
 }

@@ -12,8 +12,8 @@
     <!-- structure -->
     <structure>
         <sections id="1" previous="5" next="2">
-            <in probability="0.1" trackId="1"/>
-            <in probability="0.1" trackId="2"/>
+            <in probability="0.1" trackId="1" streetId="xyz"/>
+            <in probability="0.1" trackId="2" streetId="xyz"/>
             <section length="10.0" trackId="1" />
             <section length="9.0" trackId="2"/>
             <!-- adapter to trafsim library via streetId -->
