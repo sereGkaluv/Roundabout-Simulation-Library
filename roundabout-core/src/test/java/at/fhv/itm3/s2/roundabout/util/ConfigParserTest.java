@@ -2,6 +2,7 @@ package at.fhv.itm3.s2.roundabout.util;
 
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.util.dto.RoundAboutConfig;
 import at.fhv.itm3.s2.roundabout.util.dto.Section;
 import desmoj.core.simulator.Experiment;
@@ -9,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
 
@@ -105,7 +108,7 @@ public class ConfigParserTest {
     }
 
     @Test
-    public void configParserTest_generateModel() throws ConfigParserException {
+    public void configParserTest_generateStructure() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
         IRoundaboutStructure roundaboutStructure = configParser.generateStructure(roundAboutConfig, exp);
 
@@ -117,7 +120,7 @@ public class ConfigParserTest {
     }
 
     @Test
-    public void configParserTest_connectorsHaveData() throws ConfigParserException {
+    public void configParserTest_structureConnectorsHaveData() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
         IRoundaboutStructure roundaboutStructure = configParser.generateStructure(roundAboutConfig, exp);
 
@@ -125,5 +128,76 @@ public class ConfigParserTest {
             assertNotEquals("next street sections not empty", 0, connector.getNextSections().size());
             assertNotEquals("previous street sections not empty", 0, connector.getPreviousSections().size());
         }
+    }
+
+    @Test
+    public void configParserTest_structureCorrect() throws ConfigParserException {
+        Experiment exp = new Experiment("Experiment");
+        IRoundaboutStructure roundaboutStructure = configParser.generateStructure(roundAboutConfig, exp);
+
+        for (IStreetConnector connector : roundaboutStructure.getStreetConnectors()) {
+            Integer exitSectionId = null;
+            Integer nextTrackSectionId = null;
+            for (Street section : connector.getNextSections()) {
+                if (section.toString().contains("exit")) {
+                    exitSectionId = extractSectionId(section.toString());
+                } else if (section.toString().contains("track")) {
+                    Integer id = extractSectionId(section.toString());
+                    if (nextTrackSectionId != null && nextTrackSectionId != id) {
+                        assertTrue("tracks from different sections on next connector", false);
+                    }
+                    nextTrackSectionId = id;
+                } else {
+                    assertTrue("only tracks and exit on next connector", false);
+                }
+            }
+
+            Integer entrySectionId = null;
+            Integer previousTrackSectionId = null;
+            for (Street section : connector.getPreviousSections()) {
+                if (section.toString().contains("entry")) {
+                    Integer id = extractSectionId(section.toString());
+                    if (entrySectionId != null && entrySectionId != id) {
+                        assertTrue("entries from different sections on next connector", false);
+                    }
+                    entrySectionId = id;
+                } else if (section.toString().contains("track")) {
+                    Integer id = extractSectionId(section.toString());
+                    if (previousTrackSectionId != null && previousTrackSectionId != id) {
+                        assertTrue("tracks from different sections on next connector", false);
+                    }
+                    previousTrackSectionId = id;
+                } else {
+                    assertTrue("only tracks and entries on previous connector", false);
+                }
+            }
+
+            assertTrue("only tracks from neighbour sections", areNeighbourSections(previousTrackSectionId, nextTrackSectionId, roundaboutStructure.getStreetConnectors().size()));
+            if (exitSectionId != null) { // TODO fix after connector implementation
+                assertEquals("exit and previous tracks from same section", exitSectionId, previousTrackSectionId);
+            }
+            if (entrySectionId != null) { // TODO fix after connector implementation
+                assertEquals("entries and next tracks from same section", entrySectionId, nextTrackSectionId);
+            }
+        }
+    }
+
+    private Integer extractSectionId(String value) {
+        String regex = "(section with id )(\\d)(#\\d)";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(value);
+
+        if (matcher.find()) {
+            return Integer.parseInt(matcher.group(2));
+        }
+        throw new IllegalArgumentException("id is not an integer: " + value);
+    }
+
+    private boolean areNeighbourSections(Integer previousTrackSectionId, Integer nextTrackSectionId, Integer totalSections) {
+        if (previousTrackSectionId == totalSections && nextTrackSectionId == 1) {
+            return true;
+        }
+        return nextTrackSectionId - previousTrackSectionId == 1;
     }
 }

@@ -87,20 +87,6 @@ public class ConfigParser {
         return roundaboutStructure;
     }
 
-    private void addConnector(Set<StreetConnector> connectors, Set<Street> startPreviousSections, Set<Street> startNextSections, Set<Street> endPreviousSections, Set<Street> endNextSections, int iterationCount, int lastIteration) {
-        if (iterationCount == lastIteration) {
-            StreetConnector streetConnector = new StreetConnector(startPreviousSections, startNextSections);
-            connectors.add(streetConnector);
-            StreetConnector streetConnectorEnd = new StreetConnector(endPreviousSections, endNextSections);
-            connectors.add(streetConnectorEnd);
-        } else {
-            StreetConnector streetConnector = new StreetConnector(startPreviousSections, startNextSections);
-            connectors.add(streetConnector);
-            startNextSections.clear();
-            startNextSections.clear();
-        }
-    }
-
     private void generateExit(IRoundaboutStructure structure, Set<Street> endNextSections, Section section) throws ConfigParserException {
         if (section.getExit() != null) {
             if (section.getExit().getConnectorId() != null) {
