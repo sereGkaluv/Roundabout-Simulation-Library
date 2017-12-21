@@ -8,16 +8,14 @@ import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.entity.StreetConnector;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
-import at.fhv.itm3.s2.roundabout.util.dto.Entry;
-import at.fhv.itm3.s2.roundabout.util.dto.RoundAboutConfig;
-import at.fhv.itm3.s2.roundabout.util.dto.Section;
-import at.fhv.itm3.s2.roundabout.util.dto.Track;
+import at.fhv.itm3.s2.roundabout.util.dto.*;
 import desmoj.core.simulator.Experiment;
 
 import javax.xml.bind.JAXB;
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class ConfigParser {
@@ -35,11 +33,13 @@ public class ConfigParser {
         return JAXB.unmarshal(configFile, RoundAboutConfig.class);
     }
 
-    public IRoundaboutStructure generateStructure(RoundAboutConfig roundAboutConfig, Experiment experiment) throws ConfigParserException {
+    public IRoundaboutStructure generateRoundaboutStructure(RoundAboutConfig roundAboutConfig, Experiment experiment) throws ConfigParserException {
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, roundAboutConfig.getRoundabout().getName(), false, false);
         model.connectToExperiment(experiment);
 
         IRoundaboutStructure roundaboutStructure = new RoundaboutStructure(model);
+
+        generateParameters(roundaboutStructure, roundAboutConfig);
 
         HashMap<String, Set<Street>> previousStreetSectionsMap = new HashMap<String, Set<Street>>();
         HashMap<String, Set<Street>> nextStreetSectionsMap = new HashMap<String, Set<Street>>();
@@ -85,6 +85,14 @@ public class ConfigParser {
         //TODO generate tracks
 
         return roundaboutStructure;
+    }
+
+    private void generateParameters(IRoundaboutStructure roundaboutStructure, RoundAboutConfig roundaboutConfig) {
+        Iterator<Parameter> keyIterator = roundaboutConfig.getRoundabout().getParameters().getParameter().iterator();
+        while (keyIterator.hasNext()) {
+            Parameter parameter = keyIterator.next();
+            roundaboutStructure.addParameter(parameter.getName(), parameter.getValue());
+        }
     }
 
     private void generateExit(IRoundaboutStructure structure, Set<Street> endNextSections, Section section) throws ConfigParserException {

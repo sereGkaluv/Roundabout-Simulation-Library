@@ -21,7 +21,7 @@ public class RunSimulation implements ILogger {
         try {
             ConfigParser configParser = new ConfigParser(roundaboutConfigFileName);
             RoundAboutConfig roundAboutConfig = configParser.loadConfig();
-            IRoundaboutStructure roundAboutModel = configParser.generateStructure(roundAboutConfig, exp);
+            IRoundaboutStructure roundAboutModel = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
         } catch (ConfigParserException e) {
             LOGGER.error(e);
         }

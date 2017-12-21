@@ -6,21 +6,21 @@ import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import desmoj.core.simulator.Model;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class RoundaboutStructure implements IRoundaboutStructure {
     private final Model model;
     private Set<IStreetConnector> connectors;
     private Set<IRoute> routes;
     private Set<Street> streets;
+    private Map<String, String> parameters;
 
     public RoundaboutStructure(Model model) {
         this.model = model;
         connectors = new HashSet<>();
         routes = new HashSet<>();
         streets = new HashSet<>();
+        parameters = new HashMap<>();
     }
 
     @Override
@@ -31,6 +31,11 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     @Override
     public void addRoute(IRoute route) {
         routes.add(route);
+    }
+
+    @Override
+    public void addParameter(String key, String value) {
+        parameters.put(key, value);
     }
 
     @Override
@@ -51,6 +56,11 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     @Override
     public Set<Street> getStreets() {
         return Collections.unmodifiableSet(streets);
+    }
+
+    @Override
+    public Map<String, String> getParameters() {
+        return Collections.unmodifiableMap(parameters);
     }
 
     @Override
