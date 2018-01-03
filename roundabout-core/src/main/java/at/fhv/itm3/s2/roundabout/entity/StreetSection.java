@@ -60,6 +60,11 @@ public class StreetSection extends Street {
         carQueue.addLast(car);
         carPositions.put(car, INITIAL_CAR_POSITION);
         this.carCounter++;
+        Car c = CarController.getCar(car);
+        IConsumer consumer = car.getLastSection();
+        if (consumer instanceof Street) {
+            ((Street)consumer).carDelivered(null, c, true);
+        }
     }
 
     @Override
@@ -236,10 +241,10 @@ public class StreetSection extends Street {
             if (!Objects.equals(firstCar.getCurrentSection(), firstCar.getDestination())) {
                 IConsumer nextSection = firstCar.getNextSection();
                 if (nextSection != null && nextSection instanceof Street) {
-                    // Move physically first car to next section.
-                    ((Street)nextSection).addCar(firstCar);
                     // Move logically first car to next section.
                     firstCar.traverseToNextSection();
+                    // Move physically first car to next section.
+                    ((Street)nextSection).addCar(firstCar);
                 } else if (nextSection != null && nextSection instanceof Intersection) {
                     Intersection intersection = (Intersection)nextSection;
                     Car car = CarController.getCar(firstCar);
@@ -321,8 +326,8 @@ public class StreetSection extends Street {
     @Override
     public void carEnter(Car car) {
         ICar iCar = CarController.getICar(car);
-        addCar(iCar);
         iCar.traverseToNextSection();
+        addCar(iCar);
         double traverseTime = iCar.getTimeToTraverseCurrentSection();
         CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(
             getRoundaboutModel()
@@ -348,8 +353,7 @@ public class StreetSection extends Street {
     public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean successful) {
         if (successful) {
             ICar iCar = CarController.getICar(car);
-            iCar.traverseToNextSection();
-            carQueue.removeFirst();
+            carPositions.remove(iCar);
         } else {
             // TODO: traffic jam
         }

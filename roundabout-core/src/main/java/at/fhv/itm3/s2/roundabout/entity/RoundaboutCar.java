@@ -2,6 +2,7 @@ package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
+import at.fhv.itm14.trafsim.model.entities.IProducer;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 
@@ -122,6 +123,11 @@ public class RoundaboutCar implements ICar {
     @Override
     public IRoute getRoute() {
         return route;
+    }
+
+    @Override
+    public IConsumer getLastSection() {
+        return lastSection;
     }
 
     @Override

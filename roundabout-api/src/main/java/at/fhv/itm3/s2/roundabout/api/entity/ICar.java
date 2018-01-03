@@ -1,6 +1,7 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
+import at.fhv.itm14.trafsim.model.entities.IProducer;
 
 public interface ICar {
 
@@ -63,6 +64,14 @@ public interface ICar {
      * @return car route in form of {@link IRoute}.
      */
     IRoute getRoute();
+
+    /**
+     * Returns a reference to the last {@link IProducer} present in the car route,
+     * where the car currently belongs to.
+     *
+     * @return reference to {@link IProducer} where car was last located
+     */
+    IConsumer getLastSection();
 
     /**
      * Return a reference to a current {@link Street} present in car route,

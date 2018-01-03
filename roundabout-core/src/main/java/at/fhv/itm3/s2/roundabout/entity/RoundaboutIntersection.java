@@ -16,6 +16,9 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
 
     @Override
     public void carEnter(Car car, int inDirection) {
+        // notify last section that car was successfully delivered
+        inList[inDirection].carDelivered(null, car, true);
+
         // Get outgoing direction
         int outIndex = car.getNextDirection();
 
