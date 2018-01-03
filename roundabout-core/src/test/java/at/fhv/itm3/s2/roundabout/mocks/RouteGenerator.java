@@ -123,8 +123,6 @@ public class RouteGenerator {
         // connect streets with intersection
         IntersectionController.getInstance().setIntersectionInDirectionMapping(intersection, street1, inDirection);
         IntersectionController.getInstance().setIntersectionOutDirectionMapping(intersection, street2, outDirection);
-//        setInDirection((StreetSectionMock)street1, inDirection);
-//        setOutDirection((StreetSectionMock)street2, outDirection);
         intersection.attachProducer(inDirection, street1.toProducer());
         intersection.attachConsumer(outDirection, street2.toConsumer());
         intersection.createConnectionQueue(street1.toProducer(), new AbstractConsumer[]{street2.toConsumer()}, new double[]{intersectionTraverseTime}, new double[]{1.0});

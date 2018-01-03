@@ -60,6 +60,11 @@ public class StreetSection extends Street {
         carQueue.addLast(car);
         carPositions.put(car, INITIAL_CAR_POSITION);
         this.carCounter++;
+
+        // call carDelivered events for last section, so the car position
+        // of the current car (that has just left the last section successfully)
+        // can be removed (saves memory)
+        // caution! that requires to call traverseToNextSection before calling this method
         Car c = CarController.getCar(car);
         IConsumer consumer = car.getLastSection();
         if (consumer instanceof Street) {
@@ -241,6 +246,7 @@ public class StreetSection extends Street {
             if (!Objects.equals(firstCar.getCurrentSection(), firstCar.getDestination())) {
                 IConsumer nextSection = firstCar.getNextSection();
                 if (nextSection != null && nextSection instanceof Street) {
+                    // this order of calls is important!
                     // Move logically first car to next section.
                     firstCar.traverseToNextSection();
                     // Move physically first car to next section.
@@ -250,7 +256,6 @@ public class StreetSection extends Street {
                     Car car = CarController.getCar(firstCar);
                     int outDirection = intersectionController.getOutDirectionOfIConsumer(intersection, firstCar.getSectionAfterNextSection());
                     car.setNextDirection(outDirection);
-
                     // this is made without the CarDepartureEvent of the existing implementation
                     // because it can not handle traffic jam
                     if (!intersection.isFull()) {
@@ -352,6 +357,7 @@ public class StreetSection extends Street {
     @Override
     public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean successful) {
         if (successful) {
+            // remove carPosition of car that has just left
             ICar iCar = CarController.getICar(car);
             carPositions.remove(iCar);
         } else {
