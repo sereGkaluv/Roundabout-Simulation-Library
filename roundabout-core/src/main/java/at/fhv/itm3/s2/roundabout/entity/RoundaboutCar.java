@@ -2,7 +2,6 @@ package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm3.s2.roundabout.adapter.OneWayStreetAdapter;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 
@@ -93,8 +92,6 @@ public class RoundaboutCar implements ICar {
 
             double remainingLength = streetSection.getLength() - carPosition;
             return remainingLength / this.getDriverBehaviour().getSpeed();
-        } else if (section instanceof OneWayStreetAdapter) {
-            return 0; // TODO: is that enough?
         } else if (section instanceof RoundaboutIntersection && section == this.currentSection) {
             RoundaboutIntersection intersection = (RoundaboutIntersection)section;
             int inDirection = IntersectionController.getInstance().getInDirectionOfIConsumer(intersection, this.lastSection);
