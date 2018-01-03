@@ -1,5 +1,6 @@
 package at.fhv.itm3.s2.roundabout.mocks;
 
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
@@ -71,7 +72,7 @@ public class CarGenerateEventMock extends CarGenerateEvent {
         return routeGenerator.getRoute(this.type).getSource();
     }
 
-    public Street getSink() {
+    public IConsumer getSink() {
         return routeGenerator.getRoute(this.type).getSink();
     }
 

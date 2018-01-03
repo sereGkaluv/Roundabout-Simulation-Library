@@ -1,11 +1,9 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.adapter.OneWayStreetAdapter;
-import at.fhv.itm3.s2.roundabout.api.entity.ICar;
-import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
-import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.api.entity.*;
 
 import java.util.Iterator;
 
@@ -15,12 +13,13 @@ public class RoundaboutCar implements ICar {
     private final double length;
     private final IRoute route;
     private final IDriverBehaviour driverBehaviour;
-    private final Iterator<Street> routeIterator;
+    private final Iterator<IConsumer> routeIterator;
 
     private double lastUpdateTime;
 
-    private Street currentSection;
-    private Street nextSection;
+    private IConsumer currentSection;
+    private IConsumer nextSection;
+    private IConsumer sectionAfterNextSection;
 
     public RoundaboutCar(Car car, double length, IDriverBehaviour driverBehaviour, IRoute route)
     throws IllegalArgumentException {
@@ -45,6 +44,7 @@ public class RoundaboutCar implements ICar {
             // The below order is important!
             this.currentSection = retrieveNextRouteSection();
             this.nextSection = retrieveNextRouteSection();
+            this.sectionAfterNextSection = retrieveNextRouteSection();
         } else {
             throw new IllegalArgumentException("Route should not be null.");
         }
@@ -78,16 +78,17 @@ public class RoundaboutCar implements ICar {
     }
 
     @Override
-    public double getTimeToTraverseSection(Street section) {
+    public double getTimeToTraverseSection(IConsumer section) {
 
         if (section instanceof StreetSection) {
             double carPosition = 0;
+            StreetSection streetSection = (StreetSection)section;
 
-            if (section.getCarPositions().containsKey(this)) {
-                carPosition = section.getCarPositions().get(this);
+            if (streetSection.getCarPositions().containsKey(this)) {
+                carPosition = streetSection.getCarPositions().get(this);
             }
 
-            double remainingLength = section.getLength() - carPosition;
+            double remainingLength = streetSection.getLength() - carPosition;
             return remainingLength / this.getDriverBehaviour().getSpeed();
         } else if (section instanceof OneWayStreetAdapter) {
             return 0; // TODO: is that enough?
@@ -118,27 +119,33 @@ public class RoundaboutCar implements ICar {
     }
 
     @Override
-    public Street getCurrentSection() {
+    public IConsumer getCurrentSection() {
         return currentSection;
     }
 
     @Override
-    public Street getNextSection() {
+    public IConsumer getNextSection() {
         return nextSection;
+    }
+
+    @Override
+    public IConsumer getSectionAfterNextSection() {
+        return sectionAfterNextSection;
     }
 
     @Override
     public void traverseToNextSection() {
         this.currentSection = this.nextSection;
-        this.nextSection = retrieveNextRouteSection();
+        this.nextSection = this.sectionAfterNextSection;
+        this.sectionAfterNextSection = retrieveNextRouteSection();
     }
 
     @Override
-    public Street getDestination() {
+    public IConsumer getDestination() {
         return route.getDestinationSection();
     }
 
-    private Street retrieveNextRouteSection() {
+    private IConsumer retrieveNextRouteSection() {
         return routeIterator.hasNext() ? routeIterator.next() : null;
     }
 }

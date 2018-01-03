@@ -1,8 +1,8 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Route implements IRoute {
 
-    private List<Street> route;
+    private List<IConsumer> route;
     private AbstractSource source;
 
     public Route() {
@@ -18,12 +18,12 @@ public class Route implements IRoute {
     }
 
     @Override
-    public List<Street> getRoute() {
+    public List<IConsumer> getRoute() {
         return Collections.unmodifiableList(route);
     }
 
     @Override
-    public Street getSectionAt(int index) {
+    public IConsumer getSectionAt(int index) {
         if (index >= route.size()) {
             throw new IllegalArgumentException("Index value for accessing a section in a route is too big.");
         }
@@ -31,12 +31,12 @@ public class Route implements IRoute {
     }
 
     @Override
-    public Street getStartSection() {
+    public IConsumer getStartSection() {
         return !isEmpty() ? route.get(0) : null;
     }
 
     @Override
-    public Street getDestinationSection() {
+    public IConsumer getDestinationSection() {
         return !isEmpty() ? route.get(route.size() - 1) : null;
     }
 
@@ -46,7 +46,7 @@ public class Route implements IRoute {
     }
 
     @Override
-    public void addSection(Street section) {
+    public void addSection(IConsumer section) {
         // Adds as a last element to list.
         route.add(section);
     }
@@ -61,7 +61,7 @@ public class Route implements IRoute {
         return route.isEmpty();
     }
 
-    public int getIndexOfSection(Street streetSection) {
+    public int getIndexOfSection(IConsumer streetSection) {
         if (!route.contains(streetSection)) {
             throw new IllegalArgumentException("Section must be part of the route");
         }
@@ -74,7 +74,7 @@ public class Route implements IRoute {
     }
 
     @Override
-    public Street getSink() {
+    public IConsumer getSink() {
         return route.get(route.size()-1);
     }
 }

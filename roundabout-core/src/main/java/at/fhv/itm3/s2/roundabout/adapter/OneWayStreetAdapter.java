@@ -1,12 +1,15 @@
 package at.fhv.itm3.s2.roundabout.adapter;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.OneWayStreet;
+import at.fhv.itm14.trafsim.model.events.CarDepartureEvent;
 import at.fhv.itm14.trafsim.persistence.model.DTO;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
+import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import desmoj.core.simulator.Model;
 
 import java.util.*;
@@ -116,10 +119,10 @@ public class OneWayStreetAdapter extends Street {
         ICar firstCar = removeFirstCar();
         if (firstCar != null) {
             if (!Objects.equals(firstCar.getCurrentSection(), firstCar.getDestination())) {
-                Street nextSection = firstCar.getNextSection();
-                if (nextSection != null) {
+                IConsumer nextSection = firstCar.getNextSection();
+                if (nextSection != null && nextSection instanceof Street) {
                     // Move physically first car to next section.
-                    nextSection.addCar(firstCar);
+                    ((Street)nextSection).addCar(firstCar);
                     // Move logically first car to next section.
                     firstCar.traverseToNextSection();
 
@@ -152,7 +155,12 @@ public class OneWayStreetAdapter extends Street {
     }
 
     @Override
+    public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean b) {
+        this.street.carDelivered(carDepartureEvent, car, b);
+    }
+
+    @Override
     public DTO toDTO() {
-        return this.street.toDTO();
+        return null;
     }
 }

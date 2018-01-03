@@ -1,6 +1,7 @@
 package at.fhv.itm3.s2.roundabout;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
+import at.fhv.itm14.trafsim.model.events.CarDepartureEvent;
 import at.fhv.itm14.trafsim.persistence.model.DTO;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
@@ -129,7 +130,17 @@ public class Sink extends Street {
     }
 
     @Override
+    public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean b) {
+
+    }
+
+    @Override
     public DTO toDTO() {
         return null;
     }
+
+//    @Override
+//    public DTO toDTO() {
+//        return null;
+//    }
 }

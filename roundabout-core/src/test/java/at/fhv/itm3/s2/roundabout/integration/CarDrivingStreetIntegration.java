@@ -1,5 +1,6 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
@@ -39,13 +40,13 @@ public class CarDrivingStreetIntegration {
 
         source.startGeneratingCars();
 
-        Street sink = route.getSink();
+        IConsumer sink = route.getSink();
 
         exp.start();
 
         exp.finish();
 
-        Assert.assertEquals(2, sink.getNrOfEnteredCars());
+        Assert.assertEquals(2, ((Street)sink).getNrOfEnteredCars());
     }
 
     @Test
@@ -60,13 +61,13 @@ public class CarDrivingStreetIntegration {
 
         source.startGeneratingCars();
 
-        Street sink = route.getSink();
+        IConsumer sink = route.getSink();
 
         exp.start();
 
         exp.finish();
 
-        Assert.assertEquals(2, sink.getNrOfEnteredCars());
+        Assert.assertEquals(2, ((Street)sink).getNrOfEnteredCars());
 
     }
 
@@ -82,13 +83,13 @@ public class CarDrivingStreetIntegration {
 
         source.startGeneratingCars();
 
-        Street sink = route.getSink();
+        IConsumer sink = route.getSink();
 
         exp.start();
 
         exp.finish();
 
-        Assert.assertEquals(2, sink.getNrOfEnteredCars());
+        Assert.assertEquals(2, ((Street)sink).getNrOfEnteredCars());
 
     }
 
@@ -104,13 +105,13 @@ public class CarDrivingStreetIntegration {
 
         source.startGeneratingCars();
 
-        Street sink = route.getSink();
+        IConsumer sink = route.getSink();
 
         exp.start();
 
         exp.finish();
 
-        Assert.assertEquals(2, sink.getNrOfEnteredCars());
+        Assert.assertEquals(2, ((Street)sink).getNrOfEnteredCars());
 
     }
 }

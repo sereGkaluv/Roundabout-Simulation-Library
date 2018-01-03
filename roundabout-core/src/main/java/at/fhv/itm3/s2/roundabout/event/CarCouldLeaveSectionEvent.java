@@ -1,5 +1,9 @@
 package at.fhv.itm3.s2.roundabout.event;
 
+import at.fhv.itm14.trafsim.model.entities.AbstractProducer;
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
+import at.fhv.itm14.trafsim.model.entities.IProducer;
+import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.Sink;
 import at.fhv.itm3.s2.roundabout.adapter.OneWayStreetAdapter;
@@ -68,14 +72,14 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
 
             // schedule a CarCouldLeaveSectionEvent for the next section, so it is thrown when the car should be able to
             // leave the next section under optimal conditions
-            Street nextSection = donorSection.getFirstCar().getNextSection();
+            IConsumer nextSection = donorSection.getFirstCar().getNextSection();
             if (nextSection != null && nextSection instanceof StreetSection) {
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                    nextSection,
-                    new TimeSpan(donorSection.getFirstCar().getTimeToTraverseSection(nextSection), TimeUnit.SECONDS)
+                        (StreetSection)nextSection,
+                    new TimeSpan((donorSection.getFirstCar().getTimeToTraverseSection(nextSection)), TimeUnit.SECONDS)
                 );
                 donorSection.moveFirstCarToNextSection();
-            }  else if (nextSection != null && (nextSection instanceof Sink || nextSection instanceof OneWayStreetAdapter)) {
+            }  else if (nextSection != null && (nextSection instanceof Sink || nextSection instanceof Intersection)) {
                 donorSection.moveFirstCarToNextSection();
             }
 
@@ -83,7 +87,6 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
             // car in the section needs to move away from its current position (this time is depending on whether the
             // car is standing or driving
             if(!donorSection.isEmpty()) {
-                donorSection.updateAllCarsPositions();
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
                     donorSection,
                     new TimeSpan(donorSection.getFirstCar().getTransitionTime(), TimeUnit.SECONDS)
@@ -94,10 +97,10 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
             // check if they have a car which could enter the current section because there might be space for a new car
             IStreetConnector previousStreetConnector = donorSection.getPreviousStreetConnector();
             if (previousStreetConnector != null) {
-                for (Street previousSection : previousStreetConnector.getPreviousSections()) {
+                for (IProducer previousSection : previousStreetConnector.getPreviousSections()) {
                     if (previousSection != null && previousSection instanceof StreetSection) {
                         roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                                previousSection,
+                                (StreetSection)previousSection,
                                 new TimeSpan(0, TimeUnit.SECONDS)
                         );
                     }
