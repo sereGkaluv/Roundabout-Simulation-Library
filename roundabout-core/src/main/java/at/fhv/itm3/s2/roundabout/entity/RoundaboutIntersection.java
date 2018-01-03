@@ -37,4 +37,8 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
         // should never be used
         throw new NotImplementedException();
     }
+
+    public double getTimeToTraverseIntersection(int inDirection, int outDirection) {
+        return traverseTimes[inDirection][outDirection];
+    }
 }

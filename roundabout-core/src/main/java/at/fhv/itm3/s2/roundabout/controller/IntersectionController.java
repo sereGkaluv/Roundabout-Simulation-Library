@@ -33,21 +33,19 @@ public class IntersectionController {
 
     public void setIntersectionInDirectionMapping(Intersection intersection, IConsumer consumer, int direction) {
         Map<IConsumer, Integer> map = null;
-        if (intersectionsInDirectionsMap.containsKey(intersection)) {
-            map = intersectionsInDirectionsMap.get(intersection);
-        } else {
+        if (!intersectionsInDirectionsMap.containsKey(intersection)) {
             intersectionsInDirectionsMap.put(intersection, new HashMap<>());
         }
+        map = intersectionsInDirectionsMap.get(intersection);
         map.put(consumer, direction);
     }
 
     public void setIntersectionOutDirectionMapping(Intersection intersection, IConsumer consumer, int direction) {
         Map<IConsumer, Integer> map = null;
-        if (intersectionsOutDirectionsMap.containsKey(intersection)) {
-            map = intersectionsOutDirectionsMap.get(intersection);
-        } else {
+        if (!intersectionsOutDirectionsMap.containsKey(intersection)) {
             intersectionsOutDirectionsMap.put(intersection, new HashMap<>());
         }
+        map = intersectionsOutDirectionsMap.get(intersection);
         map.put(consumer, direction);
     }
 

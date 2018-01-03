@@ -3,14 +3,13 @@ package at.fhv.itm3.s2.roundabout.mocks;
 import at.fhv.itm14.trafsim.model.ModelFactory;
 import at.fhv.itm14.trafsim.model.entities.*;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
-import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.Sink;
 import at.fhv.itm3.s2.roundabout.adapter.OneWayStreetAdapter;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
-import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutIntersection;
 import at.fhv.itm3.s2.roundabout.entity.Route;
 import at.fhv.itm3.s2.roundabout.entity.StreetConnector;
@@ -25,14 +24,10 @@ public class RouteGenerator {
 
     private Map<Integer, IRoute> routes;
     private RoundaboutSimulationModel model;
-    private Map<StreetSectionMock, Integer> inDirectionMap;
-    private Map<StreetSectionMock, Integer> outDirectionMap;
 
     public RouteGenerator(RoundaboutSimulationModel model) {
         routes = new HashMap<>();
         this.model = model;
-        this.inDirectionMap = new HashMap<>();
-        this.outDirectionMap = new HashMap<>();
 
         initializeRoutes();
         initializeRouteWithIntersection();
@@ -72,8 +67,8 @@ public class RouteGenerator {
 
         // INITIALIZE ROUTE WITH TWO STREETSECTIONS
         // initialize streets and sink
-        Street street1_1 = new StreetSectionMock(10.0, model, "", false, this);
-        Street street1_2 = new StreetSectionMock(10.0, model, "", false, this);
+        Street street1_1 = new StreetSection(10.0, model, "", false);
+        Street street1_2 = new StreetSection(10.0, model, "", false);
         Sink sink1 = new Sink(model, "", false);
 
         // initialize connectors
@@ -111,7 +106,7 @@ public class RouteGenerator {
 
         // INITIALIZE ROUTE WITH ONEWAYSTREET AND STREETSECTION
         // initialize streets and sink
-        Street street2_2 = new StreetSectionMock(10.0, model, "", false, this);
+        Street street2_2 = new StreetSection(10.0, model, "", false);
         OneWayStreet oneWayStreet2_1 = new OneWayStreet(model, "", false, 2, street2_2.toConsumer(), 10);
         Street street2_1 = new OneWayStreetAdapter(oneWayStreet2_1, model, "", false);
 
@@ -153,7 +148,7 @@ public class RouteGenerator {
         // INITIALIZE ROUTE WITH STREETSECTION AND ONEWAYSTREET
         // initialize streets and sink
         Sink sink3 = new Sink(model, "", false);
-        Street street3_1 = new StreetSectionMock(10.0, model, "", false, this);
+        Street street3_1 = new StreetSection(10.0, model, "", false);
         OneWayStreet oneWayStreet3_2 = new OneWayStreet(model, "", false, 2, sink3.toConsumer(), 10);
         Street street3_2 = new OneWayStreetAdapter(oneWayStreet3_2, model, "", false);
 
@@ -248,13 +243,13 @@ public class RouteGenerator {
                 intersection,
                 greenDuration,
                 yellowDuration,
-                phaseShiftTimes[1]
+                phaseShiftTimes[0]
         );
         intersection.attachController(ic);
 
         // initialize streets
-        AbstractProSumer street1 = new StreetSectionMock(10.0, model, "", false, this);
-        AbstractProSumer street2 = new StreetSectionMock(10.0, model, "", false, this);
+        AbstractProSumer street1 = new StreetSection(10.0, model, "", false);
+        AbstractProSumer street2 = new StreetSection(10.0, model, "", false);
 
         // initialize sink
         Sink sink = new Sink(model, "", false);
@@ -263,8 +258,10 @@ public class RouteGenerator {
         AbstractSource source = new RoundaboutSourceMock(model, "", false, (StreetSection)street1, 2, this, RouteType.STREETSECTION_INTERSECTION_STREETSECTION);
 
         // connect streets with intersection
-        setInDirection((StreetSectionMock)street1, inDirection);
-        setOutDirection((StreetSectionMock)street2, outDirection);
+        IntersectionController.getInstance().setIntersectionInDirectionMapping(intersection, street1, inDirection);
+        IntersectionController.getInstance().setIntersectionOutDirectionMapping(intersection, street2, outDirection);
+//        setInDirection((StreetSectionMock)street1, inDirection);
+//        setOutDirection((StreetSectionMock)street2, outDirection);
         intersection.attachProducer(inDirection, street1.toProducer());
         intersection.attachConsumer(outDirection, street2.toConsumer());
         intersection.createConnectionQueue(street1.toProducer(), new AbstractConsumer[]{street2.toConsumer()}, new double[]{intersectionTraverseTime}, new double[]{1.0});
@@ -289,21 +286,5 @@ public class RouteGenerator {
         route.addSection(sink);
 
         routes.put(4, route);
-    }
-
-    public int getInDirection(StreetSectionMock consumer) {
-        return inDirectionMap.get(consumer);
-    }
-
-    public int getOutDirection(StreetSectionMock consumer) {
-        return outDirectionMap.get(consumer);
-    }
-
-    private void setInDirection(StreetSectionMock consumer, int direction) {
-        inDirectionMap.put(consumer, direction);
-    }
-
-    private void setOutDirection(StreetSectionMock consumer, int direction) {
-        outDirectionMap.put(consumer, direction);
     }
 }

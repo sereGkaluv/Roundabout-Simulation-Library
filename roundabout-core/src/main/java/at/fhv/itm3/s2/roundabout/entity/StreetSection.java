@@ -245,7 +245,15 @@ public class StreetSection extends Street {
                     Car car = CarController.getCar(firstCar);
                     int outDirection = intersectionController.getOutDirectionOfIConsumer(intersection, firstCar.getSectionAfterNextSection());
                     car.setNextDirection(outDirection);
-                    intersection.carEnter(car, intersectionController.getInDirectionOfIConsumer(intersection, this));
+
+                    // this is made without the CarDepartureEvent of the existing implementation
+                    // because it can not handle traffic jam
+                    if (!intersection.isFull()) {
+                        intersection.carEnter(car, intersectionController.getInDirectionOfIConsumer(intersection, this));
+                        firstCar.traverseToNextSection();
+                    } else {
+                        // TODO: traffic jam
+                    }
                 } else {
                     throw new IllegalStateException("RoundaboutCar can not move further. Next section does not exist.");
                 }
@@ -314,6 +322,7 @@ public class StreetSection extends Street {
     public void carEnter(Car car) {
         ICar iCar = CarController.getICar(car);
         addCar(iCar);
+        iCar.traverseToNextSection();
         double traverseTime = iCar.getTimeToTraverseCurrentSection();
         CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(
             getRoundaboutModel()

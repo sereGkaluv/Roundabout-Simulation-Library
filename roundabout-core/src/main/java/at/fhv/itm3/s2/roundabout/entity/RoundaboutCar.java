@@ -4,6 +4,7 @@ import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.adapter.OneWayStreetAdapter;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
+import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 
 import java.util.Iterator;
 
@@ -17,6 +18,7 @@ public class RoundaboutCar implements ICar {
 
     private double lastUpdateTime;
 
+    private IConsumer lastSection;
     private IConsumer currentSection;
     private IConsumer nextSection;
     private IConsumer sectionAfterNextSection;
@@ -42,6 +44,7 @@ public class RoundaboutCar implements ICar {
             this.route = route;
             this.routeIterator = route.getRoute().iterator();
             // The below order is important!
+            this.lastSection = null;
             this.currentSection = retrieveNextRouteSection();
             this.nextSection = retrieveNextRouteSection();
             this.sectionAfterNextSection = retrieveNextRouteSection();
@@ -92,7 +95,13 @@ public class RoundaboutCar implements ICar {
             return remainingLength / this.getDriverBehaviour().getSpeed();
         } else if (section instanceof OneWayStreetAdapter) {
             return 0; // TODO: is that enough?
-        } else {
+        } else if (section instanceof RoundaboutIntersection && section == this.currentSection) {
+            RoundaboutIntersection intersection = (RoundaboutIntersection)section;
+            int inDirection = IntersectionController.getInstance().getInDirectionOfIConsumer(intersection, this.lastSection);
+            int outDirection = IntersectionController.getInstance().getOutDirectionOfIConsumer(intersection, this.nextSection);
+            return intersection.getTimeToTraverseIntersection(inDirection, outDirection);
+        }
+        else {
             throw new IllegalStateException("Street needs to be instance of StreetSection or OneWayStreetAdapter.");
         }
     }
@@ -135,6 +144,7 @@ public class RoundaboutCar implements ICar {
 
     @Override
     public void traverseToNextSection() {
+        this.lastSection = this.currentSection;
         this.currentSection = this.nextSection;
         this.nextSection = this.sectionAfterNextSection;
         this.sectionAfterNextSection = retrieveNextRouteSection();
