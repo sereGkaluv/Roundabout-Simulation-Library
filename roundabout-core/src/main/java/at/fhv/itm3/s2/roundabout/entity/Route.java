@@ -1,6 +1,7 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 
@@ -57,6 +58,21 @@ public class Route implements IRoute {
     }
 
     @Override
+    public AbstractSource getSource() {
+        return this.source;
+    }
+
+    @Override
+    public AbstractSink getSink() {
+        final IConsumer destinationSection = this.getDestinationSection();
+        if (destinationSection instanceof AbstractSink) {
+            return (AbstractSink) destinationSection;
+        } else {
+            throw new IllegalArgumentException("Destination section is not an instance of Sink.");
+        }
+    }
+
+    @Override
     public boolean isEmpty() {
         return route.isEmpty();
     }
@@ -66,15 +82,5 @@ public class Route implements IRoute {
             throw new IllegalArgumentException("Track must be part of the route");
         }
         return route.indexOf(streetSection);
-    }
-
-    @Override
-    public AbstractSource getSource() {
-        return this.source;
-    }
-
-    @Override
-    public IConsumer getSink() {
-        return route.get(route.size()-1);
     }
 }

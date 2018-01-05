@@ -2,7 +2,6 @@ package at.fhv.itm3.s2.roundabout.integration;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
-import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteType;
@@ -14,7 +13,7 @@ import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class CarDrivingStreetIntegration {
+public class NotASingleCar {
 
     private RoundaboutSimulationModel model;
     private Experiment exp;
@@ -28,23 +27,19 @@ public class CarDrivingStreetIntegration {
     }
 
     @Test
-    public void twoStreetSectionsTwoCars_carsShouldEnterSinks() {
+    public void zeroCarsPassingTwoStreetSections() {
 
         exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
-
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
-
         IRoute route = routeGeneratorMock.getRoute(RouteType.TWO_STREETSECTIONS_TWO_CARS);
-        AbstractSource source = route.getSource();
-
-        source.startGeneratingCars();
-
         AbstractSink sink = route.getSink();
 
-        exp.start();
+        //no car is generated as "source.startGeneratingCars();" is not called.
 
+        exp.start();
         exp.finish();
 
-        Assert.assertEquals(2, sink.getNrOfEnteredCars());
+        Assert.assertEquals(0, sink.getNrOfEnteredCars());
+        Assert.assertEquals(false, exp.hasError());
     }
 }
