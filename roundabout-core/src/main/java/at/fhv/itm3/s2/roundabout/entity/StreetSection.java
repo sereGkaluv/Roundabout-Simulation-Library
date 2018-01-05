@@ -231,6 +231,7 @@ public class StreetSection extends Street {
                                         if (!(previousStreet instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
                                         }
+                                        ((Street)previousStreet).updateAllCarsPositions();
                                         if (((Street)previousStreet).isFirstCarOnExitPoint()) {
                                             return false;
                                         }
@@ -253,6 +254,7 @@ public class StreetSection extends Street {
                                         if (!(precedenceSection instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
                                         }
+                                        ((Street)precedenceSection).updateAllCarsPositions();
                                         if (((Street)precedenceSection).isFirstCarOnExitPoint()) {
                                             return false;
                                         }
@@ -268,6 +270,7 @@ public class StreetSection extends Street {
                                         if (!(previousStreet instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
                                         }
+                                        ((Street)previousStreet).updateAllCarsPositions();
                                         if (((Street)previousStreet).isFirstCarOnExitPoint()) {
                                             return false;
                                         }
@@ -280,6 +283,7 @@ public class StreetSection extends Street {
                                         if (!(inlet instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
                                         }
+                                        ((Street)inlet).updateAllCarsPositions();
                                         if (((Street)inlet).isFirstCarOnExitPoint()) {
                                             return false;
                                         }
@@ -298,6 +302,7 @@ public class StreetSection extends Street {
                                                 if (!(previousSection instanceof Street)) {
                                                     throw new IllegalStateException("All previous IConsumer should be of type Street");
                                                 }
+                                                ((Street)previousSection).updateAllCarsPositions();
                                                 if (((Street)previousSection).isFirstCarOnExitPoint()) {
                                                     return false;
                                                 }
@@ -314,6 +319,7 @@ public class StreetSection extends Street {
                                                 if (!(previousSection instanceof Street)) {
                                                     throw new IllegalStateException("All previous IConsumer should be of type Street");
                                                 }
+                                                ((Street)previousSection).updateAllCarsPositions();
                                                 if (((Street)previousSection).isFirstCarOnExitPoint()) {
                                                     return false;
                                                 }

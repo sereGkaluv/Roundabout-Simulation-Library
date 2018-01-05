@@ -28,6 +28,7 @@ public class RouteGenerator {
 
         initializeRouteWithTwoStreetSections();
         initializeRouteWithIntersection();
+        initializeRouteWithTwoTracksAndTwoStreetSectionsPerTrack();
     }
 
     private IRoute getRouteWithTwoStreetSections() {
@@ -36,12 +37,20 @@ public class RouteGenerator {
 
     private IRoute getRouteWithIntersectionAndTwoStreetSections() { return routes.get(1); }
 
+    private IRoute getRouteWhereOneCarStaysOnTrack() { return routes.get(2); }
+
+    private IRoute getRouteWhereOneCarChangesTrack() { return routes.get(3); }
+
     public IRoute getRoute(RouteType type) {
         switch (type) {
             case TWO_STREETSECTIONS:
                 return getRouteWithTwoStreetSections();
             case STREETSECTION_INTERSECTION_STREETSECTION:
                 return getRouteWithIntersectionAndTwoStreetSections();
+            case ONE_CAR_STAYS_ON_TRACK:
+                return getRouteWhereOneCarStaysOnTrack();
+            case ONE_CAR_CHANGES_TRACK:
+                return getRouteWhereOneCarChangesTrack();
         }
         return null;
     }
@@ -148,5 +157,69 @@ public class RouteGenerator {
         route.addSection(sink);
 
         routes.put(1, route);
+    }
+
+    private void initializeRouteWithTwoTracksAndTwoStreetSectionsPerTrack() {
+
+        // initialize streets and sink
+        Street street1_1 = new StreetSection(100.0, model, "", false);
+        Street street1_2 = new StreetSection(100.0, model, "", false);
+        RoundaboutSink sink1 = new RoundaboutSinkMock(model, "", false);
+
+        Street street2_1 = new StreetSection(100.0, model, "", false);
+        Street street2_2 = new StreetSection(100.0, model, "", false);
+        RoundaboutSink sink2 = new RoundaboutSinkMock(model, "", false);
+
+        // initialize connectors
+        List<IConsumer> prevStreetsForConnector1 = new LinkedList<>();
+        prevStreetsForConnector1.add(street1_1);
+        prevStreetsForConnector1.add(street2_1);
+
+        List<IConsumer> nextStreetsForConnector1 = new LinkedList<>();
+        nextStreetsForConnector1.add(street1_2);
+        nextStreetsForConnector1.add(street2_2);
+
+        StreetConnector connector1 = new StreetConnector(prevStreetsForConnector1, nextStreetsForConnector1);
+        street1_1.setNextStreetConnector(connector1);
+        street1_2.setPreviousStreetConnector(connector1);
+        street2_1.setNextStreetConnector(connector1);
+        street2_2.setPreviousStreetConnector(connector1);
+        connector1.initializeTrack(street1_1, StreetType.STREET_SECTION, street1_2, StreetType.STREET_SECTION);
+        connector1.initializeTrack(street2_1, StreetType.STREET_SECTION, street2_2, StreetType.STREET_SECTION);
+
+        List<IConsumer> prevStreetsForConnector2 = new LinkedList<>();
+        prevStreetsForConnector2.add(street1_2);
+        prevStreetsForConnector2.add(street2_2);
+
+        List<IConsumer> nextStreetsForConnector2 = new LinkedList<>();
+        nextStreetsForConnector2.add(sink1);
+        nextStreetsForConnector2.add(sink2);
+
+        StreetConnector connector2 = new StreetConnector(prevStreetsForConnector2, nextStreetsForConnector2);
+        street1_2.setNextStreetConnector(connector2);
+        sink1.setPreviousStreetConnector(connector2);
+        street2_2.setNextStreetConnector(connector2);
+        sink2.setPreviousStreetConnector(connector2);
+        connector2.initializeTrack(street1_2, StreetType.STREET_SECTION, sink1, StreetType.STREET_SECTION);
+        connector2.initializeTrack(street2_2, StreetType.STREET_SECTION, sink2, StreetType.STREET_SECTION);
+
+        // initialize source and route
+        AbstractSource source1 = new RoundaboutSourceMock(model, "", false, street1_1, 1, this, RouteType.ONE_CAR_STAYS_ON_TRACK);
+        AbstractSource source2 = new RoundaboutSourceMock(model, "", false, street2_1, 1, this, RouteType.ONE_CAR_CHANGES_TRACK);
+
+        IRoute route1 = new Route();
+        route1.addSource(source1);
+        route1.addSection(street1_1);
+        route1.addSection(street1_2);
+        route1.addSection(sink1);
+
+        IRoute route2 = new Route();
+        route2.addSource(source2);
+        route2.addSection(street2_1);
+        route2.addSection(street1_2);
+        route2.addSection(sink1);
+
+        routes.put(2, route1);
+        routes.put(3, route2);
     }
 }
