@@ -12,7 +12,7 @@
             <parameter name="MAX_DISTANCE_FACTOR_BETWEEN_CARS" value="1.0"/>
             <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="3.0"/>
             <parameter name="MAX_TIME_BETWEEN_CAR_ARRIVALS" value="10.0"/>
-            <parameter name="MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS" value="1.0"/>
+            <parameter name="MAIN_ARRIVAL_RATE_FOR_STREETS" value="1.0"/>
         </parameters>
         <sections>
             <section id="1" previous="5" next="2">

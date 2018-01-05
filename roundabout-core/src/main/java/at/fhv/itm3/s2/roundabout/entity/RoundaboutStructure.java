@@ -35,7 +35,9 @@ public class RoundaboutStructure implements IRoundaboutStructure {
 
     @Override
     public void addParameter(String key, String value) {
-        parameters.put(key, value);
+        if (!key.isEmpty() && !value.isEmpty() && !parameters.containsKey(key)) {
+            parameters.put(key, value);
+        }
     }
 
     @Override

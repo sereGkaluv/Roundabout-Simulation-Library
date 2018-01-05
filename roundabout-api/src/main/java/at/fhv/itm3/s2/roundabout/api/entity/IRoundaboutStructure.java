@@ -9,6 +9,7 @@ public interface IRoundaboutStructure {
 
     /**
      * Add a street connector to the structure.
+     * Structure setup needs to be done before.
      *
      * @param streetConnector street connector to be added
      */
@@ -16,6 +17,7 @@ public interface IRoundaboutStructure {
 
     /**
      * Add a route to the structure.
+     * Structure setup needs to be done before.
      *
      * @param route route to be added
      */
@@ -23,13 +25,15 @@ public interface IRoundaboutStructure {
 
     /**
      * Add a street to the structure.
+     * Structure setup needs to be done before.
      *
      * @param street street to be added
      */
     void addStreet(Street street);
 
     /**
-     * Add a parameter to the structure.
+     * Add a configuration parameter to the structure.
+     * Known parameters: //TODO full list of parameters
      *
      * @param key   key of the parameter
      * @param value value of the parameter

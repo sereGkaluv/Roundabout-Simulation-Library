@@ -91,7 +91,10 @@ public class ConfigParserTest {
     public void configParserTest_exitDataLoaded() {
         assertNotNull("exit has trackId", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getExit().getTrackId());
         assertNotNull("exit has probability", roundAboutConfig.getRoundabout().getSections().getSection().get(0).getExit().getProbability());
+    }
 
+    @Test
+    public void configParserTest_exitDataLoaded_hasConnectorId() {
         boolean hasStreetId = false;
         for (Section section : roundAboutConfig.getRoundabout().getSections().getSection()) {
             if (section.getExit().getConnectorId() != null) {
@@ -138,8 +141,8 @@ public class ConfigParserTest {
 
         assertNotNull("parameters map not empty", roundaboutStructure.getParameters());
         assertEquals("5 parameters read", 5, roundaboutStructure.getParameters().size());
-        assertTrue("MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS in map", roundaboutStructure.getParameters().keySet().contains("MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS"));
-        assertEquals("value of MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS correct", "1.0", roundaboutStructure.getParameters().get("MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS"));
+        assertTrue("MAIN_ARRIVAL_RATE_FOR_STREETS in map", roundaboutStructure.getParameters().keySet().contains("MAIN_ARRIVAL_RATE_FOR_STREETS"));
+        assertEquals("value of MAIN_ARRIVAL_RATE_FOR_STREETS correct", "1.0", roundaboutStructure.getParameters().get("MAIN_ARRIVAL_RATE_FOR_STREETS"));
     }
 
     @Test
