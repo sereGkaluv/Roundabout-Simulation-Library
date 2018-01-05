@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<model>
+    <!-- global parameters needed for simulation -->
+    <parameters>
+        <parameter name="SIMULATION_SEED" value="1"/>
+    </parameters>
+    <!-- roundabout -->
+    <roundabout>
+        <name>Kreisverkehr Dornbirn Süd</name>
+        <parameters>
+            <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="0.1"/>
+            <parameter name="MAX_DISTANCE_FACTOR_BETWEEN_CARS" value="1.0"/>
+            <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="3.0"/>
+            <parameter name="MAX_TIME_BETWEEN_CAR_ARRIVALS" value="10.0"/>
+            <parameter name="MAIN_ARRIVAL_RATE_FOR_STREETS" value="1.0"/>
+        </parameters>
+        <sections>
+            <section id="1" previous="5" next="2">
+                <entry length="10.0" probability="0.1" trackId="1" connectorId="xyz"/>
+                <entry length="10.0" probability="0.1" trackId="2" connectorId="xyz"/>
+                <track length="10.0" id="1"/>
+                <track length="9.0" id="2"/>
+                <!-- adapter to trafsim library via streetId -->
+                <exit probability="0.2" trackId="1" connectorId="xyz"/>
+            </section>
+            <section id="2" previous="1" next="3">
+                <entry length="10.0" probability="0.1" trackId="2"/>
+                <entry length="10.0" probability="0.1" trackId="3"/>
+                <track length="10.0" id="2"/>
+                <track length="9.0" id="3"/>
+                <exit probability="0.2" trackId="2"/>
+            </section>
+            <section id="3" previous="2" next="4">
+                <entry length="10.0" probability="0.1" trackId="3"/>
+                <entry length="10.0" probability="0.1" trackId="4"/>
+                <track length="10.0" id="3"/>
+                <track length="9.0" id="4"/>
+                <exit probability="0.2" trackId="3"/>
+            </section>
+            <section id="4" previous="3" next="5">
+                <entry length="10.0" probability="0.1" trackId="4"/>
+                <entry length="10.0" probability="0.1" trackId="5"/>
+                <track length="10.0" id="4"/>
+                <track length="9.0" id="5"/>
+                <exit probability="0.2" trackId="4"/>
+            </section>
+            <section id="5" previous="4" next="1">
+                <entry length="10.0" probability="0.1" trackId="5"/>
+                <entry length="10.0" probability="0.1" trackId="1"/>
+                <track length="10.0" id="5"/>
+                <track length="9.0" id="1"/>
+                <exit probability="0.2" trackId="5"/>
+            </section>
+        </sections>
+    </roundabout>
+    <intersection>
+        <section id="1" previous="4" next="2">
+            <entry probability="0.25"/>
+            <exit probability="0.25"/>
+        </section>
+        <section id="2" previous="3" next="1">
+            <entry probability="0.25"/>
+            <exit probability="0.25"/>
+        </section>
+        <section id="3" previous="4" next="2">
+            <entry probability="0.25"/>
+            <exit probability="0.25"/>
+        </section>
+        <section id="4" previous="3" next="1">
+            <entry probability="0.25" connectorId="xyz"/>
+            <exit probability="0.25" connectorId="xyz"/>
+            <exit probability="0.25" connectorId="xyz"/>
+        </section>
+    </intersection>
+    <connectors>
+        <!-- connect roundabout and intersection -->
+        <connector id="xyz"/>
+    </connectors>
+</model>
