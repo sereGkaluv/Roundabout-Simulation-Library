@@ -183,7 +183,7 @@ public class RoundaboutCar implements ICar {
         }
     }
 
-    private Street retrieveNextRouteSection() {
+    private IConsumer retrieveNextRouteSection() {
         return routeIterator.hasNext() ? routeIterator.next() : null;
     }
 
