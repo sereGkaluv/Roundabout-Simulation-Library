@@ -18,7 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class StreetSectionTest {
+public class StreetTrackTest {
 
     private Street prepareStreetSectionCarCouldEnterNextSectionMock() {
         Street streetSectionMock = mock(StreetSection.class);

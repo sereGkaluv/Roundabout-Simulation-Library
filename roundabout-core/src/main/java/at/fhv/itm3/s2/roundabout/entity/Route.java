@@ -63,7 +63,7 @@ public class Route implements IRoute {
 
     public int getIndexOfSection(IConsumer streetSection) {
         if (!route.contains(streetSection)) {
-            throw new IllegalArgumentException("Section must be part of the route");
+            throw new IllegalArgumentException("Track must be part of the route");
         }
         return route.indexOf(streetSection);
     }
