@@ -1,6 +1,8 @@
 package at.fhv.itm3.s2.roundabout;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
+import at.fhv.itm14.trafsim.model.events.CarDepartureEvent;
 import at.fhv.itm14.trafsim.persistence.model.DTO;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
@@ -25,9 +27,14 @@ public class Sink extends Street {
     }
 
     @Override
-    public void addCar(ICar car) {
+    public void addCar(ICar iCar) {
         this.carCounter++;
-        CarController.removeCarMapping(car);
+        Car car = CarController.getCar(iCar);
+        IConsumer consumer = iCar.getLastSection();
+        if (consumer instanceof Street) {
+            ((Street)consumer).carDelivered(null, car, true);
+        }
+        CarController.removeCarMapping(iCar);
     }
 
     @Override
@@ -126,6 +133,11 @@ public class Sink extends Street {
     @Override
     public boolean isFull() {
         return false;
+    }
+
+    @Override
+    public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean successful) {
+
     }
 
     @Override

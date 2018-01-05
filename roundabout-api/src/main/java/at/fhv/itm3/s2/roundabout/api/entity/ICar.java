@@ -1,5 +1,8 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
+import at.fhv.itm14.trafsim.model.entities.IProducer;
+
 public interface ICar {
 
     /**
@@ -32,7 +35,7 @@ public interface ICar {
      * @param section the {@link Street} we are interested in how long the car needs to traverse it.
      * @return the traverse time in model time units.
      */
-    double getTimeToTraverseSection(Street section);
+    double getTimeToTraverseSection(IConsumer section);
 
     /**
      * Calculates the time the car needs until it has moved away from its current spot.
@@ -63,12 +66,20 @@ public interface ICar {
     IRoute getRoute();
 
     /**
+     * Returns a reference to the last {@link IProducer} present in the car route,
+     * where the car currently belongs to.
+     *
+     * @return reference to {@link IProducer} where car was last located
+     */
+    IConsumer getLastSection();
+
+    /**
      * Return a reference to a current {@link Street} present in car route,
      * where car currently belongs to.
      *
      * @return reference to {@link Street} where car is currently located.
      */
-    Street getCurrentSection();
+    IConsumer getCurrentSection();
 
     /**
      * Car will be logically traversed to next (following) {@link Street} in predefined route.
@@ -81,12 +92,20 @@ public interface ICar {
      *
      * @return reference to next {@link Street}.
      */
-    Street getNextSection();
+    IConsumer getNextSection();
+
+    /**
+     * Returns reference to the section after the next {@link IConsumer} scheduled
+     * in car pre-calculated route.
+     *
+     * @return  reference to section after next {@link IConsumer}
+     */
+    IConsumer getSectionAfterNextSection();
 
     /**
      * Return the last available section specified in car route.
      *
      * @return reference to last instance of {@link Street} in route.
      */
-    Street getDestination();
+    IConsumer getDestination();
 }
