@@ -1,8 +1,9 @@
 package at.fhv.itm3.s2.roundabout.util;
 
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
+import at.fhv.itm14.trafsim.model.entities.IProducer;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.util.dto.RoundAboutConfig;
 import at.fhv.itm3.s2.roundabout.util.dto.Section;
 import desmoj.core.simulator.Experiment;
@@ -149,7 +150,7 @@ public class ConfigParserTest {
         for (IStreetConnector connector : roundaboutStructure.getStreetConnectors()) {
             Integer exitSectionId = null;
             Integer nextTrackSectionId = null;
-            for (Street section : connector.getNextSections()) {
+            for (IConsumer section : connector.getNextSections()) {
                 if (section.toString().contains("exit")) {
                     exitSectionId = extractSectionId(section.toString());
                 } else if (section.toString().contains("track")) {
@@ -165,7 +166,7 @@ public class ConfigParserTest {
 
             Integer entrySectionId = null;
             Integer previousTrackSectionId = null;
-            for (Street section : connector.getPreviousSections()) {
+            for (IProducer section : connector.getPreviousSections()) {
                 if (section.toString().contains("entry")) {
                     Integer id = extractSectionId(section.toString());
                     if (entrySectionId != null && entrySectionId != id) {

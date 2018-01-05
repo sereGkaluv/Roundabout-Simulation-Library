@@ -1,10 +1,13 @@
 package at.fhv.itm3.s2.roundabout.mocks;
 
 import at.fhv.itm14.trafsim.model.ModelFactory;
-import at.fhv.itm14.trafsim.model.entities.*;
+import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
+import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
+import at.fhv.itm14.trafsim.model.entities.IProducer;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.Sink;
+import at.fhv.itm3.s2.roundabout.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
@@ -54,7 +57,7 @@ public class RouteGenerator {
         // initialize streets and sink
         Street street1_1 = new StreetSection(10.0, model, "", false);
         Street street1_2 = new StreetSection(10.0, model, "", false);
-        Sink sink1 = new Sink(model, "", false);
+        RoundaboutSink sink1 = new RoundaboutSink(model, "", false);
 
         // initialize connectors
         Set<IProducer> prevStreetsForConnector1_1 = new HashSet<>();
@@ -115,7 +118,7 @@ public class RouteGenerator {
         AbstractProSumer street2 = new StreetSection(10.0, model, "", false);
 
         // initialize sink
-        Sink sink = new Sink(model, "", false);
+        RoundaboutSink sink = new RoundaboutSink(model, "", false);
 
         // initialize source
         AbstractSource source = new RoundaboutSourceMock(model, "", false, (StreetSection)street1, 2, this, RouteType.STREETSECTION_INTERSECTION_STREETSECTION);
