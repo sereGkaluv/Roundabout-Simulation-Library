@@ -5,15 +5,11 @@ import at.fhv.itm14.trafsim.model.entities.*;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutIntersection;
-import at.fhv.itm3.s2.roundabout.entity.Route;
-import at.fhv.itm3.s2.roundabout.entity.StreetConnector;
-import at.fhv.itm3.s2.roundabout.entity.StreetSection;
+import at.fhv.itm3.s2.roundabout.entity.*;
 
 import java.util.*;
 
@@ -68,7 +64,7 @@ public class RouteGeneratorMock {
         StreetConnector connector1_2 = new StreetConnector(prevStreetsForConnector1_2, nextStreetsForConnector1_2);
         street1_2.setNextStreetConnector(connector1_2);
         roundaboutSink1.setPreviousStreetConnector(connector1_2);
-        connector1_2.initializeTrack(street1_2, ConsumerType.STREET_SECTION, sink1, ConsumerType.STREET_SECTION);
+        connector1_2.initializeTrack(street1_2, ConsumerType.STREET_SECTION, roundaboutSink1, ConsumerType.STREET_SECTION);
 
         // initialize source and route
         AbstractSource source1 = new RoundaboutSourceMock(
@@ -151,7 +147,7 @@ public class RouteGeneratorMock {
         StreetConnector connector1 = new StreetConnector(prevStreetsForConnector1, nextStreetsForConnector1);
         ((StreetSection)street2).setNextStreetConnector(connector1);
         roundaboutSink.setPreviousStreetConnector(connector1);
-        connector1.initializeTrack(street2, ConsumerType.STREET_SECTION, sink, ConsumerType.STREET_SECTION);
+        connector1.initializeTrack(street2, ConsumerType.STREET_SECTION, roundaboutSink, ConsumerType.STREET_SECTION);
 
         // initialize route
         IRoute route = new Route();

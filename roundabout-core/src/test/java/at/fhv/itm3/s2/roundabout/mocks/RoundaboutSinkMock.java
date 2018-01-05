@@ -1,10 +1,6 @@
 package at.fhv.itm3.s2.roundabout.mocks;
 
-import at.fhv.itm14.trafsim.model.entities.Car;
-import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
-import at.fhv.itm3.s2.roundabout.controller.CarController;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import desmoj.core.simulator.Model;
 
