@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 public class CarGenerateEventMock extends CarGenerateEvent {
 
     private RoundaboutSimulationModel model;
-    private RouteGenerator routeGenerator;
+    private RouteGeneratorMock routeGeneratorMock;
 
     private int remainingCarsToGenerate;
     private RouteType type;
@@ -28,52 +28,68 @@ public class CarGenerateEventMock extends CarGenerateEvent {
      * @param name        this event's name.
      * @param showInTrace flag to indicate if this event shall produce output for the trace.
      */
-    public CarGenerateEventMock(Model model, String name, boolean showInTrace, int remainigCarsToGenerate, RouteGenerator routeGenerator, RouteType type) {
+    public CarGenerateEventMock(
+            Model model,
+            String name,
+            boolean showInTrace,
+            int remainingCarsToGenerate,
+            RouteGeneratorMock routeGeneratorMock,
+            RouteType type
+    ) {
         super(model, name, showInTrace);
         this.model = (RoundaboutSimulationModel)model;
-        this.remainingCarsToGenerate = remainigCarsToGenerate;
-        this.routeGenerator = routeGenerator;
+        this.remainingCarsToGenerate = remainingCarsToGenerate;
+        this.routeGeneratorMock = routeGeneratorMock;
         this.type = type;
 
         initMockingComponents();
     }
 
-    public CarGenerateEventMock(Model model, String name, boolean showInTrace, RouteGenerator routeGenerator) {
+    public CarGenerateEventMock(Model model, String name, boolean showInTrace, RouteGeneratorMock routeGeneratorMock) {
         super(model, name, showInTrace);
         this.model = (RoundaboutSimulationModel)model;
         this.remainingCarsToGenerate = 1;
-        this.routeGenerator = routeGenerator;
-        this.type = RouteType.TWO_STREETSECTIONS;
+        this.routeGeneratorMock = routeGeneratorMock;
+        this.type = RouteType.TWO_STREETSECTIONS_TWO_CARS;
 
         initMockingComponents();
     }
-
-
 
     private void initMockingComponents() {
 
         this.routeController = Mockito.mock(RouteController.class);
 
-        when(this.routeController.getRandomRoute()).then(invocationOnMock -> routeGenerator.getRoute(this.type));
+        when(this.routeController.getRandomRoute()).then(invocationOnMock -> routeGeneratorMock.getRoute(this.type));
 
         this.roundaboutEventFactory = Mockito.mock(RoundaboutEventFactory.class);
 
-        when(this.roundaboutEventFactory.createCarGenerateEvent((RoundaboutSimulationModel)notNull())).then(invocationOnMock -> {
-            return new CarGenerateEventMock(this.model, "", false, this.remainingCarsToGenerate - 1, this.routeGenerator, this.type);
-        });
+        when(this.roundaboutEventFactory.createCarGenerateEvent((RoundaboutSimulationModel) notNull())).then(
+                invocationOnMock -> new CarGenerateEventMock(
+                        this.model,
+                        "",
+                        false,
+                        this.remainingCarsToGenerate - 1,
+                        this.routeGeneratorMock,
+                        this.type
+                )
+        );
 
-        when(this.roundaboutEventFactory.createCarCouldLeaveSectionEvent((RoundaboutSimulationModel)notNull())).then(invocationOnMock -> {
-            return new CarCouldLeaveSectionEventMock(this.model, "", false);
-        });
+        when(this.roundaboutEventFactory.createCarCouldLeaveSectionEvent((RoundaboutSimulationModel) notNull())).then(
+                invocationOnMock -> new CarCouldLeaveSectionEventMock(
+                        this.model,
+                        "",
+                        false
+                )
+        );
 
     }
 
     public AbstractSource getSource() {
-        return routeGenerator.getRoute(this.type).getSource();
+        return routeGeneratorMock.getRoute(this.type).getSource();
     }
 
     public IConsumer getSink() {
-        return routeGenerator.getRoute(this.type).getSink();
+        return routeGeneratorMock.getRoute(this.type).getSink();
     }
 
     @Override

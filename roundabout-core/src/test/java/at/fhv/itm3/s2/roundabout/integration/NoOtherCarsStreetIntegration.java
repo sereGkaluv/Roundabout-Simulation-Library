@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class CarDrivingStreetIntegration {
+public class NoOtherCarsStreetIntegration {
 
     private RoundaboutSimulationModel model;
     private Experiment exp;
@@ -28,7 +28,7 @@ public class CarDrivingStreetIntegration {
     }
 
     @Test
-    public void twoStreetSectionsTwoCars_carsShouldEnterSinks() {
+    public void oneCarPassingTwoStreetSections() {
 
         exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
 
@@ -42,9 +42,9 @@ public class CarDrivingStreetIntegration {
         AbstractSink sink = route.getSink();
 
         exp.start();
-
         exp.finish();
 
-        Assert.assertEquals(2, sink.getNrOfEnteredCars());
+        Assert.assertEquals("car passed", 2, sink.getNrOfEnteredCars());
     }
+
 }

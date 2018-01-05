@@ -6,7 +6,10 @@ import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
 import at.fhv.itm14.trafsim.model.events.CarDepartureEvent;
 import at.fhv.itm14.trafsim.persistence.model.DTO;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.api.entity.*;
+import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
+import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
@@ -59,7 +62,7 @@ public class StreetSection extends Street {
 
         carQueue.addLast(iCar);
         carPositions.put(iCar, INITIAL_CAR_POSITION);
-        this.carCounter++;
+        incrementTotalCarCounter();
 
         // call carDelivered events for last section, so the car position
         // of the current car (that has just left the last section successfully
@@ -275,11 +278,6 @@ public class StreetSection extends Street {
     @Override
     public boolean carCouldEnterNextSection() {
         throw new IllegalStateException("Street section is not empty, but last car could not be determined.");
-    }
-
-    @Override
-    public int getNrOfEnteredCars() {
-        return this.carCounter;
     }
 
     private double getCarPosition(ICar car) {

@@ -71,12 +71,12 @@ public interface IRoute {
      */
     AbstractSource getSource();
 
+    void addSource(AbstractSource source);
+
     /**
      * Returns the {@link Street} sink of the route
      *
      * @return  the sink of the route as {@link Street}
      */
-    IConsumer getSink();
-
-    void addSource(AbstractSource source);
+    AbstractSink getSink();
 }

@@ -1,12 +1,11 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
-import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutIntersection;
-import at.fhv.itm3.s2.roundabout.mocks.RouteGenerator;
+import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteType;
 import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.TimeInstant;
@@ -34,21 +33,21 @@ public class IntersectionIntegration {
 
         exp.stop(new TimeInstant(10000, TimeUnit.SECONDS));
 
-        RouteGenerator routeGenerator = new RouteGenerator(model);
+        RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
-        IRoute route = routeGenerator.getRoute(RouteType.STREETSECTION_INTERSECTION_STREETSECTION);
+        IRoute route = routeGeneratorMock.getRoute(RouteType.STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS);
         AbstractSource source = route.getSource();
         RoundaboutIntersection intersection = (RoundaboutIntersection)route.getSectionAt(1);
         intersection.getController().start();
 
         source.startGeneratingCars();
 
-        IConsumer sink = route.getSink();
+        AbstractSink sink = route.getSink();
 
         exp.start();
 
         exp.finish();
 
-        Assert.assertEquals(2, ((Street)sink).getNrOfEnteredCars());
+        Assert.assertEquals(2, sink.getNrOfEnteredCars());
     }
 }
