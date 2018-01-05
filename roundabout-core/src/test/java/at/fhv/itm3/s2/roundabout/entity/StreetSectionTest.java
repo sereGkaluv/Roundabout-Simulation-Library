@@ -685,22 +685,122 @@ public class StreetSectionTest {
 
     @Test
     public void carWantsToChangeTrackInTheRoundabout_canDrive() {
+        Street streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
+        when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
+
+        ICar firstCar = mock(RoundaboutCar.class);
+        when(streetSectionMock.getFirstCar()).thenReturn(firstCar);
+
+        Street nextStreetSection = mock(StreetSection.class);
+        when(firstCar.getNextSection()).thenReturn(nextStreetSection);
+        when(firstCar.getLength()).thenReturn(5.0);
+        when(nextStreetSection.isEnoughSpace(firstCar.getLength())).thenReturn(true);
+
+        IStreetConnector nextStreetConnector = mock(StreetConnector.class);
+        when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
+        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_SECTION);
+        when(nextStreetConnector.getTypeOfStreet(nextStreetSection)).thenReturn(StreetType.ROUNDABOUT_SECTION);
+
+        List<IConsumer> previousSections = new LinkedList<>();
+        Street previousTrackSection = mock(StreetSection.class);
+        previousSections.add(previousTrackSection);
+        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
+        when(previousTrackSection.isFirstCarOnExitPoint()).thenReturn(false);
+        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousTrackSection, nextStreetSection)).thenReturn(true);
+
+        assertTrue(streetSectionMock.firstCarCouldEnterNextSection());
     }
 
     @Test
     public void carWantsToChangeTrackInTheRoundabout_canNotDrive() {
+        Street streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
+        when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
+
+        ICar firstCar = mock(RoundaboutCar.class);
+        when(streetSectionMock.getFirstCar()).thenReturn(firstCar);
+
+        Street nextStreetSection = mock(StreetSection.class);
+        when(firstCar.getNextSection()).thenReturn(nextStreetSection);
+        when(firstCar.getLength()).thenReturn(5.0);
+        when(nextStreetSection.isEnoughSpace(firstCar.getLength())).thenReturn(true);
+
+        IStreetConnector nextStreetConnector = mock(StreetConnector.class);
+        when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
+        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_SECTION);
+        when(nextStreetConnector.getTypeOfStreet(nextStreetSection)).thenReturn(StreetType.ROUNDABOUT_SECTION);
+
+        List<IConsumer> previousSections = new LinkedList<>();
+        Street previousTrackSection = mock(StreetSection.class);
+        previousSections.add(previousTrackSection);
+        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
+        when(previousTrackSection.isFirstCarOnExitPoint()).thenReturn(true);
+        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousTrackSection, nextStreetSection)).thenReturn(true);
+
+        assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
     }
 
     @Test
     public void carWantsToUseRoundaboutExitThatIsNotOnItsTrack_canDrive() {
+        Street streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
+        when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
+
+        ICar firstCar = mock(RoundaboutCar.class);
+        when(streetSectionMock.getFirstCar()).thenReturn(firstCar);
+
+        Street nextStreetSection = mock(StreetSection.class);
+        when(firstCar.getNextSection()).thenReturn(nextStreetSection);
+        when(firstCar.getLength()).thenReturn(5.0);
+        when(nextStreetSection.isEnoughSpace(firstCar.getLength())).thenReturn(true);
+
+        IStreetConnector nextStreetConnector = mock(StreetConnector.class);
+        when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
+        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_SECTION);
+        when(nextStreetConnector.getTypeOfStreet(nextStreetSection)).thenReturn(StreetType.ROUNDABOUT_EXIT);
+
+        List<IConsumer> previousSections = new LinkedList<>();
+        Street previousSection = mock(StreetSection.class);
+        previousSections.add(previousSection);
+        previousSections.add(streetSectionMock);
+        when(nextStreetConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
+        when(previousSection.isFirstCarOnExitPoint()).thenReturn(false);
+
+        assertTrue(streetSectionMock.firstCarCouldEnterNextSection());
     }
 
     @Test
     public void carWantsToUseRoundaboutExitThatIsNotOnItsTrack_canNotDrive() {
+        Street streetSectionMock = prepareStreetSectionCarCouldEnterNextSectionMock();
 
+        when(streetSectionMock.isFirstCarOnExitPoint()).thenReturn(true);
+
+        ICar firstCar = mock(RoundaboutCar.class);
+        when(streetSectionMock.getFirstCar()).thenReturn(firstCar);
+
+        Street nextStreetSection = mock(StreetSection.class);
+        when(firstCar.getNextSection()).thenReturn(nextStreetSection);
+        when(firstCar.getLength()).thenReturn(5.0);
+        when(nextStreetSection.isEnoughSpace(firstCar.getLength())).thenReturn(true);
+
+        IStreetConnector nextStreetConnector = mock(StreetConnector.class);
+        when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
+        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_SECTION);
+        when(nextStreetConnector.getTypeOfStreet(nextStreetSection)).thenReturn(StreetType.ROUNDABOUT_EXIT);
+
+        List<IConsumer> previousSections = new LinkedList<>();
+        Street previousSection = mock(StreetSection.class);
+        previousSections.add(previousSection);
+        previousSections.add(streetSectionMock);
+        when(nextStreetConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
+        when(previousSection.isFirstCarOnExitPoint()).thenReturn(true);
+
+        assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
     }
 
 

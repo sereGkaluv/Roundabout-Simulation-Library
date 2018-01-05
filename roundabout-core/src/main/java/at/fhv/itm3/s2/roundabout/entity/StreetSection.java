@@ -207,6 +207,7 @@ public class StreetSection extends Street {
                 if (nextConsumer instanceof Street) {
                     Street nextStreet = (Street) nextConsumer;
                     if (nextStreet.isEnoughSpace(firstCarInQueue.getLength())) {
+
                         // PRECEDENCE CHECK
                         IStreetConnector nextConnector = getNextStreetConnector();
                         StreetType currentStreetType = nextConnector.getTypeOfStreet(this);
@@ -257,7 +258,10 @@ public class StreetSection extends Street {
                                         }
                                     }
                                     break;
-                                // case 7:
+                                // case 7: car is on a roundabout inlet and wants to change to another
+                                // roundabout section that is not on its track
+                                // (it has to give precedence to all cars in the roundabout that are on tracks
+                                // the car has to cross and to all cars on the inlets of the track it wants to change to)
                                 case ROUNDABOUT_INLET:
                                     List<IConsumer> previousStreets = nextConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION);
                                     for (IConsumer previousStreet: previousStreets) {
@@ -281,15 +285,39 @@ public class StreetSection extends Street {
                                         }
                                     }
                                     break;
-                                // case 8:
                                 case ROUNDABOUT_SECTION:
                                     StreetType nextStreetType = nextConnector.getTypeOfStreet(nextStreet);
+                                    List<IConsumer> previousSections;
                                     switch (nextStreetType) {
+                                        // case 8: the car is in the roundabout and wants to change to a roundabout section
+                                        // on another track (it has to give precedence to the cars that are on the previous
+                                        // sections of this track)
                                         case ROUNDABOUT_SECTION:
-                                            // TODO
+                                            previousSections = nextConnector.getPreviousTrackSections(nextStreet, StreetType.ROUNDABOUT_SECTION);
+                                            for (IConsumer previousSection: previousSections) {
+                                                if (!(previousSection instanceof Street)) {
+                                                    throw new IllegalStateException("All previous IConsumer should be of type Street");
+                                                }
+                                                if (((Street)previousSection).isFirstCarOnExitPoint()) {
+                                                    return false;
+                                                }
+                                            }
                                             break;
+                                        // case 9: the car is in the roundabout and wants to leave the roundabout over an exit
+                                        // that lies not on its track (it has to give precedence to all cars in the roundabout that
+                                        // are on tracks it has to cross)
                                         case ROUNDABOUT_EXIT:
-                                            // TODO
+                                            previousSections = nextConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION);
+                                            int indexOfCurrentSection = previousSections.indexOf(this);
+                                            for (int i = indexOfCurrentSection - 1; i >= 0; i--) {
+                                                IConsumer previousSection = previousSections.get(i);
+                                                if (!(previousSection instanceof Street)) {
+                                                    throw new IllegalStateException("All previous IConsumer should be of type Street");
+                                                }
+                                                if (((Street)previousSection).isFirstCarOnExitPoint()) {
+                                                    return false;
+                                                }
+                                            }
                                             break;
                                         default:
                                             throw new IllegalStateException("After a ROUNDABOUT_SECTION only another ROUNDABOUT_SECTION or a ROUNDABOUT_EXIT is allowed");
