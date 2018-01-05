@@ -10,8 +10,9 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
 
     private long enteredCarCounter;
 
-    public Street(Model model, String s, boolean b) {
-        super(model, s, b);
+    public Street(Model owner, String name, boolean showInTrace) {
+        super(owner, name, showInTrace);
+
         this.enteredCarCounter = 0;
     }
 

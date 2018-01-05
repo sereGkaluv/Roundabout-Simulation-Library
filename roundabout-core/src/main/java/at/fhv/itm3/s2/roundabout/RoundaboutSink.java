@@ -18,8 +18,8 @@ public class RoundaboutSink extends AbstractSink {
 
     private IStreetConnector previousStreetConnector;
 
-    public RoundaboutSink(Model model, String s, boolean b) {
-        super(model, s, b);
+    public RoundaboutSink(Model owner, String name, boolean showInTrace) {
+        super(owner, name, showInTrace);
     }
 
     @Override
