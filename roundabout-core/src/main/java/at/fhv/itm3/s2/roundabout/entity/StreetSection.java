@@ -210,10 +210,10 @@ public class StreetSection extends Street {
 
                         // PRECEDENCE CHECK
                         IStreetConnector nextConnector = getNextStreetConnector();
-                        StreetType currentStreetType = nextConnector.getTypeOfStreet(this);
+                        ConsumerType currentConsumerType = nextConnector.getTypeOfConsumer(this);
 
-                        if (nextConnector.isNextStreetOnSameTrackAsCurrent(this, nextStreet)) {
-                            switch (currentStreetType) {
+                        if (nextConnector.isNextConsumerOnSameTrackAsCurrent(this, nextStreet)) {
+                            switch (currentConsumerType) {
                                 // case 1: car is in the roundabout and wants to remain on the track
                                 // (it has precedence)
                                 case ROUNDABOUT_SECTION:
@@ -226,7 +226,7 @@ public class StreetSection extends Street {
                                 // (it has to give precedence to all cars in the roundabout that are on tracks
                                 // the car has to cross)
                                 case ROUNDABOUT_INLET:
-                                    List<IConsumer> previousStreets = nextConnector.getPreviousSections();
+                                    List<IConsumer> previousStreets = nextConnector.getPreviousConsumers();
                                     for (IConsumer previousStreet: previousStreets) {
                                         if (!(previousStreet instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
@@ -235,21 +235,21 @@ public class StreetSection extends Street {
                                         if (((Street)previousStreet).isFirstCarOnExitPoint()) {
                                             return false;
                                         }
-                                        if (nextConnector.isNextStreetOnSameTrackAsCurrent(previousStreet, nextStreet)) {
+                                        if (nextConnector.isNextConsumerOnSameTrackAsCurrent(previousStreet, nextStreet)) {
                                             break;
                                         }
                                     }
                                     break;
                             }
                         } else {
-                            switch (currentStreetType) {
+                            switch (currentConsumerType) {
                                 // case 5: car wants to change the track in the roundabout exit
                                 // (it has to give precedence to a car on that track)
                                 case ROUNDABOUT_EXIT:
                                 // case 6: car wants to change the track on a streetsection
                                 // (it has to give precedence to a car on that track)
                                 case STREET_SECTION:
-                                    List<IConsumer> streetsThatHavePrecedence = nextConnector.getPreviousTrackSections(nextStreet, currentStreetType);
+                                    List<IConsumer> streetsThatHavePrecedence = nextConnector.getPreviousTrackConsumers(nextStreet, currentConsumerType);
                                     for (IConsumer precedenceSection: streetsThatHavePrecedence) {
                                         if (!(precedenceSection instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
@@ -265,7 +265,7 @@ public class StreetSection extends Street {
                                 // (it has to give precedence to all cars in the roundabout that are on tracks
                                 // the car has to cross and to all cars on the inlets of the track it wants to change to)
                                 case ROUNDABOUT_INLET:
-                                    List<IConsumer> previousStreets = nextConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION);
+                                    List<IConsumer> previousStreets = nextConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION);
                                     for (IConsumer previousStreet: previousStreets) {
                                         if (!(previousStreet instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
@@ -274,11 +274,11 @@ public class StreetSection extends Street {
                                         if (((Street)previousStreet).isFirstCarOnExitPoint()) {
                                             return false;
                                         }
-                                        if (nextConnector.isNextStreetOnSameTrackAsCurrent(previousStreet, nextStreet)) {
+                                        if (nextConnector.isNextConsumerOnSameTrackAsCurrent(previousStreet, nextStreet)) {
                                             break;
                                         }
                                     }
-                                    List<IConsumer> inlets = nextConnector.getPreviousTrackSections(nextStreet, StreetType.ROUNDABOUT_INLET);
+                                    List<IConsumer> inlets = nextConnector.getPreviousTrackConsumers(nextStreet, ConsumerType.ROUNDABOUT_INLET);
                                     for (IConsumer inlet: inlets) {
                                         if (!(inlet instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
@@ -290,14 +290,14 @@ public class StreetSection extends Street {
                                     }
                                     break;
                                 case ROUNDABOUT_SECTION:
-                                    StreetType nextStreetType = nextConnector.getTypeOfStreet(nextStreet);
+                                    ConsumerType nextConsumerType = nextConnector.getTypeOfConsumer(nextStreet);
                                     List<IConsumer> previousSections;
-                                    switch (nextStreetType) {
+                                    switch (nextConsumerType) {
                                         // case 8: the car is in the roundabout and wants to change to a roundabout section
                                         // on another track (it has to give precedence to the cars that are on the previous
                                         // sections of this track)
                                         case ROUNDABOUT_SECTION:
-                                            previousSections = nextConnector.getPreviousTrackSections(nextStreet, StreetType.ROUNDABOUT_SECTION);
+                                            previousSections = nextConnector.getPreviousTrackConsumers(nextStreet, ConsumerType.ROUNDABOUT_SECTION);
                                             for (IConsumer previousSection: previousSections) {
                                                 if (!(previousSection instanceof Street)) {
                                                     throw new IllegalStateException("All previous IConsumer should be of type Street");
@@ -312,7 +312,7 @@ public class StreetSection extends Street {
                                         // that lies not on its track (it has to give precedence to all cars in the roundabout that
                                         // are on tracks it has to cross)
                                         case ROUNDABOUT_EXIT:
-                                            previousSections = nextConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION);
+                                            previousSections = nextConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION);
                                             int indexOfCurrentSection = previousSections.indexOf(this);
                                             for (int i = indexOfCurrentSection - 1; i >= 0; i--) {
                                                 IConsumer previousSection = previousSections.get(i);

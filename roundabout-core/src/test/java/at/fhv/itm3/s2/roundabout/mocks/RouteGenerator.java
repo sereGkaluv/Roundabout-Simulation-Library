@@ -4,7 +4,7 @@ import at.fhv.itm14.trafsim.model.ModelFactory;
 import at.fhv.itm14.trafsim.model.entities.*;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.api.entity.StreetType;
+import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
@@ -73,7 +73,7 @@ public class RouteGenerator {
         StreetConnector connector1_1 = new StreetConnector(prevStreetsForConnector1_1, nextStreetsForConnector1_1);
         street1_1.setNextStreetConnector(connector1_1);
         street1_2.setPreviousStreetConnector(connector1_1);
-        connector1_1.initializeTrack(street1_1, StreetType.STREET_SECTION, street1_2, StreetType.STREET_SECTION);
+        connector1_1.initializeTrack(street1_1, ConsumerType.STREET_SECTION, street1_2, ConsumerType.STREET_SECTION);
 
         List<IConsumer> prevStreetsForConnector1_2 = new LinkedList<>();
         prevStreetsForConnector1_2.add(street1_2);
@@ -84,7 +84,7 @@ public class RouteGenerator {
         StreetConnector connector1_2 = new StreetConnector(prevStreetsForConnector1_2, nextStreetsForConnector1_2);
         street1_2.setNextStreetConnector(connector1_2);
         sink1.setPreviousStreetConnector(connector1_2);
-        connector1_2.initializeTrack(street1_2, StreetType.STREET_SECTION, sink1, StreetType.STREET_SECTION);
+        connector1_2.initializeTrack(street1_2, ConsumerType.STREET_SECTION, sink1, ConsumerType.STREET_SECTION);
 
         // initialize source and route
         AbstractSource source1 = new RoundaboutSourceMock(model, "", false, street1_1, 2, this, RouteType.TWO_STREETSECTIONS);
@@ -146,7 +146,7 @@ public class RouteGenerator {
         StreetConnector connector1 = new StreetConnector(prevStreetsForConnector1, nextStreetsForConnector1);
         ((StreetSection)street2).setNextStreetConnector(connector1);
         sink.setPreviousStreetConnector(connector1);
-        connector1.initializeTrack(street2, StreetType.STREET_SECTION, sink, StreetType.STREET_SECTION);
+        connector1.initializeTrack(street2, ConsumerType.STREET_SECTION, sink, ConsumerType.STREET_SECTION);
 
         // initialize route
         IRoute route = new Route();
@@ -184,8 +184,8 @@ public class RouteGenerator {
         street1_2.setPreviousStreetConnector(connector1);
         street2_1.setNextStreetConnector(connector1);
         street2_2.setPreviousStreetConnector(connector1);
-        connector1.initializeTrack(street1_1, StreetType.STREET_SECTION, street1_2, StreetType.STREET_SECTION);
-        connector1.initializeTrack(street2_1, StreetType.STREET_SECTION, street2_2, StreetType.STREET_SECTION);
+        connector1.initializeTrack(street1_1, ConsumerType.STREET_SECTION, street1_2, ConsumerType.STREET_SECTION);
+        connector1.initializeTrack(street2_1, ConsumerType.STREET_SECTION, street2_2, ConsumerType.STREET_SECTION);
 
         List<IConsumer> prevStreetsForConnector2 = new LinkedList<>();
         prevStreetsForConnector2.add(street1_2);
@@ -200,8 +200,8 @@ public class RouteGenerator {
         sink1.setPreviousStreetConnector(connector2);
         street2_2.setNextStreetConnector(connector2);
         sink2.setPreviousStreetConnector(connector2);
-        connector2.initializeTrack(street1_2, StreetType.STREET_SECTION, sink1, StreetType.STREET_SECTION);
-        connector2.initializeTrack(street2_2, StreetType.STREET_SECTION, sink2, StreetType.STREET_SECTION);
+        connector2.initializeTrack(street1_2, ConsumerType.STREET_SECTION, sink1, ConsumerType.STREET_SECTION);
+        connector2.initializeTrack(street2_2, ConsumerType.STREET_SECTION, sink2, ConsumerType.STREET_SECTION);
 
         // initialize source and route
         AbstractSource source1 = new RoundaboutSourceMock(model, "", false, street1_1, 1, this, RouteType.ONE_CAR_STAYS_ON_TRACK);

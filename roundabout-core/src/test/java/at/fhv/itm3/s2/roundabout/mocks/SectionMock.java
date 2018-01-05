@@ -63,7 +63,7 @@ public class SectionMock {
 
         when(this.section.getPreviousStreetConnector()).thenReturn(this.previousStreetConnector);
 
-        when(this.previousStreetConnector.getPreviousSections()).then(invocation -> {
+        when(this.previousStreetConnector.getPreviousConsumers()).then(invocation -> {
             List<Street> previousSections = new LinkedList<>();
             for (int i = 0; i < nrOfPreviousSections; i++) {
                 previousSections.add(Mockito.mock(StreetSection.class));

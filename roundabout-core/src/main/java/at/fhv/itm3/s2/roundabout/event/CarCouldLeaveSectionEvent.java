@@ -94,7 +94,7 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
             // check if they have a car which could enter the current section because there might be space for a new car
             IStreetConnector previousStreetConnector = donorSection.getPreviousStreetConnector();
             if (previousStreetConnector != null) {
-                for (IConsumer previousSection : previousStreetConnector.getPreviousSections()) {
+                for (IConsumer previousSection : previousStreetConnector.getPreviousConsumers()) {
                     if (previousSection != null && previousSection instanceof StreetSection) {
                         roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
                                 (StreetSection)previousSection,

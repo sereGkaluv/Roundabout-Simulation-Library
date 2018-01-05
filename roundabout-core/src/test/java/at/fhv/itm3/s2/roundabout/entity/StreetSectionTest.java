@@ -85,8 +85,8 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_SECTION);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_SECTION);
 
         assertTrue(streetSectionMock.firstCarCouldEnterNextSection());
     }
@@ -107,8 +107,8 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.STREET_SECTION);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.STREET_SECTION);
 
         assertTrue(streetSectionMock.firstCarCouldEnterNextSection());
     }
@@ -129,8 +129,8 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_EXIT);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_EXIT);
 
         assertTrue(streetSectionMock.firstCarCouldEnterNextSection());
     }
@@ -151,17 +151,17 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         Street previousStreetSection1 = mock(StreetSection.class);
         Street previousStreetSection2 = mock(StreetSection.class);
         List<IConsumer> previousSections = new LinkedList<>();
         previousSections.add(previousStreetSection1);
         previousSections.add(previousStreetSection2);
-        when(nextStreetConnector.getPreviousSections()).thenReturn(previousSections);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousStreetSection1, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousStreetSection2, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getPreviousConsumers()).thenReturn(previousSections);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousStreetSection1, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousStreetSection2, nextStreetSection)).thenReturn(false);
         when(previousStreetSection1.isFirstCarOnExitPoint()).thenReturn(false);
         when(previousStreetSection2.isFirstCarOnExitPoint()).thenReturn(true);
 
@@ -184,17 +184,17 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         Street previousStreetSection1 = mock(StreetSection.class);
         Street previousStreetSection2 = mock(StreetSection.class);
         List<IConsumer> previousSections = new LinkedList<>();
         previousSections.add(previousStreetSection1);
         previousSections.add(previousStreetSection2);
-        when(nextStreetConnector.getPreviousSections()).thenReturn(previousSections);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousStreetSection1, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousStreetSection2, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getPreviousConsumers()).thenReturn(previousSections);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousStreetSection1, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousStreetSection2, nextStreetSection)).thenReturn(false);
         when(previousStreetSection1.isFirstCarOnExitPoint()).thenReturn(true);
         when(previousStreetSection2.isFirstCarOnExitPoint()).thenReturn(true);
 
@@ -217,17 +217,17 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         Street previousStreetSection1 = mock(StreetSection.class);
         Street previousStreetSection2 = mock(StreetSection.class);
         List<IConsumer> previousSections = new LinkedList<>();
         previousSections.add(previousStreetSection1);
         previousSections.add(previousStreetSection2);
-        when(nextStreetConnector.getPreviousSections()).thenReturn(previousSections);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousStreetSection1, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousStreetSection2, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.getPreviousConsumers()).thenReturn(previousSections);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousStreetSection1, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousStreetSection2, nextStreetSection)).thenReturn(true);
         when(previousStreetSection1.isFirstCarOnExitPoint()).thenReturn(false);
         when(previousStreetSection2.isFirstCarOnExitPoint()).thenReturn(false);
 
@@ -249,17 +249,17 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         Street previousStreetSection1 = mock(StreetSection.class);
         Street previousStreetSection2 = mock(StreetSection.class);
         List<IConsumer> previousSections = new LinkedList<>();
         previousSections.add(previousStreetSection1);
         previousSections.add(previousStreetSection2);
-        when(nextStreetConnector.getPreviousSections()).thenReturn(previousSections);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousStreetSection1, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousStreetSection2, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.getPreviousConsumers()).thenReturn(previousSections);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousStreetSection1, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousStreetSection2, nextStreetSection)).thenReturn(true);
         when(previousStreetSection1.isFirstCarOnExitPoint()).thenReturn(true);
         when(previousStreetSection2.isFirstCarOnExitPoint()).thenReturn(false);
 
@@ -282,17 +282,17 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         Street previousStreetSection1 = mock(StreetSection.class);
         Street previousStreetSection2 = mock(StreetSection.class);
         List<IConsumer> previousSections = new LinkedList<>();
         previousSections.add(previousStreetSection1);
         previousSections.add(previousStreetSection2);
-        when(nextStreetConnector.getPreviousSections()).thenReturn(previousSections);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousStreetSection1, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousStreetSection2, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.getPreviousConsumers()).thenReturn(previousSections);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousStreetSection1, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousStreetSection2, nextStreetSection)).thenReturn(true);
         when(previousStreetSection1.isFirstCarOnExitPoint()).thenReturn(false);
         when(previousStreetSection2.isFirstCarOnExitPoint()).thenReturn(true);
 
@@ -314,13 +314,13 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_EXIT);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_EXIT);
 
         List<IConsumer> previousTrackSections = new LinkedList<>();
         Street previousTrackSection = mock(StreetSection.class);
         previousTrackSections.add(previousTrackSection);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_EXIT)).thenReturn(previousTrackSections);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.ROUNDABOUT_EXIT)).thenReturn(previousTrackSections);
         when(previousTrackSection.isFirstCarOnExitPoint()).thenReturn(false);
 
         assertTrue(streetSectionMock.firstCarCouldEnterNextSection());
@@ -342,13 +342,13 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_EXIT);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_EXIT);
 
         List<IConsumer> previousTrackSections = new LinkedList<>();
         Street previousTrackSection = mock(StreetSection.class);
         previousTrackSections.add(previousTrackSection);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_EXIT)).thenReturn(previousTrackSections);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.ROUNDABOUT_EXIT)).thenReturn(previousTrackSections);
         when(previousTrackSection.isFirstCarOnExitPoint()).thenReturn(true);
 
         assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
@@ -370,13 +370,13 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.STREET_SECTION);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.STREET_SECTION);
 
         List<IConsumer> previousTrackSections = new LinkedList<>();
         Street previousTrackSection = mock(StreetSection.class);
         previousTrackSections.add(previousTrackSection);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.STREET_SECTION)).thenReturn(previousTrackSections);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.STREET_SECTION)).thenReturn(previousTrackSections);
         when(previousTrackSection.isFirstCarOnExitPoint()).thenReturn(false);
 
         assertTrue(streetSectionMock.firstCarCouldEnterNextSection());
@@ -398,13 +398,13 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.STREET_SECTION);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.STREET_SECTION);
 
         List<IConsumer> previousTrackSections = new LinkedList<>();
         Street previousTrackSection = mock(StreetSection.class);
         previousTrackSections.add(previousTrackSection);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.STREET_SECTION)).thenReturn(previousTrackSections);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.STREET_SECTION)).thenReturn(previousTrackSections);
         when(previousTrackSection.isFirstCarOnExitPoint()).thenReturn(true);
 
         assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
@@ -426,24 +426,24 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         List<IConsumer> previousSectionsWithoutInlet = new LinkedList<>();
         Street previousSectionOuterTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOuterTrack);
         Street previousSectionOnInnerTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOnInnerTrack);
-        when(nextStreetConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
+        when(nextStreetConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
         when(previousSectionOuterTrack.isFirstCarOnExitPoint()).thenReturn(false);
         when(previousSectionOnInnerTrack.isFirstCarOnExitPoint()).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(true);
 
         List<IConsumer> previousInlets = new LinkedList<>();
         Street previousInlet = mock(StreetSection.class);
         previousInlets.add(previousInlet);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
         when(previousInlet.isFirstCarOnExitPoint()).thenReturn(false);
 
         assertTrue(streetSectionMock.firstCarCouldEnterNextSection());
@@ -465,24 +465,24 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         List<IConsumer> previousSectionsWithoutInlet = new LinkedList<>();
         Street previousSectionOuterTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOuterTrack);
         Street previousSectionOnInnerTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOnInnerTrack);
-        when(nextStreetConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
+        when(nextStreetConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
         when(previousSectionOuterTrack.isFirstCarOnExitPoint()).thenReturn(true);
         when(previousSectionOnInnerTrack.isFirstCarOnExitPoint()).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(true);
 
         List<IConsumer> previousInlets = new LinkedList<>();
         Street previousInlet = mock(StreetSection.class);
         previousInlets.add(previousInlet);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
         when(previousInlet.isFirstCarOnExitPoint()).thenReturn(false);
 
         assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
@@ -504,24 +504,24 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         List<IConsumer> previousSectionsWithoutInlet = new LinkedList<>();
         Street previousSectionOuterTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOuterTrack);
         Street previousSectionOnInnerTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOnInnerTrack);
-        when(nextStreetConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
+        when(nextStreetConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
         when(previousSectionOuterTrack.isFirstCarOnExitPoint()).thenReturn(false);
         when(previousSectionOnInnerTrack.isFirstCarOnExitPoint()).thenReturn(true);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(true);
 
         List<IConsumer> previousInlets = new LinkedList<>();
         Street previousInlet = mock(StreetSection.class);
         previousInlets.add(previousInlet);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
         when(previousInlet.isFirstCarOnExitPoint()).thenReturn(false);
 
         assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
@@ -543,24 +543,24 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         List<IConsumer> previousSectionsWithoutInlet = new LinkedList<>();
         Street previousSectionOuterTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOuterTrack);
         Street previousSectionOnInnerTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOnInnerTrack);
-        when(nextStreetConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
+        when(nextStreetConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
         when(previousSectionOuterTrack.isFirstCarOnExitPoint()).thenReturn(false);
         when(previousSectionOnInnerTrack.isFirstCarOnExitPoint()).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(true);
 
         List<IConsumer> previousInlets = new LinkedList<>();
         Street previousInlet = mock(StreetSection.class);
         previousInlets.add(previousInlet);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
         when(previousInlet.isFirstCarOnExitPoint()).thenReturn(true);
 
         assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
@@ -582,24 +582,24 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         List<IConsumer> previousSectionsWithoutInlet = new LinkedList<>();
         Street previousSectionOuterTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOuterTrack);
         Street previousSectionOnInnerTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOnInnerTrack);
-        when(nextStreetConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
+        when(nextStreetConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
         when(previousSectionOuterTrack.isFirstCarOnExitPoint()).thenReturn(false);
         when(previousSectionOnInnerTrack.isFirstCarOnExitPoint()).thenReturn(true);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(false);
 
         List<IConsumer> previousInlets = new LinkedList<>();
         Street previousInlet = mock(StreetSection.class);
         previousInlets.add(previousInlet);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
         when(previousInlet.isFirstCarOnExitPoint()).thenReturn(false);
 
         assertTrue(streetSectionMock.firstCarCouldEnterNextSection());
@@ -621,24 +621,24 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         List<IConsumer> previousSectionsWithoutInlet = new LinkedList<>();
         Street previousSectionOuterTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOuterTrack);
         Street previousSectionOnInnerTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOnInnerTrack);
-        when(nextStreetConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
+        when(nextStreetConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
         when(previousSectionOuterTrack.isFirstCarOnExitPoint()).thenReturn(true);
         when(previousSectionOnInnerTrack.isFirstCarOnExitPoint()).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(false);
 
         List<IConsumer> previousInlets = new LinkedList<>();
         Street previousInlet = mock(StreetSection.class);
         previousInlets.add(previousInlet);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
         when(previousInlet.isFirstCarOnExitPoint()).thenReturn(false);
 
         assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
@@ -660,24 +660,24 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_INLET);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_INLET);
 
         List<IConsumer> previousSectionsWithoutInlet = new LinkedList<>();
         Street previousSectionOuterTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOuterTrack);
         Street previousSectionOnInnerTrack = mock(StreetSection.class);
         previousSectionsWithoutInlet.add(previousSectionOnInnerTrack);
-        when(nextStreetConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
+        when(nextStreetConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION)).thenReturn(previousSectionsWithoutInlet);
         when(previousSectionOuterTrack.isFirstCarOnExitPoint()).thenReturn(false);
         when(previousSectionOnInnerTrack.isFirstCarOnExitPoint()).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(true);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOuterTrack, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousSectionOnInnerTrack, nextStreetSection)).thenReturn(false);
 
         List<IConsumer> previousInlets = new LinkedList<>();
         Street previousInlet = mock(StreetSection.class);
         previousInlets.add(previousInlet);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.ROUNDABOUT_INLET)).thenReturn(previousInlets);
         when(previousInlet.isFirstCarOnExitPoint()).thenReturn(true);
 
         assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
@@ -699,16 +699,16 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_SECTION);
-        when(nextStreetConnector.getTypeOfStreet(nextStreetSection)).thenReturn(StreetType.ROUNDABOUT_SECTION);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_SECTION);
+        when(nextStreetConnector.getTypeOfConsumer(nextStreetSection)).thenReturn(ConsumerType.ROUNDABOUT_SECTION);
 
         List<IConsumer> previousSections = new LinkedList<>();
         Street previousTrackSection = mock(StreetSection.class);
         previousSections.add(previousTrackSection);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
         when(previousTrackSection.isFirstCarOnExitPoint()).thenReturn(false);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousTrackSection, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousTrackSection, nextStreetSection)).thenReturn(true);
 
         assertTrue(streetSectionMock.firstCarCouldEnterNextSection());
     }
@@ -729,16 +729,16 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_SECTION);
-        when(nextStreetConnector.getTypeOfStreet(nextStreetSection)).thenReturn(StreetType.ROUNDABOUT_SECTION);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_SECTION);
+        when(nextStreetConnector.getTypeOfConsumer(nextStreetSection)).thenReturn(ConsumerType.ROUNDABOUT_SECTION);
 
         List<IConsumer> previousSections = new LinkedList<>();
         Street previousTrackSection = mock(StreetSection.class);
         previousSections.add(previousTrackSection);
-        when(nextStreetConnector.getPreviousTrackSections(nextStreetSection, StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
+        when(nextStreetConnector.getPreviousTrackConsumers(nextStreetSection, ConsumerType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
         when(previousTrackSection.isFirstCarOnExitPoint()).thenReturn(true);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(previousTrackSection, nextStreetSection)).thenReturn(true);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(previousTrackSection, nextStreetSection)).thenReturn(true);
 
         assertFalse(streetSectionMock.firstCarCouldEnterNextSection());
     }
@@ -759,15 +759,15 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_SECTION);
-        when(nextStreetConnector.getTypeOfStreet(nextStreetSection)).thenReturn(StreetType.ROUNDABOUT_EXIT);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_SECTION);
+        when(nextStreetConnector.getTypeOfConsumer(nextStreetSection)).thenReturn(ConsumerType.ROUNDABOUT_EXIT);
 
         List<IConsumer> previousSections = new LinkedList<>();
         Street previousSection = mock(StreetSection.class);
         previousSections.add(previousSection);
         previousSections.add(streetSectionMock);
-        when(nextStreetConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
+        when(nextStreetConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
         when(previousSection.isFirstCarOnExitPoint()).thenReturn(false);
 
         assertTrue(streetSectionMock.firstCarCouldEnterNextSection());
@@ -789,15 +789,15 @@ public class StreetSectionTest {
 
         IStreetConnector nextStreetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getNextStreetConnector()).thenReturn(nextStreetConnector);
-        when(nextStreetConnector.isNextStreetOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
-        when(nextStreetConnector.getTypeOfStreet(streetSectionMock)).thenReturn(StreetType.ROUNDABOUT_SECTION);
-        when(nextStreetConnector.getTypeOfStreet(nextStreetSection)).thenReturn(StreetType.ROUNDABOUT_EXIT);
+        when(nextStreetConnector.isNextConsumerOnSameTrackAsCurrent(streetSectionMock, nextStreetSection)).thenReturn(false);
+        when(nextStreetConnector.getTypeOfConsumer(streetSectionMock)).thenReturn(ConsumerType.ROUNDABOUT_SECTION);
+        when(nextStreetConnector.getTypeOfConsumer(nextStreetSection)).thenReturn(ConsumerType.ROUNDABOUT_EXIT);
 
         List<IConsumer> previousSections = new LinkedList<>();
         Street previousSection = mock(StreetSection.class);
         previousSections.add(previousSection);
         previousSections.add(streetSectionMock);
-        when(nextStreetConnector.getPreviousSections(StreetType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
+        when(nextStreetConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION)).thenReturn(previousSections);
         when(previousSection.isFirstCarOnExitPoint()).thenReturn(true);
 
         assertFalse(streetSectionMock.firstCarCouldEnterNextSection());

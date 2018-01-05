@@ -9,56 +9,56 @@ public interface IStreetConnector {
     /**
      * Gets the next connected {@link IConsumer}s, which are accessible via this connector.
      *
-     * @return The further connected sections in form of {@link List< IConsumer >}.
+     * @return The further connected {@link IConsumer}s in form of {@link List< IConsumer >}.
      */
-    List<IConsumer> getNextSections();
+    List<IConsumer> getNextConsumers();
 
     /**
      * Gets the previous connected {@link IConsumer}s, which are accessible through this connector.
      *
-     * @return The previous connected sections in form of {@link List< IConsumer >}.
+     * @return The previous connected {@link IConsumer}s in form of {@link List< IConsumer >}.
      */
-    List<IConsumer> getPreviousSections();
+    List<IConsumer> getPreviousConsumers();
 
     /**
      * Gets the previous connected {@link IConsumer}s with the given type, which are accessible through this connector.
      *
-     * @param streetType    the street type the returned {@link IConsumer}s have
-     * @return              the previous connected sections with the given street type in form of {@link List<IConsumer>}
+     * @param consumerType    the street type the returned {@link IConsumer}s have
+     * @return              the previous connected {@link IConsumer}s with the given street type in form of {@link List<IConsumer>}
      */
-    List<IConsumer> getPreviousSections(StreetType streetType);
+    List<IConsumer> getPreviousConsumers(ConsumerType consumerType);
 
     /**
-     * Returns the previous sections fo the given street of the given type on its track
+     * Returns the previous connected {@link IConsumer}s fo the given {@link IConsumer} of the given {@link ConsumerType} on its track
      *
-     * @param street        a next street of the connector
-     * @param streetType    the type the returned sections are of
-     * @return              the next sections as {@link IConsumer}
+     * @param consumer      a next {@link IConsumer} of the connector
+     * @param consumerType    the {@link ConsumerType} the returned {@link IConsumer}s are of
+     * @return              the next consumers as {@link IConsumer}
      */
-    List<IConsumer> getPreviousTrackSections(IConsumer street, StreetType streetType);
+    List<IConsumer> getPreviousTrackConsumers(IConsumer consumer, ConsumerType consumerType);
 
     /**
-     * Checks if the nextStreet is on the same track as the currentStreet
+     * Checks if the nextConsumer is on the same track as the currentConsumer
      *
-     * @param currentStreet     the street on the track, we're interested in
-     * @param nextStreet        the next street
-     * @return                  true, if the next street is on the same track as the current street, else false
+     * @param currentConsumer     the {@link IConsumer} on the track, we're interested in
+     * @param nextConsumer        the next {@link IConsumer}
+     * @return                      true, if the next {@link IConsumer} is on the same track as the current, else false
      */
-    boolean isNextStreetOnSameTrackAsCurrent(IConsumer currentStreet, IConsumer nextStreet);
+    boolean isNextConsumerOnSameTrackAsCurrent(IConsumer currentConsumer, IConsumer nextConsumer);
 
     /**
-     * Connects the two given streets to a track (used for precedence)
+     * Connects the two given {@link IConsumer}s to a track (used for precedence)
      *
-     * @param firstStreet   the previous street of the connector
-     * @param secondStreet  the next street of the connector
+     * @param firstConsumer   a previous {@link IConsumer} of the connector
+     * @param secondConsumer  a next {@link IConsumer} of the connector
      */
-    void initializeTrack(IConsumer firstStreet, StreetType streetTypeOfFirstStreet, IConsumer secondStreet, StreetType streetTypeOfSecondStreet);
+    void initializeTrack(IConsumer firstConsumer, ConsumerType consumerTypeOfFirstConsumer, IConsumer secondConsumer, ConsumerType consumerTypeOfSecondConsumer);
 
     /**
-     * Returns the type of a street connected to the {@link IStreetConnector}
+     * Returns the type of a {@link IConsumer} connected to the {@link IStreetConnector}
      *
-     * @param street    the street the type of should be returned
+     * @param consumer  the {@link IConsumer} the type of should be returned
      * @return          the type as {@link IConsumer}
      */
-    StreetType getTypeOfStreet(IConsumer street);
+    ConsumerType getTypeOfConsumer(IConsumer consumer);
 }
