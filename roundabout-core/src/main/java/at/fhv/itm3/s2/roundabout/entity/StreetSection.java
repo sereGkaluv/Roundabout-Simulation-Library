@@ -209,7 +209,7 @@ public class StreetSection extends Street {
                     if (nextStreet.isEnoughSpace(firstCarInQueue.getLength())) {
                         IStreetConnector previousStreetConnector = getPreviousStreetConnector();
                         if (previousStreetConnector != null) {
-                            Set<IConsumer> precedenceSections = getPreviousStreetConnector().getNextSections();
+                            List<IConsumer> precedenceSections = getPreviousStreetConnector().getNextSections();
                             precedenceSections.remove(this);
 
                             for (IConsumer precedenceSection : precedenceSections) {

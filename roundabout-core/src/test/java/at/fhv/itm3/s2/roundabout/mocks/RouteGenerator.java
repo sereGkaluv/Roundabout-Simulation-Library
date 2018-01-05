@@ -4,7 +4,7 @@ import at.fhv.itm14.trafsim.model.ModelFactory;
 import at.fhv.itm14.trafsim.model.entities.*;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.Sink;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
@@ -14,10 +14,7 @@ import at.fhv.itm3.s2.roundabout.entity.Route;
 import at.fhv.itm3.s2.roundabout.entity.StreetConnector;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class RouteGenerator {
 
@@ -54,23 +51,23 @@ public class RouteGenerator {
         // initialize streets and sink
         Street street1_1 = new StreetSection(10.0, model, "", false);
         Street street1_2 = new StreetSection(10.0, model, "", false);
-        Sink sink1 = new Sink(model, "", false);
+        RoundaboutSink sink1 = new RoundaboutSink(model, "", false);
 
         // initialize connectors
-        Set<IProducer> prevStreetsForConnector1_1 = new HashSet<>();
+        List<IConsumer> prevStreetsForConnector1_1 = new LinkedList<>();
         prevStreetsForConnector1_1.add(street1_1);
 
-        Set<IConsumer> nextStreetsForConnector1_1 = new HashSet<>();
+        List<IConsumer> nextStreetsForConnector1_1 = new LinkedList<>();
         nextStreetsForConnector1_1.add(street1_2);
 
         StreetConnector connector1_1 = new StreetConnector(prevStreetsForConnector1_1, nextStreetsForConnector1_1);
         street1_1.setNextStreetConnector(connector1_1);
         street1_2.setPreviousStreetConnector(connector1_1);
 
-        Set<IProducer> prevStreetsForConnector1_2 = new HashSet<>();
+        List<IConsumer> prevStreetsForConnector1_2 = new LinkedList<>();
         prevStreetsForConnector1_2.add(street1_2);
 
-        Set<IConsumer> nextStreetsForConnector1_2 = new HashSet<>();
+        List<IConsumer> nextStreetsForConnector1_2 = new LinkedList<>();
         nextStreetsForConnector1_2.add(sink1);
 
         StreetConnector connector1_2 = new StreetConnector(prevStreetsForConnector1_2, nextStreetsForConnector1_2);
@@ -115,7 +112,7 @@ public class RouteGenerator {
         AbstractProSumer street2 = new StreetSection(10.0, model, "", false);
 
         // initialize sink
-        Sink sink = new Sink(model, "", false);
+        RoundaboutSink sink = new RoundaboutSink(model, "", false);
 
         // initialize source
         AbstractSource source = new RoundaboutSourceMock(model, "", false, (StreetSection)street1, 2, this, RouteType.STREETSECTION_INTERSECTION_STREETSECTION);
@@ -128,10 +125,10 @@ public class RouteGenerator {
         intersection.createConnectionQueue(street1.toProducer(), new AbstractConsumer[]{street2.toConsumer()}, new double[]{intersectionTraverseTime}, new double[]{1.0});
 
         // initialize connectors
-        Set<IProducer> prevStreetsForConnector1 = new HashSet<>();
+        List<IConsumer> prevStreetsForConnector1 = new LinkedList<>();
         prevStreetsForConnector1.add(street2);
 
-        Set<IConsumer> nextStreetsForConnector1 = new HashSet<>();
+        List<IConsumer> nextStreetsForConnector1 = new LinkedList<>();
         nextStreetsForConnector1.add(sink);
 
         StreetConnector connector1 = new StreetConnector(prevStreetsForConnector1, nextStreetsForConnector1);

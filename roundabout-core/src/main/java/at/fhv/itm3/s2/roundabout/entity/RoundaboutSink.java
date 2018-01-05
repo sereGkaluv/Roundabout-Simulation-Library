@@ -1,4 +1,4 @@
-package at.fhv.itm3.s2.roundabout;
+package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
@@ -13,11 +13,11 @@ import desmoj.core.simulator.Model;
 import java.util.List;
 import java.util.Map;
 
-public class Sink extends Street {
+public class RoundaboutSink extends Street {
 
     private IStreetConnector previousStreetConnector;
 
-    public Sink(Model model, String s, boolean b) {
+    public RoundaboutSink(Model model, String s, boolean b) {
         super(model, s, b);
     }
 

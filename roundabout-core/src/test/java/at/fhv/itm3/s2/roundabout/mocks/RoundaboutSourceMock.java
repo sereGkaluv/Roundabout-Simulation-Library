@@ -1,7 +1,7 @@
 package at.fhv.itm3.s2.roundabout.mocks;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.RoundaboutSource;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutSource;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import desmoj.core.simulator.Model;

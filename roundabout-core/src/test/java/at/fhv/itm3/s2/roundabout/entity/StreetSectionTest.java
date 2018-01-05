@@ -1,7 +1,6 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm14.trafsim.model.entities.IProducer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
@@ -9,10 +8,7 @@ import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -87,7 +83,7 @@ public class StreetSectionTest {
         IStreetConnector streetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getPreviousStreetConnector()).thenReturn(streetConnector);
 
-        HashSet<IConsumer> precedenceSections = new HashSet<>();
+        List<IConsumer> precedenceSections = new LinkedList<>();
 
         Street streetSectionOne = mock(StreetSection.class);
         when(streetSectionOne.isFirstCarOnExitPoint()).thenReturn(true);
@@ -119,7 +115,7 @@ public class StreetSectionTest {
         IStreetConnector streetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getPreviousStreetConnector()).thenReturn(streetConnector);
 
-        HashSet<IProducer> precedenceSections = new HashSet<>();
+        List<IConsumer> precedenceSections = new LinkedList<>();
 
         Street streetSectionOne = mock(StreetSection.class);
         when(streetSectionOne.isFirstCarOnExitPoint()).thenReturn(false);
