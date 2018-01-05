@@ -61,7 +61,7 @@ public class StreetConnector implements IStreetConnector {
 
     @Override
     public boolean isNextStreetOnSameTrackAsCurrent(IConsumer currentStreet, IConsumer nextStreet) {
-        if (!this.previousSectionsOnTrackMap.containsKey(nextStreet) || this.nextSectionsOnTrackMap.containsKey(currentStreet)) {
+        if (!this.previousSectionsOnTrackMap.containsKey(nextStreet) || !this.nextSectionsOnTrackMap.containsKey(currentStreet)) {
             throw new IllegalArgumentException("There are no tracks defined for the given streets");
         }
         List<IConsumer> nextStreetsOnTrack = this.nextSectionsOnTrackMap.get(currentStreet);
