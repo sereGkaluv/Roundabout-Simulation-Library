@@ -18,8 +18,11 @@ public class RoundaboutSimulationModel extends Model {
 
     private static final double MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS = 1;
 
+    private static final double STANDARD_CAR_ACCELERATION_TIME = 2;
+
     private static final long MODEL_SEED = new Random().nextLong();
     private static final TimeUnit MODEL_TIME_UNIT = TimeUnit.SECONDS;
+
 
     /**
      * Random number stream used to calculate a distance between two cars.
@@ -119,5 +122,14 @@ public class RoundaboutSimulationModel extends Model {
 
     public ContDist getTimeBetweenCarArrivalsOnOneWayStreets() {
         return timeBetweenCarArrivalsOnOneWayStreets;
+    }
+
+    /**
+     * This method returns the acceleration time which is not influenced by driver behaviour.
+     *
+     * @return standardCarAccelerationTime
+     */
+    public double getStandardCarAccelerationTime(){
+        return STANDARD_CAR_ACCELERATION_TIME;
     }
 }
