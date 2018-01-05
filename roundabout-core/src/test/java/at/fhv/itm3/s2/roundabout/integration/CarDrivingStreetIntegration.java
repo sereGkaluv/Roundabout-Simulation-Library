@@ -1,16 +1,15 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
-import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;
+import at.fhv.itm3.s2.roundabout.mocks.RouteType;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.mocks.RoundaboutSinkMock;
 import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.TimeInstant;
-import at.fhv.itm3.s2.roundabout.mocks.RouteGenerator;
-import at.fhv.itm3.s2.roundabout.mocks.RouteType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,22 +32,22 @@ public class CarDrivingStreetIntegration {
     @Test
     public void twoStreetSectionsTwoCars_carsShouldEnterSinks() {
 
-        exp.stop(new TimeInstant(60,TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
 
-        RouteGenerator routeGenerator = new RouteGenerator(model);
+        RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
-        IRoute route = routeGenerator.getRoute(RouteType.TWO_STREETSECTIONS);
+        IRoute route = routeGeneratorMock.getRoute(RouteType.TWO_STREETSECTIONS_TWO_CARS);
         AbstractSource source = route.getSource();
 
         source.startGeneratingCars();
 
-        IConsumer sink = route.getSink();
+        AbstractSink sink = route.getSink();
 
         exp.start();
 
         exp.finish();
 
-        Assert.assertEquals(2, ((Street)sink).getNrOfEnteredCars());
+        Assert.assertEquals(2, sink.getNrOfEnteredCars());
     }
 
     @Test
@@ -56,19 +55,19 @@ public class CarDrivingStreetIntegration {
 
         exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
 
-        RouteGenerator routeGenerator = new RouteGenerator(model);
+        RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
-        IRoute route1 = routeGenerator.getRoute(RouteType.ONE_CAR_STAYS_ON_TRACK);
+        IRoute route1 = routeGeneratorMock.getRoute(RouteType.ONE_CAR_STAYS_ON_TRACK);
         AbstractSource source1 = route1.getSource();
 
-        IRoute route2 = routeGenerator.getRoute(RouteType.ONE_CAR_CHANGES_TRACK);
+        IRoute route2 = routeGeneratorMock.getRoute(RouteType.ONE_CAR_CHANGES_TRACK);
         AbstractSource source2 = route2.getSource();
 
         // start generating cars simultaneously so one have to give precedence to another
         source2.startGeneratingCars();
         source1.startGeneratingCars();
 
-        RoundaboutSinkMock sink1 = (RoundaboutSinkMock)route1.getSink();
+        RoundaboutSinkMock sink1 = (RoundaboutSinkMock) route1.getSink();
 
         exp.start();
         exp.finish();

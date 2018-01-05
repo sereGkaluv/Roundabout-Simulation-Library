@@ -14,14 +14,22 @@ public class RoundaboutSourceMock extends RoundaboutSource {
 
     private RoundaboutSimulationModel model;
     private int remainingCarsToGenerate;
-    private RouteGenerator routeGenerator;
+    private RouteGeneratorMock routeGeneratorMock;
     private RouteType type;
 
-    public RoundaboutSourceMock(Model model, String description, boolean showInTrace, Street connectedStreet, int remainigCarsToGenerate, RouteGenerator routeGenerator, RouteType type) {
+    public RoundaboutSourceMock(
+            Model model,
+            String description,
+            boolean showInTrace,
+            Street connectedStreet,
+            int remainingCarsToGenerate,
+            RouteGeneratorMock routeGeneratorMock,
+            RouteType type
+    ) {
         super(model, description, showInTrace, connectedStreet);
         this.model = (RoundaboutSimulationModel)model;
-        this.remainingCarsToGenerate = remainigCarsToGenerate;
-        this.routeGenerator = routeGenerator;
+        this.remainingCarsToGenerate = remainingCarsToGenerate;
+        this.routeGeneratorMock = routeGeneratorMock;
         this.type = type;
 
         initMockingComponents();
@@ -31,9 +39,16 @@ public class RoundaboutSourceMock extends RoundaboutSource {
 
         this.roundaboutEventFactory = Mockito.mock(RoundaboutEventFactory.class);
 
-        when(this.roundaboutEventFactory.createCarGenerateEvent((RoundaboutSimulationModel)notNull())).then(invocationOnMock -> {
-            return new CarGenerateEventMock(this.model, "", false, this.remainingCarsToGenerate, this.routeGenerator, this.type);
-        });
+        when(this.roundaboutEventFactory.createCarGenerateEvent((RoundaboutSimulationModel) notNull())).then(
+                invocationOnMock -> new CarGenerateEventMock(
+                        this.model,
+                        "",
+                        false,
+                        this.remainingCarsToGenerate,
+                        this.routeGeneratorMock,
+                        this.type
+                )
+        );
 
     }
 }

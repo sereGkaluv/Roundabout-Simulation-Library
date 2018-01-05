@@ -4,7 +4,6 @@ import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutIntersection;
 import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteType;
 import desmoj.core.simulator.Experiment;
@@ -15,7 +14,7 @@ import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class IntersectionIntegration {
+public class NoOtherCarsStreetIntegration {
 
     private RoundaboutSimulationModel model;
     private Experiment exp;
@@ -29,25 +28,23 @@ public class IntersectionIntegration {
     }
 
     @Test
-    public void intersectionWith2DirectionsAndStreetSections_twoCarsShouldEnterSinks() {
+    public void oneCarPassingTwoStreetSections() {
 
-        exp.stop(new TimeInstant(10000, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
-        IRoute route = routeGeneratorMock.getRoute(RouteType.STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS);
+        IRoute route = routeGeneratorMock.getRoute(RouteType.TWO_STREETSECTIONS_ONE_CAR);
         AbstractSource source = route.getSource();
-        RoundaboutIntersection intersection = (RoundaboutIntersection)route.getSectionAt(1);
-        intersection.getController().start();
 
         source.startGeneratingCars();
 
         AbstractSink sink = route.getSink();
 
         exp.start();
-
         exp.finish();
 
-        Assert.assertEquals(2, sink.getNrOfEnteredCars());
+        Assert.assertEquals("car passed", 1, sink.getNrOfEnteredCars());
     }
+
 }

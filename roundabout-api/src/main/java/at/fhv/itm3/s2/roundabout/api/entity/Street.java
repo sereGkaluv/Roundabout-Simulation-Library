@@ -1,18 +1,36 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
 import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
-import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import desmoj.core.simulator.Model;
 
 import java.util.List;
 import java.util.Map;
 
-public abstract class Street extends AbstractProSumer implements IConsumer {
+public abstract class Street extends AbstractProSumer implements IEnteredCarCounter {
 
-    protected int carCounter;
+    private long enteredCarCounter;
 
     public Street(Model owner, String name, boolean showInTrace) {
         super(owner, name, showInTrace);
+
+        this.enteredCarCounter = 0;
+    }
+
+    /**
+     * Gets total car counter passed via {@code this} {@link Street}.
+     *
+     * @return total car counter.
+     */
+    @Override
+    public long getNrOfEnteredCars() {
+        return enteredCarCounter;
+    }
+
+    /**
+     * Internal method for counter incrementation.
+     */
+    protected void incrementTotalCarCounter() {
+        this.enteredCarCounter++;
     }
 
     /**
@@ -139,13 +157,8 @@ public abstract class Street extends AbstractProSumer implements IConsumer {
     public abstract void moveFirstCarToNextSection()
             throws IllegalStateException;
 
-    @Deprecated // TODO consider removal i think this logic can be packed into addCar method, othervise consider rename to isCarAbleToEnter()
+    @Deprecated
+    // TODO consider removal i think this logic can be packed into addCar method, otherwise consider rename to isCarAbleToEnter()
     public abstract boolean carCouldEnterNextSection();
 
-    /**
-     * Returns the number of cars that have entered the sink
-     *
-     * @return  the number of cars as int
-     */
-    public abstract int getNrOfEnteredCars();
 }

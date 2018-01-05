@@ -17,51 +17,35 @@ import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 
 import java.util.*;
 
-public class RouteGenerator {
+import static at.fhv.itm3.s2.roundabout.mocks.RouteType.*;
 
-    private Map<Integer, IRoute> routes;
+public class RouteGeneratorMock {
+
+    private Map<RouteType, IRoute> routes;
     private RoundaboutSimulationModel model;
 
-    public RouteGenerator(RoundaboutSimulationModel model) {
+    public RouteGeneratorMock(RoundaboutSimulationModel model) {
         routes = new HashMap<>();
         this.model = model;
 
-        initializeRouteWithTwoStreetSections();
-        initializeRouteWithIntersection();
+        initializeRouteWithTwoStreetSections(TWO_STREETSECTIONS_ONE_CAR);
+        initializeRouteWithTwoStreetSections(TWO_STREETSECTIONS_TWO_CARS);
+        initializeRouteWithIntersection(STREETSECTION_INTERSECTION_STREETSECTION_ONE_CAR);
+        initializeRouteWithIntersection(STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS);
         initializeRouteWithTwoTracksAndTwoStreetSectionsPerTrack();
     }
 
-    private IRoute getRouteWithTwoStreetSections() {
-        return routes.get(0);
-    }
-
-    private IRoute getRouteWithIntersectionAndTwoStreetSections() { return routes.get(1); }
-
-    private IRoute getRouteWhereOneCarStaysOnTrack() { return routes.get(2); }
-
-    private IRoute getRouteWhereOneCarChangesTrack() { return routes.get(3); }
-
     public IRoute getRoute(RouteType type) {
-        switch (type) {
-            case TWO_STREETSECTIONS:
-                return getRouteWithTwoStreetSections();
-            case STREETSECTION_INTERSECTION_STREETSECTION:
-                return getRouteWithIntersectionAndTwoStreetSections();
-            case ONE_CAR_STAYS_ON_TRACK:
-                return getRouteWhereOneCarStaysOnTrack();
-            case ONE_CAR_CHANGES_TRACK:
-                return getRouteWhereOneCarChangesTrack();
-        }
-        return null;
+        return routes.getOrDefault(type, null);
     }
 
-    private void initializeRouteWithTwoStreetSections() {
+    private void initializeRouteWithTwoStreetSections(RouteType routeType) {
 
         // INITIALIZE ROUTE WITH TWO STREETSECTIONS
         // initialize streets and sink
         Street street1_1 = new StreetSection(10.0, model, "", false);
         Street street1_2 = new StreetSection(10.0, model, "", false);
-        RoundaboutSink sink1 = new RoundaboutSink(model, "", false);
+        RoundaboutSink roundaboutSink1 = new RoundaboutSink(model, "", false);
 
         // initialize connectors
         List<IConsumer> prevStreetsForConnector1_1 = new LinkedList<>();
@@ -79,26 +63,34 @@ public class RouteGenerator {
         prevStreetsForConnector1_2.add(street1_2);
 
         List<IConsumer> nextStreetsForConnector1_2 = new LinkedList<>();
-        nextStreetsForConnector1_2.add(sink1);
+        nextStreetsForConnector1_2.add(roundaboutSink1);
 
         StreetConnector connector1_2 = new StreetConnector(prevStreetsForConnector1_2, nextStreetsForConnector1_2);
         street1_2.setNextStreetConnector(connector1_2);
-        sink1.setPreviousStreetConnector(connector1_2);
+        roundaboutSink1.setPreviousStreetConnector(connector1_2);
         connector1_2.initializeTrack(street1_2, ConsumerType.STREET_SECTION, sink1, ConsumerType.STREET_SECTION);
 
         // initialize source and route
-        AbstractSource source1 = new RoundaboutSourceMock(model, "", false, street1_1, 2, this, RouteType.TWO_STREETSECTIONS);
+        AbstractSource source1 = new RoundaboutSourceMock(
+                model,
+                "",
+                false,
+                street1_1,
+                routeType.getCarsToGenerate(),
+                this,
+                routeType
+        );
 
-        IRoute route1 = new Route();
-        route1.addSource(source1);
-        route1.addSection(street1_1);
-        route1.addSection(street1_2);
-        route1.addSection(sink1);
+        IRoute route = new Route();
+        route.addSource(source1);
+        route.addSection(street1_1);
+        route.addSection(street1_2);
+        route.addSection(roundaboutSink1);
 
-        routes.put(0, route1);
+        routes.put(routeType, route);
     }
 
-    private void initializeRouteWithIntersection() {
+    private void initializeRouteWithIntersection(RouteType routeType) {
         float turnaroundTime = 60;
         float[] phaseShiftTimes = new float[]{0.0F, 10.0F, 20.0F};
         double intersectionTraverseTime = 5.0;
@@ -123,29 +115,42 @@ public class RouteGenerator {
         AbstractProSumer street1 = new StreetSection(10.0, model, "", false);
         AbstractProSumer street2 = new StreetSection(10.0, model, "", false);
 
-        // initialize sink
-        RoundaboutSink sink = new RoundaboutSink(model, "", false);
+        // initialize roundaboutSink
+        RoundaboutSink roundaboutSink = new RoundaboutSink(model, "", false);
 
         // initialize source
-        AbstractSource source = new RoundaboutSourceMock(model, "", false, (StreetSection)street1, 2, this, RouteType.STREETSECTION_INTERSECTION_STREETSECTION);
+        AbstractSource source = new RoundaboutSourceMock(
+                model,
+                "",
+                false,
+                (StreetSection) street1,
+                routeType.getCarsToGenerate(),
+                this,
+                routeType
+        );
 
         // connect streets with intersection
         IntersectionController.getInstance().setIntersectionInDirectionMapping(intersection, street1, inDirection);
         IntersectionController.getInstance().setIntersectionOutDirectionMapping(intersection, street2, outDirection);
         intersection.attachProducer(inDirection, street1.toProducer());
         intersection.attachConsumer(outDirection, street2.toConsumer());
-        intersection.createConnectionQueue(street1.toProducer(), new AbstractConsumer[]{street2.toConsumer()}, new double[]{intersectionTraverseTime}, new double[]{1.0});
+        intersection.createConnectionQueue(
+                street1.toProducer(),
+                new AbstractConsumer[]{street2.toConsumer()},
+                new double[]{intersectionTraverseTime},
+                new double[]{1.0}
+        );
 
         // initialize connectors
         List<IConsumer> prevStreetsForConnector1 = new LinkedList<>();
         prevStreetsForConnector1.add(street2);
 
         List<IConsumer> nextStreetsForConnector1 = new LinkedList<>();
-        nextStreetsForConnector1.add(sink);
+        nextStreetsForConnector1.add(roundaboutSink);
 
         StreetConnector connector1 = new StreetConnector(prevStreetsForConnector1, nextStreetsForConnector1);
         ((StreetSection)street2).setNextStreetConnector(connector1);
-        sink.setPreviousStreetConnector(connector1);
+        roundaboutSink.setPreviousStreetConnector(connector1);
         connector1.initializeTrack(street2, ConsumerType.STREET_SECTION, sink, ConsumerType.STREET_SECTION);
 
         // initialize route
@@ -154,9 +159,9 @@ public class RouteGenerator {
         route.addSection(street1);
         route.addSection(intersection);
         route.addSection(street2);
-        route.addSection(sink);
+        route.addSection(roundaboutSink);
 
-        routes.put(1, route);
+        routes.put(routeType, route);
     }
 
     private void initializeRouteWithTwoTracksAndTwoStreetSectionsPerTrack() {
@@ -219,7 +224,7 @@ public class RouteGenerator {
         route2.addSection(street1_2);
         route2.addSection(sink1);
 
-        routes.put(2, route1);
-        routes.put(3, route2);
+        routes.put(ONE_CAR_STAYS_ON_TRACK, route1);
+        routes.put(ONE_CAR_CHANGES_TRACK, route2);
     }
 }

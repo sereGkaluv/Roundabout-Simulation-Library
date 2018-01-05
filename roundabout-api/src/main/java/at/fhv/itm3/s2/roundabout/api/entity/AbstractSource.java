@@ -15,9 +15,9 @@ public abstract class AbstractSource extends AbstractProducer {
     public abstract void startGeneratingCars();
 
     /**
-     * Returns the street to which the newly generated cars are added
+     * Returns the street to which the newly generated cars are added.
      *
-     * @return  the connected street as {@link Street}
+     * @return the connected street as {@link Street}.
      */
     public abstract Street getConnectedStreet();
 }
