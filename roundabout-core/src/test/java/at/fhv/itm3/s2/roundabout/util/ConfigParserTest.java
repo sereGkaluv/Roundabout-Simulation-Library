@@ -129,8 +129,8 @@ public class ConfigParserTest {
         IRoundaboutStructure roundaboutStructure = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
 
         for (IStreetConnector connector : roundaboutStructure.getStreetConnectors()) {
-            assertNotEquals("next street sections not empty", 0, connector.getNextSections().size());
-            assertNotEquals("previous street sections not empty", 0, connector.getPreviousSections().size());
+            assertNotEquals("next street sections not empty", 0, connector.getNextConsumers().size());
+            assertNotEquals("previous street sections not empty", 0, connector.getPreviousConsumers().size());
         }
     }
 
@@ -153,7 +153,7 @@ public class ConfigParserTest {
         for (IStreetConnector connector : roundaboutStructure.getStreetConnectors()) {
             Integer exitSectionId = null;
             Integer nextTrackSectionId = null;
-            for (IConsumer section : connector.getNextSections()) {
+            for (IConsumer section : connector.getNextConsumers()) {
                 if (section.toString().contains("exit")) {
                     exitSectionId = extractSectionId(section.toString());
                 } else if (section.toString().contains("track")) {
@@ -169,7 +169,7 @@ public class ConfigParserTest {
 
             Integer entrySectionId = null;
             Integer previousTrackSectionId = null;
-            for (IProducer section : connector.getPreviousSections()) {
+            for (IConsumer section : connector.getPreviousConsumers()) {
                 if (section.toString().contains("entry")) {
                     Integer id = extractSectionId(section.toString());
                     if (entrySectionId != null && entrySectionId != id) {
