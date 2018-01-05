@@ -1,5 +1,7 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
+import at.fhv.itm14.trafsim.model.entities.IProducer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
@@ -85,7 +87,7 @@ public class StreetTrackTest {
         IStreetConnector streetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getPreviousStreetConnector()).thenReturn(streetConnector);
 
-        HashSet<Street> precedenceSections = new HashSet<>();
+        HashSet<IConsumer> precedenceSections = new HashSet<>();
 
         Street streetSectionOne = mock(StreetSection.class);
         when(streetSectionOne.isFirstCarOnExitPoint()).thenReturn(true);
@@ -117,7 +119,7 @@ public class StreetTrackTest {
         IStreetConnector streetConnector = mock(StreetConnector.class);
         when(streetSectionMock.getPreviousStreetConnector()).thenReturn(streetConnector);
 
-        HashSet<Street> precedenceSections = new HashSet<>();
+        HashSet<IProducer> precedenceSections = new HashSet<>();
 
         Street streetSectionOne = mock(StreetSection.class);
         when(streetSectionOne.isFirstCarOnExitPoint()).thenReturn(false);
@@ -337,7 +339,7 @@ public class StreetTrackTest {
             5,
             1,
             4,
-            1.5
+            1.5, 1
         );
 
         ICar carMock = mock(RoundaboutCar.class);

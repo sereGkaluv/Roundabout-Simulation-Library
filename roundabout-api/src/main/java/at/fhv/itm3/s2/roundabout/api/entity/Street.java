@@ -1,12 +1,13 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
-import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
+import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import desmoj.core.simulator.Model;
 
 import java.util.List;
 import java.util.Map;
 
-public abstract class Street extends AbstractConsumer {
+public abstract class Street extends AbstractProSumer implements IConsumer {
 
     protected int carCounter;
 

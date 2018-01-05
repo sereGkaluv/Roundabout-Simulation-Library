@@ -1,5 +1,7 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
+
 import java.util.List;
 
 public interface IRoute {
@@ -9,7 +11,7 @@ public interface IRoute {
      *
      * @return the route as unmodifiable list of {@link Street}.
      */
-    List<Street> getRoute();
+    List<IConsumer> getRoute();
 
     /**
      * Returns an {@link Street} at the given index of the route.
@@ -17,21 +19,21 @@ public interface IRoute {
      * @param index the index the {@link Street} should be returned from the route.
      * @return an {@link Street} located at given index.
      */
-    Street getSectionAt(int index);
+    IConsumer getSectionAt(int index);
 
     /**
      * Returns a start {@link Street} of the route.
      *
      * @return start {@link Street} of the route if present, otherwise null.
      */
-    Street getStartSection();
+    IConsumer getStartSection();
 
     /**
      * Returns a destination {@link Street} of the route.
      *
      * @return start {@link Street} of the route if present, otherwise null.
      */
-    Street getDestinationSection();
+    IConsumer getDestinationSection();
 
     /**
      * Returns the number of {@link Street} in the route.
@@ -45,7 +47,7 @@ public interface IRoute {
      *
      * @param section the section that is added to the route at the end.
      */
-    void addSection(Street section);
+    void addSection(IConsumer section);
 
     /**
      * Checks if there are {@link Street}s in the route defined.
@@ -60,7 +62,7 @@ public interface IRoute {
      * @param streetSection is the {@link Street} from which the index should be returned
      * @return the index of streetSection in the route
      */
-     int getIndexOfSection(Street streetSection);
+     int getIndexOfSection(IConsumer streetSection);
 
     /**
      * Returns the {@link AbstractSource} source of the route
@@ -74,7 +76,7 @@ public interface IRoute {
      *
      * @return  the sink of the route as {@link Street}
      */
-    Street getSink();
+    IConsumer getSink();
 
     void addSource(AbstractSource source);
 }

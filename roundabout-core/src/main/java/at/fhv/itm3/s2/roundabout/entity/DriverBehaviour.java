@@ -8,13 +8,15 @@ public class DriverBehaviour implements IDriverBehaviour {
     private double minDistanceToNextCar;
     private double maxDistanceToNextCar;
     private double mergeFactor;
+    private double accelerationFactor;
 
-    public DriverBehaviour(double speed, double minDistanceToNextCar, double maxDistanceToNextCar, double mergeFactor)
+    public DriverBehaviour(double speed, double minDistanceToNextCar, double maxDistanceToNextCar, double mergeFactor, double accelerationFactor)
     throws IllegalArgumentException {
         setSpeed(speed);
         this.minDistanceToNextCar = minDistanceToNextCar;
         this.maxDistanceToNextCar = maxDistanceToNextCar;
         this.mergeFactor = mergeFactor;
+        this.accelerationFactor = accelerationFactor;
     }
 
     @Override
@@ -72,4 +74,14 @@ public class DriverBehaviour implements IDriverBehaviour {
         this.mergeFactor = mergeFactor;
     }
 
+
+    @Override
+    public double getAccelerationFactor() {
+        return accelerationFactor;
+    }
+
+    @Override
+    public void setAccelerationFactor(double accelerationFactor) {
+        this.accelerationFactor = accelerationFactor;
+    }
 }

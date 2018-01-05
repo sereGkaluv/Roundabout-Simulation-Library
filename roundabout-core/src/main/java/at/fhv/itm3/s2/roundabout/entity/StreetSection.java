@@ -1,13 +1,14 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
+import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
+import at.fhv.itm14.trafsim.model.events.CarDepartureEvent;
 import at.fhv.itm14.trafsim.persistence.model.DTO;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.api.entity.ICar;
-import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
+import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import desmoj.core.simulator.Model;
@@ -28,6 +29,7 @@ public class StreetSection extends Street {
     private IStreetConnector nextStreetConnector;
     private IStreetConnector previousStreetConnector;
 
+    protected IntersectionController intersectionController;
 
     public StreetSection(
         double length,
@@ -41,6 +43,7 @@ public class StreetSection extends Street {
 
         this.carQueue = new LinkedList<>();
         this.carPositions = new HashMap<>();
+        this.intersectionController = IntersectionController.getInstance();
     }
 
     @Override
@@ -49,14 +52,24 @@ public class StreetSection extends Street {
     }
 
     @Override
-    public void addCar(ICar car) {
+    public void addCar(ICar iCar) {
         if (carQueue == null) {
             throw new IllegalStateException("carQueue in section cannot be null");
         }
 
-        carQueue.addLast(car);
-        carPositions.put(car, INITIAL_CAR_POSITION);
+        carQueue.addLast(iCar);
+        carPositions.put(iCar, INITIAL_CAR_POSITION);
         this.carCounter++;
+
+        // call carDelivered events for last section, so the car position
+        // of the current car (that has just left the last section successfully
+        // can be removed (saves memory)
+        // caution! that requires to call traverseToNextSection before calling this method
+        Car car = CarController.getCar(iCar);
+        IConsumer consumer = iCar.getLastSection();
+        if (consumer instanceof Street) {
+            ((Street)consumer).carDelivered(null, car, true);
+        }
     }
 
     @Override
@@ -185,26 +198,33 @@ public class StreetSection extends Street {
             ICar firstCarInQueue = getFirstCar();
 
             if (firstCarInQueue != null) {
-                Street nextStreetSection = firstCarInQueue.getNextSection();
+                IConsumer nextConsumer = firstCarInQueue.getNextSection();
 
-                if (nextStreetSection == null) { // car at destination
+                if (nextConsumer == null) { // car at destination
                     return true;
                 }
 
-                if (nextStreetSection.isEnoughSpace(firstCarInQueue.getLength())) {
-                    IStreetConnector previousStreetConnector = getPreviousStreetConnector();
-                    if (previousStreetConnector != null) {
-                        Set<Street> precedenceSections = getPreviousStreetConnector().getNextSections();
-                        precedenceSections.remove(this);
+                if (nextConsumer instanceof Street) {
+                    Street nextStreet = (Street) nextConsumer;
+                    if (nextStreet.isEnoughSpace(firstCarInQueue.getLength())) {
+                        IStreetConnector previousStreetConnector = getPreviousStreetConnector();
+                        if (previousStreetConnector != null) {
+                            Set<IConsumer> precedenceSections = getPreviousStreetConnector().getNextSections();
+                            precedenceSections.remove(this);
 
-                        for (Street precedenceSection : precedenceSections) {
-                            if (precedenceSection.isFirstCarOnExitPoint()) {
-                                return false;
+                            for (IConsumer precedenceSection : precedenceSections) {
+                                if (precedenceSection instanceof Street) {
+                                    Street street = (Street)precedenceSection;
+                                    if (street.isFirstCarOnExitPoint()) {
+                                        return false;
+                                    }
+                                }
                             }
                         }
+                        return true;
                     }
-
-                    return true;
+                } else if (nextConsumer instanceof Intersection) {
+                    return true; // TODO: is that correct?
                 }
             }
         }
@@ -224,14 +244,28 @@ public class StreetSection extends Street {
         ICar firstCar = removeFirstCar();
         if (firstCar != null) {
             if (!Objects.equals(firstCar.getCurrentSection(), firstCar.getDestination())) {
-                Street nextSection = firstCar.getNextSection();
-                if (nextSection != null) {
-                    // Move physically first car to next section.
-                    nextSection.addCar(firstCar);
+                IConsumer nextSection = firstCar.getNextSection();
+                if (nextSection != null && nextSection instanceof Street) {
+                    // this order of calls is important!
                     // Move logically first car to next section.
                     firstCar.traverseToNextSection();
+                    // Move physically first car to next section.
+                    ((Street)nextSection).addCar(firstCar);
+                } else if (nextSection != null && nextSection instanceof Intersection) {
+                    Intersection intersection = (Intersection)nextSection;
+                    Car car = CarController.getCar(firstCar);
+                    int outDirection = intersectionController.getOutDirectionOfIConsumer(intersection, firstCar.getSectionAfterNextSection());
+                    car.setNextDirection(outDirection);
+                    // this is made without the CarDepartureEvent of the existing implementation
+                    // because it can not handle traffic jam
+                    if (!intersection.isFull()) {
+                        intersection.carEnter(car, intersectionController.getInDirectionOfIConsumer(intersection, this));
+                        firstCar.traverseToNextSection();
+                    } else {
+                        // TODO: traffic jam
+                    }
                 } else {
-                    throw new IllegalStateException("RoundaboutCar can not move further. Next section does not exist.");
+                    throw new IllegalStateException("Car can not move further. Next section does not exist.");
                 }
             }
         }
@@ -297,8 +331,8 @@ public class StreetSection extends Street {
     @Override
     public void carEnter(Car car) {
         ICar iCar = CarController.getICar(car);
-        addCar(iCar);
         iCar.traverseToNextSection();
+        addCar(iCar);
         double traverseTime = iCar.getTimeToTraverseCurrentSection();
         CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(
             getRoundaboutModel()
@@ -311,11 +345,6 @@ public class StreetSection extends Street {
         return false; // TODO: implement
     }
 
-    @Override
-    public DTO toDTO() {
-        return null;
-    }
-
     private RoundaboutSimulationModel getRoundaboutModel() {
         final Model model = getModel();
         if (model instanceof RoundaboutSimulationModel) {
@@ -323,5 +352,22 @@ public class StreetSection extends Street {
         } else {
             throw new IllegalArgumentException("Not suitable roundaboutSimulationModel.");
         }
+    }
+
+    @Override
+    public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean successful) {
+        if (successful) {
+            // remove carPosition of car that has just left
+            ICar iCar = CarController.getICar(car);
+            carPositions.remove(iCar);
+        } else {
+            // TODO: traffic jam
+        }
+
+    }
+
+    @Override
+    public DTO toDTO() {
+        return null;
     }
 }
