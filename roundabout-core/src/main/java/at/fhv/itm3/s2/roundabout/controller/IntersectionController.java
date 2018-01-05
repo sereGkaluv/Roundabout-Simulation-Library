@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class IntersectionController {
 
-    private Map<Intersection, Map<IConsumer, Integer>> intersectionsInDirectionsMap = new HashMap<>();
-    private Map<Intersection, Map<IConsumer, Integer>> intersectionsOutDirectionsMap = new HashMap<>();
+    private Map<Intersection, Map<IConsumer, Integer>> inDirectionsMap = new HashMap<>();
+    private Map<Intersection, Map<IConsumer, Integer>> outDirectionsMap = new HashMap<>();
 
     private static IntersectionController instance;
 
@@ -33,27 +33,27 @@ public class IntersectionController {
 
     public void setIntersectionInDirectionMapping(Intersection intersection, IConsumer consumer, int direction) {
         Map<IConsumer, Integer> map = null;
-        if (!intersectionsInDirectionsMap.containsKey(intersection)) {
-            intersectionsInDirectionsMap.put(intersection, new HashMap<>());
+        if (!inDirectionsMap.containsKey(intersection)) {
+            inDirectionsMap.put(intersection, new HashMap<>());
         }
-        map = intersectionsInDirectionsMap.get(intersection);
+        map = inDirectionsMap.get(intersection);
         map.put(consumer, direction);
     }
 
     public void setIntersectionOutDirectionMapping(Intersection intersection, IConsumer consumer, int direction) {
         Map<IConsumer, Integer> map = null;
-        if (!intersectionsOutDirectionsMap.containsKey(intersection)) {
-            intersectionsOutDirectionsMap.put(intersection, new HashMap<>());
+        if (!outDirectionsMap.containsKey(intersection)) {
+            outDirectionsMap.put(intersection, new HashMap<>());
         }
-        map = intersectionsOutDirectionsMap.get(intersection);
+        map = outDirectionsMap.get(intersection);
         map.put(consumer, direction);
     }
 
     public int getInDirectionOfIConsumer(Intersection intersection, IConsumer consumer) {
-        if (!intersectionsInDirectionsMap.containsKey(intersection)) {
+        if (!inDirectionsMap.containsKey(intersection)) {
             throw new IllegalArgumentException("There is no mapping for this intersection in the in-direction-map of the intersection");
         }
-        Map<IConsumer, Integer> map = intersectionsInDirectionsMap.get(intersection);
+        Map<IConsumer, Integer> map = inDirectionsMap.get(intersection);
         if (!map.containsKey(consumer)) {
             throw new IllegalArgumentException("There is no mapping for this consumer in the in-direction-map of the intersection");
         }
@@ -61,10 +61,10 @@ public class IntersectionController {
     }
 
     public int getOutDirectionOfIConsumer(Intersection intersection, IConsumer consumer) {
-        if (!intersectionsOutDirectionsMap.containsKey(intersection)) {
+        if (!outDirectionsMap.containsKey(intersection)) {
             throw new IllegalArgumentException("There is no mapping for this intersection in the in-direction-map of the intersection");
         }
-        Map<IConsumer, Integer> map = intersectionsOutDirectionsMap.get(intersection);
+        Map<IConsumer, Integer> map = outDirectionsMap.get(intersection);
         if (!map.containsKey(consumer)) {
             throw new IllegalArgumentException("There is no mapping for this consumer in the in-direction-map of the intersection");
         }

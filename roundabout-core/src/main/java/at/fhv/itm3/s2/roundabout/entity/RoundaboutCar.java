@@ -100,7 +100,7 @@ public class RoundaboutCar implements ICar {
             return intersection.getTimeToTraverseIntersection(inDirection, outDirection);
         }
         else {
-            throw new IllegalStateException("Street needs to be instance of StreetSection or OneWayStreetAdapter.");
+            throw new IllegalStateException("Sections needs to be instance of StreetSection.");
         }
     }
 

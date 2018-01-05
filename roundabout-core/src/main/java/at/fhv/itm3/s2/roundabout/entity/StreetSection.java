@@ -52,23 +52,23 @@ public class StreetSection extends Street {
     }
 
     @Override
-    public void addCar(ICar car) {
+    public void addCar(ICar iCar) {
         if (carQueue == null) {
             throw new IllegalStateException("carQueue in section cannot be null");
         }
 
-        carQueue.addLast(car);
-        carPositions.put(car, INITIAL_CAR_POSITION);
+        carQueue.addLast(iCar);
+        carPositions.put(iCar, INITIAL_CAR_POSITION);
         this.carCounter++;
 
         // call carDelivered events for last section, so the car position
-        // of the current car (that has just left the last section successfully)
+        // of the current car (that has just left the last section successfully
         // can be removed (saves memory)
         // caution! that requires to call traverseToNextSection before calling this method
-        Car c = CarController.getCar(car);
-        IConsumer consumer = car.getLastSection();
+        Car car = CarController.getCar(iCar);
+        IConsumer consumer = iCar.getLastSection();
         if (consumer instanceof Street) {
-            ((Street)consumer).carDelivered(null, c, true);
+            ((Street)consumer).carDelivered(null, car, true);
         }
     }
 
@@ -265,7 +265,7 @@ public class StreetSection extends Street {
                         // TODO: traffic jam
                     }
                 } else {
-                    throw new IllegalStateException("RoundaboutCar can not move further. Next section does not exist.");
+                    throw new IllegalStateException("Car can not move further. Next section does not exist.");
                 }
             }
         }

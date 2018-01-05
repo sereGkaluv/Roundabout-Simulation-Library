@@ -27,14 +27,14 @@ public class Sink extends Street {
     }
 
     @Override
-    public void addCar(ICar car) {
+    public void addCar(ICar iCar) {
         this.carCounter++;
-        Car c = CarController.getCar(car);
-        IConsumer consumer = car.getLastSection();
+        Car car = CarController.getCar(iCar);
+        IConsumer consumer = iCar.getLastSection();
         if (consumer instanceof Street) {
-            ((Street)consumer).carDelivered(null, c, true);
+            ((Street)consumer).carDelivered(null, car, true);
         }
-        CarController.removeCarMapping(car);
+        CarController.removeCarMapping(iCar);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class Sink extends Street {
     }
 
     @Override
-    public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean b) {
+    public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean successful) {
 
     }
 
@@ -144,9 +144,4 @@ public class Sink extends Street {
     public DTO toDTO() {
         return null;
     }
-
-//    @Override
-//    public DTO toDTO() {
-//        return null;
-//    }
 }
