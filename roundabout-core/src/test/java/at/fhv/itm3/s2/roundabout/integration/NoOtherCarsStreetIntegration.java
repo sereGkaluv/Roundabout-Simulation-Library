@@ -34,7 +34,7 @@ public class NoOtherCarsStreetIntegration {
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
-        IRoute route = routeGeneratorMock.getRoute(RouteType.TWO_STREETSECTIONS_TWO_CARS);
+        IRoute route = routeGeneratorMock.getRoute(RouteType.TWO_STREETSECTIONS_ONE_CAR);
         AbstractSource source = route.getSource();
 
         source.startGeneratingCars();
@@ -44,7 +44,7 @@ public class NoOtherCarsStreetIntegration {
         exp.start();
         exp.finish();
 
-        Assert.assertEquals("car passed", 2, sink.getNrOfEnteredCars());
+        Assert.assertEquals("car passed", 1, sink.getNrOfEnteredCars());
     }
 
 }

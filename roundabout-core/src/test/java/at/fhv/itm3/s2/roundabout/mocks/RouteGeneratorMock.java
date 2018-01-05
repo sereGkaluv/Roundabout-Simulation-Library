@@ -33,41 +33,17 @@ public class RouteGeneratorMock {
         routes = new HashMap<>();
         this.model = model;
 
-        initializeRouteWithTwoStreetSectionsOneCar();
-        initializeRouteWithTwoStreetSectionsTwoCars();
-        initializeRouteWithIntersectionOneCar();
-        initializeRouteWithIntersectionTwoCars();
+        initializeRouteWithTwoStreetSections(TWO_STREETSECTIONS_ONE_CAR);
+        initializeRouteWithTwoStreetSections(TWO_STREETSECTIONS_TWO_CARS);
+        initializeRouteWithIntersection(STREETSECTION_INTERSECTION_STREETSECTION_ONE_CAR);
+        initializeRouteWithIntersection(STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS);
     }
 
     public IRoute getRoute(RouteType type) {
-        switch (type) {
-            case TWO_STREETSECTIONS_ONE_CAR:
-                return routes.get(TWO_STREETSECTIONS_ONE_CAR);
-            case TWO_STREETSECTIONS_TWO_CARS:
-                return routes.get(TWO_STREETSECTIONS_TWO_CARS);
-            case STREETSECTION_INTERSECTION_STREETSECTION_ONE_CAR:
-                return routes.get(STREETSECTION_INTERSECTION_STREETSECTION_ONE_CAR);
-            case STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS:
-                return routes.get(STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS);
-        }
-        return null;
+        return routes.getOrDefault(type, null);
     }
 
-    private void initializeRouteWithTwoStreetSectionsOneCar() {
-        routes.put(
-                TWO_STREETSECTIONS_ONE_CAR,
-                initializeRouteWithTwoStreetSections(1)
-        );
-    }
-
-    private void initializeRouteWithTwoStreetSectionsTwoCars() {
-        routes.put(
-                TWO_STREETSECTIONS_TWO_CARS,
-                initializeRouteWithTwoStreetSections(2)
-        );
-    }
-
-    private IRoute initializeRouteWithTwoStreetSections(int remainingCarsToGenerate) {
+    private void initializeRouteWithTwoStreetSections(RouteType routeType) {
 
         // INITIALIZE ROUTE WITH TWO STREETSECTIONS
         // initialize streets and sink
@@ -102,35 +78,21 @@ public class RouteGeneratorMock {
                 "",
                 false,
                 street1_1,
-                remainingCarsToGenerate,
+                routeType.getCarsToGenerate(),
                 this,
-                RouteType.TWO_STREETSECTIONS_TWO_CARS
+                routeType
         );
 
-        IRoute route1 = new Route();
-        route1.addSource(source1);
-        route1.addSection(street1_1);
-        route1.addSection(street1_2);
-        route1.addSection(roundaboutSink1);
+        IRoute route = new Route();
+        route.addSource(source1);
+        route.addSection(street1_1);
+        route.addSection(street1_2);
+        route.addSection(roundaboutSink1);
 
-        return route1;
+        routes.put(routeType, route);
     }
 
-    private void initializeRouteWithIntersectionOneCar() {
-        routes.put(
-                STREETSECTION_INTERSECTION_STREETSECTION_ONE_CAR,
-                initializeRouteWithIntersection(1)
-        );
-    }
-
-    private void initializeRouteWithIntersectionTwoCars() {
-        routes.put(
-                STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS,
-                initializeRouteWithIntersection(2)
-        );
-    }
-
-    private IRoute initializeRouteWithIntersection(int remainingCarsToGenerate) {
+    private void initializeRouteWithIntersection(RouteType routeType) {
         float turnaroundTime = 60;
         float[] phaseShiftTimes = new float[]{0.0F, 10.0F, 20.0F};
         double intersectionTraverseTime = 5.0;
@@ -164,9 +126,9 @@ public class RouteGeneratorMock {
                 "",
                 false,
                 (StreetSection) street1,
-                remainingCarsToGenerate,
+                routeType.getCarsToGenerate(),
                 this,
-                STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS
+                routeType
         );
 
         // connect streets with intersection
@@ -200,6 +162,6 @@ public class RouteGeneratorMock {
         route.addSection(street2);
         route.addSection(roundaboutSink);
 
-        return route;
+        routes.put(routeType, route);
     }
 }
