@@ -4,9 +4,6 @@ import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
 import desmoj.core.simulator.Model;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.util.Map;
 
 public class RoundaboutIntersection extends Intersection implements IConsumer {
 

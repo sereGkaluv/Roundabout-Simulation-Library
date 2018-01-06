@@ -6,10 +6,7 @@ import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
 import at.fhv.itm14.trafsim.model.events.CarDepartureEvent;
 import at.fhv.itm14.trafsim.persistence.model.DTO;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.api.entity.ICar;
-import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
@@ -210,18 +207,128 @@ public class StreetSection extends Street {
                 if (nextConsumer instanceof Street) {
                     Street nextStreet = (Street) nextConsumer;
                     if (nextStreet.isEnoughSpace(firstCarInQueue.getLength())) {
-                        IStreetConnector previousStreetConnector = getPreviousStreetConnector();
-                        if (previousStreetConnector != null) {
-                            Set<IConsumer> precedenceSections = getPreviousStreetConnector().getNextSections();
-                            precedenceSections.remove(this);
 
-                            for (IConsumer precedenceSection : precedenceSections) {
-                                if (precedenceSection instanceof Street) {
-                                    Street street = (Street)precedenceSection;
-                                    if (street.isFirstCarOnExitPoint()) {
-                                        return false;
+                        // PRECEDENCE CHECK
+                        IStreetConnector nextConnector = getNextStreetConnector();
+                        ConsumerType currentConsumerType = nextConnector.getTypeOfConsumer(this);
+
+                        if (nextConnector.isNextConsumerOnSameTrackAsCurrent(this, nextStreet)) {
+                            switch (currentConsumerType) {
+                                // case 1: car is in the roundabout and wants to remain on the track
+                                // (it has precedence)
+                                case ROUNDABOUT_SECTION:
+                                // case 2: car is on a normal street section and wants to remain on the track
+                                case STREET_SECTION:
+                                // case 3: car is on a roundabout exit and wants to remain on the track
+                                case ROUNDABOUT_EXIT:
+                                    return true;
+                                // case 4: car wants to enter the roundabout from an inlet
+                                // (it has to give precedence to all cars in the roundabout that are on tracks
+                                // the car has to cross)
+                                case ROUNDABOUT_INLET:
+                                    List<IConsumer> previousStreets = nextConnector.getPreviousConsumers();
+                                    for (IConsumer previousStreet: previousStreets) {
+                                        if (!(previousStreet instanceof Street)) {
+                                            throw new IllegalStateException("All previous IConsumer should be of type Street");
+                                        }
+                                        ((Street)previousStreet).updateAllCarsPositions();
+                                        if (((Street)previousStreet).isFirstCarOnExitPoint()) {
+                                            return false;
+                                        }
+                                        if (nextConnector.isNextConsumerOnSameTrackAsCurrent(previousStreet, nextStreet)) {
+                                            break;
+                                        }
                                     }
-                                }
+                                    break;
+                            }
+                        } else {
+                            switch (currentConsumerType) {
+                                // case 5: car wants to change the track in the roundabout exit
+                                // (it has to give precedence to a car on that track)
+                                case ROUNDABOUT_EXIT:
+                                // case 6: car wants to change the track on a streetsection
+                                // (it has to give precedence to a car on that track)
+                                case STREET_SECTION:
+                                    List<IConsumer> streetsThatHavePrecedence = nextConnector.getPreviousTrackConsumers(nextStreet, currentConsumerType);
+                                    for (IConsumer precedenceSection: streetsThatHavePrecedence) {
+                                        if (!(precedenceSection instanceof Street)) {
+                                            throw new IllegalStateException("All previous IConsumer should be of type Street");
+                                        }
+                                        ((Street)precedenceSection).updateAllCarsPositions();
+                                        if (((Street)precedenceSection).isFirstCarOnExitPoint()) {
+                                            return false;
+                                        }
+                                    }
+                                    break;
+                                // case 7: car is on a roundabout inlet and wants to change to another
+                                // roundabout section that is not on its track
+                                // (it has to give precedence to all cars in the roundabout that are on tracks
+                                // the car has to cross and to all cars on the inlets of the track it wants to change to)
+                                case ROUNDABOUT_INLET:
+                                    List<IConsumer> previousStreets = nextConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION);
+                                    for (IConsumer previousStreet: previousStreets) {
+                                        if (!(previousStreet instanceof Street)) {
+                                            throw new IllegalStateException("All previous IConsumer should be of type Street");
+                                        }
+                                        ((Street)previousStreet).updateAllCarsPositions();
+                                        if (((Street)previousStreet).isFirstCarOnExitPoint()) {
+                                            return false;
+                                        }
+                                        if (nextConnector.isNextConsumerOnSameTrackAsCurrent(previousStreet, nextStreet)) {
+                                            break;
+                                        }
+                                    }
+                                    List<IConsumer> inlets = nextConnector.getPreviousTrackConsumers(nextStreet, ConsumerType.ROUNDABOUT_INLET);
+                                    for (IConsumer inlet: inlets) {
+                                        if (!(inlet instanceof Street)) {
+                                            throw new IllegalStateException("All previous IConsumer should be of type Street");
+                                        }
+                                        ((Street)inlet).updateAllCarsPositions();
+                                        if (((Street)inlet).isFirstCarOnExitPoint()) {
+                                            return false;
+                                        }
+                                    }
+                                    break;
+                                case ROUNDABOUT_SECTION:
+                                    ConsumerType nextConsumerType = nextConnector.getTypeOfConsumer(nextStreet);
+                                    List<IConsumer> previousSections;
+                                    switch (nextConsumerType) {
+                                        // case 8: the car is in the roundabout and wants to change to a roundabout section
+                                        // on another track (it has to give precedence to the cars that are on the previous
+                                        // sections of this track)
+                                        case ROUNDABOUT_SECTION:
+                                            previousSections = nextConnector.getPreviousTrackConsumers(nextStreet, ConsumerType.ROUNDABOUT_SECTION);
+                                            for (IConsumer previousSection: previousSections) {
+                                                if (!(previousSection instanceof Street)) {
+                                                    throw new IllegalStateException("All previous IConsumer should be of type Street");
+                                                }
+                                                ((Street)previousSection).updateAllCarsPositions();
+                                                if (((Street)previousSection).isFirstCarOnExitPoint()) {
+                                                    return false;
+                                                }
+                                            }
+                                            break;
+                                        // case 9: the car is in the roundabout and wants to leave the roundabout over an exit
+                                        // that lies not on its track (it has to give precedence to all cars in the roundabout that
+                                        // are on tracks it has to cross)
+                                        case ROUNDABOUT_EXIT:
+                                            previousSections = nextConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION);
+                                            int indexOfCurrentSection = previousSections.indexOf(this);
+                                            for (int i = indexOfCurrentSection - 1; i >= 0; i--) {
+                                                IConsumer previousSection = previousSections.get(i);
+                                                if (!(previousSection instanceof Street)) {
+                                                    throw new IllegalStateException("All previous IConsumer should be of type Street");
+                                                }
+                                                ((Street)previousSection).updateAllCarsPositions();
+                                                if (((Street)previousSection).isFirstCarOnExitPoint()) {
+                                                    return false;
+                                                }
+                                            }
+                                            break;
+                                        default:
+                                            throw new IllegalStateException("After a ROUNDABOUT_SECTION only another ROUNDABOUT_SECTION or a ROUNDABOUT_EXIT is allowed");
+                                    }
+                                    break;
                             }
                         }
                         return true;
@@ -231,7 +338,6 @@ public class StreetSection extends Street {
                 }
             }
         }
-
         return false;
     }
 

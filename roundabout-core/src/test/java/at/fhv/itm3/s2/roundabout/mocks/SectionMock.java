@@ -6,8 +6,8 @@ import at.fhv.itm3.s2.roundabout.entity.StreetConnector;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import org.mockito.Mockito;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -63,8 +63,8 @@ public class SectionMock {
 
         when(this.section.getPreviousStreetConnector()).thenReturn(this.previousStreetConnector);
 
-        when(this.previousStreetConnector.getPreviousSections()).then(invocation -> {
-            Set<Street> previousSections = new HashSet<>();
+        when(this.previousStreetConnector.getPreviousConsumers()).then(invocation -> {
+            List<Street> previousSections = new LinkedList<>();
             for (int i = 0; i < nrOfPreviousSections; i++) {
                 previousSections.add(Mockito.mock(StreetSection.class));
             }

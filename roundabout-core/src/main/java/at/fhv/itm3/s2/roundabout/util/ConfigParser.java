@@ -1,23 +1,15 @@
 package at.fhv.itm3.s2.roundabout.util;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm14.trafsim.model.entities.IProducer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.RoundaboutSink;
-import at.fhv.itm3.s2.roundabout.RoundaboutSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutStructure;
-import at.fhv.itm3.s2.roundabout.entity.StreetConnector;
-import at.fhv.itm3.s2.roundabout.entity.StreetSection;
+import at.fhv.itm3.s2.roundabout.entity.*;
 import at.fhv.itm3.s2.roundabout.util.dto.*;
 import desmoj.core.simulator.Experiment;
 
 import javax.xml.bind.JAXB;
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class ConfigParser {
     private String filename;
@@ -42,28 +34,28 @@ public class ConfigParser {
 
         generateParameters(roundaboutStructure, roundAboutConfig);
 
-        HashMap<String, Set<IProducer>> previousStreetSectionsMap = new HashMap<>();
-        HashMap<String, Set<IConsumer>> nextStreetSectionsMap = new HashMap<>();
+        HashMap<String, List<IConsumer>> previousStreetSectionsMap = new HashMap<>();
+        HashMap<String, List<IConsumer>> nextStreetSectionsMap = new HashMap<>();
 
         for (Section section : roundAboutConfig.getRoundabout().getSections().getSection()) {
             String startConnectorKey = section.getPrevious() + section.getId();
             String endConnectorKey = section.getId() + section.getNext();
-            Set<IProducer> startPreviousStreetSections = previousStreetSectionsMap.get(startConnectorKey);
-            Set<IConsumer> startNextStreetSections = nextStreetSectionsMap.get(startConnectorKey);
-            Set<IProducer> endPreviousStreetSections = previousStreetSectionsMap.get(endConnectorKey);
-            Set<IConsumer> endNextStreetSections = nextStreetSectionsMap.get(endConnectorKey);
+            List<IConsumer> startPreviousStreetSections = previousStreetSectionsMap.get(startConnectorKey);
+            List<IConsumer> startNextStreetSections = nextStreetSectionsMap.get(startConnectorKey);
+            List<IConsumer> endPreviousStreetSections = previousStreetSectionsMap.get(endConnectorKey);
+            List<IConsumer> endNextStreetSections = nextStreetSectionsMap.get(endConnectorKey);
 
             if (startPreviousStreetSections == null) {
-                startPreviousStreetSections = new HashSet<>();
+                startPreviousStreetSections = new LinkedList<>();
             }
             if (startNextStreetSections == null) {
-                startNextStreetSections = new HashSet<>();
+                startNextStreetSections = new LinkedList<>();
             }
             if (endPreviousStreetSections == null) {
-                endPreviousStreetSections = new HashSet<>();
+                endPreviousStreetSections = new LinkedList<>();
             }
             if (endNextStreetSections == null) {
-                endNextStreetSections = new HashSet<>();
+                endNextStreetSections = new LinkedList<>();
             }
 
             generateEntries(roundaboutStructure, startPreviousStreetSections, section);
@@ -78,8 +70,8 @@ public class ConfigParser {
 
         for (Section section : roundAboutConfig.getRoundabout().getSections().getSection()) {
             String connectorKey = section.getPrevious() + section.getId();
-            Set<IProducer> previousStreetSections = previousStreetSectionsMap.get(connectorKey);
-            Set<IConsumer> nextStreetSections = nextStreetSectionsMap.get(connectorKey);
+            List<IConsumer> previousStreetSections = previousStreetSectionsMap.get(connectorKey);
+            List<IConsumer> nextStreetSections = nextStreetSectionsMap.get(connectorKey);
             roundaboutStructure.addStreetConnector(new StreetConnector(previousStreetSections, nextStreetSections));
         }
 
@@ -96,7 +88,7 @@ public class ConfigParser {
         }
     }
 
-    private void generateExit(IRoundaboutStructure structure, Set<IConsumer> endNextSections, Section section) throws ConfigParserException {
+    private void generateExit(IRoundaboutStructure structure, List<IConsumer> endNextSections, Section section) throws ConfigParserException {
         if (section.getExit() != null) {
             if (section.getExit().getConnectorId() != null) {
                 //TODO connection to trafsim intersection
@@ -111,7 +103,7 @@ public class ConfigParser {
         }
     }
 
-    private void generateEntries(IRoundaboutStructure structure, Set<IProducer> startPreviousSections, Section section) throws ConfigParserException {
+    private void generateEntries(IRoundaboutStructure structure, List<IConsumer> startPreviousSections, Section section) throws ConfigParserException {
         for (Entry entry : section.getEntry()) {
             if (entry.getConnectorId() != null) {
                 //TODO connection from trafsim intersection
@@ -131,7 +123,7 @@ public class ConfigParser {
         }
     }
 
-    private void generateTracks(IRoundaboutStructure structure, Set<IConsumer> startNextSections, Set<IProducer> endPreviousSections, Section section) throws ConfigParserException {
+    private void generateTracks(IRoundaboutStructure structure, List<IConsumer> startNextSections, List<IConsumer> endPreviousSections, Section section) throws ConfigParserException {
         for (Track track : section.getTrack()) {
             double length;
             try {

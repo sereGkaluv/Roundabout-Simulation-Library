@@ -1,4 +1,4 @@
-package at.fhv.itm3.s2.roundabout;
+package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
