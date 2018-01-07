@@ -36,7 +36,7 @@ public class RouteController {
      * @throws IllegalArgumentException when the given model is not of type {@link RoundaboutSimulationModel}.
      */
     private RouteController(Model model)
-    throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (model != null && model instanceof RoundaboutSimulationModel) {
             this.model = (RoundaboutSimulationModel) model;
         } else {

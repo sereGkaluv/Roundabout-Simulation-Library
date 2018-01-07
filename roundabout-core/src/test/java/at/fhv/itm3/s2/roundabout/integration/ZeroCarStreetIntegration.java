@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class NotASingleCar {
+public class ZeroCarStreetIntegration {
 
     private RoundaboutSimulationModel model;
     private Experiment exp;
