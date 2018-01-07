@@ -1,7 +1,6 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm14.trafsim.model.entities.IProducer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
@@ -16,7 +15,6 @@ import desmoj.core.simulator.TimeInstant;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.mockito.ArgumentCaptor;
 
 import java.util.LinkedList;
