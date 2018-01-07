@@ -44,9 +44,10 @@ public class CarReachedDestinationIntegration {
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
         RoundaboutSink roundaboutSinkMock = Mockito.spy(new RoundaboutSink(model, "", false));
-        Mockito.verify(roundaboutSinkMock).addCar(varArgs.capture());
         IRoute route = generateDestinationRoute(RouteType.TWO_STREETSECTIONS_ONE_CAR,
                 roundaboutSinkMock, routeGeneratorMock, model);
+
+        Mockito.verify(roundaboutSinkMock).addCar(varArgs.capture());
 
         AbstractSource source = route.getSource();
         AbstractSink sink = route.getSink();
