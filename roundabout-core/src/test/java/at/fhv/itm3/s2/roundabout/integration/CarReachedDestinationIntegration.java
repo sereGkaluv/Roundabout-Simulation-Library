@@ -23,6 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.mockito.Mockito.*;
+
 public class CarReachedDestinationIntegration {
 
     private RoundaboutSimulationModel model;
@@ -43,11 +45,11 @@ public class CarReachedDestinationIntegration {
         ArgumentCaptor<ICar> varArgs = ArgumentCaptor.forClass(ICar.class);
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
-        RoundaboutSink roundaboutSinkMock = Mockito.spy(new RoundaboutSink(model, "", false));
+        RoundaboutSink roundaboutSinkMock = spy(new RoundaboutSink(model, "", false));
         IRoute route = generateDestinationRoute(RouteType.TWO_STREETSECTIONS_ONE_CAR,
                 roundaboutSinkMock, routeGeneratorMock, model);
 
-        Mockito.verify(roundaboutSinkMock).addCar(varArgs.capture());
+        verify(roundaboutSinkMock, times(1)).addCar(varArgs.capture());
 
         AbstractSource source = route.getSource();
         AbstractSink sink = route.getSink();
