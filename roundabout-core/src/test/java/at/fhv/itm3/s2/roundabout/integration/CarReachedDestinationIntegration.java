@@ -1,12 +1,11 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
+import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
-import at.fhv.itm3.s2.roundabout.entity.Route;
-import at.fhv.itm3.s2.roundabout.entity.StreetConnector;
-import at.fhv.itm3.s2.roundabout.entity.StreetSection;
+import at.fhv.itm3.s2.roundabout.controller.CarController;
+import at.fhv.itm3.s2.roundabout.entity.*;
 import at.fhv.itm3.s2.roundabout.mocks.RoundaboutSourceMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteType;
@@ -16,6 +15,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import static org.mockito.Mockito.*;
+import org.mockito.AdditionalAnswers;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,12 +35,11 @@ public class CarReachedDestinationIntegration {
         exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
         exp.setShowProgressBar(false);
-
     }
 
     @Test
     public void destinationReached() {
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(10000, TimeUnit.SECONDS));
         ArgumentCaptor<ICar> varArgs = ArgumentCaptor.forClass(ICar.class);
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
@@ -47,15 +47,19 @@ public class CarReachedDestinationIntegration {
         IRoute route = generateDestinationRoute(RouteType.TWO_STREETSECTIONS_ONE_CAR,
                 roundaboutSinkMock, routeGeneratorMock, model);
 
-        verify(roundaboutSinkMock, times(1)).addCar(varArgs.capture());
+        //when( roundaboutSinkMock.addCar(varArgs.capture())).thenReturn(true);
+        // doAnswer(       ).when(roundaboutSinkMock).addCar(varArgs.capture());
 
         AbstractSource source = route.getSource();
         AbstractSink sink = route.getSink();
         IConsumer destination = route.getDestinationSection();
+
         source.startGeneratingCars();
 
         exp.start();
         exp.finish();
+
+        verify(roundaboutSinkMock, times(1)).addCar(varArgs.capture());
 
         if(!sink.isEmpty()){
             Assert.assertEquals("car never reached destination.",
