@@ -37,7 +37,17 @@ public class StreetSection extends Street {
         String modelDescription,
         boolean showInTrace
     ) {
-        super(model, modelDescription, showInTrace);
+        this(UUID.randomUUID().toString(), length, model, modelDescription, showInTrace);
+    }
+
+    public StreetSection(
+        String id,
+        double length,
+        Model model,
+        String modelDescription,
+        boolean showInTrace
+    ) {
+        super(id, model, modelDescription, showInTrace);
 
         this.length = length;
 

@@ -1,15 +1,13 @@
 package at.fhv.itm3.s2.roundabout.util.dto;
 
+import at.fhv.itm3.s2.roundabout.api.util.dto.IDTO;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import java.util.List;
 
-public class Section {
+public class Section implements IDTO {
     private String id;
-    private String previous;
-    private String next;
-    private List<Entry> entry;
-    private Exit exit;
-    private List<Track> track;
+    private List<Track> trackList;
 
     @XmlAttribute
     public String getId() {
@@ -20,45 +18,11 @@ public class Section {
         this.id = id;
     }
 
-    @XmlAttribute
-    public String getPrevious() {
-        return previous;
-    }
-
-    public void setPrevious(String previous) {
-        this.previous = previous;
-    }
-
-    @XmlAttribute
-    public String getNext() {
-        return next;
-    }
-
-    public void setNext(String next) {
-        this.next = next;
-    }
-
-    public List<Entry> getEntry() {
-        return entry;
-    }
-
-    public void setEntry(List<Entry> entry) {
-        this.entry = entry;
-    }
-
-    public Exit getExit() {
-        return exit;
-    }
-
-    public void setExit(Exit exit) {
-        this.exit = exit;
-    }
-
     public List<Track> getTrack() {
-        return track;
+        return trackList;
     }
 
-    public void setTrack(List<Track> track) {
-        this.track = track;
+    public void setTrack(List<Track> trackList) {
+        this.trackList = trackList;
     }
 }
