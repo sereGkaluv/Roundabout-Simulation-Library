@@ -31,6 +31,15 @@ public class RouteGeneratorMock {
         initializeRouteWithTwoTracksAndTwoStreetSectionsPerTrack();
     }
 
+    public RouteGeneratorMock(RoundaboutSimulationModel model, RoundaboutSink roundaboutSinkSpyMock) {
+        routes = new HashMap<>();
+        this.model = model;
+
+        initializeRouteWithTwoStreetSections(TWO_STREETSECTIONS_ONE_CAR, roundaboutSinkSpyMock);
+        initializeRouteWithTwoStreetSections(TWO_STREETSECTIONS_TWO_CARS, roundaboutSinkSpyMock);
+        initializeRouteWithTwoTracksAndTwoStreetSectionsPerTrack();
+    }
+
     public IRoute getRoute(RouteType type) {
         return routes.getOrDefault(type, null);
     }
@@ -82,6 +91,56 @@ public class RouteGeneratorMock {
         route.addSection(street1_1);
         route.addSection(street1_2);
         route.addSection(roundaboutSink1);
+
+        routes.put(routeType, route);
+    }
+
+    private void initializeRouteWithTwoStreetSections(RouteType routeType, RoundaboutSink roundaboutSinkSpyMock) {
+
+        // INITIALIZE ROUTE WITH TWO STREETSECTIONS
+        // initialize streets and sink
+        Street street1_1 = new StreetSection(10.0, model, "", false);
+        Street street1_2 = new StreetSection(10.0, model, "", false);
+
+        // initialize connectors
+        List<IConsumer> prevStreetsForConnector1_1 = new LinkedList<>();
+        prevStreetsForConnector1_1.add(street1_1);
+
+        List<IConsumer> nextStreetsForConnector1_1 = new LinkedList<>();
+        nextStreetsForConnector1_1.add(street1_2);
+
+        StreetConnector connector1_1 = new StreetConnector(prevStreetsForConnector1_1, nextStreetsForConnector1_1);
+        street1_1.setNextStreetConnector(connector1_1);
+        street1_2.setPreviousStreetConnector(connector1_1);
+        connector1_1.initializeTrack(street1_1, ConsumerType.STREET_SECTION, street1_2, ConsumerType.STREET_SECTION);
+
+        List<IConsumer> prevStreetsForConnector1_2 = new LinkedList<>();
+        prevStreetsForConnector1_2.add(street1_2);
+
+        List<IConsumer> nextStreetsForConnector1_2 = new LinkedList<>();
+        nextStreetsForConnector1_2.add(roundaboutSinkSpyMock);
+
+        StreetConnector connector1_2 = new StreetConnector(prevStreetsForConnector1_2, nextStreetsForConnector1_2);
+        street1_2.setNextStreetConnector(connector1_2);
+        roundaboutSinkSpyMock.setPreviousStreetConnector(connector1_2);
+        connector1_2.initializeTrack(street1_2, ConsumerType.STREET_SECTION, roundaboutSinkSpyMock, ConsumerType.STREET_SECTION);
+
+        // initialize source and route
+        AbstractSource source1 = new RoundaboutSourceMock(
+                model,
+                "",
+                false,
+                street1_1,
+                routeType.getCarsToGenerate(),
+                this,
+                routeType
+        );
+
+        IRoute route = new Route();
+        route.addSource(source1);
+        route.addSection(street1_1);
+        route.addSection(street1_2);
+        route.addSection(roundaboutSinkSpyMock);
 
         routes.put(routeType, route);
     }
