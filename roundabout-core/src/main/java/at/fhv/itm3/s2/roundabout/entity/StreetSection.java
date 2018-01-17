@@ -334,7 +334,7 @@ public class StreetSection extends Street {
                         return true;
                     }
                 } else if (nextConsumer instanceof Intersection) {
-                    return true; // TODO: is that correct?
+                    return true; // because Intersection is never full (isFull() of Intersection returns always false)
                 }
             }
         }
@@ -367,12 +367,8 @@ public class StreetSection extends Street {
                     car.setNextDirection(outDirection);
                     // this is made without the CarDepartureEvent of the existing implementation
                     // because it can not handle traffic jam
-                    if (!intersection.isFull()) {
-                        intersection.carEnter(car, intersectionController.getInDirectionOfIConsumer(intersection, this));
-                        firstCar.traverseToNextSection();
-                    } else {
-                        // TODO: traffic jam
-                    }
+                    intersection.carEnter(car, intersectionController.getInDirectionOfIConsumer(intersection, this));
+                    firstCar.traverseToNextSection();
                 } else {
                     throw new IllegalStateException("Car can not move further. Next section does not exist.");
                 }
@@ -446,7 +442,7 @@ public class StreetSection extends Street {
 
     @Override
     public boolean isFull() {
-        return false; // TODO: implement
+        return false; // this is never used
     }
 
     private RoundaboutSimulationModel getRoundaboutModel() {
@@ -464,10 +460,7 @@ public class StreetSection extends Street {
             // remove carPosition of car that has just left
             ICar iCar = CarController.getICar(car);
             carPositions.remove(iCar);
-        } else {
-            // TODO: traffic jam
         }
-
     }
 
     @Override

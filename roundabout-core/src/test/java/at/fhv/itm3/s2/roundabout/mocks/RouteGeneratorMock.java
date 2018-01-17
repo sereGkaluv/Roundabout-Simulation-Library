@@ -10,10 +10,17 @@ import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.entity.*;
+import org.mockito.Mockito;
+
+import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.doubleThat;
+import static org.mockito.Matchers.notNull;
+import static org.mockito.Mockito.mock;
 
 import java.util.*;
 
 import static at.fhv.itm3.s2.roundabout.mocks.RouteType.*;
+import static org.mockito.Mockito.when;
 
 public class RouteGeneratorMock {
 
@@ -28,6 +35,7 @@ public class RouteGeneratorMock {
         initializeRouteWithTwoStreetSections(TWO_STREETSECTIONS_TWO_CARS);
         initializeRouteWithIntersection(STREETSECTION_INTERSECTION_STREETSECTION_ONE_CAR);
         initializeRouteWithIntersection(STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS);
+        initializeRouteWithTwoStreetSectionsAndOneStreetSectionMock(TWO_STREETSECTIONS_ONE_STREETSECTIONMOCK_TWO_CARS);
         initializeRouteWithTwoTracksAndTwoStreetSectionsPerTrack();
     }
 
@@ -281,5 +289,71 @@ public class RouteGeneratorMock {
 
         routes.put(ONE_CAR_STAYS_ON_TRACK, route1);
         routes.put(ONE_CAR_CHANGES_TRACK, route2);
+    }
+
+    private void initializeRouteWithTwoStreetSectionsAndOneStreetSectionMock(RouteType routeType) {
+
+        // INITIALIZE ROUTE WITH TWO STREETSECTIONS
+        // initialize streets and sink
+        Street street1 = new StreetSection(10.0, model, "", false);
+        Street street2 = new StreetSection(10.0, model, "", false);
+        Street street3 = Mockito.mock(StreetSection.class);
+        RoundaboutSink roundaboutSink = new RoundaboutSink(model, "", false);
+
+        when(street3.isEnoughSpace(anyDouble())).thenReturn(false);
+
+        // initialize connectors
+        List<IConsumer> prevStreetsForConnector1 = new LinkedList<>();
+        prevStreetsForConnector1.add(street1);
+
+        List<IConsumer> nextStreetsForConnector1 = new LinkedList<>();
+        nextStreetsForConnector1.add(street2);
+
+        StreetConnector connector1 = new StreetConnector(prevStreetsForConnector1, nextStreetsForConnector1);
+        street1.setNextStreetConnector(connector1);
+        street2.setPreviousStreetConnector(connector1);
+        connector1.initializeTrack(street1, ConsumerType.STREET_SECTION, street2, ConsumerType.STREET_SECTION);
+
+        List<IConsumer> prevStreetsForConnector2 = new LinkedList<>();
+        prevStreetsForConnector2.add(street2);
+
+        List<IConsumer> nextStreetsForConnector2 = new LinkedList<>();
+        nextStreetsForConnector2.add(street3);
+
+        StreetConnector connector2 = new StreetConnector(prevStreetsForConnector2, nextStreetsForConnector2);
+        street2.setNextStreetConnector(connector2);
+        street3.setPreviousStreetConnector(connector2);
+        connector2.initializeTrack(street2, ConsumerType.STREET_SECTION, street3, ConsumerType.STREET_SECTION);
+
+        List<IConsumer> prevStreetsForConnector3 = new LinkedList<>();
+        prevStreetsForConnector3.add(street3);
+
+        List<IConsumer> nextStreetsForConnector3 = new LinkedList<>();
+        nextStreetsForConnector3.add(roundaboutSink);
+
+        StreetConnector connector3 = new StreetConnector(prevStreetsForConnector3, nextStreetsForConnector3);
+        street3.setNextStreetConnector(connector3);
+        roundaboutSink.setPreviousStreetConnector(connector3);
+        connector3.initializeTrack(street3, ConsumerType.STREET_SECTION, roundaboutSink, ConsumerType.STREET_SECTION);
+
+        // initialize source and route
+        AbstractSource source1 = new RoundaboutSourceMock(
+                model,
+                "",
+                false,
+                street1,
+                routeType.getCarsToGenerate(),
+                this,
+                routeType
+        );
+
+        IRoute route = new Route();
+        route.addSource(source1);
+        route.addSection(street1);
+        route.addSection(street2);
+        route.addSection(street3);
+        route.addSection(roundaboutSink);
+
+        routes.put(routeType, route);
     }
 }

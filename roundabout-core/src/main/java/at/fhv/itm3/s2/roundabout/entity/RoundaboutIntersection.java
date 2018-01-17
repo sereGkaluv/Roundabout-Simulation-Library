@@ -22,7 +22,7 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
             // Get outgoing direction
             int outIndex = car.getNextDirection();
 
-            // Statisitics
+            // Statistics
             car.enterIntersection();
 
             if (queues[inDirection][outIndex].isEmpty() && controller.canDrive(inDirection, outIndex)) {
@@ -42,7 +42,7 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
     @Override
     public void carEnter(Car car) {
         // should never be used
-        throw new IllegalStateException("RoundaboutIntersection.carEnter(Car ca) should never be used");
+        throw new IllegalStateException("RoundaboutIntersection.carEnter(Car car) should never be used");
     }
 
     public double getTimeToTraverseIntersection(int inDirection, int outDirection) {
