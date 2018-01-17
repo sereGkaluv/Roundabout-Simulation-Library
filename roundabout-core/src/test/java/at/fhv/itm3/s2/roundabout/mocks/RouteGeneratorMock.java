@@ -13,13 +13,11 @@ import at.fhv.itm3.s2.roundabout.entity.*;
 import org.mockito.Mockito;
 
 import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Matchers.doubleThat;
-import static org.mockito.Matchers.notNull;
-import static org.mockito.Mockito.mock;
 
 import java.util.*;
 
 import static at.fhv.itm3.s2.roundabout.mocks.RouteType.*;
+import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.when;
 
 public class RouteGeneratorMock {
@@ -36,6 +34,7 @@ public class RouteGeneratorMock {
         initializeRouteWithIntersection(STREETSECTION_INTERSECTION_STREETSECTION_ONE_CAR);
         initializeRouteWithIntersection(STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS);
         initializeRouteWithTwoStreetSectionsAndOneStreetSectionMock(TWO_STREETSECTIONS_ONE_STREETSECTIONMOCK_TWO_CARS);
+        initializeRouteWithIntersectionAndStreetSectionMock(STREETSECTION_INTERSECTION_STREETSECTIONMOCK_TEN_CARS);
         initializeRouteWithTwoTracksAndTwoStreetSectionsPerTrack();
     }
 
@@ -206,15 +205,25 @@ public class RouteGeneratorMock {
 
         // initialize connectors
         List<IConsumer> prevStreetsForConnector1 = new LinkedList<>();
-        prevStreetsForConnector1.add(street2);
+        prevStreetsForConnector1.add(street1);
 
         List<IConsumer> nextStreetsForConnector1 = new LinkedList<>();
-        nextStreetsForConnector1.add(roundaboutSink);
+        nextStreetsForConnector1.add(intersection);
 
         StreetConnector connector1 = new StreetConnector(prevStreetsForConnector1, nextStreetsForConnector1);
-        ((StreetSection)street2).setNextStreetConnector(connector1);
-        roundaboutSink.setPreviousStreetConnector(connector1);
-        connector1.initializeTrack(street2, ConsumerType.STREET_SECTION, roundaboutSink, ConsumerType.STREET_SECTION);
+        ((StreetSection)street1).setNextStreetConnector(connector1);
+        connector1.initializeTrack(street1, ConsumerType.STREET_SECTION, intersection, ConsumerType.INTERSECTION);
+
+        List<IConsumer> prevStreetsForConnector2 = new LinkedList<>();
+        prevStreetsForConnector2.add(street2);
+
+        List<IConsumer> nextStreetsForConnector2 = new LinkedList<>();
+        nextStreetsForConnector2.add(roundaboutSink);
+
+        StreetConnector connector2 = new StreetConnector(prevStreetsForConnector2, nextStreetsForConnector2);
+        ((StreetSection)street2).setNextStreetConnector(connector2);
+        roundaboutSink.setPreviousStreetConnector(connector2);
+        connector2.initializeTrack(street2, ConsumerType.STREET_SECTION, roundaboutSink, ConsumerType.STREET_SECTION);
 
         // initialize route
         IRoute route = new Route();
@@ -350,6 +359,105 @@ public class RouteGeneratorMock {
         IRoute route = new Route();
         route.addSource(source1);
         route.addSection(street1);
+        route.addSection(street2);
+        route.addSection(street3);
+        route.addSection(roundaboutSink);
+
+        routes.put(routeType, route);
+    }
+
+    private void initializeRouteWithIntersectionAndStreetSectionMock(RouteType routeType) {
+        float turnaroundTime = 60;
+        float[] phaseShiftTimes = new float[]{0.0F, 10.0F, 20.0F};
+        double intersectionTraverseTime = 5.0;
+        double accelerationTime = 2.0;
+        double yellowDuration = turnaroundTime / 8;
+        double greenDuration = turnaroundTime / 2 - yellowDuration;
+        int outDirection = 1;
+        int inDirection = 0;
+
+        // initialize intersection
+        RoundaboutIntersection intersection = new RoundaboutIntersection(model, "", false, 2);
+        intersection.setServiceDelay(accelerationTime);
+        FixedCirculationController ic = ModelFactory.getInstance(model).createOneWayController(
+                intersection,
+                greenDuration,
+                yellowDuration,
+                phaseShiftTimes[0]
+        );
+        intersection.attachController(ic);
+
+        // initialize streets
+        AbstractProSumer street1 = new StreetSection(10.0, model, "", false);
+        AbstractProSumer street2 = new StreetSection(10.0, model, "", false);
+        AbstractProSumer street3 = Mockito.mock(StreetSection.class);
+
+        when(((StreetSection)street3).isEnoughSpace(anyDouble())).thenReturn(false);
+
+        // initialize roundaboutSink
+        RoundaboutSink roundaboutSink = new RoundaboutSink(model, "", false);
+
+        // initialize source
+        AbstractSource source = new RoundaboutSourceMock(
+                model,
+                "",
+                false,
+                (StreetSection) street1,
+                routeType.getCarsToGenerate(),
+                this,
+                routeType
+        );
+
+        // connect streets with intersection
+        IntersectionController.getInstance().setIntersectionInDirectionMapping(intersection, street1, inDirection);
+        IntersectionController.getInstance().setIntersectionOutDirectionMapping(intersection, street2, outDirection);
+        intersection.attachProducer(inDirection, street1.toProducer());
+        intersection.attachConsumer(outDirection, street2.toConsumer());
+        intersection.createConnectionQueue(
+                street1.toProducer(),
+                new AbstractConsumer[]{street2.toConsumer()},
+                new double[]{intersectionTraverseTime},
+                new double[]{1.0}
+        );
+
+        // initialize connectors
+        List<IConsumer> prevStreetsForConnector1 = new LinkedList<>();
+        prevStreetsForConnector1.add(street1);
+
+        List<IConsumer> nextStreetsForConnector1 = new LinkedList<>();
+        nextStreetsForConnector1.add(intersection);
+
+        StreetConnector connector1 = new StreetConnector(prevStreetsForConnector1, nextStreetsForConnector1);
+        ((StreetSection)street1).setNextStreetConnector(connector1);
+        connector1.initializeTrack(street1, ConsumerType.STREET_SECTION, intersection, ConsumerType.INTERSECTION);
+
+        List<IConsumer> prevStreetsForConnector2 = new LinkedList<>();
+        prevStreetsForConnector2.add(street2);
+
+        List<IConsumer> nextStreetsForConnector2 = new LinkedList<>();
+        nextStreetsForConnector2.add(street3);
+
+        StreetConnector connector2 = new StreetConnector(prevStreetsForConnector2, nextStreetsForConnector2);
+        ((StreetSection)street2).setNextStreetConnector(connector2);
+        ((StreetSection)street3).setPreviousStreetConnector(connector2);
+        connector2.initializeTrack(street2, ConsumerType.STREET_SECTION, street3, ConsumerType.STREET_SECTION);
+
+        List<IConsumer> prevStreetsForConnector3 = new LinkedList<>();
+        prevStreetsForConnector3.add(street3);
+
+        List<IConsumer> nextStreetsForConnector3 = new LinkedList<>();
+        nextStreetsForConnector3.add(roundaboutSink);
+
+        StreetConnector connector3 = new StreetConnector(prevStreetsForConnector3, nextStreetsForConnector3);
+        ((StreetSection)street3).setNextStreetConnector(connector3);
+        roundaboutSink.setPreviousStreetConnector(connector3);
+        connector3.initializeTrack(street3, ConsumerType.STREET_SECTION, roundaboutSink, ConsumerType.STREET_SECTION);
+
+        // initialize route
+        IRoute route = new Route();
+        route.addSource(source);
+        route.addSection(street1);
+        route.addSection(intersection);
         route.addSection(street2);
         route.addSection(street3);
         route.addSection(roundaboutSink);

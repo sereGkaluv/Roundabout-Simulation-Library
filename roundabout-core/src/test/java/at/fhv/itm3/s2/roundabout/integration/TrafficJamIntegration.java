@@ -18,7 +18,6 @@ import org.junit.Test;
 import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Matchers.notNull;
-import static org.mockito.Mockito.when;
 
 public class TrafficJamIntegration {
 
@@ -55,5 +54,31 @@ public class TrafficJamIntegration {
 
         Assert.assertEquals(0, sink.getNrOfEnteredCars());
         Assert.assertEquals(2, streetWithTrafficJam.getCarQueue().size());
+    }
+
+    @Test
+    public void intersection_streetSectionAfterIntersectionIsFull() {
+
+        exp.stop(new TimeInstant(10000, TimeUnit.SECONDS));
+
+        RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
+
+        IRoute route = routeGeneratorMock.getRoute(RouteType.STREETSECTION_INTERSECTION_STREETSECTIONMOCK_TEN_CARS);
+        AbstractSource source = route.getSource();
+        RoundaboutIntersection intersection = (RoundaboutIntersection)route.getSectionAt(1);
+        intersection.getController().start();
+
+        source.startGeneratingCars();
+
+        AbstractSink sink = route.getSink();
+
+        exp.start();
+
+        exp.finish();
+
+        Street streetAfterIntersection = (StreetSection)route.getSectionAt(2);
+
+        Assert.assertEquals(0, sink.getNrOfEnteredCars());
+        Assert.assertTrue(streetAfterIntersection.getNrOfLostCars() > 0);
     }
 }

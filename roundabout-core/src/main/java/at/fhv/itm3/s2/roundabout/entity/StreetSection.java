@@ -333,7 +333,7 @@ public class StreetSection extends Street {
                         }
                         return true;
                     }
-                } else if (nextConsumer instanceof Intersection) {
+                } else if (nextConsumer instanceof RoundaboutIntersection) {
                     return true; // because Intersection is never full (isFull() of Intersection returns always false)
                 }
             }
@@ -360,8 +360,8 @@ public class StreetSection extends Street {
                     firstCar.traverseToNextSection();
                     // Move physically first car to next section.
                     ((Street)nextSection).addCar(firstCar);
-                } else if (nextSection != null && nextSection instanceof Intersection) {
-                    Intersection intersection = (Intersection)nextSection;
+                } else if (nextSection != null && nextSection instanceof RoundaboutIntersection) {
+                    RoundaboutIntersection intersection = (RoundaboutIntersection) nextSection;
                     Car car = CarController.getCar(firstCar);
                     int outDirection = intersectionController.getOutDirectionOfIConsumer(intersection, firstCar.getSectionAfterNextSection());
                     car.setNextDirection(outDirection);
@@ -431,18 +431,34 @@ public class StreetSection extends Street {
     @Override
     public void carEnter(Car car) {
         ICar iCar = CarController.getICar(car);
-        iCar.traverseToNextSection();
-        addCar(iCar);
-        double traverseTime = iCar.getTimeToTraverseCurrentSection();
-        CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(
-            getRoundaboutModel()
-        );
-        carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, TimeUnit.SECONDS));
+        // this method is only used by an Intersection object
+        // and this has to call this method always even if there is not
+        // enough space for another car (because otherwise a RuntimeException
+        // is thrown). So the check if there is enough space for this car
+        // is made here and if there isn't enough space than a car is lost
+        // and the counter is incremented
+        if (isEnoughSpace(iCar.getLength())) {
+            iCar.traverseToNextSection();
+            addCar(iCar);
+            double traverseTime = iCar.getTimeToTraverseCurrentSection();
+            CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(
+                    getRoundaboutModel()
+            );
+            carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, TimeUnit.SECONDS));
+        } else {
+            incrementLostCarsCounter();
+            car.leaveSystem();
+        }
     }
 
     @Override
     public boolean isFull() {
-        return false; // this is never used
+        // this method is only used by an Intersection object
+        // so it is necessary that this always returns false
+        // because a RuntimeException is thrown when this is true
+        // (check if car can really enter the section is made in
+        // method carEnter(Car car))
+        return false;
     }
 
     private RoundaboutSimulationModel getRoundaboutModel() {

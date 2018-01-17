@@ -5,6 +5,7 @@ import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutIntersection;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import co.paralleluniverse.fibers.SuspendExecution;
@@ -76,7 +77,7 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
                     new TimeSpan((donorSection.getFirstCar().getTimeToTraverseSection(nextSection)), TimeUnit.SECONDS)
                 );
                 donorSection.moveFirstCarToNextSection();
-            }  else if (nextSection != null && (nextSection instanceof RoundaboutSink || nextSection instanceof Intersection)) {
+            }  else if (nextSection != null && (nextSection instanceof RoundaboutSink || nextSection instanceof RoundaboutIntersection)) {
                 donorSection.moveFirstCarToNextSection();
             }
 

@@ -9,11 +9,13 @@ import java.util.Map;
 public abstract class Street extends AbstractProSumer implements IEnteredCarCounter {
 
     private long enteredCarCounter;
+    private long lostCarsCounter;
 
     public Street(Model owner, String name, boolean showInTrace) {
         super(owner, name, showInTrace);
 
         this.enteredCarCounter = 0;
+        this.lostCarsCounter = 0;
     }
 
     /**
@@ -32,6 +34,10 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     protected void incrementTotalCarCounter() {
         this.enteredCarCounter++;
     }
+
+    public long getNrOfLostCars() { return lostCarsCounter; }
+
+    protected void incrementLostCarsCounter() { this.lostCarsCounter++; }
 
     /**
      * Gets physical length of the street section.
