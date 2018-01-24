@@ -118,7 +118,8 @@ public interface ICar {
     /**
      * Used for statistical values. Stops the stopwatch that is used for
      * determining the overall time spent in the system. Delegates the call to the Trafsim car object.
-     * @return
+     *
+     * @return  the time spent in the system as model time units
      */
     double leaveSystem();
 

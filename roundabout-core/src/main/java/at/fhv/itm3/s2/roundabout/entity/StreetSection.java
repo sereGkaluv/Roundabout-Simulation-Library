@@ -19,8 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 public class StreetSection extends Street {
 
-//    private static final double INITIAL_CAR_POSITION = 0;
-
     private final double length;
 
     private final LinkedList<ICar> carQueue;
@@ -58,7 +56,6 @@ public class StreetSection extends Street {
         }
 
         carQueue.addLast(iCar);
-//        carPositions.put(iCar, INITIAL_CAR_POSITION);
         carPositions.put(iCar, iCar.getLength());
         incrementTotalCarCounter();
 
@@ -167,7 +164,6 @@ public class StreetSection extends Street {
             if (carLastUpdateTime != currentTime) {
                 final IDriverBehaviour carDriverBehaviour = currentCar.getDriverBehaviour();
                 final double carSpeed = carDriverBehaviour.getSpeed();
-//            final double carPosition = getCarPositionOrDefault(currentCar, INITIAL_CAR_POSITION);
                 final double carPosition = getCarPosition(currentCar);
 
                 // Calculate distance to next car / end of street section based on distributed driver behaviour values.
@@ -197,8 +193,6 @@ public class StreetSection extends Street {
                     newCarPosition = carPosition;
                 }
 
-                double coveredDistance = currentCar.getCoveredDistanceInTime(currentTime - carLastUpdateTime);
-                double distanceDelta = newCarPosition - carPosition;
                 if (carPosition == newCarPosition && !currentCar.isWaiting()) {
                     currentCar.startWaiting();
                 } else if ((carPosition != newCarPosition || carPosition == currentCar.getLength()) &&
@@ -426,7 +420,6 @@ public class StreetSection extends Street {
 
     private double getCarPosition(ICar car) {
         if (car != null) {
-//            return getCarPositions().getOrDefault(car, INITIAL_CAR_POSITION);
             return getCarPositions().get(car);
         }
         return -1;

@@ -8,13 +8,13 @@ import java.util.Map;
 
 public abstract class Street extends AbstractProSumer implements IEnteredCarCounter {
 
-    private long enteredCarCounter;
+    private long enteredCarsCounter;
     private long lostCarsCounter;
 
     public Street(Model owner, String name, boolean showInTrace) {
         super(owner, name, showInTrace);
 
-        this.enteredCarCounter = 0;
+        this.enteredCarsCounter = 0;
         this.lostCarsCounter = 0;
     }
 
@@ -25,14 +25,14 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
      */
     @Override
     public long getNrOfEnteredCars() {
-        return enteredCarCounter;
+        return enteredCarsCounter;
     }
 
     /**
      * Internal method for counter incrementation.
      */
     protected void incrementTotalCarCounter() {
-        this.enteredCarCounter++;
+        this.enteredCarsCounter++;
     }
 
     public long getNrOfLostCars() { return lostCarsCounter; }
