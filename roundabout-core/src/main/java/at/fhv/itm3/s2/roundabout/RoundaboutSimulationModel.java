@@ -13,8 +13,8 @@ public class RoundaboutSimulationModel extends Model {
     public static final double MIN_DISTANCE_FACTOR_BETWEEN_CARS = 0.0;
     public static final double MAX_DISTANCE_FACTOR_BETWEEN_CARS = 1.0;
 
-    public static final double MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
-    public static final double MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
+    public final double minTimeBetweenCarArrivals;
+    public final double maxTimeBetweenCarArrivals;
 
     private static final double MAIN_ARRIVAL_RATE_FOR_ONEWAYSTREETS = 1;
 
@@ -46,8 +46,11 @@ public class RoundaboutSimulationModel extends Model {
      * @param showInReport flag to indicate if this model shall produce output to the report file
      * @param showInTrace flag to indicate if this model shall produce output to the trace file
      */
-    public RoundaboutSimulationModel(Model model, String name, boolean showInReport, boolean showInTrace) {
+    public RoundaboutSimulationModel(Model model, String name, boolean showInReport, boolean showInTrace,
+                                     double minTimeBetweenCarArrivals, double maxTimeBetweenCarArrivals) {
         super(model, name, showInReport, showInTrace);
+        this.minTimeBetweenCarArrivals = minTimeBetweenCarArrivals;
+        this.maxTimeBetweenCarArrivals = maxTimeBetweenCarArrivals;
     }
 
     @Override
@@ -74,8 +77,8 @@ public class RoundaboutSimulationModel extends Model {
         timeBetweenCarArrivals = new ContDistUniform(
             this,
             "TimeBetweenCarArrivalsStream",
-            MIN_TIME_BETWEEN_CAR_ARRIVALS,
-            MAX_TIME_BETWEEN_CAR_ARRIVALS,
+                minTimeBetweenCarArrivals,
+                maxTimeBetweenCarArrivals,
             true,
             false
         );

@@ -108,4 +108,126 @@ public interface ICar {
      * @return reference to last instance of {@link Street} in route.
      */
     IConsumer getDestination();
+
+    /**
+     * Used for statistical values. Starts a stopwatch to determine the
+     * overall time spent in the system. Delegates the call to the Trafsim car object.
+     */
+    void enterSystem();
+
+    /**
+     * Used for statistical values. Stops the stopwatch that is used for
+     * determining the overall time spent in the system. Delegates the call to the Trafsim car object.
+     *
+     * @return  the time spent in the system as model time units
+     */
+    double leaveSystem();
+
+    /**
+     * Used for statistical values. Starts a stopwatch to determine the
+     * time spent on the roundabout.
+     */
+    void enterRoundabout();
+
+    /**
+     * Used for statistical values. Stops the stopwatch that is used for
+     * determining the time spent on the roundabout.
+     */
+    void leaveRoundabout();
+
+    /**
+     * Used for statistical values. Returns the mean time used for crossing
+     * a roundabout.
+     *
+     * @return  the mean time the car used to pass a roundabout as model time units
+     */
+    double getMeanRoundaboutPassTime();
+
+    /**
+     * Used for statistical values. Returns the number of roundabouts crossed.
+     *
+     * @return  the number of roundabouts crossed as int
+     */
+    long getRoundaboutPassedCount();
+
+    /**
+     * Used for statistical values. Starts a stopwatch that is used for
+     * determining the time spent on an intersection. Delegates the call to the Trafsim car object.
+     */
+    void enterIntersection();
+
+    /**
+     * Used for statistical values. Stops the stopwatch that is used for
+     * determining the time spent on the intersection. Delegates the call to the Trafsim car object.
+     */
+    void leaveIntersection();
+
+    /**
+     * Used for statistical values. Starts a stopwatch that is used for
+     * determining the time spent waiting. Delegates the call to the Trafsim car object.
+     */
+    void startWaiting();
+
+    /**
+     * Used for statistical values. Stops the stopwatch that is used for
+     * determining the time spent waiting. Delegates the call to the Trafsim car object.
+     */
+    void stopWaiting();
+
+    /**
+     * Used for statistical values. Checks if the car is currently waiting by checking if the
+     * corresponding stopwatch is running. Delegates the call to the Trafsim car object.
+     *
+     * @return  true if the corresponding stopwatch is running (startWaiting was called before withouth calling
+     * stopWaiting afterwards), else false
+     */
+    boolean isWaiting();
+
+    /**
+     * Used for statistical values. Returns the time the car has spent in the system.
+     * Delegates the call to the Trafsim car object.
+     *
+     * @return  the time the car has spent in the system as model time units
+     */
+    double getTimeSpentInSystem();
+
+    /**
+     *  Used for statistical values. Returns the mean time spent waiting.
+     *  Delegates the call to the Trafsim car object.
+     *
+     * @return  the mean time the car spent waiting per stop as model time units
+     */
+    double getMeanWaitingTime();
+
+    /**
+     * Used for statistical values. Returns the number of stops the car has to made.
+     * Delegates the call to the Trafsim car object.
+     *
+     * @return  the number of stops the car has to made as int
+     */
+    long getStopCount();
+
+    /**
+     * Used for statistical values. Returns the number of intersections the car crossed.
+     * Delegates the call to the Trafsim car object.
+     *
+     * @return  the number of intersections the car crossed as int
+     */
+    long getIntersectionPassedCount();
+
+    /**
+     * Used for statistical values. Returns the mean time used for passing and intersection.
+     * Delegates the call to the Trafsim car object.
+     *
+     * @return  the mean time the car used for passing an intersection as model time units
+     */
+    double getMeanIntersectionPassTime();
+
+    /**
+     * Returns the distance the car can lay back in a given time.
+     *
+     * @param time  the time as model time unit
+     * @return      the distance as model length unit
+     */
+    double getCoveredDistanceInTime(double time);
 }
