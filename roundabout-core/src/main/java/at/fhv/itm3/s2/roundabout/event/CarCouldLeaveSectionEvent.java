@@ -61,42 +61,39 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
      * Moreover for all previous sections of the current section a new {@link CarCouldLeaveSectionEvent} is immediately
      * scheduled to check if the previous sections have a car which could enter the current section.
      *
-     * @param donorSection the section car will move away from.
+     * @param donorStreet the street car will move away from.
      * @throws SuspendExecution Marker exception for Quasar (inherited).
      */
     @Override
-    public void eventRoutine(Street donorSection) throws SuspendExecution {
-        double time = roundaboutSimulationModel.getCurrentTime();
-        if(donorSection.firstCarCouldEnterNextSection()) {
+    public void eventRoutine(Street donorStreet) throws SuspendExecution {
+        if (donorStreet.firstCarCouldEnterNextSection()) {
 
             // schedule a CarCouldLeaveSectionEvent for the next section, so it is thrown when the car should be able to
             // leave the next section under optimal conditions
-            IConsumer nextSection = donorSection.getFirstCar().getNextSection();
+            IConsumer nextSection = donorStreet.getFirstCar().getNextSection();
             if (nextSection != null && nextSection instanceof StreetSection) {
-                double traverseTime = donorSection.getFirstCar().getTimeToTraverseSection(nextSection);
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
                         (StreetSection)nextSection,
-                    new TimeSpan((traverseTime), TimeUnit.SECONDS)
+                        new TimeSpan((donorStreet.getFirstCar().getTimeToTraverseSection(nextSection)), TimeUnit.SECONDS)
                 );
-                donorSection.moveFirstCarToNextSection();
-            }  else if (nextSection != null && (nextSection instanceof RoundaboutSink || nextSection instanceof RoundaboutIntersection)) {
-                donorSection.moveFirstCarToNextSection();
+                donorStreet.moveFirstCarToNextSection();
+            }  else if (nextSection != null && (nextSection instanceof RoundaboutSink || nextSection instanceof Intersection)) {
+                donorStreet.moveFirstCarToNextSection();
             }
 
             // if the current section is not empty, schedule a new CarCouldLeaveSectionEvent after the time the first
             // car in the section needs to move away from its current position (this time is depending on whether the
             // car is standing or driving
-            if(!donorSection.isEmpty()) {
-                double transitionTime = donorSection.getFirstCar().getTransitionTime();
+            if (!donorStreet.isEmpty()) {
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                    donorSection,
-                    new TimeSpan(transitionTime, TimeUnit.SECONDS)
+                        donorStreet,
+                        new TimeSpan(donorStreet.getFirstCar().getTransitionTime(), TimeUnit.SECONDS)
                 );
             }
 
             // schedule a new CarCouldLeaveSectionEvent for the previous sections (if there are any) so the previous section
             // check if they have a car which could enter the current section because there might be space for a new car
-            IStreetConnector previousStreetConnector = donorSection.getPreviousStreetConnector();
+            IStreetConnector previousStreetConnector = donorStreet.getPreviousStreetConnector();
             if (previousStreetConnector != null) {
                 for (IConsumer previousSection : previousStreetConnector.getPreviousConsumers()) {
                     if (previousSection != null && previousSection instanceof StreetSection) {

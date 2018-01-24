@@ -45,8 +45,8 @@ public class CarCouldLeaveSectionEventMock extends CarCouldLeaveSectionEvent{
     }
 
     @Override
-    public void eventRoutine(Street donorSection) throws SuspendExecution {
-        super.eventRoutine(donorSection);
+    public void eventRoutine(Street donorStreet) throws SuspendExecution {
+        super.eventRoutine(donorStreet);
     }
 
 }

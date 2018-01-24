@@ -1,11 +1,13 @@
 package at.fhv.itm3.s2.roundabout.mocks;
 
 import at.fhv.itm14.trafsim.model.ModelFactory;
-import at.fhv.itm14.trafsim.model.entities.*;
+import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
+import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
+import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
@@ -14,7 +16,10 @@ import org.mockito.Mockito;
 
 import static org.mockito.Matchers.anyDouble;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import static at.fhv.itm3.s2.roundabout.mocks.RouteType.*;
 import static org.mockito.Matchers.notNull;
@@ -31,6 +36,7 @@ public class RouteGeneratorMock {
 
         initializeRouteWithTwoStreetSections(TWO_STREETSECTIONS_ONE_CAR);
         initializeRouteWithTwoStreetSections(TWO_STREETSECTIONS_TWO_CARS);
+        initializeRouteWithIntersection(STREETSECTION_INTERSECTION_STREETSECTION_ONE_CAR);
         initializeRouteWithIntersection(STREETSECTION_INTERSECTION_STREETSECTION_ONE_CAR);
         initializeRouteWithIntersection(STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS);
         initializeRouteWithTwoStreetSectionsAndOneStreetSectionMock(TWO_STREETSECTIONS_ONE_STREETSECTIONMOCK_TWO_CARS);
@@ -56,7 +62,7 @@ public class RouteGeneratorMock {
 
         // INITIALIZE ROUTE WITH TWO STREETSECTIONS
         // initialize streets and sink
-        Street street1_1 = new StreetSection(10.0, model, "", false);
+        Street street1_1 = new StreetSection(10.0, model, "", false, true);
         Street street1_2 = new StreetSection(10.0, model, "", false);
         RoundaboutSink roundaboutSink1 = new RoundaboutSink(model, "", false);
 
