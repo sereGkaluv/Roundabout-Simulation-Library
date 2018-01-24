@@ -9,11 +9,18 @@ import java.util.Map;
 public abstract class Street extends AbstractProSumer implements IEnteredCarCounter {
 
     private long enteredCarCounter;
+    private TrafficLight trafficLight;
 
     public Street(Model owner, String name, boolean showInTrace) {
+        this(owner, name, showInTrace, false);
+    }
+
+    public Street(Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
         super(owner, name, showInTrace);
 
         this.enteredCarCounter = 0;
+
+        trafficLight = new TrafficLight(trafficLightActive);
     }
 
     /**
@@ -101,14 +108,14 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     /**
      * Sets the previous street connector
      *
-     * @param previousStreetConnector
+     * @param previousStreetConnector street connector to be set
      */
     public abstract void setPreviousStreetConnector(IStreetConnector previousStreetConnector);
 
     /**
      *  Sets the next street connector
      *
-     * @param nextStreetConnector
+     * @param nextStreetConnector street connector to be set
      */
     public abstract void setNextStreetConnector(IStreetConnector nextStreetConnector);
 
@@ -161,4 +168,32 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     // TODO consider removal i think this logic can be packed into addCar method, otherwise consider rename to isCarAbleToEnter()
     public abstract boolean carCouldEnterNextSection();
 
+    /**
+     * Returns if traffic light at end of the street is active or not.
+     *
+     * @return true = active
+     */
+    public boolean isTrafficLightActive() {
+        return trafficLight.isActive();
+    }
+
+    /**
+     * Indicates whether the traffic light at the end of the street signals "free to go" (true) or "stop" (false), if it is active.
+     * Otherwise it will always return true.
+     *
+     *  @return true = free to go
+     */
+    public boolean isTrafficLightFreeToGo() {
+        return !trafficLight.isActive() || trafficLight.isFreeToGo();
+    }
+
+    /**
+     * Sets the traffic light state (free to go = true, stop = false).
+     *
+     * @param isFreeToGo set true if cars are free to go
+     * @throws IllegalStateException if traffic light is inactive
+     */
+    public void setTrafficLightFreeToGo(boolean isFreeToGo) throws IllegalStateException {
+        trafficLight.setFreeToGo(isFreeToGo);
+    }
 }

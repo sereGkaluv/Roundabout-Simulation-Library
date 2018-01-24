@@ -4,9 +4,10 @@ import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
+import at.fhv.itm3.s2.roundabout.entity.StreetSection;
+import at.fhv.itm3.s2.roundabout.mocks.RoundaboutSinkMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteType;
-import at.fhv.itm3.s2.roundabout.mocks.RoundaboutSinkMock;
 import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.TimeInstant;
 import org.junit.Assert;
@@ -47,6 +48,54 @@ public class CarDrivingStreetIntegration {
         exp.finish();
 
         Assert.assertEquals(2, sink.getNrOfEnteredCars());
+    }
+
+    @Test
+    public void twoStreetSectionsOneCar_trafficLightRed() {
+
+        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+
+        RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
+
+        IRoute route = routeGeneratorMock.getRoute(RouteType.TWO_STREETSECTIONS_ONE_CAR);
+
+        ((StreetSection) route.getStartSection()).setTrafficLightFreeToGo(false);
+
+        AbstractSource source = route.getSource();
+
+        source.startGeneratingCars();
+
+        AbstractSink sink = route.getSink();
+
+        exp.start();
+
+        exp.finish();
+
+        Assert.assertEquals(0, sink.getNrOfEnteredCars());
+    }
+
+    @Test
+    public void twoStreetSectionsOneCar_trafficLightGreen() {
+
+        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+
+        RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
+
+        IRoute route = routeGeneratorMock.getRoute(RouteType.TWO_STREETSECTIONS_ONE_CAR);
+
+        ((StreetSection) route.getStartSection()).setTrafficLightFreeToGo(true);
+
+        AbstractSource source = route.getSource();
+
+        source.startGeneratingCars();
+
+        AbstractSink sink = route.getSink();
+
+        exp.start();
+
+        exp.finish();
+
+        Assert.assertEquals(1, sink.getNrOfEnteredCars());
     }
 
     @Test
