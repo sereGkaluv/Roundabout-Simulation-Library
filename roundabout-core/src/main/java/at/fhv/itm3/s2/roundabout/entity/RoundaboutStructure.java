@@ -1,9 +1,6 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
-import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
-import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.api.entity.*;
 import desmoj.core.simulator.Model;
 
 import java.util.*;
@@ -14,6 +11,8 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     private Set<IRoute> routes;
     private Set<Street> streets;
     private Map<String, String> parameters;
+    private Set<AbstractSource> sources;
+    private Set<AbstractSink> sinks;
 
     public RoundaboutStructure(Model model) {
         this.model = model;
@@ -21,6 +20,8 @@ public class RoundaboutStructure implements IRoundaboutStructure {
         routes = new HashSet<>();
         streets = new HashSet<>();
         parameters = new HashMap<>();
+        sources = new HashSet<>();
+        sinks = new HashSet<>();
     }
 
     @Override
@@ -46,6 +47,16 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     }
 
     @Override
+    public void addSink(AbstractSink sink) {
+        sinks.add(sink);
+    }
+
+    @Override
+    public void addSource(AbstractSource source) {
+        sources.add(source);
+    }
+
+    @Override
     public Set<IStreetConnector> getStreetConnectors() {
         return Collections.unmodifiableSet(connectors);
     }
@@ -58,6 +69,16 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     @Override
     public Set<Street> getStreets() {
         return Collections.unmodifiableSet(streets);
+    }
+
+    @Override
+    public Set<AbstractSink> getSinks() {
+        return sinks;
+    }
+
+    @Override
+    public Set<AbstractSource> getSources() {
+        return sources;
     }
 
     @Override
