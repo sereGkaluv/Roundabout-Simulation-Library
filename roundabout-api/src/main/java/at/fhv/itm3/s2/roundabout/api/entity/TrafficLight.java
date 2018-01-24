@@ -1,12 +1,12 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
 public class TrafficLight {
-    boolean active;
-    boolean isFreeToGo;
+    private boolean active;
+    private boolean isFreeToGo;
 
     public TrafficLight(boolean active) {
         this.active = active;
-        this.isFreeToGo = false;
+        this.isFreeToGo = true;
     }
 
     public boolean isActive() {
@@ -18,6 +18,10 @@ public class TrafficLight {
     }
 
     public void setFreeToGo(boolean isFreeToGo) {
+        if (!this.isActive()) {
+            throw new IllegalStateException("cannot set state of inactive traffic light");
+        }
+
         this.isFreeToGo = isFreeToGo;
     }
 

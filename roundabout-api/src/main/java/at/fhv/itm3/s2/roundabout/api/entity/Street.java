@@ -169,6 +169,15 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     public abstract boolean carCouldEnterNextSection();
 
     /**
+     * Returns if traffic light is active or not.
+     *
+     * @return true = active
+     */
+    public boolean isTrafficLightActive() {
+        return trafficLight.isActive();
+    }
+
+    /**
      * Indicates whether the traffic light signals "free to go" (true) or "stop" (false), if it is active.
      * Otherwise it will always return true.
      */
@@ -183,10 +192,6 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
      * @throws IllegalStateException if traffic light is inactive
      */
     public void setTrafficLightFreeToGo(boolean isFreeToGo) throws IllegalStateException {
-        if (!trafficLight.isActive()) {
-            throw new IllegalStateException("cannot set state of inactive traffic light");
-        }
-
         trafficLight.setFreeToGo(isFreeToGo);
     }
 }

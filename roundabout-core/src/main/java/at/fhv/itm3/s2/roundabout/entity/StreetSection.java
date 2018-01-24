@@ -32,12 +32,22 @@ public class StreetSection extends Street {
     protected IntersectionController intersectionController;
 
     public StreetSection(
-        double length,
-        Model model,
-        String modelDescription,
-        boolean showInTrace
+            double length,
+            Model model,
+            String modelDescription,
+            boolean showInTrace
     ) {
-        super(model, modelDescription, showInTrace);
+        this(length, model, modelDescription, showInTrace, false);
+    }
+
+    public StreetSection(
+            double length,
+            Model model,
+            String modelDescription,
+            boolean showInTrace,
+            boolean trafficLightActive
+    ) {
+        super(model, modelDescription, showInTrace, trafficLightActive);
 
         this.length = length;
 
@@ -194,6 +204,11 @@ public class StreetSection extends Street {
     @Override
     public boolean firstCarCouldEnterNextSection() {
         updateAllCarsPositions();
+
+        if (isTrafficLightActive() && !isTrafficLightFreeToGo()) {
+            return false;
+        }
+
         if (isFirstCarOnExitPoint()) {
             ICar firstCarInQueue = getFirstCar();
 
