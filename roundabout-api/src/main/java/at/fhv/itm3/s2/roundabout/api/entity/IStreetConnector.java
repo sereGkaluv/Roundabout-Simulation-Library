@@ -9,14 +9,14 @@ public interface IStreetConnector {
     /**
      * Gets the next connected {@link IConsumer}s, which are accessible via this connector.
      *
-     * @return The further connected {@link IConsumer}s in form of {@link List< IConsumer >}.
+     * @return The further connected {@link IConsumer}s as {@link List} of {@link IConsumer}.
      */
     List<IConsumer> getNextConsumers();
 
     /**
      * Gets the previous connected {@link IConsumer}s, which are accessible through this connector.
      *
-     * @return The previous connected {@link IConsumer}s in form of {@link List< IConsumer >}.
+     * @return The previous connected {@link IConsumer}s as {@link List} of {@link IConsumer}.
      */
     List<IConsumer> getPreviousConsumers();
 
@@ -24,7 +24,7 @@ public interface IStreetConnector {
      * Gets the previous connected {@link IConsumer}s with the given type, which are accessible through this connector.
      *
      * @param consumerType    the street type the returned {@link IConsumer}s have
-     * @return              the previous connected {@link IConsumer}s with the given street type in form of {@link List<IConsumer>}
+     * @return the previous connected {@link IConsumer}s with the given street type as {@link List} of {@link IConsumer}
      */
     List<IConsumer> getPreviousConsumers(ConsumerType consumerType);
 

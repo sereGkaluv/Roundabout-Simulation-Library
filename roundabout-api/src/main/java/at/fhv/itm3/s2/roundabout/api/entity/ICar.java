@@ -17,7 +17,7 @@ public interface ICar {
      * Sets the last update time.
      *
      * @param lastUpdateTime time value to be set.
-     * @throws IllegalArgumentException when given time is not > 0.
+     * @throws IllegalArgumentException when given time is not greater than 0.
      */
     void setLastUpdateTime(double lastUpdateTime)
     throws IllegalArgumentException;

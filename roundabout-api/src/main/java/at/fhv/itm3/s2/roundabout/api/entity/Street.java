@@ -108,14 +108,14 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     /**
      * Sets the previous street connector
      *
-     * @param previousStreetConnector
+     * @param previousStreetConnector street connector to be set
      */
     public abstract void setPreviousStreetConnector(IStreetConnector previousStreetConnector);
 
     /**
      *  Sets the next street connector
      *
-     * @param nextStreetConnector
+     * @param nextStreetConnector street connector to be set
      */
     public abstract void setNextStreetConnector(IStreetConnector nextStreetConnector);
 
@@ -180,6 +180,8 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     /**
      * Indicates whether the traffic light at the end of the street signals "free to go" (true) or "stop" (false), if it is active.
      * Otherwise it will always return true.
+     *
+     *  @return true = free to go
      */
     public boolean isTrafficLightFreeToGo() {
         return !trafficLight.isActive() || trafficLight.isFreeToGo();
