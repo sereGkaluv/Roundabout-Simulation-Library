@@ -10,7 +10,6 @@ public class ModelConfig implements IDTO {
     private String name;
     private Parameters parameters;
     private Components components;
-    private Connectors connectors;
 
     @XmlAttribute
     public String getName() {
@@ -35,13 +34,5 @@ public class ModelConfig implements IDTO {
 
     public void setComponents(Components components) {
         this.components = components;
-    }
-
-    public Connectors getConnectors() {
-        return connectors;
-    }
-
-    public void setConnectors(Connectors connectors) {
-        this.connectors = connectors;
     }
 }

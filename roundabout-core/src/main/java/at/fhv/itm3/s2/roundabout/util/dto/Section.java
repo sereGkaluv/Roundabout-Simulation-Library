@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Section implements IDTO {
     private String id;
-    private List<Track> trackList;
+    private Double length;
 
     @XmlAttribute
     public String getId() {
@@ -18,11 +18,12 @@ public class Section implements IDTO {
         this.id = id;
     }
 
-    public List<Track> getTrack() {
-        return trackList;
+    @XmlAttribute
+    public Double getLength() {
+        return length;
     }
 
-    public void setTrack(List<Track> trackList) {
-        this.trackList = trackList;
+    public void setLength(Double length) {
+        this.length = length;
     }
 }

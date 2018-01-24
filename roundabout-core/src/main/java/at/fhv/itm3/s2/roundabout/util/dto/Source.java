@@ -5,9 +5,9 @@ import at.fhv.itm3.s2.roundabout.api.util.dto.IDTO;
 import javax.xml.bind.annotation.XmlAttribute;
 import java.util.List;
 
-public class Connector implements IDTO {
+public class Source implements IDTO {
     private String id;
-    private List<Track> trackList;
+    private String sectionId;
 
     @XmlAttribute
     public String getId() {
@@ -18,11 +18,12 @@ public class Connector implements IDTO {
         this.id = id;
     }
 
-    public List<Track> getTrack() {
-        return trackList;
+    @XmlAttribute
+    public String getSectionId() {
+        return sectionId;
     }
 
-    public void setTrack(List<Track> trackList) {
-        this.trackList = trackList;
+    public void setSectionId(String sectionId) {
+        this.sectionId = sectionId;
     }
 }

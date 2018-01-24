@@ -9,6 +9,8 @@ public class Component implements IDTO {
     private ComponentType type;
     private String name;
     private Parameters parameters;
+    private Sources sources;
+    private Sinks sinks;
     private Sections sections;
     private Connectors connectors;
 
@@ -45,6 +47,22 @@ public class Component implements IDTO {
 
     public void setParameters(Parameters parameters) {
         this.parameters = parameters;
+    }
+
+    public Sources getSources() {
+        return sources;
+    }
+
+    public void setSources(Sources sources) {
+        this.sources = sources;
+    }
+
+    public Sinks getSinks() {
+        return sinks;
+    }
+
+    public void setSinks(Sinks sinks) {
+        this.sinks = sinks;
     }
 
     public Sections getSections() {
