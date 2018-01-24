@@ -113,9 +113,7 @@ public class StatisticsIntegration {
         exp.finish();
 
         Assert.assertEquals(8, sink1.getNrOfEnteredCars());
-        // first car that enters is from source 1
         Assert.assertEquals(source2, sink1.getEnteredCars().get(0).getRoute().getSource());
-        // second car that enters is from source 2
         Assert.assertEquals(source2, sink1.getEnteredCars().get(1).getRoute().getSource());
         Assert.assertEquals(source2, sink1.getEnteredCars().get(2).getRoute().getSource());
         Assert.assertEquals(source2, sink1.getEnteredCars().get(3).getRoute().getSource());
@@ -131,11 +129,16 @@ public class StatisticsIntegration {
         Assert.assertEquals(0, sink1.getEnteredCars().get(0).getStopCount());
         Assert.assertEquals(0, sink1.getEnteredCars().get(1).getStopCount());
         Assert.assertEquals(0, sink1.getEnteredCars().get(2).getStopCount());
-        Assert.assertEquals(0, sink1.getEnteredCars().get(3).getStopCount());
         Assert.assertEquals(1, sink1.getEnteredCars().get(4).getStopCount());
         Assert.assertEquals(1, sink1.getEnteredCars().get(5).getStopCount());
         Assert.assertEquals(1, sink1.getEnteredCars().get(6).getStopCount());
-        Assert.assertEquals(1, sink1.getEnteredCars().get(7).getStopCount());
+
+        Assert.assertEquals(0.0, sink1.getEnteredCars().get(0).getMeanWaitingTime(), 0.0);
+        Assert.assertEquals(0.0, sink1.getEnteredCars().get(1).getMeanWaitingTime(), 0.0);
+        Assert.assertEquals(0.0, sink1.getEnteredCars().get(2).getMeanWaitingTime(), 0.0);
+        Assert.assertTrue(sink1.getEnteredCars().get(4).getMeanWaitingTime() > 0);
+        Assert.assertTrue(sink1.getEnteredCars().get(5).getMeanWaitingTime() > 0);
+        Assert.assertTrue(sink1.getEnteredCars().get(6).getMeanWaitingTime() > 0);
     }
 
 }
