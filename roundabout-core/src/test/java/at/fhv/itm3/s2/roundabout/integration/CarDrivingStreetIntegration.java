@@ -22,7 +22,7 @@ public class CarDrivingStreetIntegration {
 
     @Before
     public void setUp() {
-        model = new RoundaboutSimulationModel(null, "", false, false);
+        model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
         exp.setShowProgressBar(false);
@@ -38,7 +38,7 @@ public class CarDrivingStreetIntegration {
         IRoute route = routeGeneratorMock.getRoute(RouteType.TWO_STREETSECTIONS_TWO_CARS);
         AbstractSource source = route.getSource();
 
-        source.startGeneratingCars();
+        source.startGeneratingCars(0.0);
 
         AbstractSink sink = route.getSink();
 
@@ -63,8 +63,8 @@ public class CarDrivingStreetIntegration {
         AbstractSource source2 = route2.getSource();
 
         // start generating cars simultaneously so one have to give precedence to another
-        source2.startGeneratingCars();
-        source1.startGeneratingCars();
+        source2.startGeneratingCars(0.0);
+        source1.startGeneratingCars(0.0);
 
         RoundaboutSinkMock sink1 = (RoundaboutSinkMock) route1.getSink();
 

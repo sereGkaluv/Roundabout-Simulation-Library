@@ -19,7 +19,9 @@ public class CarGenerateEventTest {
             null,
             "",
             false,
-            false
+            false,
+                3.5,
+                10.0
         );
 
         Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");

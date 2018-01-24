@@ -15,7 +15,7 @@ public class CarCouldLeaveTrackEventTest {
 
     @Before
     public void setUp() {
-        model = new RoundaboutSimulationModel(null, "", false, false);
+        model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
     }

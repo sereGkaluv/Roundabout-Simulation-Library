@@ -2,14 +2,16 @@ package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm3.s2.roundabout.api.entity.*;
+import at.fhv.itm14.trafsim.statistics.StopWatch;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import desmoj.core.simulator.Model;
+import desmoj.core.simulator.TimeSpan;
+import desmoj.core.statistic.Count;
+import desmoj.core.statistic.Tally;
 
 import java.util.Iterator;
 
@@ -20,6 +22,10 @@ public class RoundaboutCar implements ICar {
     private final IRoute route;
     private final IDriverBehaviour driverBehaviour;
     private final Iterator<IConsumer> routeIterator;
+    private final StopWatch roundaboutStopWatch;
+    private final Count roundaboutCounter;
+    private final Tally roundaboutTime;
+    private final StopWatch stopsStopWatch;
 
     private double lastUpdateTime;
 
@@ -28,7 +34,7 @@ public class RoundaboutCar implements ICar {
     private IConsumer nextSection;
     private IConsumer sectionAfterNextSection;
 
-    public RoundaboutCar(Car car, double length, IDriverBehaviour driverBehaviour, IRoute route)
+    public RoundaboutCar(Model model, Car car, double length, IDriverBehaviour driverBehaviour, IRoute route)
     throws IllegalArgumentException {
 
         if (car != null) {
@@ -57,7 +63,14 @@ public class RoundaboutCar implements ICar {
             throw new IllegalArgumentException("Route should not be null.");
         }
 
-        this.setLastUpdateTime(0);
+        this.setLastUpdateTime(getRoundaboutModel().getCurrentTime());
+
+        this.roundaboutStopWatch = new StopWatch(model);
+        this.stopsStopWatch = new StopWatch(model);
+        this.roundaboutCounter = new Count(model,  "Roundabout counter", false, false);
+        this.roundaboutCounter.reset();
+        this.roundaboutTime = new Tally(model, "Roundabout time", false, false);
+        this.roundaboutTime.reset();
     }
 
     public Car getOldImplementationCar() {
@@ -167,6 +180,9 @@ public class RoundaboutCar implements ICar {
         this.currentSection = this.nextSection;
         this.nextSection = this.sectionAfterNextSection;
         this.sectionAfterNextSection = retrieveNextRouteSection();
+        if (isWaiting()) {
+            stopWaiting();
+        }
     }
 
     @Override
@@ -187,4 +203,85 @@ public class RoundaboutCar implements ICar {
         return routeIterator.hasNext() ? routeIterator.next() : null;
     }
 
+    @Override
+    public void enterRoundabout() {
+        this.roundaboutCounter.update();
+        this.roundaboutStopWatch.start();
+    }
+
+    @Override
+    public void leaveRoundabout() {
+        double res = this.roundaboutStopWatch.stop();
+        this.roundaboutTime.update(new TimeSpan(res));
+    }
+
+    @Override
+    public double getMeanRoundaboutPassTime() {
+        return this.roundaboutTime.getObservations() <= 0L ? 0.0D : this.roundaboutTime.getMean();
+    }
+
+    public long getRoundaboutPassedCount() {
+        return this.roundaboutCounter.getValue();
+    }
+
+    public void enterSystem() {
+        car.enterSystem();
+    }
+
+    public double leaveSystem() {
+        return car.leaveSystem();
+    }
+
+    public void enterIntersection() {
+        car.enterIntersection();
+    }
+
+    public void leaveIntersection() {
+        car.leaveIntersection();
+    }
+
+    public void startWaiting() {
+        if (!isWaiting()) {
+            car.startWaiting();
+        }
+        if (!this.stopsStopWatch.isRunning()) {
+            this.stopsStopWatch.start();
+        }
+    }
+
+    public void stopWaiting() {
+        if (this.stopsStopWatch.isRunning()) {
+            this.stopsStopWatch.stop();
+        } else {
+            car.stopWaiting();
+        }
+    }
+
+    public boolean isWaiting() {
+        return car.isWaiting();
+    }
+
+    public double getTimeSpentInSystem() {
+        return car.getTimeSpentInSystem();
+    }
+
+    public double getMeanWaitingTime() {
+        return car.getMeanWaitingTime();
+    }
+
+    public long getStopCount() {
+        return car.getStopCount();
+    }
+
+    public long getIntersectionPassedCount() {
+        return car.getIntersectionPassedCount();
+    }
+
+    public double getMeanIntersectionPassTime() {
+        return car.getMeanIntersectionPassTime();
+    }
+
+    public double getCoveredDistanceInTime(double time) {
+        return time * driverBehaviour.getSpeed();
+    }
 }

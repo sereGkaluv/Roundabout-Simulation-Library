@@ -22,7 +22,7 @@ public class IntersectionIntegration {
 
     @Before
     public void setUp() {
-        model = new RoundaboutSimulationModel(null, "", false, false);
+        model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
         exp.setShowProgressBar(false);
@@ -40,7 +40,7 @@ public class IntersectionIntegration {
         RoundaboutIntersection intersection = (RoundaboutIntersection)route.getSectionAt(1);
         intersection.getController().start();
 
-        source.startGeneratingCars();
+        source.startGeneratingCars(0.0);
 
         AbstractSink sink = route.getSink();
 

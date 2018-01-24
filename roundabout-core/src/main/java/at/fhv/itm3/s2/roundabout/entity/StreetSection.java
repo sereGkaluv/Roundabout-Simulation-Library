@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class StreetSection extends Street {
 
-    private static final double INITIAL_CAR_POSITION = 0;
+//    private static final double INITIAL_CAR_POSITION = 0;
 
     private final double length;
 
@@ -58,8 +58,24 @@ public class StreetSection extends Street {
         }
 
         carQueue.addLast(iCar);
-        carPositions.put(iCar, INITIAL_CAR_POSITION);
+//        carPositions.put(iCar, INITIAL_CAR_POSITION);
+        carPositions.put(iCar, iCar.getLength());
         incrementTotalCarCounter();
+
+        IStreetConnector connector = null;
+        if (previousStreetConnector != null) {
+            connector = previousStreetConnector;
+        } else if (nextStreetConnector != null) {
+            connector = nextStreetConnector;
+        }
+
+        if (connector!= null) {
+            if (connector.getTypeOfConsumer(this) == ConsumerType.ROUNDABOUT_INLET) {
+                iCar.enterRoundabout();
+            } else if (connector.getTypeOfConsumer(this) == ConsumerType.ROUNDABOUT_EXIT) {
+                iCar.leaveRoundabout();
+            }
+        }
 
         // call carDelivered events for last section, so the car position
         // of the current car (that has just left the last section successfully
@@ -146,36 +162,54 @@ public class StreetSection extends Street {
         // Updating positions for all cars.
         ICar previousCar = null;
         for (ICar currentCar : carQueue) {
-            final IDriverBehaviour carDriverBehaviour = currentCar.getDriverBehaviour();
             final double carLastUpdateTime = currentCar.getLastUpdateTime();
-            final double carSpeed = carDriverBehaviour.getSpeed();
-            final double carPosition = getCarPositionOrDefault(currentCar, INITIAL_CAR_POSITION);
 
-            // Calculate distance to next car / end of street section based on distributed driver behaviour values.
-            final double distanceToNextCar = calculateDistanceToNextCar(
-                carDriverBehaviour.getMinDistanceToNextCar(),
-                carDriverBehaviour.getMaxDistanceToNextCar(),
-                getRoundaboutModel().getRandomDistanceFactorBetweenCars()
-            );
+            if (carLastUpdateTime != currentTime) {
+                final IDriverBehaviour carDriverBehaviour = currentCar.getDriverBehaviour();
+                final double carSpeed = carDriverBehaviour.getSpeed();
+//            final double carPosition = getCarPositionOrDefault(currentCar, INITIAL_CAR_POSITION);
+                final double carPosition = getCarPosition(currentCar);
 
-            // Calculate possible car positions.
-            final double maxTheoreticallyPossiblePositionValue = calculateMaxPossibleCarPosition(
-                getLength(),
-                distanceToNextCar,
-                getCarPosition(previousCar),
-                previousCar
-            );
+                // Calculate distance to next car / end of street section based on distributed driver behaviour values.
+                final double distanceToNextCar = calculateDistanceToNextCar(
+                        carDriverBehaviour.getMinDistanceToNextCar(),
+                        carDriverBehaviour.getMaxDistanceToNextCar(),
+                        getRoundaboutModel().getRandomDistanceFactorBetweenCars()
+                );
 
-            final double maxActuallyPossiblePositionValue = carPosition + (currentTime - carLastUpdateTime) * carSpeed;
+                // Calculate possible car positions.
+                final double maxTheoreticallyPossiblePositionValue = calculateMaxPossibleCarPosition(
+                        getLength(),
+                        distanceToNextCar,
+                        getCarPosition(previousCar),
+                        previousCar
+                );
 
-            // Select the new RoundaboutCar position based on previous calculations.
-            final double newCarPosition = Math.min(
-                maxTheoreticallyPossiblePositionValue,
-                maxActuallyPossiblePositionValue
-            );
+                final double maxActuallyPossiblePositionValue = carPosition + (currentTime - carLastUpdateTime) * carSpeed;
 
-            currentCar.setLastUpdateTime(currentTime);
-            carPositions.put(currentCar, newCarPosition);
+                // Select the new RoundaboutCar position based on previous calculations.
+                double newCarPosition = Math.min(
+                        maxTheoreticallyPossiblePositionValue,
+                        maxActuallyPossiblePositionValue
+                );
+
+                if (newCarPosition < carPosition) {
+                    newCarPosition = carPosition;
+                }
+
+                double coveredDistance = currentCar.getCoveredDistanceInTime(currentTime - carLastUpdateTime);
+                double distanceDelta = newCarPosition - carPosition;
+                if (carPosition == newCarPosition && !currentCar.isWaiting()) {
+                    currentCar.startWaiting();
+                } else if ((carPosition != newCarPosition || carPosition == currentCar.getLength()) &&
+                        currentCar.isWaiting() &&
+                        newCarPosition - carPosition > currentCar.getLength()) {
+                    currentCar.stopWaiting();
+                }
+
+                currentCar.setLastUpdateTime(currentTime);
+                carPositions.put(currentCar, newCarPosition);
+            }
 
             previousCar = currentCar;
         }
@@ -233,6 +267,7 @@ public class StreetSection extends Street {
                                         }
                                         ((Street)previousStreet).updateAllCarsPositions();
                                         if (((Street)previousStreet).isFirstCarOnExitPoint()) {
+                                            firstCarInQueue.startWaiting();
                                             return false;
                                         }
                                         if (nextConnector.isNextConsumerOnSameTrackAsCurrent(previousStreet, nextStreet)) {
@@ -256,6 +291,7 @@ public class StreetSection extends Street {
                                         }
                                         ((Street)precedenceSection).updateAllCarsPositions();
                                         if (((Street)precedenceSection).isFirstCarOnExitPoint()) {
+                                            firstCarInQueue.startWaiting();
                                             return false;
                                         }
                                     }
@@ -272,6 +308,7 @@ public class StreetSection extends Street {
                                         }
                                         ((Street)previousStreet).updateAllCarsPositions();
                                         if (((Street)previousStreet).isFirstCarOnExitPoint()) {
+                                            firstCarInQueue.startWaiting();
                                             return false;
                                         }
                                         if (nextConnector.isNextConsumerOnSameTrackAsCurrent(previousStreet, nextStreet)) {
@@ -285,6 +322,7 @@ public class StreetSection extends Street {
                                         }
                                         ((Street)inlet).updateAllCarsPositions();
                                         if (((Street)inlet).isFirstCarOnExitPoint()) {
+                                            firstCarInQueue.startWaiting();
                                             return false;
                                         }
                                     }
@@ -304,6 +342,7 @@ public class StreetSection extends Street {
                                                 }
                                                 ((Street)previousSection).updateAllCarsPositions();
                                                 if (((Street)previousSection).isFirstCarOnExitPoint()) {
+                                                    firstCarInQueue.startWaiting();
                                                     return false;
                                                 }
                                             }
@@ -321,6 +360,7 @@ public class StreetSection extends Street {
                                                 }
                                                 ((Street)previousSection).updateAllCarsPositions();
                                                 if (((Street)previousSection).isFirstCarOnExitPoint()) {
+                                                    firstCarInQueue.startWaiting();
                                                     return false;
                                                 }
                                             }
@@ -332,6 +372,8 @@ public class StreetSection extends Street {
                             }
                         }
                         return true;
+                    } else {
+                        firstCarInQueue.startWaiting();
                     }
                 } else if (nextConsumer instanceof RoundaboutIntersection) {
                     return true; // because Intersection is never full (isFull() of Intersection returns always false)
@@ -384,7 +426,8 @@ public class StreetSection extends Street {
 
     private double getCarPosition(ICar car) {
         if (car != null) {
-            return getCarPositions().getOrDefault(car, INITIAL_CAR_POSITION);
+//            return getCarPositions().getOrDefault(car, INITIAL_CAR_POSITION);
+            return getCarPositions().get(car);
         }
         return -1;
     }
@@ -448,6 +491,7 @@ public class StreetSection extends Street {
         } else {
             incrementLostCarsCounter();
             car.leaveSystem();
+            CarController.addLostCar(this, iCar);
         }
     }
 

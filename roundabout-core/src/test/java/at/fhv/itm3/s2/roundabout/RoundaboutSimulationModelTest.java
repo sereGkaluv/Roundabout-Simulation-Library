@@ -12,7 +12,9 @@ public class RoundaboutSimulationModelTest {
             null,
             "",
             false,
-            false
+            false,
+                3.5,
+                10.0
         );
 
         // create experiment and connect it with the model
@@ -21,7 +23,7 @@ public class RoundaboutSimulationModelTest {
         model.connectToExperiment(exp);
 
         double sample = model.getRandomTimeBetweenCarArrivals();
-        Assert.assertTrue(sample >= RoundaboutSimulationModel.MIN_TIME_BETWEEN_CAR_ARRIVALS);
-        Assert.assertTrue(sample <= RoundaboutSimulationModel.MAX_TIME_BETWEEN_CAR_ARRIVALS);
+        Assert.assertTrue(sample >= model.minTimeBetweenCarArrivals);
+        Assert.assertTrue(sample <= model.maxTimeBetweenCarArrivals);
     }
 }

@@ -66,15 +66,17 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
      */
     @Override
     public void eventRoutine(Street donorSection) throws SuspendExecution {
+        double time = roundaboutSimulationModel.getCurrentTime();
         if(donorSection.firstCarCouldEnterNextSection()) {
 
             // schedule a CarCouldLeaveSectionEvent for the next section, so it is thrown when the car should be able to
             // leave the next section under optimal conditions
             IConsumer nextSection = donorSection.getFirstCar().getNextSection();
             if (nextSection != null && nextSection instanceof StreetSection) {
+                double traverseTime = donorSection.getFirstCar().getTimeToTraverseSection(nextSection);
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
                         (StreetSection)nextSection,
-                    new TimeSpan((donorSection.getFirstCar().getTimeToTraverseSection(nextSection)), TimeUnit.SECONDS)
+                    new TimeSpan((traverseTime), TimeUnit.SECONDS)
                 );
                 donorSection.moveFirstCarToNextSection();
             }  else if (nextSection != null && (nextSection instanceof RoundaboutSink || nextSection instanceof RoundaboutIntersection)) {
@@ -85,9 +87,10 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
             // car in the section needs to move away from its current position (this time is depending on whether the
             // car is standing or driving
             if(!donorSection.isEmpty()) {
+                double transitionTime = donorSection.getFirstCar().getTransitionTime();
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
                     donorSection,
-                    new TimeSpan(donorSection.getFirstCar().getTransitionTime(), TimeUnit.SECONDS)
+                    new TimeSpan(transitionTime, TimeUnit.SECONDS)
                 );
             }
 

@@ -30,12 +30,12 @@ public class RoundaboutSink extends AbstractSink {
     @Override
     public void addCar(ICar iCar) {
         incrementTotalCarCounter();
+        iCar.leaveSystem();
         Car car = CarController.getCar(iCar);
         IConsumer consumer = iCar.getLastSection();
         if (consumer instanceof Street) {
             ((Street)consumer).carDelivered(null, car, true);
         }
-        CarController.removeCarMapping(iCar);
     }
 
     @Override
@@ -123,7 +123,6 @@ public class RoundaboutSink extends AbstractSink {
     public void carEnter(Car car) {
         incrementTotalCarCounter();
         car.leaveSystem();
-        CarController.removeCarMapping(car);
     }
 
     @Override
