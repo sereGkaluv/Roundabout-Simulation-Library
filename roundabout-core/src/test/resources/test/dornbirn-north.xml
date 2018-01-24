@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<model>
+    <!-- global parameters needed for simulation -->
+    <parameters>
+        <parameter name="SIMULATION_SEED" value="1"/>
+    </parameters>
+    <!-- roundabout -->
+    <roundabout>
+        <name>Kreisverkehr Dornbirn Süd</name>
+        <parameters>
+            <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="0.1"/>
+            <parameter name="MAX_DISTANCE_FACTOR_BETWEEN_CARS" value="1.0"/>
+            <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="3.0"/>
+            <parameter name="MAX_TIME_BETWEEN_CAR_ARRIVALS" value="10.0"/>
+            <parameter name="MAIN_ARRIVAL_RATE_FOR_STREETS" value="1.0"/>
+        </parameters>
+        <sections>
+            <!-- Richtung Lauterach -->
+            <section id="1" previous="8" next="2">
+                <exit id="1" probability="0.05" trackId="5"/>
+                <exit id="2" probability="0.1" trackId="1"/>
+                <track length="8.57" id="1"/>
+                <entry id="1" length="100" probability="0.05" trackId="1"/>
+                <entry id="2" length="100" probability="0.1" trackId="2"/>
+            </section>
+            <!-- Zwischenstück Lauterach - Dornbirn Nord -->
+            <section id="2" previous="1" next="3">
+                <track length="14.29" id="2"/>
+                <track length="11.9" id="1"/>
+            </section>
+            <!-- Richtung Dornbirn Nord -->
+            <section id="3" previous="2" next="4">
+                <exit id="3" probability="0.1" trackId="2"/>
+                <exit id="4" probability="0.25" trackId="1"/>
+                <track length="7.14" id="1"/>
+                <entry id="3" length="100" probability="0.25" trackId="1"/>
+                <entry id="4" length="100" probability="0.1" trackId="3"/>
+            </section>
+            <!-- Zwischenstück Dornbirn Nord - Dornbirn Schwefel -->
+            <section id="4" previous="3" next="5">
+                <track length="11.9" id="3"/>
+                <track length="11.9" id="1"/>
+            </section>
+            <!-- Richtung Dornbirn Schwefel -->
+            <section id="5" previous="4" next="6">
+                <exit id="5" probability="0.1" trackId="3"/>
+                <exit id="6" probability="0.15" trackId="1"/>
+                <track length="7.14" id="1"/>
+                <entry id="5" length="100" probability="0.2" trackId="1"/>
+                <entry id="6" length="100" probability="0.05" trackId="4"/>
+            </section>
+            <!-- Zwischenstück Dornbirn Schwefel - Achrein -->
+            <section id="6" previous="5" next="7">
+                <track length="10.95" id="4"/>
+                <track length="10.95" id="1"/>
+            </section>
+            <!-- Richtung Achrein -->
+            <section id="7" previous="6" next="8">
+                <exit id="7" probability="0.05" trackId="4"/>
+                <exit id="8" probability="0.2" trackId="1"/>
+                <track length="7.14" id="1"/>
+                <entry id="7" length="100" probability="0.2" trackId="1"/>
+                <entry id="8" length="100" probability="0.05" trackId="5"/>
+            </section>
+            <!-- Zwischenstück Achrein - Lauterach -->
+            <section id="8" previous="7" next="1">
+                <track length="15.24" id="5"/>
+                <track length="13.5" id="1"/>
+            </section>
+        </sections>
+        <routes>
+            <route entryId="" exitId="" distribution=""/>
+        </routes>
+    </roundabout>
+</model>

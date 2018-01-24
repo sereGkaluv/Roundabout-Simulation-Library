@@ -1,7 +1,6 @@
 package at.fhv.itm3.s2.roundabout.util;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm14.trafsim.model.entities.IProducer;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.util.dto.RoundAboutConfig;
@@ -22,7 +21,7 @@ public class ConfigParserTest {
 
     @Before
     public void setUp() throws ConfigParserException {
-        URL path = getClass().getClassLoader().getResource("test/roundabout.xml");
+        URL path = getClass().getClassLoader().getResource("test/dornbirn-north.xml");
         assertNotNull(path);
 
         configParser = new ConfigParser(path.getPath());
