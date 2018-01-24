@@ -63,7 +63,7 @@ public class CarDrivingStreetIntegration {
 
         AbstractSource source = route.getSource();
 
-        source.startGeneratingCars();
+        source.startGeneratingCars(0.0);
 
         AbstractSink sink = route.getSink();
 
@@ -87,7 +87,7 @@ public class CarDrivingStreetIntegration {
 
         AbstractSource source = route.getSource();
 
-        source.startGeneratingCars();
+        source.startGeneratingCars(0.0);
 
         AbstractSink sink = route.getSink();
 
