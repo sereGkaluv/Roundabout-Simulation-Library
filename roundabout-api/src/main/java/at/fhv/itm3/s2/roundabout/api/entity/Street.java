@@ -169,7 +169,7 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     public abstract boolean carCouldEnterNextSection();
 
     /**
-     * Returns if traffic light is active or not.
+     * Returns if traffic light at end of the street is active or not.
      *
      * @return true = active
      */
@@ -178,7 +178,7 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     }
 
     /**
-     * Indicates whether the traffic light signals "free to go" (true) or "stop" (false), if it is active.
+     * Indicates whether the traffic light at the end of the street signals "free to go" (true) or "stop" (false), if it is active.
      * Otherwise it will always return true.
      */
     public boolean isTrafficLightFreeToGo() {
