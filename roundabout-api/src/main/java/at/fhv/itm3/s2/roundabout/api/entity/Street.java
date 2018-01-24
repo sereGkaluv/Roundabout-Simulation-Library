@@ -9,11 +9,18 @@ import java.util.Map;
 public abstract class Street extends AbstractProSumer implements IEnteredCarCounter {
 
     private long enteredCarCounter;
+    private TrafficLight trafficLight;
 
     public Street(Model owner, String name, boolean showInTrace) {
+        this(owner, name, showInTrace, false);
+    }
+
+    public Street(Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
         super(owner, name, showInTrace);
 
         this.enteredCarCounter = 0;
+
+        trafficLight = new TrafficLight(trafficLightActive);
     }
 
     /**
@@ -161,4 +168,25 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     // TODO consider removal i think this logic can be packed into addCar method, otherwise consider rename to isCarAbleToEnter()
     public abstract boolean carCouldEnterNextSection();
 
+    /**
+     * Indicates whether the traffic light signals "free to go" (true) or "stop" (false), if it is active.
+     * Otherwise it will always return true.
+     */
+    public boolean isTrafficLightFreeToGo() {
+        return !trafficLight.isActive() || trafficLight.isFreeToGo();
+    }
+
+    /**
+     * Sets the traffic light state (free to go = true, stop = false).
+     *
+     * @param isFreeToGo set true if cars are free to go
+     * @throws IllegalStateException if traffic light is inactive
+     */
+    public void setTrafficLightFreeToGo(boolean isFreeToGo) throws IllegalStateException {
+        if (!trafficLight.isActive()) {
+            throw new IllegalStateException("cannot set state of inactive traffic light");
+        }
+
+        trafficLight.setFreeToGo(isFreeToGo);
+    }
 }
