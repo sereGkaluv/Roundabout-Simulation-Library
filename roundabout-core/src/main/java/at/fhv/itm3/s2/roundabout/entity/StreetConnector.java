@@ -25,12 +25,12 @@ public class StreetConnector implements IStreetConnector {
 
         this.previousSections = previousSections;
         if (previousSections != null && !previousSections.isEmpty()) {
-            previousSections.forEach(s -> {if (s instanceof Street)((Street) s).setPreviousStreetConnector(this);});
+            previousSections.forEach(s -> {if (s instanceof Street)((Street) s).setNextStreetConnector(this);});
         }
 
         this.nextSections = nextSections;
         if (nextSections != null && !nextSections.isEmpty()) {
-            nextSections.forEach(s -> {if (s instanceof Street)((Street) s).setNextStreetConnector(this);});
+            nextSections.forEach(s -> {if (s instanceof Street)((Street) s).setPreviousStreetConnector(this);});
         }
 
         this.nextSectionsOnTrackMap = new HashMap<>();
