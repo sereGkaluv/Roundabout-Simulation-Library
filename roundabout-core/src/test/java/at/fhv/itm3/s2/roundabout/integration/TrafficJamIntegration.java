@@ -4,7 +4,9 @@ import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutIntersection;
+import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteType;
 import desmoj.core.simulator.Experiment;
@@ -15,7 +17,9 @@ import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class IntersectionIntegration {
+import static org.mockito.Matchers.notNull;
+
+public class TrafficJamIntegration {
 
     private RoundaboutSimulationModel model;
     private Experiment exp;
@@ -29,13 +33,37 @@ public class IntersectionIntegration {
     }
 
     @Test
-    public void intersectionWith2DirectionsAndStreetSections_twoCarsShouldEnterSinks() {
+    public void twoStreetSectionsWithTwoCars_lastStreetSectionCouldNotBeEntered() {
 
         exp.stop(new TimeInstant(10000, TimeUnit.SECONDS));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
-        IRoute route = routeGeneratorMock.getRoute(RouteType.STREETSECTION_INTERSECTION_STREETSECTION_TWO_CARS);
+        IRoute route = routeGeneratorMock.getRoute(RouteType.TWO_STREETSECTIONS_ONE_STREETSECTIONMOCK_TWO_CARS);
+        AbstractSource source = route.getSource();
+
+        source.startGeneratingCars(0.0);
+
+        AbstractSink sink = route.getSink();
+
+        exp.start();
+
+        exp.finish();
+
+        Street streetWithTrafficJam = (StreetSection)route.getSectionAt(1);
+
+        Assert.assertEquals(0, sink.getNrOfEnteredCars());
+        Assert.assertEquals(2, streetWithTrafficJam.getCarQueue().size());
+    }
+
+    @Test
+    public void intersection_streetSectionAfterIntersectionIsFull() {
+
+        exp.stop(new TimeInstant(10000, TimeUnit.SECONDS));
+
+        RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
+
+        IRoute route = routeGeneratorMock.getRoute(RouteType.STREETSECTION_INTERSECTION_STREETSECTIONMOCK_TEN_CARS);
         AbstractSource source = route.getSource();
         RoundaboutIntersection intersection = (RoundaboutIntersection)route.getSectionAt(1);
         intersection.getController().start();
@@ -48,6 +76,9 @@ public class IntersectionIntegration {
 
         exp.finish();
 
-        Assert.assertEquals(2, sink.getNrOfEnteredCars());
+        Street streetAfterIntersection = (StreetSection)route.getSectionAt(2);
+
+        Assert.assertEquals(0, sink.getNrOfEnteredCars());
+        Assert.assertTrue(streetAfterIntersection.getNrOfLostCars() > 0);
     }
 }

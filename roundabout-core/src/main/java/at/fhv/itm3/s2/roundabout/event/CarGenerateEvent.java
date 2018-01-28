@@ -72,10 +72,10 @@ public class CarGenerateEvent extends Event<Street> {
     public void eventRoutine(Street section) {
         // TODO: use meaningful values!!
         Car car = new Car(roundaboutSimulationModel, "", false);
-        car.enterSystem();
         IRoute route = this.routeController.getRandomRoute();
         DriverBehaviour driverBehaviour = new DriverBehaviour(6.0, 0.5, 1, 1, 1);
-        ICar roundaboutCar = new RoundaboutCar(car, 2.0, driverBehaviour, route);
+        ICar roundaboutCar = new RoundaboutCar(getModel(), car, 2.0, driverBehaviour, route);
+        roundaboutCar.enterSystem();
         CarController.addCarMapping(car, roundaboutCar);
         section.addCar(roundaboutCar);
 

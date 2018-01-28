@@ -56,7 +56,7 @@ public class ConfigParser {
     }
 
     public IRoundaboutStructure generateRoundaboutStructure(ModelConfig modelConfig, Experiment experiment) throws ConfigParserException {
-        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, modelConfig.getName(), false, false);
+        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, modelConfig.getName(), false, false, 3.5, 10.0);
         model.connectToExperiment(experiment);
 
         IRoundaboutStructure roundaboutStructure = new RoundaboutStructure(model);

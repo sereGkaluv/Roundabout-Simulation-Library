@@ -13,7 +13,7 @@ public interface IDriverBehaviour {
      * Sets the riding speed of {@code this} driver.
      *
      * @param speed value to be set.
-     * @throws IllegalArgumentException when given speed is not >= 0.
+     * @throws IllegalArgumentException when given speed is not greater than or equal to 0.
      */
     void setSpeed(double speed)
     throws IllegalArgumentException;
@@ -29,7 +29,7 @@ public interface IDriverBehaviour {
      * Sets preferred min distance to next car held by {@code this} driver.
      *
      * @param minDistanceToNextCar value to be set.
-     * @throws IllegalArgumentException when given speed is not > 0.
+     * @throws IllegalArgumentException when given speed is not greater than 0.
      */
     void setMinDistanceToNextCar(double minDistanceToNextCar)
     throws IllegalArgumentException;
@@ -45,7 +45,7 @@ public interface IDriverBehaviour {
      * Sets preferred max distance to next car held by {@code this} driver.
      *
      * @param maxDistanceToNextCar value to be set.
-     * @throws IllegalArgumentException when given speed is not > 0.
+     * @throws IllegalArgumentException when given speed is not greater than 0.
      */
     void setMaxDistanceToNextCar(double maxDistanceToNextCar)
     throws IllegalArgumentException;

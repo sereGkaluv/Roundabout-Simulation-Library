@@ -9,13 +9,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CarCouldLeaveTrackEventTest {
+public class CarCouldLeaveSectionEventTest {
 
     private RoundaboutSimulationModel model;
 
     @Before
     public void setUp() {
-        model = new RoundaboutSimulationModel(null, "", false, false);
+        model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
     }

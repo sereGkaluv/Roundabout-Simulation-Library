@@ -12,7 +12,7 @@ public abstract class AbstractSource extends AbstractProducer {
     /**
      * Starts the generation of cars by scheduling the first CarGenerateEvent.
      */
-    public abstract void startGeneratingCars();
+    public abstract void startGeneratingCars(double afterModelTimeUnits);
 
     /**
      * Returns the street to which the newly generated cars are added.

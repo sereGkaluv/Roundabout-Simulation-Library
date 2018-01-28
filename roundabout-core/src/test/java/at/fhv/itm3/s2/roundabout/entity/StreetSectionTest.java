@@ -5,13 +5,16 @@ import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class StreetTrackTest {
+public class StreetSectionTest {
 
     private Street prepareStreetSectionCarCouldEnterNextSectionMock() {
         Street streetSectionMock = mock(StreetSection.class);
@@ -983,6 +986,15 @@ public class StreetTrackTest {
     }
 
     @Test
+    public void moveFirstCarToNextSection_trafficLightRed() {
+        Street currentSectionMock = mock(StreetSection.class);
+        when(currentSectionMock.isTrafficLightActive()).thenReturn(true);
+        when(currentSectionMock.isTrafficLightFreeToGo()).thenReturn(false);
+
+        assertFalse(currentSectionMock.firstCarCouldEnterNextSection());
+    }
+
+    @Test
     public void updateAllCarsPositions_noCars() {
         Street streetSectionMock = mock(StreetSection.class);
         Map<ICar, Double> carPositions = streetSectionMock.getCarPositions();
@@ -1031,4 +1043,5 @@ public class StreetTrackTest {
         // if NPE is thrown. If we are so far, logic flow may be considered to be ok, however position
         // calculations may be absolutely wrong.
     }
+
 }

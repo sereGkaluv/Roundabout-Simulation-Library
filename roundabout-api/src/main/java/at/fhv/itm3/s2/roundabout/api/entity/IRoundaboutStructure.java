@@ -32,6 +32,20 @@ public interface IRoundaboutStructure {
     void addStreet(Street street);
 
     /**
+     * Adds a sink to the structure.
+     *
+     * @param sink The sink to be added.
+     */
+    void addSink(AbstractSink sink);
+
+    /**
+     * Adds a source to the structure.
+     *
+     * @param source The source to be added.
+     */
+    void addSource(AbstractSource source);
+
+    /**
      * Add a configuration parameter to the structure.
      * Known parameters: //TODO full list of parameters
      *
@@ -60,6 +74,16 @@ public interface IRoundaboutStructure {
      * @return streets of structure
      */
     Set<Street> getStreets();
+
+    /**
+     * Gets all sinks from the structure.
+     */
+    Set<AbstractSink> getSinks();
+
+    /**
+     * Gets all sources from the structure.
+     */
+    Set<AbstractSource> getSources();
 
     /**
      * Get all parameters of the structure.

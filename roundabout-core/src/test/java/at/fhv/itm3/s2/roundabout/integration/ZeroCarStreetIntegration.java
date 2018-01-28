@@ -13,14 +13,14 @@ import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class NotASingleCar {
+public class ZeroCarStreetIntegration {
 
     private RoundaboutSimulationModel model;
     private Experiment exp;
 
     @Before
     public void setUp() {
-        model = new RoundaboutSimulationModel(null, "", false, false);
+        model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
         exp.setShowProgressBar(false);
