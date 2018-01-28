@@ -2,6 +2,7 @@ package at.fhv.itm3.s2.roundabout.api.entity;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface IStreetConnector {
@@ -9,16 +10,16 @@ public interface IStreetConnector {
     /**
      * Gets the next connected {@link IConsumer}s, which are accessible via this connector.
      *
-     * @return The further connected {@link IConsumer}s as {@link List} of {@link IConsumer}.
+     * @return The further connected {@link IConsumer}s as {@link Collection} of {@link IConsumer}.
      */
-    List<IConsumer> getNextConsumers();
+    Collection<IConsumer> getNextConsumers();
 
     /**
      * Gets the previous connected {@link IConsumer}s, which are accessible through this connector.
      *
-     * @return The previous connected {@link IConsumer}s as {@link List} of {@link IConsumer}.
+     * @return The previous connected {@link IConsumer}s as {@link Collection} of {@link IConsumer}.
      */
-    List<IConsumer> getPreviousConsumers();
+    Collection<IConsumer> getPreviousConsumers();
 
     /**
      * Gets the previous connected {@link IConsumer}s with the given type, which are accessible through this connector.

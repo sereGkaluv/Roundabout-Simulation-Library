@@ -10,17 +10,17 @@ import java.util.*;
 public class StreetConnector implements IStreetConnector {
 
     private final String id;
-    private final List<IConsumer> nextSections;
-    private final List<IConsumer> previousSections;
+    private final Collection<IConsumer> nextSections;
+    private final Collection<IConsumer> previousSections;
     private final Map<IConsumer, List<IConsumer>> nextSectionsOnTrackMap;
     private final Map<IConsumer, List<IConsumer>> previousSectionsOnTrackMap;
     private final Map<IConsumer, ConsumerType> streetTypeMap;
 
-    public StreetConnector(List<IConsumer> previousSections, List<IConsumer> nextSections){
+    public StreetConnector(Collection<IConsumer> previousSections, Collection<IConsumer> nextSections){
         this(UUID.randomUUID().toString(), previousSections, nextSections);
     }
 
-    public StreetConnector(String id, List<IConsumer> previousSections, List<IConsumer> nextSections) {
+    public StreetConnector(String id, Collection<IConsumer> previousSections, Collection<IConsumer> nextSections) {
         this.id = id;
 
         this.previousSections = previousSections;
@@ -39,12 +39,12 @@ public class StreetConnector implements IStreetConnector {
     }
 
     @Override
-    public List<IConsumer> getNextConsumers() {
+    public Collection<IConsumer> getNextConsumers() {
         return nextSections;
     }
 
     @Override
-    public List<IConsumer> getPreviousConsumers() {
+    public Collection<IConsumer> getPreviousConsumers() {
         return previousSections;
     }
 

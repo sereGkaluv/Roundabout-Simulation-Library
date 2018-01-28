@@ -11,7 +11,7 @@ import java.util.List;
 public class Test {
 
     private static void test() {
-        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false);
+        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         RoundaboutStructure structure = new RoundaboutStructure(model);
 
         StreetSection streetSection1_t1 = new StreetSection(10, model, "s1_t1", false);

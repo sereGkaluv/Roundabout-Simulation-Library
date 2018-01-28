@@ -34,7 +34,7 @@ public class StreetSection extends Street {
         String modelDescription,
         boolean showInTrace
     ) {
-        this(UUID.randomUUID().toString(), length, model, modelDescription, showInTrace, false);
+        this(length, model, modelDescription, showInTrace, false);
     }
 
     public StreetSection(
@@ -45,6 +45,16 @@ public class StreetSection extends Street {
         boolean showInTrace
     ) {
         this(id, length, model, modelDescription, showInTrace, false);
+    }
+
+    public StreetSection(
+        double length,
+        Model model,
+        String modelDescription,
+        boolean showInTrace,
+        boolean trafficLightActive
+    ) {
+        this(UUID.randomUUID().toString(), length, model, modelDescription, showInTrace, trafficLightActive);
     }
 
     public StreetSection(
@@ -281,7 +291,7 @@ public class StreetSection extends Street {
                                 // (it has to give precedence to all cars in the roundabout that are on tracks
                                 // the car has to cross)
                                 case ROUNDABOUT_INLET:
-                                    List<IConsumer> previousStreets = nextConnector.getPreviousConsumers();
+                                    Collection<IConsumer> previousStreets = nextConnector.getPreviousConsumers();
                                     for (IConsumer previousStreet: previousStreets) {
                                         if (!(previousStreet instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
