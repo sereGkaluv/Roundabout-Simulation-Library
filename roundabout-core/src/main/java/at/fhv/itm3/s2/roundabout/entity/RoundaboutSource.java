@@ -40,7 +40,6 @@ public class RoundaboutSource extends AbstractSource {
 
     @Override
     public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean b) {
-
     }
 
     @Override

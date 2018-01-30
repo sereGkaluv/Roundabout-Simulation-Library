@@ -79,6 +79,6 @@ public class TrafficJamIntegration {
         Street streetAfterIntersection = (StreetSection)route.getSectionAt(2);
 
         Assert.assertEquals(0, sink.getNrOfEnteredCars());
-        Assert.assertTrue(streetAfterIntersection.getNrOfLostCars() > 0);
+        Assert.assertTrue(streetAfterIntersection.getNrOfLeftCars() > 0);
     }
 }

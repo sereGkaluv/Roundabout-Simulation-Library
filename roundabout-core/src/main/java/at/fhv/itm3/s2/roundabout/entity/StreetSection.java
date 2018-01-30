@@ -2,7 +2,6 @@ package at.fhv.itm3.s2.roundabout.entity;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
 import at.fhv.itm14.trafsim.model.events.CarDepartureEvent;
 import at.fhv.itm14.trafsim.persistence.model.DTO;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
@@ -67,7 +66,7 @@ public class StreetSection extends Street {
 
         carQueue.addLast(iCar);
         carPositions.put(iCar, iCar.getLength());
-        incrementTotalCarCounter();
+        incrementEnteredCarCounter();
 
         IStreetConnector connector = null;
         if (previousStreetConnector != null) {
@@ -497,7 +496,7 @@ public class StreetSection extends Street {
             );
             carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, TimeUnit.SECONDS));
         } else {
-            incrementLostCarsCounter();
+            incrementLeftCarsCounter();
             car.leaveSystem();
             CarController.addLostCar(this, iCar);
         }
