@@ -86,6 +86,11 @@ public interface IRoundaboutStructure {
     Set<AbstractSource> getSources();
 
     /**
+     * Gets all roundabout inlets as {@link Street}
+     */
+    Set<Street> getRoundaboutInlets();
+
+    /**
      * Get all parameters of the structure.
      *
      * @return parameters of structure

@@ -9,6 +9,8 @@ import at.fhv.itm3.s2.roundabout.util.ConfigParserException;
 import at.fhv.itm3.s2.roundabout.util.ILogger;
 import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
 import desmoj.core.simulator.Experiment;
+import desmoj.core.statistic.TimeSeries;
+import desmoj.extensions.grafic.util.Plotter;
 
 public class RunSimulation implements ILogger {
     private static final String DEFAULT_ROUNDABOUT_CONFIG_FILENAME = "roundabout.xml";
