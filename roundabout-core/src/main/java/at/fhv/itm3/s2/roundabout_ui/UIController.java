@@ -126,7 +126,7 @@ public class UIController {
     @FXML
     private Label lbl_s19_t2_ps_ro1;
 
-    //Sink Minimum Roundabout
+    //Sink Minimum Roundabout ~ minimum waiting time
     @FXML
     private Label lbl_s17_t1_CO_SK_MIN_ro1;
     @FXML
@@ -145,7 +145,7 @@ public class UIController {
     private Label lbl_s15_t1_CO_SK_MIN_ro1;
 
 
-    //Sink Average Roundabout
+    //Sink Average Roundabout ~ average waiting time
     @FXML
     private Label lbl_s17_t1_CO_SK_AVG_ro1;
     @FXML
@@ -163,7 +163,7 @@ public class UIController {
     @FXML
     private Label lbl_s15_t1_CO_SK_AVG_ro1;
 
-    //Sink Maximum Roundabout
+    //Sink Maximum Roundabout ~ maximum waiting time
     @FXML
     private Label lbl_s17_t1_CO_SK_MAX_ro1;
     @FXML
@@ -219,7 +219,7 @@ public class UIController {
     private Label lbl_s2_t2_ps_s1;
 
 
-    //Sink Minimum Roundabout
+    //Sink Minimum Roundabout ~ minimum wainting time
     @FXML
     private Label lbl_S2_t1_CO_SK_MIN_s1;
     @FXML
@@ -228,7 +228,7 @@ public class UIController {
     private Label lbl_S4_t1_CO_SK_MIN_s1;
 
 
-    //Sink Average Roundabout
+    //Sink Average Roundabout ~ average waiting time
     @FXML
     private Label lbl_S3_t1_CO_SK_AVG_s1;
     @FXML
@@ -237,7 +237,7 @@ public class UIController {
     private Label lbl_S2_t1_CO_SK_AVG_s1;
 
 
-    //Sink Maximum Roundabout
+    //Sink Maximum Roundabout ~ maximum waiting time
     @FXML
     private Label lbl_S2_t1_CO_SK_MAX_s1;
     @FXML
@@ -251,7 +251,8 @@ public class UIController {
     }
 
     public void initSectionObservers(BiFunction<String, String, Street> sResolver) {
-        // Component id, section id.
+
+        // Component id, section id. for roundabout
         addIsPsStreetLabels(sResolver.apply("ro1", "s1_t1"), lbl_s1_t1_is_ro1, lbl_s1_t1_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s2_t2"), lbl_s2_t2_is_ro1, lbl_s2_t2_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s2_t1"), lbl_s2_t1_is_ro1, lbl_s2_t1_ps_ro1);
@@ -280,6 +281,16 @@ public class UIController {
         addIsPsStreetLabels(sResolver.apply("ro1", "s18_t1"), lbl_s18_t1_is_ro1, lbl_s18_t1_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s19_t1"), lbl_s19_t1_is_ro1, lbl_s19_t1_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s19_t2"), lbl_s19_t2_is_ro1, lbl_s19_t2_ps_ro1);
+
+        // Component id, section id. for intersection
+        addIsPsStreetLabels(sResolver.apply("s1", "s3_t4"), lbl_s3_t4_is_s1, lbl_s3_t4_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("s1", "s3_t3"), lbl_s3_t3_is_s1, lbl_s3_t3_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("s1", "s4_t1"), lbl_s4_t1_is_s1, lbl_s4_t1_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("s1", "s5_t1"), lbl_s5_t1_is_s1, lbl_s5_t1_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("s1", "s6_t1"), lbl_s6_t1_is_s1, lbl_s6_t1_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("s1", "s6_t2"), lbl_s6_t2_is_s1, lbl_s6_t2_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("s1", "s2_t1"), lbl_s2_t1_is_s1, lbl_s2_t1_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("s1", "s2_t2"), lbl_s2_t2_is_s1, lbl_s2_t2_ps_s1);
 
     }
 
