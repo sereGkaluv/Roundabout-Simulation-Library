@@ -17,6 +17,38 @@ public class RouteController {
     private List<AbstractSource> sources;
 
     /**
+     * Gets all available routes.
+     * @return All routes.
+     */
+    public Map<AbstractSource, List<IRoute>> getRoutes() {
+        return routes;
+    }
+
+    /**
+     * Sets all possible routes.
+     * @param routes The routes which should be available to choose from.
+     */
+    public void setRoutes(Map<AbstractSource, List<IRoute>> routes) {
+        this.routes = routes;
+    }
+
+    /**
+     * Gets all sources.
+     * @return A list of sources a route can start from.
+     */
+    public List<AbstractSource> getSources() {
+        return sources;
+    }
+
+    /**
+     * Sets all possible sources.
+     * @param sources Sets a list of sources, from where a route could start.
+     */
+    public void setSources(List<AbstractSource> sources) {
+        this.sources = sources;
+    }
+
+    /**
      * Returns a singleton of {@link RouteController}.
      *
      * @param model the model the RouteController and its {@link Street}s are part of.
@@ -50,16 +82,16 @@ public class RouteController {
     }
 
     // TODO: specify more attributes for random route
-    public IRoute getRandomRoute() {
+    public IRoute getRandomRoute(AbstractSource source) {
         if (this.routes.isEmpty()) {
             throw new IllegalStateException("Routes must not be empty");
         }
-        int randNr = new Random().nextInt(this.routes.size());
-        AbstractSource source =  this.sources.get(randNr);
+//        int randNr = new Random().nextInt(this.routes.size());
+//        AbstractSource source =  this.sources.get(randNr);
 
         List<IRoute> routes = this.routes.get(source);
 
-        randNr = new Random().nextInt(routes.size());
+        int randNr = new Random().nextInt(routes.size());
         return routes.get(randNr);
     }
 
