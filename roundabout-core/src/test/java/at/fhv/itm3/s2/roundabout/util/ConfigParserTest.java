@@ -1,10 +1,10 @@
 package at.fhv.itm3.s2.roundabout.util;
-
+/*
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.IProducer;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
-import at.fhv.itm3.s2.roundabout.util.dto.RoundAboutConfig;
+import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
 import at.fhv.itm3.s2.roundabout.util.dto.Section;
 import desmoj.core.simulator.Experiment;
 import org.junit.Before;
@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 import static org.junit.Assert.*;
 
 public class ConfigParserTest {
-    private RoundAboutConfig roundAboutConfig;
+    private ModelConfig roundAboutConfig;
     private ConfigParser configParser;
 
     @Before
@@ -215,4 +215,4 @@ public class ConfigParserTest {
         }
         return nextTrackSectionId - previousTrackSectionId == 1;
     }
-}
+}*/

@@ -1,8 +1,10 @@
 package at.fhv.itm3.s2.roundabout.util.dto;
 
+import at.fhv.itm3.s2.roundabout.api.util.dto.IDTO;
+
 import javax.xml.bind.annotation.XmlAttribute;
 
-public class Parameter {
+public class Parameter implements IDTO {
     private String name;
     private String value;
 

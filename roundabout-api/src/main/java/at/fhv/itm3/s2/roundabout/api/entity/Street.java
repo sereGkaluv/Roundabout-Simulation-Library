@@ -5,9 +5,11 @@ import desmoj.core.simulator.Model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public abstract class Street extends AbstractProSumer implements IEnteredCarCounter {
 
+    private final String id;
     private long enteredCarsCounter;
     private long lostCarsCounter;
     private TrafficLight trafficLight;
@@ -17,12 +19,21 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     }
 
     public Street(Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
+        this(UUID.randomUUID().toString(), owner, name, showInTrace, trafficLightActive);
+    }
+
+    public Street(String id, Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
         super(owner, name, showInTrace);
 
+        this.id = id;
         this.enteredCarsCounter = 0;
         this.lostCarsCounter = 0;
 
         trafficLight = new TrafficLight(trafficLightActive);
+    }
+
+    public String getId() {
+        return id;
     }
 
     /**

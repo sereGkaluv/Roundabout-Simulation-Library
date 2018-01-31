@@ -3,34 +3,48 @@ package at.fhv.itm3.s2.roundabout.entity;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StreetConnector implements IStreetConnector {
-    private List<IConsumer> nextSections;
-    private List<IConsumer> previousSections;
-    private Map<IConsumer, List<IConsumer>> nextSectionsOnTrackMap;
-    private Map<IConsumer, List<IConsumer>> previousSectionsOnTrackMap;
-    private Map<IConsumer, ConsumerType> streetTypeMap;
 
-    public StreetConnector(List<IConsumer> previousSections, List<IConsumer> nextSections){
+    private final String id;
+    private final Collection<IConsumer> nextSections;
+    private final Collection<IConsumer> previousSections;
+    private final Map<IConsumer, List<IConsumer>> nextSectionsOnTrackMap;
+    private final Map<IConsumer, List<IConsumer>> previousSectionsOnTrackMap;
+    private final Map<IConsumer, ConsumerType> streetTypeMap;
+
+    public StreetConnector(Collection<IConsumer> previousSections, Collection<IConsumer> nextSections){
+        this(UUID.randomUUID().toString(), previousSections, nextSections);
+    }
+
+    public StreetConnector(String id, Collection<IConsumer> previousSections, Collection<IConsumer> nextSections) {
+        this.id = id;
+
         this.previousSections = previousSections;
+        if (previousSections != null && !previousSections.isEmpty()) {
+            previousSections.forEach(s -> {if (s instanceof Street)((Street) s).setNextStreetConnector(this);});
+        }
+
         this.nextSections = nextSections;
+        if (nextSections != null && !nextSections.isEmpty()) {
+            nextSections.forEach(s -> {if (s instanceof Street)((Street) s).setPreviousStreetConnector(this);});
+        }
+
         this.nextSectionsOnTrackMap = new HashMap<>();
         this.previousSectionsOnTrackMap = new HashMap<>();
         this.streetTypeMap = new HashMap<>();
     }
 
     @Override
-    public List<IConsumer> getNextConsumers() {
+    public Collection<IConsumer> getNextConsumers() {
         return nextSections;
     }
 
     @Override
-    public List<IConsumer> getPreviousConsumers() {
+    public Collection<IConsumer> getPreviousConsumers() {
         return previousSections;
     }
 
