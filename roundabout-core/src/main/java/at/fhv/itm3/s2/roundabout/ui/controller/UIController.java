@@ -287,14 +287,14 @@ public class UIController {
         addIsPsStreetLabels(sResolver.apply("ro1", "s19_t2"), lbl_s19_t2_is_ro1, lbl_s19_t2_ps_ro1);
 
         // Component id, section id. for intersection
-        /*addIsPsStreetLabels(sResolver.apply("is1", "s3_t4"), lbl_s3_t4_is_s1, lbl_s3_t4_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("is1", "s3_t4"), lbl_s3_t4_is_s1, lbl_s3_t4_ps_s1);
         addIsPsStreetLabels(sResolver.apply("is1", "s3_t3"), lbl_s3_t3_is_s1, lbl_s3_t3_ps_s1);
         addIsPsStreetLabels(sResolver.apply("is1", "s4_t1"), lbl_s4_t1_is_s1, lbl_s4_t1_ps_s1);
         addIsPsStreetLabels(sResolver.apply("is1", "s5_t1"), lbl_s5_t1_is_s1, lbl_s5_t1_ps_s1);
         addIsPsStreetLabels(sResolver.apply("is1", "s6_t1"), lbl_s6_t1_is_s1, lbl_s6_t1_ps_s1);
         addIsPsStreetLabels(sResolver.apply("is1", "s6_t2"), lbl_s6_t2_is_s1, lbl_s6_t2_ps_s1);
         addIsPsStreetLabels(sResolver.apply("is1", "s2_t1"), lbl_s2_t1_is_s1, lbl_s2_t1_ps_s1);
-        addIsPsStreetLabels(sResolver.apply("is1", "s2_t2"), lbl_s2_t2_is_s1, lbl_s2_t2_ps_s1);*/
+        addIsPsStreetLabels(sResolver.apply("is1", "s2_t2"), lbl_s2_t2_is_s1, lbl_s2_t2_ps_s1);
     }
 
     public void initSinkObservers(BiFunction<String, String, RoundaboutSink> sResolver) {

@@ -174,7 +174,7 @@
         </component>
         <component id="is1" type="INTERSECTION" name="Basic intersection">
             <parameters>
-                <parameter name="INTERSECTION_SIZE" value="4"/>
+                <parameter name="INTERSECTION_SIZE" value="16"/>
                 <parameter name="INTERSECTION_SERVICE_DELAY" value="0.1"/>
                 <parameter name="INTERSECTION_TRAVERSE_TIME" value="1"/>
                 <parameter name="CONTROLLER_GREEN_DURATION" value="0.1"/>
@@ -238,9 +238,9 @@
                 </connector>
 
                 <connector id="co_s6_t1">
-                    <track order="1" fromSectionId="s3_t3" fromSectionType="STREET_SECTION" toSectionId="sk6_t1" toSectionType="STREET_SECTION"/>
-                    <track order="2" fromSectionId="s4_t1" fromSectionType="STREET_SECTION" toSectionId="sk6_t1" toSectionType="STREET_SECTION"/>
-                    <track order="3" fromSectionId="s5_t1" fromSectionType="STREET_SECTION" toSectionId="sk6_t1" toSectionType="STREET_SECTION"/>
+                    <track order="1" fromSectionId="s3_t3" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
+                    <track order="2" fromSectionId="s4_t1" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
+                    <track order="3" fromSectionId="s5_t1" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
                 </connector>
 
                 <connector id="co_s6_t2">

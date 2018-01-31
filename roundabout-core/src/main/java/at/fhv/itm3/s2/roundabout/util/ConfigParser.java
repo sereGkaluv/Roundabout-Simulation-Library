@@ -2,6 +2,7 @@ package at.fhv.itm3.s2.roundabout.util;
 
 import at.fhv.itm14.trafsim.model.ModelFactory;
 import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
+import at.fhv.itm14.trafsim.model.entities.AbstractProducer;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
 import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
@@ -81,7 +82,7 @@ public class ConfigParser {
         final IRoundaboutStructure roundaboutStructure = new RoundaboutStructure(model, parameters);
 
         handleComponents(roundaboutStructure, modelConfig.getComponents());
-        //handleConnectors(null, modelConfig.getConnectors());
+        handleConnectors(null, modelConfig.getComponents().getConnectors());
         return experiment;
     }
 
@@ -118,7 +119,7 @@ public class ConfigParser {
                 }
 
                 case INTERSECTION: {
-                    //handleIntersection(roundaboutStructure, component);
+                    handleIntersection(roundaboutStructure, component);
                     break;
                 }
 
@@ -248,9 +249,15 @@ public class ConfigParser {
                     ));
                 }
 
+                final AbstractProducer producer = fromSection.toProducer();
+                intersection.attachProducer(inDirection, producer);
+
+                final AbstractConsumer consumer = toSection.toConsumer();
+                intersection.attachConsumer(outDirection, consumer);
+
                 intersection.createConnectionQueue(
-                    fromSection.toProducer(),
-                    new AbstractConsumer[]{toSection.toConsumer()},
+                    producer,
+                    new AbstractConsumer[]{consumer},
                     new double[]{intersectionTraverseTime},
                     new double[]{1} // probability should be always 1 in our case?
                 );
