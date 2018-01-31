@@ -254,7 +254,6 @@ public class UIController {
     }
 
     public void initSourceObservers(BiFunction<String, String, RoundaboutSource> sResolver) {
-        //TODO
     }
 
     public void initStreetSectionObservers(BiFunction<String, String, StreetSection> sResolver) {
