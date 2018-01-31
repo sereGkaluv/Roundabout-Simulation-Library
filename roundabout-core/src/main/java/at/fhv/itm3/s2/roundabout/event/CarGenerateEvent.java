@@ -1,7 +1,9 @@
 package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
@@ -17,7 +19,7 @@ import desmoj.core.simulator.TimeSpan;
 import java.util.concurrent.TimeUnit;
 
 
-public class CarGenerateEvent extends Event<Street> {
+public class CarGenerateEvent extends Event<AbstractSource> {
 
     /**
      * A reference to the {@link RoundaboutSimulationModel} the {@link CarCouldLeaveSectionEvent} is part of.
@@ -66,27 +68,31 @@ public class CarGenerateEvent extends Event<Street> {
      * it without the need to stop and after this time the section checks if a car could leave the section.
      * At the end the event routine schedules a new {@link CarGenerateEvent} with a normally distributed time.
      *
-     * @param section instance of {@link Street} to which the car will be added.
+     * @param source instance of {@link AbstractSource} in which the car is generated
      */
     @Override
-    public void eventRoutine(Street section) {
+    public void eventRoutine(AbstractSource source) {
         // TODO: use meaningful values!!
         Car car = new Car(roundaboutSimulationModel, "", false);
-        IRoute route = this.routeController.getRandomRoute();
+        IRoute route = this.routeController.getRandomRoute(source);
         DriverBehaviour driverBehaviour = new DriverBehaviour(6.0, 0.5, 1, 1, 1);
         ICar roundaboutCar = new RoundaboutCar(getModel(), car, 2.0, driverBehaviour, route);
         roundaboutCar.enterSystem();
         CarController.addCarMapping(car, roundaboutCar);
-        section.addCar(roundaboutCar);
+        IConsumer nextSection = source.getConnectedStreet();
 
-        if (section instanceof StreetSection) {
+        if (nextSection instanceof StreetSection) {
+            ((Street)nextSection).addCar(roundaboutCar);
             double traverseTime = roundaboutCar.getTimeToTraverseCurrentSection();
             CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
-            carCouldLeaveSectionEvent.schedule(section, new TimeSpan(traverseTime, TimeUnit.SECONDS));
+            carCouldLeaveSectionEvent.schedule((Street)nextSection, new TimeSpan(traverseTime, TimeUnit.SECONDS));
+
+            double timeBetweenCarArrivals = roundaboutSimulationModel.getRandomTimeBetweenCarArrivals();
+            CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);
+            carGenerateEvent.schedule(source, new TimeSpan(timeBetweenCarArrivals, TimeUnit.SECONDS));
+        } else {
+            throw new IllegalStateException("NextSection should be of type Street");
         }
 
-        double timeBetweenCarArrivals = roundaboutSimulationModel.getRandomTimeBetweenCarArrivals();
-        CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);
-        carGenerateEvent.schedule(section, new TimeSpan(timeBetweenCarArrivals, TimeUnit.SECONDS));
     }
 }
