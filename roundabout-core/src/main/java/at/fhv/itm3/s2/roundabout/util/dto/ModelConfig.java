@@ -36,12 +36,4 @@ public class ModelConfig implements IDTO {
     public void setComponents(Components components) {
         this.components = components;
     }
-
-    public Connectors getConnectors() {
-        return connectors;
-    }
-
-    public void setConnectors(Connectors connectors) {
-        this.connectors = connectors;
-    }
 }

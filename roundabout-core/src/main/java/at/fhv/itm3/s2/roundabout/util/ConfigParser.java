@@ -2,6 +2,7 @@ package at.fhv.itm3.s2.roundabout.util;
 
 import at.fhv.itm14.trafsim.model.ModelFactory;
 import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
+import at.fhv.itm14.trafsim.model.entities.AbstractProducer;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
@@ -50,11 +51,6 @@ public class ConfigParser {
         this.filename = filename;
     }
 
-    public static void main(String[] args) throws ConfigParserException {
-        ModelConfig c = new ConfigParser("C:\\Users\\sereGkaluv\\IdeaProjects\\Roundabout-Simulation-Library\\roundabout-core\\src\\main\\resources\\test\\roundabout.xml").loadConfig();
-        System.out.println(c);
-    }
-
     public ModelConfig loadConfig() throws ConfigParserException {
         File configFile = new File(filename);
         if (!configFile.exists()) {
@@ -63,7 +59,7 @@ public class ConfigParser {
         return JAXB.unmarshal(configFile, ModelConfig.class);
     }
 
-    public IRoundaboutStructure generateRoundaboutStructure(ModelConfig modelConfig, Experiment experiment) throws ConfigParserException {
+    public IRoundaboutStructure generateRoundaboutStructure(ModelConfig modelConfig, Experiment experiment) {
         final Map<String, String> parameters = handleParameters(modelConfig);
 
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(
@@ -83,11 +79,10 @@ public class ConfigParser {
         IRoundaboutStructure roundaboutStructure = new RoundaboutStructure(model, parameters);
 
         handleComponents(roundaboutStructure, modelConfig.getComponents());
-        handleConnectors(null, modelConfig.getConnectors());
+        handleConnectors(null, modelConfig.getComponents().getConnectors());
 
         return roundaboutStructure;
     }
-
     private Map<String, String> handleParameters(ModelConfig modelConfig) {
         final Map<String, String> modelParameters = new HashMap<>();
         Consumer<Parameter> parameterRegistrator = p -> modelParameters.put(p.getName(), p.getValue());
@@ -122,9 +117,9 @@ public class ConfigParser {
         final Model model = roundaboutStructure.getModel();
 
         // Handle configuration.
-        handleSources(
+        handleSections(
             roundaboutComponent.getId(),
-            roundaboutComponent.getSources(),
+            roundaboutComponent.getSections(),
             model
         );
 
@@ -134,9 +129,9 @@ public class ConfigParser {
             model
         );
 
-        handleSections(
+        handleSources(
             roundaboutComponent.getId(),
-            roundaboutComponent.getSections(),
+            roundaboutComponent.getSources(),
             model
         );
 
@@ -169,9 +164,9 @@ public class ConfigParser {
         intersection.attachController(ic);
 
         // Handle the rest of configuration.
-        handleSources(
+        handleSections(
             intersectionComponent.getId(),
-            intersectionComponent.getSources(),
+            intersectionComponent.getSections(),
             model
         );
 
@@ -181,9 +176,9 @@ public class ConfigParser {
             model
         );
 
-        handleSections(
+        handleSources(
             intersectionComponent.getId(),
-            intersectionComponent.getSections(),
+            intersectionComponent.getSources(),
             model
         );
 
@@ -199,7 +194,7 @@ public class ConfigParser {
             for (Track track : trackList) {
                 // In direction.
                 final String fromSectionId = track.getFromSectionId();
-                final StreetSection fromSection = resolveSection(intersectionComponent.getId(), fromSectionId);
+                final Street fromSection = resolveStreet(intersectionComponent.getId(), fromSectionId, track.getFromSectionType());
                 if (!DIRECTION_MAP.containsKey(fromSectionId)) {
                     DIRECTION_MAP.put(fromSectionId, directionIndexer++);
 
@@ -220,7 +215,7 @@ public class ConfigParser {
 
                 // Out direction.
                 final String toSectionId = track.getToSectionId();
-                final StreetSection toSection = resolveSection(intersectionComponent.getId(), toSectionId);
+                final Street toSection = resolveStreet(intersectionComponent.getId(), toSectionId, track.getToSectionType());
                 if (!DIRECTION_MAP.containsKey(toSectionId)) {
                     DIRECTION_MAP.put(toSectionId, directionIndexer++);
                 }
@@ -239,9 +234,15 @@ public class ConfigParser {
                     ));
                 }
 
+                final AbstractProducer producer = fromSection.toProducer();
+                intersection.attachProducer(inDirection, producer);
+
+                final AbstractConsumer consumer = toSection.toConsumer();
+                intersection.attachConsumer(outDirection, consumer);
+
                 intersection.createConnectionQueue(
-                    fromSection.toProducer(),
-                    new AbstractConsumer[]{toSection.toConsumer()},
+                    producer,
+                    new AbstractConsumer[]{consumer},
                     new double[]{intersectionTraverseTime},
                     new double[]{1} // probability should be always 1 in our case?
                 );
@@ -306,15 +307,15 @@ public class ConfigParser {
                 final List<Track> trackList = SORTED_TRACK_EXTRACTOR.apply(co);
                 for (Track track : trackList) {
                     final String fromComponentId = track.getFromComponentId() != null ? track.getFromComponentId() : scopeComponentId;
-                    final StreetSection fromSection = resolveSection(fromComponentId, track.getFromSectionId());
+                    final Street fromSection = resolveStreet(fromComponentId, track.getFromSectionId(), track.getFromSectionType());
                     if (!previousSections.contains(fromSection)) previousSections.add(fromSection);
 
                     final String toComponentId = track.getToComponentId() != null ? track.getToComponentId() : scopeComponentId;
-                    final StreetSection toSection = resolveSection(toComponentId, track.getToSectionId());
+                    final Street toSection = resolveStreet(toComponentId, track.getToSectionId(), track.getToSectionType());
                     if (!nextSections.contains(toSection)) nextSections.add(toSection);
 
                     trackInitializers.add(connector -> connector.initializeTrack(
-                        fromSection, track.getFromSectionType(), toSection, track.getToSectionType()
+                            fromSection, track.getFromSectionType(), toSection, track.getToSectionType()
                     ));
                 }
 
@@ -326,8 +327,19 @@ public class ConfigParser {
         ));
     }
 
+    private Street resolveStreet(String componentId, String streetId, ConsumerType consumerType) {
+        switch (consumerType) {
+            case ROUNDABOUT_EXIT: return resolveSink(componentId, streetId);
+            default: return resolveSection(componentId, streetId);
+        }
+    }
+
     private StreetSection resolveSection(String componentId, String sectionId) {
         return SECTION_REGISTRY.containsKey(componentId) ? SECTION_REGISTRY.get(componentId).get(sectionId) : null;
+    }
+
+    private RoundaboutSink resolveSink(String componentId, String sinkId) {
+        return SINK_REGISTRY.containsKey(componentId) ? SINK_REGISTRY.get(componentId).get(sinkId) : null;
     }
 
     private <K, V, R> R extractParameter(Function<K, V> supplier, Function<V, R> converter, K constant) {
