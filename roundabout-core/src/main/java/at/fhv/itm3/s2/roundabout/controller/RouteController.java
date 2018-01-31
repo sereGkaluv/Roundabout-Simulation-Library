@@ -17,6 +17,38 @@ public class RouteController {
     private List<AbstractSource> sources;
 
     /**
+     * Gets all available routes.
+     * @return All routes.
+     */
+    public Map<AbstractSource, List<IRoute>> getRoutes() {
+        return routes;
+    }
+
+    /**
+     * Sets all possible routes.
+     * @param routes The routes which should be available to choose from.
+     */
+    public void setRoutes(Map<AbstractSource, List<IRoute>> routes) {
+        this.routes = routes;
+    }
+
+    /**
+     * Gets all sources.
+     * @return A list of sources a route can start from.
+     */
+    public List<AbstractSource> getSources() {
+        return sources;
+    }
+
+    /**
+     * Sets all possible sources.
+     * @param sources Sets a list of sources, from where a route could start.
+     */
+    public void setSources(List<AbstractSource> sources) {
+        this.sources = sources;
+    }
+
+    /**
      * Returns a singleton of {@link RouteController}.
      *
      * @param model the model the RouteController and its {@link Street}s are part of.
