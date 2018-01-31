@@ -15,13 +15,17 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     private Set<AbstractSink> sinks;
 
     public RoundaboutStructure(Model model) {
+        this(model, new HashMap<>());
+    }
+
+    public RoundaboutStructure(Model model, Map<String, String> parameters) {
         this.model = model;
-        connectors = new HashSet<>();
-        routes = new HashSet<>();
-        streets = new HashSet<>();
-        parameters = new HashMap<>();
-        sources = new HashSet<>();
-        sinks = new HashSet<>();
+        this.connectors = new HashSet<>();
+        this.routes = new HashSet<>();
+        this.streets = new HashSet<>();
+        this.parameters = parameters;
+        this.sources = new HashSet<>();
+        this.sinks = new HashSet<>();
     }
 
     @Override
@@ -84,6 +88,11 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     @Override
     public Map<String, String> getParameters() {
         return Collections.unmodifiableMap(parameters);
+    }
+
+    @Override
+    public String getParameter(String key) {
+        return parameters.get(key);
     }
 
     @Override

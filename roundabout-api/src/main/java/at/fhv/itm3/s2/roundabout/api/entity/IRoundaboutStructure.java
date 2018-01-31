@@ -93,6 +93,14 @@ public interface IRoundaboutStructure {
     Map<String, String> getParameters();
 
     /**
+     * Returns value associated with the given key.
+     *
+     * @param key key of the parameter.
+     * @return value of the parameter.
+     */
+    String getParameter(String key);
+
+    /**
      * Get simulation model of structure.
      *
      * @return simulation model of structure

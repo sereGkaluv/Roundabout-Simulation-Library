@@ -5,9 +5,9 @@ import at.fhv.itm3.s2.roundabout.api.util.dto.IDTO;
 import javax.xml.bind.annotation.XmlAttribute;
 import java.util.List;
 
-public class Section implements IDTO {
+public class Source implements IDTO {
     private String id;
-    private Double length;
+    private String sectionId;
 
     @XmlAttribute
     public String getId() {
@@ -19,11 +19,11 @@ public class Section implements IDTO {
     }
 
     @XmlAttribute
-    public Double getLength() {
-        return length;
+    public String getSectionId() {
+        return sectionId;
     }
 
-    public void setLength(Double length) {
-        this.length = length;
+    public void setSectionId(String sectionId) {
+        this.sectionId = sectionId;
     }
 }

@@ -7,7 +7,7 @@ import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.util.ConfigParser;
 import at.fhv.itm3.s2.roundabout.util.ConfigParserException;
 import at.fhv.itm3.s2.roundabout.util.ILogger;
-import at.fhv.itm3.s2.roundabout.util.dto.RoundAboutConfig;
+import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
 import desmoj.core.simulator.Experiment;
 
 public class RunSimulation implements ILogger {
@@ -20,8 +20,8 @@ public class RunSimulation implements ILogger {
         String roundaboutConfigFileName = getArgOrDefault(args, 0, DEFAULT_ROUNDABOUT_CONFIG_FILENAME);
         try {
             ConfigParser configParser = new ConfigParser(roundaboutConfigFileName);
-            RoundAboutConfig roundAboutConfig = configParser.loadConfig();
-            IRoundaboutStructure roundAboutModel = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
+            ModelConfig modelConfig = configParser.loadConfig();
+            IRoundaboutStructure roundAboutModel = configParser.generateRoundaboutStructure(modelConfig, exp);
         } catch (ConfigParserException e) {
             LOGGER.error(e);
         }

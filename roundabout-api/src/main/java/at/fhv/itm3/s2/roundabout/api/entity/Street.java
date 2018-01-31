@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.UUID;
 
 public abstract class Street extends AbstractProSumer implements ICarCountable, IObservable {
 
+    private final String id;
     private long enteredCarsCounter;
     private long leftCarsCounter;
     private TrafficLight trafficLight;
@@ -20,8 +22,13 @@ public abstract class Street extends AbstractProSumer implements ICarCountable, 
     }
 
     public Street(Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
+        this(UUID.randomUUID().toString(), owner, name, showInTrace, trafficLightActive);
+    }
+
+    public Street(String id, Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
         super(owner, name, showInTrace);
 
+        this.id = id;
         this.enteredCarsCounter = 0;
         this.leftCarsCounter = 0;
 
@@ -33,6 +40,10 @@ public abstract class Street extends AbstractProSumer implements ICarCountable, 
                 super.notifyObservers(arg);
             }
         };
+    }
+
+    public String getId() {
+        return id;
     }
 
     /**

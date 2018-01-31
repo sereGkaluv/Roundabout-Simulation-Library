@@ -29,22 +29,43 @@ public class StreetSection extends Street {
     protected IntersectionController intersectionController;
 
     public StreetSection(
-            double length,
-            Model model,
-            String modelDescription,
-            boolean showInTrace
+        double length,
+        Model model,
+        String modelDescription,
+        boolean showInTrace
     ) {
         this(length, model, modelDescription, showInTrace, false);
     }
 
     public StreetSection(
-            double length,
-            Model model,
-            String modelDescription,
-            boolean showInTrace,
-            boolean trafficLightActive
+        String id,
+        double length,
+        Model model,
+        String modelDescription,
+        boolean showInTrace
     ) {
-        super(model, modelDescription, showInTrace, trafficLightActive);
+        this(id, length, model, modelDescription, showInTrace, false);
+    }
+
+    public StreetSection(
+        double length,
+        Model model,
+        String modelDescription,
+        boolean showInTrace,
+        boolean trafficLightActive
+    ) {
+        this(UUID.randomUUID().toString(), length, model, modelDescription, showInTrace, trafficLightActive);
+    }
+
+    public StreetSection(
+        String id,
+        double length,
+        Model model,
+        String modelDescription,
+        boolean showInTrace,
+        boolean trafficLightActive
+    ) {
+        super(id, model, modelDescription, showInTrace, trafficLightActive);
 
         this.length = length;
 
@@ -177,25 +198,25 @@ public class StreetSection extends Street {
 
                 // Calculate distance to next car / end of street section based on distributed driver behaviour values.
                 final double distanceToNextCar = calculateDistanceToNextCar(
-                        carDriverBehaviour.getMinDistanceToNextCar(),
-                        carDriverBehaviour.getMaxDistanceToNextCar(),
-                        getRoundaboutModel().getRandomDistanceFactorBetweenCars()
+                    carDriverBehaviour.getMinDistanceToNextCar(),
+                    carDriverBehaviour.getMaxDistanceToNextCar(),
+                    getRoundaboutModel().getRandomDistanceFactorBetweenCars()
                 );
 
                 // Calculate possible car positions.
                 final double maxTheoreticallyPossiblePositionValue = calculateMaxPossibleCarPosition(
-                        getLength(),
-                        distanceToNextCar,
-                        getCarPosition(previousCar),
-                        previousCar
+                    getLength(),
+                    distanceToNextCar,
+                    getCarPosition(previousCar),
+                    previousCar
                 );
 
                 final double maxActuallyPossiblePositionValue = carPosition + (currentTime - carLastUpdateTime) * carSpeed;
 
                 // Select the new RoundaboutCar position based on previous calculations.
                 double newCarPosition = Math.min(
-                        maxTheoreticallyPossiblePositionValue,
-                        maxActuallyPossiblePositionValue
+                    maxTheoreticallyPossiblePositionValue,
+                    maxActuallyPossiblePositionValue
                 );
 
                 if (newCarPosition < carPosition) {
@@ -204,9 +225,11 @@ public class StreetSection extends Street {
 
                 if (carPosition == newCarPosition && !currentCar.isWaiting()) {
                     currentCar.startWaiting();
-                } else if ((carPosition != newCarPosition || carPosition == currentCar.getLength()) &&
-                        currentCar.isWaiting() &&
-                        newCarPosition - carPosition > currentCar.getLength()) {
+                } else if (
+                    (carPosition != newCarPosition || carPosition == currentCar.getLength())
+                    && currentCar.isWaiting()
+                    && newCarPosition - carPosition > currentCar.getLength()
+                ) {
                     currentCar.stopWaiting();
                 }
 
@@ -268,7 +291,7 @@ public class StreetSection extends Street {
                                 // (it has to give precedence to all cars in the roundabout that are on tracks
                                 // the car has to cross)
                                 case ROUNDABOUT_INLET:
-                                    List<IConsumer> previousStreets = nextConnector.getPreviousConsumers();
+                                    Collection<IConsumer> previousStreets = nextConnector.getPreviousConsumers();
                                     for (IConsumer previousStreet: previousStreets) {
                                         if (!(previousStreet instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
