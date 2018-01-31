@@ -31,7 +31,8 @@ public class RoundaboutSource extends AbstractSource {
 
     public void startGeneratingCars(double afterModelTimeUnits) {
         CarGenerateEvent event = this.roundaboutEventFactory.createCarGenerateEvent(model);
-        event.schedule(connectedStreet, new TimeSpan(afterModelTimeUnits));
+//        event.schedule(connectedStreet, new TimeSpan(afterModelTimeUnits));
+        event.schedule(this, new TimeSpan(afterModelTimeUnits));
     }
 
     public Street getConnectedStreet() {

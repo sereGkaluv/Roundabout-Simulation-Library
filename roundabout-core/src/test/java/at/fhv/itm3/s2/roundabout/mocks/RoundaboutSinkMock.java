@@ -21,6 +21,7 @@ public class RoundaboutSinkMock extends RoundaboutSink {
         super.addCar(iCar);
     }
 
+    @Override
     public LinkedList<ICar> getEnteredCars() {
         return enteredCars;
     }

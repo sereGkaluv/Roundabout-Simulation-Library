@@ -82,16 +82,16 @@ public class RouteController {
     }
 
     // TODO: specify more attributes for random route
-    public IRoute getRandomRoute() {
+    public IRoute getRandomRoute(AbstractSource source) {
         if (this.routes.isEmpty()) {
             throw new IllegalStateException("Routes must not be empty");
         }
-        int randNr = new Random().nextInt(this.routes.size());
-        AbstractSource source =  this.sources.get(randNr);
+//        int randNr = new Random().nextInt(this.routes.size());
+//        AbstractSource source =  this.sources.get(randNr);
 
         List<IRoute> routes = this.routes.get(source);
 
-        randNr = new Random().nextInt(routes.size());
+        int randNr = new Random().nextInt(routes.size());
         return routes.get(randNr);
     }
 
