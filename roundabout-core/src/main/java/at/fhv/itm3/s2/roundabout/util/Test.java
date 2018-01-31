@@ -12,7 +12,7 @@ public class Test {
 
     private static void test() {
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
-        RoundaboutStructure structure = new RoundaboutStructure(model);
+        ModelStructure structure = new ModelStructure(model);
 
         StreetSection streetSection1_t1 = new StreetSection(10, model, "s1_t1", false);
         StreetSection streetSection1_t2 = new StreetSection(10, model, "s1_t2", false);

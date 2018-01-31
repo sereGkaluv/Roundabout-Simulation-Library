@@ -5,23 +5,23 @@ import desmoj.core.simulator.Model;
 
 import java.util.*;
 
-public class RoundaboutStructure implements IRoundaboutStructure {
+public class ModelStructure implements IModelStructure {
     private final Model model;
     private Set<IStreetConnector> connectors;
-    private Set<IRoute> routes;
+    private Map<Street, Map<Street, IRoute>> routes; // Source, Sink and Route
     private Set<Street> streets;
     private Map<String, String> parameters;
     private Set<AbstractSource> sources;
     private Set<AbstractSink> sinks;
 
-    public RoundaboutStructure(Model model) {
+    public ModelStructure(Model model) {
         this(model, new HashMap<>());
     }
 
-    public RoundaboutStructure(Model model, Map<String, String> parameters) {
+    public ModelStructure(Model model, Map<String, String> parameters) {
         this.model = model;
         this.connectors = new HashSet<>();
-        this.routes = new HashSet<>();
+        this.routes = new HashMap<>();
         this.streets = new HashSet<>();
         this.parameters = parameters;
         this.sources = new HashSet<>();
@@ -34,8 +34,10 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     }
 
     @Override
-    public void addRoute(IRoute route) {
-        routes.add(route);
+    public void addRoute(Street source , Street sink, IRoute route) {
+        Map<Street, IRoute> tmpStartEndStreet = new HashMap<>();
+        tmpStartEndStreet.put(sink, route);
+        routes.put(source, tmpStartEndStreet);
     }
 
     @Override
@@ -66,8 +68,13 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     }
 
     @Override
-    public Set<IRoute> getRoutes() {
-        return Collections.unmodifiableSet(routes);
+    public Map<Street, Map<Street, IRoute>> getRoutes() {
+        return routes;
+    }
+
+    @Override
+    public IRoute getRoute(Street start, Street destination){
+        return routes.get(start).get(destination);
     }
 
     @Override
@@ -98,5 +105,12 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     @Override
     public Model getModel() {
         return model;
+    }
+
+    public Street getStreetFromID (String ID){
+        for(Street streetIt : streets){
+            if(streetIt.getId().equals(ID)) return streetIt;
+        }
+        throw new IllegalArgumentException( ID + " is not a legit Streed ID Name.");
     }
 }

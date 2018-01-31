@@ -5,9 +5,7 @@ import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
-import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
-import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.entity.*;
 import at.fhv.itm3.s2.roundabout.util.dto.*;
@@ -38,13 +36,14 @@ public class ConfigParser {
     private static final String CONTROLLER_YELLOW_DURATION = "CONTROLLER_YELLOW_DURATION";
     private static final String CONTROLLER_PHASE_SHIFT_TIME = "CONTROLLER_PHASE_SHIFT_TIME";
 
-    private static final Map<String, Map<String, RoundaboutSource>> SOURCE_REGISTRY = new HashMap<>();
+    private static final Map<String, Map<String, RoundaboutSource>> SOURCE_REGISTRY = new HashMap<>(); // component ID, Section ID, Section
     private static final Map<String, Map<String, RoundaboutSink>> SINK_REGISTRY = new HashMap<>();
     private static final Map<String, Map<String, StreetSection>> SECTION_REGISTRY = new HashMap<>();
     private static final Comparator<Track> TRACK_COMPARATOR = Comparator.comparingLong(Track::getOrder);
     private static final Function<Connector, List<Track>> SORTED_TRACK_EXTRACTOR = co -> co.getTrack().stream().sorted(TRACK_COMPARATOR).collect(Collectors.toList());
 
     private String filename;
+    private Map<Street, Map<Street, IRoute>> routes; // Source, Sink and Route
 
     public ConfigParser(String filename) {
         this.filename = filename;
@@ -63,7 +62,7 @@ public class ConfigParser {
         return JAXB.unmarshal(configFile, ModelConfig.class);
     }
 
-    public IRoundaboutStructure generateRoundaboutStructure(ModelConfig modelConfig, Experiment experiment) throws ConfigParserException {
+    public IModelStructure generateRoundaboutStructure(ModelConfig modelConfig, Experiment experiment) throws ConfigParserException {
         final Map<String, String> parameters = handleParameters(modelConfig);
 
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(
@@ -80,12 +79,69 @@ public class ConfigParser {
         );
         model.connectToExperiment(experiment);
 
-        IRoundaboutStructure roundaboutStructure = new RoundaboutStructure(model, parameters);
+        IModelStructure modelStructure = new ModelStructure(model, parameters);
 
-        handleComponents(roundaboutStructure, modelConfig.getComponents());
-        handleConnectors(null, modelConfig.getConnectors());
+        handleComponents(modelStructure, modelConfig.getComponents());
+        handleConnectors(null, modelConfig.getConnectors()); // connect the different components(roundabouts and intersections)
 
-        return roundaboutStructure;
+        inizializeRoutes(modelConfig, modelStructure);
+
+        // just verify the routes
+        int cnt = 0;
+        for (Street i : modelStructure.getRoutes().keySet()){
+            System.out.print("Path " + cnt + " with Start " + i);
+            for (Street j : modelStructure.getRoutes().get(i).keySet()){
+                System.out.print(" " + modelStructure.getRoutes().get(i).get(j) );
+            }
+        }
+        return modelStructure;
+    }
+
+    void inizializeRoutes(ModelConfig modelConfig, IModelStructure modelStructure){
+        for( Component componentIt : modelConfig.getComponents().getComponent()){ //Iterate through Roundabouts and Intersections
+            //start from every possible source
+            for (Source sourceIt : componentIt.getSources().getSource()) {
+                String currentStreetSectionID = sourceIt.getSectionId();
+                IRoute currentPath = new Route();
+                DepthFirstSearch(currentStreetSectionID, currentPath, componentIt, modelStructure);
+            }
+        }
+    }
+
+    void DepthFirstSearch(String currentStreetID, IRoute currentPath, Component component, IModelStructure modelStructure){
+
+        // solely store if the start-street section is not stored
+        Street currentStreet = modelStructure.getStreetFromID(currentStreetID);
+        if(currentPath.isEmpty()){
+            currentPath.addSection(currentStreet);
+        }
+
+        boolean endOfPath = true;
+        // check each connector
+        for(Connector connectorIt : component.getConnectors().getConnector()){
+            IRoute currentPathTmp = currentPath;
+            for(Track trackIt : connectorIt.getTrack()){
+                if(trackIt.getFromSectionId().equals(currentStreetID)){
+                    String nextStreetID = trackIt.getToSectionId();
+                    Street nextStreet = modelStructure.getStreetFromID(nextStreetID);
+                    if(!currentPathTmp.contains(nextStreet)){ // do not loop
+                        endOfPath = false;
+                        currentPathTmp.addSection(nextStreet);
+                        DepthFirstSearch(nextStreetID, currentPathTmp, component, modelStructure);
+                    }
+                }
+            }
+        }
+        if(endOfPath) {
+            Street firstStreet;
+            if (currentPath.getStartSection() instanceof Street) {
+                firstStreet = (Street) currentPath.getStartSection();
+            } else {
+                throw new IllegalArgumentException("Section can not be converted to Street");
+            }
+            modelStructure.addRoute(firstStreet, currentStreet, currentPath);
+        }
+        return;
     }
 
     private Map<String, String> handleParameters(ModelConfig modelConfig) {
@@ -100,7 +156,7 @@ public class ConfigParser {
         return modelParameters;
     }
 
-    private void handleComponents(IRoundaboutStructure roundaboutStructure, Components components) {
+    private void handleComponents(IModelStructure roundaboutStructure, Components components) {
         for (Component component : components.getComponent()) {
             switch (component.getType()) {
                 case ROUNDABOUT: {
@@ -118,7 +174,7 @@ public class ConfigParser {
         }
     }
 
-    private void handleRoundabout(IRoundaboutStructure roundaboutStructure, Component roundaboutComponent) {
+    private void handleRoundabout(IModelStructure roundaboutStructure, Component roundaboutComponent) {
         final Model model = roundaboutStructure.getModel();
 
         // Handle configuration.
@@ -146,7 +202,7 @@ public class ConfigParser {
         );
     }
 
-    private void handleIntersection(IRoundaboutStructure roundaboutStructure, Component intersectionComponent) {
+    private void handleIntersection(IModelStructure roundaboutStructure, Component intersectionComponent) {
         final Model model = roundaboutStructure.getModel();
 
         // Init intersection.

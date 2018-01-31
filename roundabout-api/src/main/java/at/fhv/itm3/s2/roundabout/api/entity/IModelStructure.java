@@ -5,7 +5,7 @@ import desmoj.core.simulator.Model;
 import java.util.Map;
 import java.util.Set;
 
-public interface IRoundaboutStructure {
+public interface IModelStructure {
 
     /**
      * Add a street connector to the structure.
@@ -21,7 +21,7 @@ public interface IRoundaboutStructure {
      *
      * @param route route to be added
      */
-    void addRoute(IRoute route);
+    void addRoute(Street source , Street sink, IRoute route);
 
     /**
      * Add a street to the structure.
@@ -66,7 +66,14 @@ public interface IRoundaboutStructure {
      *
      * @return routes of structure
      */
-    Set<IRoute> getRoutes();
+    Map<Street, Map<Street, IRoute>> getRoutes();
+
+    /**
+     * Get specific route of the structure.
+     *
+     * @return routes of structure
+     */
+    IRoute getRoute(Street start, Street destination);
 
     /**
      * Get all streets of the structure.
@@ -106,4 +113,12 @@ public interface IRoundaboutStructure {
      * @return simulation model of structure
      */
     Model getModel();
+
+    /**
+     * Get the spreed by his ID.
+     *
+     * @param ID of Street
+     * @return Street with the matching ID
+     */
+    Street getStreetFromID (String ID);
 }

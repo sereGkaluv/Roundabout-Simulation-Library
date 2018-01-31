@@ -1,9 +1,13 @@
 package at.fhv.itm3.s2.roundabout.controller;
 
+import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
+import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.entity.Route;
+import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import desmoj.core.simulator.Model;
 
 import java.util.*;
@@ -45,8 +49,6 @@ public class RouteController {
 
         this.routes = new HashMap<>();
         this.sources = new LinkedList<>();
-
-        initializeRoutes();
     }
 
     // TODO: specify more attributes for random route
@@ -61,9 +63,5 @@ public class RouteController {
 
         randNr = new Random().nextInt(routes.size());
         return routes.get(randNr);
-    }
-
-    private void initializeRoutes() {
-        // TODO implement
     }
 }

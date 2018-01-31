@@ -79,4 +79,11 @@ public interface IRoute {
      * @return  the sink of the route as {@link Street}
      */
     AbstractSink getSink();
+
+    /**
+    * Checks if there is a specific {@link Street}s already in the route
+    *
+    * @return true if there is a specific {@link Street} in the route, otherwise false.
+    */
+    boolean contains (IConsumer section);
 }

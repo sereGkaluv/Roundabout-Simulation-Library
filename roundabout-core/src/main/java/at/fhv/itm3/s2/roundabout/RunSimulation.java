@@ -3,7 +3,7 @@ package at.fhv.itm3.s2.roundabout;
 import at.fhv.itm14.trafsim.persistence.model.ScenarioDTO;
 import at.fhv.itm14.trafsim.util.ScenarioReadException;
 import at.fhv.itm14.trafsim.util.XMLParser;
-import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
+import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
 import at.fhv.itm3.s2.roundabout.util.ConfigParser;
 import at.fhv.itm3.s2.roundabout.util.ConfigParserException;
 import at.fhv.itm3.s2.roundabout.util.ILogger;
@@ -21,7 +21,8 @@ public class RunSimulation implements ILogger {
         try {
             ConfigParser configParser = new ConfigParser(roundaboutConfigFileName);
             ModelConfig modelConfig = configParser.loadConfig();
-            IRoundaboutStructure roundAboutModel = configParser.generateRoundaboutStructure(modelConfig, exp);
+            IModelStructure roundAboutModel = configParser.generateRoundaboutStructure(modelConfig, exp);
+
         } catch (ConfigParserException e) {
             LOGGER.error(e);
         }

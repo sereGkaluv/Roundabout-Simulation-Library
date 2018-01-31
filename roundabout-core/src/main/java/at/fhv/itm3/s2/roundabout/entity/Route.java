@@ -4,6 +4,7 @@ import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,5 +83,16 @@ public class Route implements IRoute {
             throw new IllegalArgumentException("Track must be part of the route");
         }
         return route.indexOf(streetSection);
+    }
+
+    @Override
+    public boolean contains (IConsumer section) {
+        if (!(section instanceof Street)) {
+           throw new IllegalStateException("All previous IConsumer should be of type Street");
+        }
+        for(int i = 0; i < route.size(); ++i){
+            if(route.get(i).equals((Street) section)) return true;
+         }
+        return false;
     }
 }
