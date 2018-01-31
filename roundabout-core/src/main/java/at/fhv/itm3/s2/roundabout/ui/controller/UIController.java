@@ -258,6 +258,8 @@ public class UIController {
     }
 
     public void initStreetSectionObservers(BiFunction<String, String, StreetSection> sResolver) {
+        // Component id, section id. for roundabout
+        addIsPsStreetLabels(sResolver.apply("ro1", "s1_t1"), lbl_s1_t1_is_ro1, lbl_s1_t1_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s2_t2"), lbl_s2_t2_is_ro1, lbl_s2_t2_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s2_t1"), lbl_s2_t1_is_ro1, lbl_s2_t1_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s3_t1"), lbl_s3_t1_is_ro1, lbl_s3_t1_ps_ro1);
@@ -298,6 +300,20 @@ public class UIController {
     }
 
     public void initSinkObservers(BiFunction<String, String, RoundaboutSink> sResolver) {
+        //sink roundabout
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s17_t1"), lbl_s17_t1_CO_SK_MIN_ro1, lbl_s17_t1_CO_SK_AVG_ro1, lbl_s17_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s4_t1"), lbl_s4_t1_CO_SK_MIN_ro1, lbl_s4_t1_CO_SK_AVG_ro1, lbl_s4_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s6_t1"), lbl_s6_t1_CO_SK_MIN_ro1, lbl_s6_t1_CO_SK_AVG_ro1, lbl_s6_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s9_t1"), lbl_s9_t1_CO_SK_MIN_ro1, lbl_s9_t1_CO_SK_AVG_ro1, lbl_s9_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s9_t2"), lbl_s9_t2_CO_SK_MIN_ro1, lbl_s9_t2_CO_SK_AVG_ro1, lbl_s9_t2_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s11_t1"), lbl_s11_t1_CO_SK_MIN_ro1, lbl_s11_t1_CO_SK_AVG_ro1, lbl_s11_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s13_t1"), lbl_s13_t1_CO_SK_MIN_ro1, lbl_s13_t1_CO_SK_AVG_ro1, lbl_s13_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s15_t1"), lbl_s15_t1_CO_SK_MIN_ro1, lbl_s15_t1_CO_SK_AVG_ro1, lbl_s15_t1_CO_SK_MAX_ro1);
+
+
+        //sink intersection
+        addMinAvgMaxSinkLabels(sResolver.apply("is1", "S2_t1"), lbl_S2_t1_CO_SK_MIN_s1, lbl_S2_t1_CO_SK_AVG_s1, lbl_S2_t1_CO_SK_MAX_s1);
+        addMinAvgMaxSinkLabels(sResolver.apply("is1", "S3_t1"), lbl_S3_t1_CO_SK_MIN_s1, lbl_S3_t1_CO_SK_AVG_s1, lbl_S3_t1_CO_SK_MAX_s1);
         addMinAvgMaxSinkLabels(sResolver.apply("is1", "s4_t1"), lbl_S4_t1_CO_SK_MIN_s1, lbl_S4_t1_CO_SK_AVG_s1, lbl_S4_t1_CO_SK_MAX_s1);
     }
 
