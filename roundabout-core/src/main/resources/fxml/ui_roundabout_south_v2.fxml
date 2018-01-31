@@ -54,7 +54,7 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="836.0" prefWidth="1224.0" VBox.vgrow="ALWAYS">
          <children>
-            <ImageView fitHeight="628.0" fitWidth="1238.0" layoutX="22.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="628.0" fitWidth="1238.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../roundabout_graphic.png" />
                </image>
@@ -64,17 +64,17 @@
                   <Font name="System Bold Italic" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="456.0" layoutY="646.0" text="Sources">
+            <Label layoutX="608.0" layoutY="647.0" text="AVG">
                <font>
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="858.0" layoutY="618.0" text="Intersection">
+            <Label layoutX="779.0" layoutY="615.0" text="Intersection">
                <font>
                   <Font name="System Bold Italic" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="1083.0" layoutY="644.0" text="Sources">
+            <Label layoutX="992.0" layoutY="637.0" text="Sink">
                <font>
                   <Font name="System Italic" size="14.0" />
                </font>
@@ -85,20 +85,15 @@
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="858.0" layoutY="643.0" text="Section">
-               <font>
-                  <Font name="System Italic" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="868.0" layoutY="818.0" text="Sink">
+            <Label layoutX="779.0" layoutY="640.0" text="Section">
                <font>
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
             <Label fx:id="lbl_s1_t1_is_ro1" layoutX="75.0" layoutY="669.0" text="S1_t1_is" />
             <Label fx:id="lbl_s2_t2_is_ro1" layoutX="75.0" layoutY="686.0" text="S2_t2_is" />
-            <Label fx:id="lbl_s2_ti_is_ro1" layoutX="75.0" layoutY="703.0" text="S2_t1_is" />
-            <Label fx:id="lbl_s3_ti_is_ro1" layoutX="75.0" layoutY="721.0" text="S3_t1_is" />
+            <Label fx:id="lbl_s2_t1_is_ro1" layoutX="75.0" layoutY="703.0" text="S2_t1_is" />
+            <Label fx:id="lbl_s3_t1_is_ro1" layoutX="75.0" layoutY="721.0" text="S3_t1_is" />
             <Label fx:id="lbl_s3_t2_is_ro1" layoutX="75.0" layoutY="737.0" text="S3_t2_is" />
             <Label fx:id="lbl_s4_t1_is_ro1" layoutX="75.0" layoutY="754.0" text="S4_t1_is" />
             <Label fx:id="lbl_s5_t1_is_ro1" layoutX="75.0" layoutY="771.0" text="S5_t1_is" />
@@ -109,7 +104,7 @@
             <Label fx:id="lbl_s9_t1_is_ro1" layoutX="75.0" layoutY="856.0" text="S9_t1_is" />
             <Label fx:id="lbl_s9_t2_is_ro1" layoutX="75.0" layoutY="873.0" text="S9_t2_is" />
             <Label fx:id="lbl_s10_t1_is_ro1" layoutX="75.0" layoutY="887.0" text="S10_t1_is" />
-            <Label fx:id="lbl_s10_t2_is_ro1" layoutX="285.0" layoutY="666.0" text="S10_t2_is" />
+            <Label fx:id="lbl_s10_t2_is_ro1" layoutX="275.0" layoutY="666.0" text="S10_t2_is" />
 
             <Label layoutX="22.0" layoutY="683.0" text="S2_t2" />
             <Label layoutX="22.0" layoutY="700.0" text="S2_t1" />
@@ -140,20 +135,20 @@
             <Label fx:id="lbl_s9_t2_ps_ro1" layoutX="134.0" layoutY="873.0" text="S9_t2_ps" />
             <Label fx:id="lbl_s10_t1_ps_ro1" layoutX="134.0" layoutY="887.0" text="S10_t1_ps" />
 
-            <Label layoutX="228.0" layoutY="665.0" text="S10_t2" />
-            <Label layoutX="228.0" layoutY="687.0" text="S11_t1" />
-            <Label layoutX="229.0" layoutY="705.0" text="S12_t1" />
-            <Label layoutX="229.0" layoutY="721.0" text="S12_t2" />
-            <Label layoutX="229.0" layoutY="738.0" text="S13_t1" />
-            <Label layoutX="229.0" layoutY="755.0" text="S14_t1" />
-            <Label layoutX="229.0" layoutY="772.0" text="S14_t2" />
-            <Label layoutX="229.0" layoutY="789.0" text="S15_t1" />
-            <Label layoutX="229.0" layoutY="806.0" text="S16_t1" />
-            <Label layoutX="229.0" layoutY="823.0" text="S16_t2" />
+            <Label layoutX="218.0" layoutY="665.0" text="S10_t2" />
+            <Label layoutX="218.0" layoutY="687.0" text="S11_t1" />
+            <Label layoutX="219.0" layoutY="705.0" text="S12_t1" />
+            <Label layoutX="219.0" layoutY="721.0" text="S12_t2" />
+            <Label layoutX="219.0" layoutY="738.0" text="S13_t1" />
+            <Label layoutX="219.0" layoutY="755.0" text="S14_t1" />
+            <Label layoutX="219.0" layoutY="772.0" text="S14_t2" />
+            <Label layoutX="219.0" layoutY="789.0" text="S15_t1" />
+            <Label layoutX="219.0" layoutY="806.0" text="S16_t1" />
+            <Label layoutX="219.0" layoutY="823.0" text="S16_t2" />
 
-            <Label fx:id="lbl_s10_t2_ps_ro1" layoutX="359.0" layoutY="667.0" text="S10_t2_ps" />
-            <Label fx:id="lbl_s11_t1_is_ro1" layoutX="287.0" layoutY="687.0" text="S11_t1_is" />
-            <Label fx:id="lbl_s11_t1_ps_ro1" layoutX="360.0" layoutY="687.0" text="S11_t1_ps" />
+            <Label fx:id="lbl_s10_t2_ps_ro1" layoutX="349.0" layoutY="667.0" text="S10_t2_ps" />
+            <Label fx:id="lbl_s11_t1_is_ro1" layoutX="277.0" layoutY="687.0" text="S11_t1_is" />
+            <Label fx:id="lbl_s11_t1_ps_ro1" layoutX="350.0" layoutY="687.0" text="S11_t1_ps" />
             <Label layoutX="91.0" layoutY="646.0" text="IS">
                <font>
                   <Font name="System Italic" size="14.0" />
@@ -164,112 +159,167 @@
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="229.0" layoutY="839.0" text="S17_t1" />
-            <Label layoutX="229.0" layoutY="853.0" text="S18_t1" />
-            <Label layoutX="229.0" layoutY="870.0" text="S19_t1" />
-            <Label layoutX="229.0" layoutY="887.0" text="S19_t2" />
-            <Label fx:id="lbl_s12_t1_is_ro1" layoutX="287.0" layoutY="703.0" text="S12_t1_is" />
-            <Label fx:id="lbl_s12_t2_is_ro1" layoutX="287.0" layoutY="721.0" text="S12_t2_is" />
-            <Label fx:id="lbl_s13_t1_is_ro1" layoutX="287.0" layoutY="737.0" text="S13_t1_is" />
-            <Label layoutX="309.0" layoutY="646.0" text="IS">
+            <Label layoutX="219.0" layoutY="839.0" text="S17_t1" />
+            <Label layoutX="219.0" layoutY="853.0" text="S18_t1" />
+            <Label layoutX="219.0" layoutY="870.0" text="S19_t1" />
+            <Label layoutX="219.0" layoutY="887.0" text="S19_t2" />
+            <Label fx:id="lbl_s12_t1_is_ro1" layoutX="277.0" layoutY="703.0" text="S12_t1_is" />
+            <Label fx:id="lbl_s12_t2_is_ro1" layoutX="277.0" layoutY="721.0" text="S12_t2_is" />
+            <Label fx:id="lbl_s13_t1_is_ro1" layoutX="277.0" layoutY="737.0" text="S13_t1_is" />
+            <Label layoutX="299.0" layoutY="646.0" text="IS">
                <font>
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="386.0" layoutY="646.0" text="PS">
+            <Label layoutX="376.0" layoutY="646.0" text="PS">
                <font>
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="228.0" layoutY="646.0" text="Section">
+            <Label layoutX="218.0" layoutY="646.0" text="Section">
                <font>
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lbl_s14_t1_is_ro1" layoutX="287.0" layoutY="755.0" text="S14_t1_is" />
-            <Label fx:id="lbl_s14_t2_is_ro1" layoutX="288.0" layoutY="772.0" text="S14_t2_is" />
-            <Label fx:id="lbl_s15_t1_is_ro1" layoutX="289.0" layoutY="789.0" text="S15_t1_is" />
-            <Label fx:id="lbl_s16_t1_is_ro1" layoutX="289.0" layoutY="806.0" text="S16_t1_is" />
-            <Label fx:id="lbl_s16_t2_is_ro1" layoutX="289.0" layoutY="822.0" text="S16_t2_is" />
-            <Label fx:id="lbl_s17_t1_is_ro1" layoutX="289.0" layoutY="839.0" text="S17_t1_is" />
-            <Label fx:id="lbl_s18_t1_is_ro1" layoutX="289.0" layoutY="856.0" text="S18_t1_is" />
-            <Label fx:id="lbl_s19_t1_is_ro1" layoutX="289.0" layoutY="873.0" text="S19_t1_is" />
-            <Label fx:id="lbl_s19_t2_is_ro1" layoutX="289.0" layoutY="890.0" text="S19_t2_is" />
-            <Label fx:id="lbl_s12_t1_ps_ro1" layoutX="359.0" layoutY="705.0" text="S12_t1_ps" />
-            <Label fx:id="lbl_s12_t2_ps_ro1" layoutX="359.0" layoutY="721.0" text="S12_t2_ps" />
-            <Label fx:id="lbl_s13_t1_ps_ro1" layoutX="359.0" layoutY="738.0" text="S13_t1_ps" />
-            <Label fx:id="lbl_s14_t1_ps_ro1" layoutX="359.0" layoutY="755.0" text="S14_t1_ps" />
-            <Label fx:id="lbl_s14_t2_ps_ro1" layoutX="359.0" layoutY="772.0" text="S14_t2_ps" />
-            <Label fx:id="lbl_s15_t1_ps_ro1" layoutX="359.0" layoutY="788.0" text="S15_t1_ps" />
-            <Label fx:id="lbl_s16_t1_ps_ro1" layoutX="359.0" layoutY="806.0" text="S16_t1_ps" />
-            <Label fx:id="lbl_s16_t2_ps_ro1" layoutX="359.0" layoutY="823.0" text="S16_t2_ps" />
-            <Label fx:id="lbl_s17_t1_ps_ro1" layoutX="359.0" layoutY="839.0" text="S17_t1_ps" />
-            <Label fx:id="lbl_s18_t1_ps_ro1" layoutX="359.0" layoutY="856.0" text="S18_t1_ps" />
-            <Label fx:id="lbl_s19_t1_ps_ro1" layoutX="359.0" layoutY="873.0" text="S19_t1_ps" />
-            <Label fx:id="lbl_s19_t2_ps_ro1" layoutX="359.0" layoutY="890.0" text="S19_t2_ps" />
-            <Label layoutX="462.0" layoutY="788.0" text="S18_t1" />
-            <Label fx:id="lbl_s18_t1_so_ro1" layoutX="511.0" layoutY="788.0" prefHeight="8.0" prefWidth="52.0" text="S18_t1_so" />
-            <Label layoutX="465.0" layoutY="687.0" text="S6_t1" />
-            <Label layoutX="465.0" layoutY="671.0" text="S5_t1" />
-            <Label layoutX="462.0" layoutY="704.0" text="S10_t1" />
-            <Label layoutX="462.0" layoutY="721.0" text="S10_t2" />
-            <Label layoutX="462.0" layoutY="738.0" text="S14_t1" />
-            <Label layoutX="462.0" layoutY="755.0" text="S14_t2" />
-            <Label layoutX="462.0" layoutY="772.0" text="S15_t1" />
-            <Label fx:id="lbl_s5_t1_so_ro1" layoutX="511.0" layoutY="671.0" text="S5_t1_so" />
-            <Label fx:id="lbl_s6_t1_so_ro1" layoutX="511.0" layoutY="687.0" text="S6_t1_so" />
-            <Label fx:id="lbl_s10_t1_so_ro1" layoutX="511.0" layoutY="704.0" text="S10_t1_so" />
-            <Label fx:id="lbl_s10_t2_so_ro1" layoutX="511.0" layoutY="721.0" text="S10_t2_so" />
-            <Label fx:id="lbl_s14_t1_so_ro1" layoutX="511.0" layoutY="737.0" text="S14_t1_so" />
-            <Label fx:id="lbl_s14_t2_so_ro1" layoutX="511.0" layoutY="754.0" text="S14_t2_so" />
-            <Label fx:id="lbl_s15_t1_so_ro1" layoutX="511.0" layoutY="772.0" text="S15_t1_so" />
-            <Label layoutX="466.0" layoutY="818.0" text="Sink">
+            <Label fx:id="lbl_s14_t1_is_ro1" layoutX="277.0" layoutY="755.0" text="S14_t1_is" />
+            <Label fx:id="lbl_s14_t2_is_ro1" layoutX="278.0" layoutY="772.0" text="S14_t2_is" />
+            <Label fx:id="lbl_s15_t1_is_ro1" layoutX="279.0" layoutY="789.0" text="S15_t1_is" />
+            <Label fx:id="lbl_s16_t1_is_ro1" layoutX="279.0" layoutY="806.0" text="S16_t1_is" />
+            <Label fx:id="lbl_s16_t2_is_ro1" layoutX="279.0" layoutY="822.0" text="S16_t2_is" />
+            <Label fx:id="lbl_s17_t1_is_ro1" layoutX="279.0" layoutY="839.0" text="S17_t1_is" />
+            <Label fx:id="lbl_s18_t1_is_ro1" layoutX="279.0" layoutY="856.0" text="S18_t1_is" />
+            <Label fx:id="lbl_s19_t1_is_ro1" layoutX="279.0" layoutY="873.0" text="S19_t1_is" />
+            <Label fx:id="lbl_s19_t2_is_ro1" layoutX="279.0" layoutY="890.0" text="S19_t2_is" />
+            <Label fx:id="lbl_s12_t1_ps_ro1" layoutX="349.0" layoutY="705.0" text="S12_t1_ps" />
+            <Label fx:id="lbl_s12_t2_ps_ro1" layoutX="349.0" layoutY="721.0" text="S12_t2_ps" />
+            <Label fx:id="lbl_s13_t1_ps_ro1" layoutX="349.0" layoutY="738.0" text="S13_t1_ps" />
+            <Label fx:id="lbl_s14_t1_ps_ro1" layoutX="349.0" layoutY="755.0" text="S14_t1_ps" />
+            <Label fx:id="lbl_s14_t2_ps_ro1" layoutX="349.0" layoutY="772.0" text="S14_t2_ps" />
+            <Label fx:id="lbl_s15_t1_ps_ro1" layoutX="349.0" layoutY="788.0" text="S15_t1_ps" />
+            <Label fx:id="lbl_s16_t1_ps_ro1" layoutX="349.0" layoutY="806.0" text="S16_t1_ps" />
+            <Label fx:id="lbl_s16_t2_ps_ro1" layoutX="349.0" layoutY="823.0" text="S16_t2_ps" />
+            <Label fx:id="lbl_s17_t1_ps_ro1" layoutX="349.0" layoutY="839.0" text="S17_t1_ps" />
+            <Label fx:id="lbl_s18_t1_ps_ro1" layoutX="349.0" layoutY="856.0" text="S18_t1_ps" />
+            <Label fx:id="lbl_s19_t1_ps_ro1" layoutX="349.0" layoutY="873.0" text="S19_t1_ps" />
+            <Label fx:id="lbl_s19_t2_ps_ro1" layoutX="349.0" layoutY="890.0" text="S19_t2_ps" />
+            <Label layoutX="440.0" layoutY="787.0" text="S17_t1_CO_SK" />
+            <Label fx:id="lbl_s17_t1_CO_SK_MIN_ro1" layoutX="535.0" layoutY="785.0" prefHeight="8.0" prefWidth="52.0" text="MIN_SK" />
+            <Label layoutX="443.0" layoutY="684.0" text="S6_t1_CO_SK" />
+            <Label layoutX="443.0" layoutY="668.0" text="S4_t1_CO_SK" />
+            <Label layoutX="443.0" layoutY="701.0" text="S9_t1_CO_SK" />
+            <Label layoutX="443.0" layoutY="719.0" text="S9_t2_CO_SK" />
+            <Label layoutX="440.0" layoutY="736.0" prefHeight="17.0" prefWidth="75.0" text="S11_t1_CO_SK" />
+            <Label layoutX="440.0" layoutY="752.0" text="S13_t1_CO_SK" />
+            <Label layoutX="440.0" layoutY="769.0" text="S15_t1_CO_SK" />
+            <Label fx:id="lbl_s4_t1_CO_SK_MIN_ro1" layoutX="535.0" layoutY="668.0" text="MIN_SK" />
+            <Label fx:id="lbl_s6_t1_CO_SK_MIN_ro1" layoutX="535.0" layoutY="684.0" text="MIN_SK" />
+            <Label fx:id="lbl_s9_t1_CO_SK_MIN_ro1" layoutX="535.0" layoutY="701.0" text="MIN_SK" />
+            <Label fx:id="lbl_s9_t2_CO_SK_MIN_ro1" layoutX="535.0" layoutY="718.0" text="MIN_SK" />
+            <Label fx:id="lbl_s11_t1_CO_SK_MIN_ro1" layoutX="535.0" layoutY="734.0" text="MIN_SK" />
+            <Label fx:id="lbl_s13_t1_CO_SK_MIN_ro1" layoutX="535.0" layoutY="751.0" text="MIN_SK" />
+            <Label fx:id="lbl_s15_t1_CO_SK_MIN_ro1" layoutX="535.0" layoutY="769.0" text="MIN_SK" />
+            <Label layoutX="982.0" layoutY="661.0" text="S2_t1_CO_SK" />
+            <Label layoutX="982.0" layoutY="679.0" text="S3_t1_CO_SK" />
+            <Label layoutX="982.0" layoutY="697.0" text="S4_t1_CO_SK" />
+            <Label fx:id="lbl_S2_t1_CO_SK_MIN_s1" layoutX="1071.0" layoutY="662.0" text="MIN_SK" />
+            <Label fx:id="lbl_S3_t1_CO_SK_MIN_s1" layoutX="1071.0" layoutY="679.0" text="MIN_SK" />
+            <Label fx:id="lbl_S4_t1_CO_SK_MIN_s1" layoutX="1071.0" layoutY="696.0" text="MIN_SK" />
+            <Label fx:id="lbl_S2_t1_CO_SK_AVG_s1" layoutX="1142.0" layoutY="662.0" text="AVG_SK" />
+            <Label layoutX="787.0" layoutY="662.0" text="S3_t4" />
+            <Label layoutX="787.0" layoutY="677.0" text="S3_t3" />
+            <Label layoutX="787.0" layoutY="692.0" text="S4_t1" />
+            <Label layoutX="787.0" layoutY="711.0" text="S5_t1" />
+            <Label layoutX="841.0" layoutY="641.0" text="IS">
                <font>
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="1093.0" layoutY="666.0" text="S3_t4" />
-            <Label layoutX="1091.0" layoutY="687.0" text="S3_t3" />
-            <Label layoutX="1091.0" layoutY="705.0" text="S4_t1" />
-            <Label layoutX="1091.0" layoutY="721.0" text="S5_t1" />
-            <Label fx:id="lbl_s3_t4_so_s1" layoutX="1157.0" layoutY="667.0" text="S3_t4_so" />
-            <Label fx:id="lbl_s3_t3_so_s1" layoutX="1157.0" layoutY="687.0" text="S3_t3_so" />
-            <Label fx:id="lbl_s4_t1_so_s1" layoutX="1157.0" layoutY="705.0" text="S4_t1_so" />
-            <Label fx:id="lbl_s5_t1_so_s1" layoutX="1157.0" layoutY="722.0" text="S5_t1_so" />
-            <Label layoutX="866.0" layoutY="665.0" text="S3_t4" />
-            <Label layoutX="866.0" layoutY="680.0" text="S3_t3" />
-            <Label layoutX="866.0" layoutY="695.0" text="S4_t1" />
-            <Label layoutX="866.0" layoutY="714.0" text="S5_t1" />
-            <Label layoutX="937.0" layoutY="642.0" text="IS">
+            <Label layoutX="898.0" layoutY="642.0" text="PS">
                <font>
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="1012.0" layoutY="642.0" text="PS">
+            <Label layoutX="787.0" layoutY="728.0" text="S6_t1" />
+            <Label layoutX="787.0" layoutY="745.0" text="S6_t2" />
+            <Label layoutX="787.0" layoutY="762.0" text="S2_t1" />
+            <Label layoutX="787.0" layoutY="775.0" text="S2_t2" />
+            <Label fx:id="lbl_s3_t4_is_s1" layoutX="832.0" layoutY="666.0" text="S3_t4_is" />
+            <Label fx:id="lbl_s3_t4_ps_s1" layoutX="890.0" layoutY="666.0" text="S3_t4_ps" />
+            <Label fx:id="lbl_s3_t3_is_s1" layoutX="832.0" layoutY="679.0" text="S3_t3_is" />
+            <Label fx:id="lbl_s3_t3_ps_s1" layoutX="890.0" layoutY="681.0" text="S3_t3_ps" />
+            <Label fx:id="lbl_s4_t1_is_s1" layoutX="832.0" layoutY="694.0" text="S4_t1_is" />
+            <Label fx:id="lbl_s4_t1_ps_s1" layoutX="890.0" layoutY="696.0" text="S4_t1_ps" />
+            <Label fx:id="lbl_s5_t1_is_s1" layoutX="832.0" layoutY="713.0" text="S5_t1_is" />
+            <Label fx:id="lbl_s5_t1_ps_s1" layoutX="891.0" layoutY="715.0" text="S5_t1_ps" />
+            <Label fx:id="lbl_s6_t1_is_s1" layoutX="832.0" layoutY="730.0" text="S6_t1_is" />
+            <Label fx:id="lbl_s6_t1_ps_s1" layoutX="891.0" layoutY="732.0" text="S6_t1_ps" />
+            <Label fx:id="lbl_s6_t2_is_s1" layoutX="832.0" layoutY="747.0" text="S6_t2_is" />
+            <Label fx:id="lbl_s6_t2_ps_s1" layoutX="891.0" layoutY="749.0" text="S6_t2_ps" />
+            <Label fx:id="lbl_s2_t1_is_s1" layoutX="832.0" layoutY="764.0" text="S2_t1_is" />
+            <Label fx:id="lbl_s2_t1_ps_s1" layoutX="891.0" layoutY="766.0" text="S2_t1_ps" />
+            <Label fx:id="lbl_s2_t2_is_s1" layoutX="832.0" layoutY="781.0" text="S2_t2_is" />
+            <Label fx:id="lbl_s2_t2_ps_s1" layoutX="891.0" layoutY="783.0" text="S2_t2_ps" />
+            <Label layoutX="465.0" layoutY="647.0" text="Sink">
                <font>
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="866.0" layoutY="731.0" text="S6_t1" />
-            <Label layoutX="866.0" layoutY="748.0" text="S6_t2" />
-            <Label layoutX="866.0" layoutY="765.0" text="S2_t1" />
-            <Label layoutX="866.0" layoutY="778.0" text="S2_t2" />
-            <Label fx:id="lbl_s3_t4_is_s1" layoutX="928.0" layoutY="667.0" text="S3_t4_is" />
-            <Label fx:id="lbl_s3_t4_ps_s1" layoutX="1006.0" layoutY="665.0" text="S3_t4_ps" />
-            <Label fx:id="lbl_s3_t3_is_s1" layoutX="928.0" layoutY="680.0" text="S3_t3_is" />
-            <Label fx:id="lbl_s3_t3_ps_s1" layoutX="1006.0" layoutY="680.0" text="S3_t3_ps" />
-            <Label fx:id="lbl_s4_t1_is_s1" layoutX="928.0" layoutY="695.0" text="S4_t1_is" />
-            <Label fx:id="lbl_s4_t1_ps_s1" layoutX="1006.0" layoutY="695.0" text="S4_t1_ps" />
-            <Label fx:id="lbl_s5_t1_is_s1" layoutX="928.0" layoutY="714.0" text="S5_t1_is" />
-            <Label fx:id="lbl_s5_t1_ps_s1" layoutX="1007.0" layoutY="714.0" text="S5_t1_ps" />
-            <Label fx:id="lbl_s6_t1_is_s1" layoutX="928.0" layoutY="731.0" text="S6_t1_is" />
-            <Label fx:id="lbl_s6_t1_ps_s1" layoutX="1007.0" layoutY="731.0" text="S6_t1_ps" />
-            <Label fx:id="lbl_s6_t2_is_s1" layoutX="928.0" layoutY="748.0" text="S6_t2_is" />
-            <Label fx:id="lbl_s6_t2_ps_s1" layoutX="1007.0" layoutY="748.0" text="S6_t2_ps" />
-            <Label fx:id="lbl_s2_t1_is_s1" layoutX="928.0" layoutY="765.0" text="S2_t1_is" />
-            <Label fx:id="lbl_s2_t1_ps_s1" layoutX="1007.0" layoutY="765.0" text="S2_t1_ps" />
-            <Label fx:id="lbl_s2_t2_is_s1" layoutX="928.0" layoutY="782.0" text="S2_t2_is" />
-            <Label fx:id="lbl_s2_t2_ps_s1" layoutX="1007.0" layoutY="782.0" text="S2_t2_ps" />
+            <Label layoutX="543.0" layoutY="646.0" text="MIN">
+               <font>
+                  <Font name="System Italic" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="676.0" layoutY="647.0" text="MAX">
+               <font>
+                  <Font name="System Italic" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_s17_t1_CO_SK_AVG_ro1" layoutX="601.0" layoutY="785.0" prefHeight="8.0" prefWidth="52.0" text="AVG_SK" />
+            <Label fx:id="lbl_s4_t1_CO_SK_AVG_ro1" layoutX="601.0" layoutY="668.0" text="AVG_SK" />
+            <Label fx:id="lbl_s6_t1_CO_SK_AVG_ro1" layoutX="601.0" layoutY="684.0" text="AVG_SK" />
+            <Label fx:id="lbl_s9_t1_CO_SK_AVG_ro1" layoutX="601.0" layoutY="701.0" text="AVG_SK" />
+            <Label fx:id="lbl_s9_t2_CO_SK_AVG_ro1" layoutX="601.0" layoutY="718.0" text="AVG_SK" />
+            <Label fx:id="lbl_s11_t1_CO_SK_AVG_ro1" layoutX="601.0" layoutY="734.0" text="AVG_SK" />
+            <Label fx:id="lbl_s13_t1_CO_SK_AVG_ro1" layoutX="601.0" layoutY="751.0" text="AVG_SK" />
+            <Label fx:id="lbl_s15_t1_CO_SK_AVG_ro1" layoutX="601.0" layoutY="769.0" text="AVG_SK" />
+            <Label fx:id="lbl_s17_t1_CO_SK_MAX_ro1" layoutX="669.0" layoutY="785.0" prefHeight="8.0" prefWidth="52.0" text="MAX_SK" />
+            <Label fx:id="lbl_s4_t1_CO_SK_MAX_ro1" layoutX="669.0" layoutY="668.0" text="MAX_SK" />
+            <Label fx:id="lbl_s6_t1_CO_SK_MAX_ro1" layoutX="669.0" layoutY="684.0" text="MAX_SK" />
+            <Label fx:id="lbl_s9_t1_CO_SK_MAX_ro1" layoutX="669.0" layoutY="701.0" text="MAX_SK" />
+            <Label fx:id="lbl_s9_t2_CO_SK_MAX_ro1" layoutX="669.0" layoutY="718.0" text="MAX_SK" />
+            <Label fx:id="lbl_s11_t1_CO_SK_MAX_ro1" layoutX="669.0" layoutY="734.0" text="MAX_SK" />
+            <Label fx:id="lbl_s13_t1_CO_SK_MAX_ro1" layoutX="669.0" layoutY="751.0" text="MAX_SK" />
+            <Label fx:id="lbl_s15_t1_CO_SK_MAX_ro1" layoutX="669.0" layoutY="769.0" text="MAX_SK" />
+            <Label layoutX="1151.0" layoutY="639.0" text="AVG">
+               <font>
+                  <Font name="System Italic" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="1079.0" layoutY="638.0" prefWidth="26.0" text="MIN">
+               <font>
+                  <Font name="System Italic" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="1223.0" layoutY="638.0" text="MAX">
+               <font>
+                  <Font name="System Italic" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbl_S3_t1_CO_SK_AVG_s1" layoutX="1142.0" layoutY="677.0" text="AVG_SK" />
+            <Label fx:id="lbl_S4_t1_CO_SK_AVG_s1" layoutX="1144.0" layoutY="696.0" text="AVG_SK" />
+            <Label fx:id="lbl_S2_t1_CO_SK_MAX_s1" layoutX="1217.0" layoutY="662.0" text="MAX_SK" />
+            <Label fx:id="lbl_S3_t1_CO_SK_MAX_s1" layoutX="1217.0" layoutY="679.0" text="MAX_SK" />
+            <Label fx:id="lbl_S4_t1_CO_SK_MAX_s1" layoutX="1217.0" layoutY="697.0" text="MAX_SK" />
+            <Label layoutX="973.0" layoutY="615.0" text="Intersection_Waiting">
+               <font>
+                  <Font name="System Bold Italic" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="437.0" layoutY="621.0" text="Roundabout_Waiting">
+               <font>
+                  <Font name="System Bold Italic" size="16.0" />
+               </font>
+            </Label>
          </children>
     </AnchorPane>
   </children>
