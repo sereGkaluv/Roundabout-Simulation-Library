@@ -1,6 +1,8 @@
 package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutSource;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.mocks.CarGenerateEventMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;
@@ -36,12 +38,13 @@ public class CarGenerateEventTest {
             null,
             false
         );
+        AbstractSource source = new RoundaboutSource(roundaboutSimulationModel, "", false, section);
 
         Assert.assertTrue(section.isEmpty());
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(roundaboutSimulationModel);
         CarGenerateEvent event = new CarGenerateEventMock(roundaboutSimulationModel, "", false, routeGeneratorMock);
-        event.eventRoutine(section);
+        event.eventRoutine(source);
 
         Assert.assertFalse(section.isEmpty());
     }

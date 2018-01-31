@@ -59,7 +59,7 @@ public class CarGenerateEventMock extends CarGenerateEvent {
 
         this.routeController = Mockito.mock(RouteController.class);
 
-        when(this.routeController.getRandomRoute()).then(invocationOnMock -> routeGeneratorMock.getRoute(this.type));
+        when(this.routeController.getRandomRoute((AbstractSource)notNull())).then(invocationOnMock -> routeGeneratorMock.getRoute(this.type));
 
         this.roundaboutEventFactory = Mockito.mock(RoundaboutEventFactory.class);
 
@@ -93,9 +93,9 @@ public class CarGenerateEventMock extends CarGenerateEvent {
     }
 
     @Override
-    public void eventRoutine(Street section) {
+    public void eventRoutine(AbstractSource source) {
         if (remainingCarsToGenerate > 0) {
-            super.eventRoutine(section);
+            super.eventRoutine(source);
         }
     }
 }

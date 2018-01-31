@@ -63,7 +63,7 @@ public class ConfigParser {
         return JAXB.unmarshal(configFile, ModelConfig.class);
     }
 
-    public Experiment assembleExperiment(ModelConfig modelConfig, boolean isProgressBarShown) throws ConfigParserException {
+    public Experiment assembleExperiment(ModelConfig modelConfig, boolean isProgressBarShown) {
         final Map<String, String> parameters = handleParameters(modelConfig);
         final RoundaboutSimulationModel model = new RoundaboutSimulationModel(
             null,

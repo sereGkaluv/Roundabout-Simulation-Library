@@ -35,5 +35,4 @@ public class ModelConfig implements IDTO {
     public void setComponents(Components components) {
         this.components = components;
     }
-
 }
