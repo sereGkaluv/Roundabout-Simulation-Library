@@ -8,7 +8,6 @@ import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationControll
 import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.entity.*;
@@ -56,7 +55,8 @@ public class ConfigParser {
     }
 
     public ModelConfig loadConfig() throws ConfigParserException {
-        File configFile = new File(filename);
+        String test1 = "D:\\Roundabout-Simulation-Library\\roundabout-core\\src\\main\\resources\\test\\roundabout.xml";
+        File configFile = new File(test1);//filename); //TODO
         if (!configFile.exists()) {
             configFile = new File(getClass().getResource(filename).getPath());
             if (!configFile.exists()) {
