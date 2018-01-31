@@ -7,6 +7,7 @@ import java.util.LinkedList;
 public class ResultDrawer extends JFrame {
     private final LinkedList<Statistics> statistics;
     private final Image background;
+    private Graphics2D grapics;
 
     public ResultDrawer(String title, String backgroundPicture, LinkedList<Statistics> statistics) {
         this.background = Toolkit.getDefaultToolkit().getImage(getClass().getResource(backgroundPicture));
@@ -27,24 +28,24 @@ public class ResultDrawer extends JFrame {
     }
 
     public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+        grapics = (Graphics2D) g;
 
-        g2.drawImage(background, 0, 0, this);
+        grapics.drawImage(background, 0, 0, this);
 
         int legendY = 40;
         for (Statistics stat : statistics) {
-            g2.setColor(Color.decode(stat.getColor()));
-            g2.drawString(stat.getTitle(), 20, legendY);
+            grapics.setColor(Color.decode(stat.getColor()));
+            grapics.drawString(stat.getTitle(), 20, legendY);
             legendY += 20;
             for (StatisticsValue val : stat.getValues()) {
-                g2.drawString(val.getValue(), val.getX(), val.getY());
+                grapics.drawString(val.getValue(), val.getX(), val.getY());
             }
         }
 
-        g2.finalize();
+        grapics.finalize();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         LinkedList<Statistics> statistics = new LinkedList<>();
         Statistics firstStatistic = new Statistics("first test", "#FF0000");
         statistics.add(firstStatistic);
@@ -55,8 +56,33 @@ public class ResultDrawer extends JFrame {
         secondStatistic.addValue(new StatisticsValue("200x300", 200, 300));
         secondStatistic.addValue(new StatisticsValue("400x400", 400, 400));
         secondStatistic.addValue(new StatisticsValue("600x200", 600, 200));
+        Statistics thirdStatistic = new Statistics("third test", "#00FF00");
+        statistics.add(thirdStatistic);
+        Example value = new Example("old one");
+        thirdStatistic.addValue(new StatisticsValue(value::getValue, 500, 300));
+        value.setValue("500x300");
+
 
         ResultDrawer window = new ResultDrawer("Kreisverkehr Dornbirn Nord", "/dornbirn-nord.png", statistics);
         window.setVisible(true);
+
+
+        window.repaint();
+    }
+
+    static private class Example {
+        private String value;
+
+        public Example(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
     }
 }
