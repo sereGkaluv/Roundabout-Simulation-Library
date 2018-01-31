@@ -2,6 +2,8 @@ package at.fhv.itm3.s2.roundabout.api.entity;
 
 import desmoj.core.simulator.Model;
 
+import java.util.List;
+
 /**
  * Created by Karin on 05.01.2018.
  */
@@ -46,4 +48,11 @@ public abstract class AbstractSink extends Street implements IEnteredCarCounter 
      * @return  the mean time the cars used for passing an intersection as model time units
      */
     public abstract double getMeanIntersectionPassTimeForEnteredCars();
+
+    /**
+     * Returns the cars as {@link ICar}s that have entered the sink.
+     *
+     * @return  the cars that entered the sink as {@link ICar}
+     */
+    public abstract List<ICar> getEnteredCars();
 }

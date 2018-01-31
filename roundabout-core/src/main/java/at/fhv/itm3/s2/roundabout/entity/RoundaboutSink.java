@@ -189,4 +189,9 @@ public class RoundaboutSink extends AbstractSink {
         }
         return meanIntersectionPassTime / this.enteredCars.size();
     }
+
+    @Override
+    public List<ICar> getEnteredCars() {
+        return this.enteredCars;
+    }
 }
