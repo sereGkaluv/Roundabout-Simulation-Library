@@ -4,7 +4,6 @@ import at.fhv.itm14.trafsim.model.entities.AbstractProducer;
 import desmoj.core.simulator.Model;
 
 public abstract class AbstractSource extends AbstractProducer {
-
     public AbstractSource(Model model, String string, boolean bln) {
         super(model, string, bln);
     }

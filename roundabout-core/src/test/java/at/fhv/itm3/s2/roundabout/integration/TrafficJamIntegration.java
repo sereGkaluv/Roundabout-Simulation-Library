@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
@@ -79,6 +79,6 @@ public class TrafficJamIntegration {
         Street streetAfterIntersection = (StreetSection)route.getSectionAt(2);
 
         Assert.assertEquals(0, sink.getNrOfEnteredCars());
-        Assert.assertTrue(streetAfterIntersection.getNrOfLostCars() > 0);
+        Assert.assertTrue(streetAfterIntersection.getNrOfLeftCars() > 0);
     }
 }

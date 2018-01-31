@@ -114,21 +114,21 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_generateStructure() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
-        IModelStructure roundaboutStructure = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
+        IModelStructure modelStructure = configParser.assembleModel(roundAboutConfig, exp);
 
-        assertNotNull("has connectors", roundaboutStructure.getStreetConnectors());
-        assertEquals("has 5 street connectors", 5, roundaboutStructure.getStreetConnectors().size());
+        assertNotNull("has connectors", modelStructure.getStreetConnectors());
+        assertEquals("has 5 street connectors", 5, modelStructure.getStreetConnectors().size());
 
-        assertNotNull("has streets", roundaboutStructure.getStreets());
-        assertEquals("has 22 streets", 22, roundaboutStructure.getStreets().size());
+        assertNotNull("has streets", modelStructure.getStreets());
+        assertEquals("has 22 streets", 22, modelStructure.getStreets().size());
     }
 
     @Test
     public void configParserTest_structureConnectorsHaveData() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
-        IModelStructure roundaboutStructure = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
+        IModelStructure modelStructure = configParser.assembleModel(roundAboutConfig, exp);
 
-        for (IStreetConnector connector : roundaboutStructure.getStreetConnectors()) {
+        for (IStreetConnector connector : modelStructure.getStreetConnectors()) {
             assertNotEquals("next street sections not empty", 0, connector.getNextConsumers().size());
             assertNotEquals("previous street sections not empty", 0, connector.getPreviousConsumers().size());
         }
@@ -137,20 +137,20 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_structureParameterSet() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
-        IModelStructure roundaboutStructure = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
+        IModelStructure modelStructure = configParser.assembleModel(roundAboutConfig, exp);
 
-        assertNotNull("parameters map not empty", roundaboutStructure.getParameters());
-        assertEquals("5 parameters read", 5, roundaboutStructure.getParameters().size());
-        assertTrue("MAIN_ARRIVAL_RATE_FOR_STREETS in map", roundaboutStructure.getParameters().keySet().contains("MAIN_ARRIVAL_RATE_FOR_STREETS"));
-        assertEquals("value of MAIN_ARRIVAL_RATE_FOR_STREETS correct", "1.0", roundaboutStructure.getParameters().get("MAIN_ARRIVAL_RATE_FOR_STREETS"));
+        assertNotNull("parameters map not empty", modelStructure.getParameters());
+        assertEquals("5 parameters read", 5, modelStructure.getParameters().size());
+        assertTrue("MAIN_ARRIVAL_RATE_FOR_STREETS in map", modelStructure.getParameters().keySet().contains("MAIN_ARRIVAL_RATE_FOR_STREETS"));
+        assertEquals("value of MAIN_ARRIVAL_RATE_FOR_STREETS correct", "1.0", modelStructure.getParameters().get("MAIN_ARRIVAL_RATE_FOR_STREETS"));
     }
 
     @Test
     public void configParserTest_structureCorrect() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
-        IModelStructure roundaboutStructure = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
+        IModelStructure modelStructure = configParser.assembleModel(roundAboutConfig, exp);
 
-        for (IStreetConnector connector : roundaboutStructure.getStreetConnectors()) {
+        for (IStreetConnector connector : modelStructure.getStreetConnectors()) {
             Integer exitSectionId = null;
             Integer nextTrackSectionId = null;
             for (IConsumer section : connector.getNextConsumers()) {

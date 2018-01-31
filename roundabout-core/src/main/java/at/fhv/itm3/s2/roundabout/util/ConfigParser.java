@@ -2,12 +2,17 @@ package at.fhv.itm3.s2.roundabout.util;
 
 import at.fhv.itm14.trafsim.model.ModelFactory;
 import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
+import at.fhv.itm14.trafsim.model.entities.AbstractProducer;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
+import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
+import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.entity.*;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.util.dto.*;
 import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.Model;
@@ -15,6 +20,7 @@ import desmoj.core.simulator.Model;
 import javax.xml.bind.JAXB;
 import java.io.File;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -49,23 +55,20 @@ public class ConfigParser {
         this.filename = filename;
     }
 
-    public static void main(String[] args) throws ConfigParserException {
-        ModelConfig c = new ConfigParser("C:\\Users\\sereGkaluv\\IdeaProjects\\Roundabout-Simulation-Library\\roundabout-core\\src\\main\\resources\\test\\roundabout.xml").loadConfig();
-        System.out.println(c);
-    }
-
     public ModelConfig loadConfig() throws ConfigParserException {
         File configFile = new File(filename);
         if (!configFile.exists()) {
-            throw new ConfigParserException("No such config file " + filename);
+            configFile = new File(getClass().getResource(filename).getPath());
+            if (!configFile.exists()) {
+                throw new ConfigParserException("No such config file " + filename);
+            }
         }
         return JAXB.unmarshal(configFile, ModelConfig.class);
     }
 
-    public IModelStructure generateRoundaboutStructure(ModelConfig modelConfig, Experiment experiment) throws ConfigParserException {
+    public Experiment assembleExperiment(ModelConfig modelConfig, boolean isProgressBarShown) throws ConfigParserException {
         final Map<String, String> parameters = handleParameters(modelConfig);
-
-        RoundaboutSimulationModel model = new RoundaboutSimulationModel(
+        final RoundaboutSimulationModel model = new RoundaboutSimulationModel(
             null,
             modelConfig.getName(),
             false,
@@ -77,12 +80,12 @@ public class ConfigParser {
             extractParameter(parameters::get, Double::valueOf, MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS),
             extractParameter(parameters::get, Double::valueOf, STANDARD_CAR_ACCELERATION_TIME)
         );
-        model.connectToExperiment(experiment);
+        final Experiment experiment = initExperiment("Stock management experiment", model, isProgressBarShown);
 
-        IModelStructure modelStructure = new ModelStructure(model, parameters);
+        final IModelStructure modelStructure = new ModelStructure(model, parameters);
 
         handleComponents(modelStructure, modelConfig.getComponents());
-        handleConnectors(null, modelConfig.getConnectors()); // connect the different components(roundabouts and intersections)
+        handleConnectors(null, modelConfig.getComponents().getConnectors());
 
         inizializeRoutes(modelConfig, modelStructure);
 
@@ -94,7 +97,19 @@ public class ConfigParser {
                 System.out.print(" " + modelStructure.getRoutes().get(i).get(j) );
             }
         }
-        return modelStructure;
+        return experiment;
+    }
+
+    public BiFunction<String, String, StreetSection> getStreetSectionResolver() {
+        return (componentId, elementId) -> SECTION_REGISTRY.get(componentId).get(elementId);
+    }
+
+    public BiFunction<String, String, RoundaboutSource> getSourceResolver() {
+        return (componentId, elementId) -> SOURCE_REGISTRY.get(componentId).get(elementId);
+    }
+
+    public BiFunction<String, String, RoundaboutSink> getSinkResolver() {
+        return (componentId, elementId) -> SINK_REGISTRY.get(componentId).get(elementId);
     }
 
     void inizializeRoutes(ModelConfig modelConfig, IModelStructure modelStructure){
@@ -178,9 +193,9 @@ public class ConfigParser {
         final Model model = roundaboutStructure.getModel();
 
         // Handle configuration.
-        handleSources(
+        handleSections(
             roundaboutComponent.getId(),
-            roundaboutComponent.getSources(),
+            roundaboutComponent.getSections(),
             model
         );
 
@@ -190,9 +205,9 @@ public class ConfigParser {
             model
         );
 
-        handleSections(
+        handleSources(
             roundaboutComponent.getId(),
-            roundaboutComponent.getSections(),
+            roundaboutComponent.getSources(),
             model
         );
 
@@ -225,9 +240,9 @@ public class ConfigParser {
         intersection.attachController(ic);
 
         // Handle the rest of configuration.
-        handleSources(
+        handleSections(
             intersectionComponent.getId(),
-            intersectionComponent.getSources(),
+            intersectionComponent.getSections(),
             model
         );
 
@@ -237,9 +252,9 @@ public class ConfigParser {
             model
         );
 
-        handleSections(
+        handleSources(
             intersectionComponent.getId(),
-            intersectionComponent.getSections(),
+            intersectionComponent.getSources(),
             model
         );
 
@@ -255,7 +270,7 @@ public class ConfigParser {
             for (Track track : trackList) {
                 // In direction.
                 final String fromSectionId = track.getFromSectionId();
-                final StreetSection fromSection = resolveSection(intersectionComponent.getId(), fromSectionId);
+                final Street fromSection = resolveStreet(intersectionComponent.getId(), fromSectionId, track.getFromSectionType());
                 if (!DIRECTION_MAP.containsKey(fromSectionId)) {
                     DIRECTION_MAP.put(fromSectionId, directionIndexer++);
 
@@ -276,7 +291,7 @@ public class ConfigParser {
 
                 // Out direction.
                 final String toSectionId = track.getToSectionId();
-                final StreetSection toSection = resolveSection(intersectionComponent.getId(), toSectionId);
+                final Street toSection = resolveStreet(intersectionComponent.getId(), toSectionId, track.getToSectionType());
                 if (!DIRECTION_MAP.containsKey(toSectionId)) {
                     DIRECTION_MAP.put(toSectionId, directionIndexer++);
                 }
@@ -295,9 +310,15 @@ public class ConfigParser {
                     ));
                 }
 
+                final AbstractProducer producer = fromSection.toProducer();
+                intersection.attachProducer(inDirection, producer);
+
+                final AbstractConsumer consumer = toSection.toConsumer();
+                intersection.attachConsumer(outDirection, consumer);
+
                 intersection.createConnectionQueue(
-                    fromSection.toProducer(),
-                    new AbstractConsumer[]{toSection.toConsumer()},
+                    producer,
+                    new AbstractConsumer[]{consumer},
                     new double[]{intersectionTraverseTime},
                     new double[]{1} // probability should be always 1 in our case?
                 );
@@ -362,11 +383,11 @@ public class ConfigParser {
                 final List<Track> trackList = SORTED_TRACK_EXTRACTOR.apply(co);
                 for (Track track : trackList) {
                     final String fromComponentId = track.getFromComponentId() != null ? track.getFromComponentId() : scopeComponentId;
-                    final StreetSection fromSection = resolveSection(fromComponentId, track.getFromSectionId());
+                    final Street fromSection = resolveStreet(fromComponentId, track.getFromSectionId(), track.getFromSectionType());
                     if (!previousSections.contains(fromSection)) previousSections.add(fromSection);
 
                     final String toComponentId = track.getToComponentId() != null ? track.getToComponentId() : scopeComponentId;
-                    final StreetSection toSection = resolveSection(toComponentId, track.getToSectionId());
+                    final Street toSection = resolveStreet(toComponentId, track.getToSectionId(), track.getToSectionType());
                     if (!nextSections.contains(toSection)) nextSections.add(toSection);
 
                     trackInitializers.add(connector -> connector.initializeTrack(
@@ -382,11 +403,35 @@ public class ConfigParser {
         ));
     }
 
+    private Street resolveStreet(String componentId, String streetId, ConsumerType consumerType) {
+        switch (consumerType) {
+            case ROUNDABOUT_EXIT: return resolveSink(componentId, streetId);
+            default: return resolveSection(componentId, streetId);
+        }
+    }
+
     private StreetSection resolveSection(String componentId, String sectionId) {
         return SECTION_REGISTRY.containsKey(componentId) ? SECTION_REGISTRY.get(componentId).get(sectionId) : null;
     }
 
+    private RoundaboutSink resolveSink(String componentId, String sinkId) {
+        return SINK_REGISTRY.containsKey(componentId) ? SINK_REGISTRY.get(componentId).get(sinkId) : null;
+    }
+
     private <K, V, R> R extractParameter(Function<K, V> supplier, Function<V, R> converter, K constant) {
         return converter.apply(supplier.apply(constant));
+    }
+
+    private static Experiment initExperiment(String description, Model model, boolean isShowProgressBar) {
+        Experiment experiment = new Experiment(description);
+        model.connectToExperiment(experiment); // ! - Should be done before anything else.
+
+        experiment.setShowProgressBar(isShowProgressBar);
+
+        // Just to be sure everything is initialised as expected.
+        model.reset();
+        model.init();
+
+        return experiment;
     }
 }

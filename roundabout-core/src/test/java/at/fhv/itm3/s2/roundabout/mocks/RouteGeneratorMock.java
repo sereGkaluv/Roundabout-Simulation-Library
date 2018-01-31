@@ -5,7 +5,7 @@ import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
 import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;

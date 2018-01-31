@@ -5,14 +5,17 @@ import desmoj.core.simulator.Model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.UUID;
 
-public abstract class Street extends AbstractProSumer implements IEnteredCarCounter {
+public abstract class Street extends AbstractProSumer implements ICarCountable, IObservable {
 
     private final String id;
     private long enteredCarsCounter;
-    private long lostCarsCounter;
+    private long leftCarsCounter;
     private TrafficLight trafficLight;
+    private Observable internalObservable;
 
     public Street(Model owner, String name, boolean showInTrace) {
         this(owner, name, showInTrace, false);
@@ -27,9 +30,16 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
 
         this.id = id;
         this.enteredCarsCounter = 0;
-        this.lostCarsCounter = 0;
+        this.leftCarsCounter = 0;
 
-        trafficLight = new TrafficLight(trafficLightActive);
+        this.trafficLight = new TrafficLight(trafficLightActive);
+        this.internalObservable = new Observable() {
+            @Override
+            public void notifyObservers(Object arg) {
+                super.setChanged();
+                super.notifyObservers(arg);
+            }
+        };
     }
 
     public String getId() {
@@ -37,7 +47,7 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     }
 
     /**
-     * Gets total car counter passed via {@code this} {@link Street}.
+     * Gets total car counter passed into {@code this} {@link Street}.
      *
      * @return total car counter.
      */
@@ -47,15 +57,27 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     }
 
     /**
+     * Gets total car counter passed from {@code this} {@link Street}.
+     *
+     * @return total car counter.
+     */
+    @Override
+    public long getNrOfLeftCars() { return leftCarsCounter; }
+
+    /**
      * Internal method for counter incrementation.
      */
-    protected void incrementTotalCarCounter() {
+    protected void incrementEnteredCarCounter() {
         this.enteredCarsCounter++;
     }
 
-    public long getNrOfLostCars() { return lostCarsCounter; }
-
-    protected void incrementLostCarsCounter() { this.lostCarsCounter++; }
+    /**
+     * Internal method for counter incrementation.
+     */
+    protected void incrementLeftCarsCounter() {
+        this.leftCarsCounter++;
+        this.notifyObservers(this.leftCarsCounter);
+    }
 
     /**
      * Gets physical length of the street section.
@@ -212,5 +234,30 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
      */
     public void setTrafficLightFreeToGo(boolean isFreeToGo) throws IllegalStateException {
         trafficLight.setFreeToGo(isFreeToGo);
+    }
+
+    @Override
+    public synchronized void addObserver(Observer o) {
+        this.internalObservable.addObserver(o);
+    }
+
+    @Override
+    public synchronized void deleteObserver(Observer o) {
+        this.internalObservable.addObserver(o);
+    }
+
+    @Override
+    public synchronized void deleteObservers() {
+        this.internalObservable.deleteObservers();
+    }
+
+    @Override
+    public void notifyObservers() {
+        this.internalObservable.notifyObservers();
+    }
+
+    @Override
+    public void notifyObservers(Object arg) {
+        this.internalObservable.notifyObservers(arg);
     }
 }

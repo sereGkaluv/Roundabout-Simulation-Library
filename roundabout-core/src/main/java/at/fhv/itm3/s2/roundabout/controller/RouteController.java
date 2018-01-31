@@ -1,13 +1,9 @@
 package at.fhv.itm3.s2.roundabout.controller;
 
-import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
-import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
-import at.fhv.itm3.s2.roundabout.entity.Route;
-import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import desmoj.core.simulator.Model;
 
 import java.util.*;

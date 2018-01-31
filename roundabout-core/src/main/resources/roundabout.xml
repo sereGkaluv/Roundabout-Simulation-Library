@@ -12,6 +12,7 @@
                 <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="3.0"/>
                 <parameter name="MAX_TIME_BETWEEN_CAR_ARRIVALS" value="10.0"/>
                 <parameter name="MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS" value="1.0"/>
+                <parameter name="STANDARD_CAR_ACCELERATION_TIME" value="2"/>
             </parameters>
             <sources>
                 <source id="so_s5_t1" sectionId="s5_t1"/>
@@ -173,7 +174,7 @@
         </component>
         <component id="is1" type="INTERSECTION" name="Basic intersection">
             <parameters>
-                <parameter name="INTERSECTION_SIZE" value="4"/>
+                <parameter name="INTERSECTION_SIZE" value="16"/>
                 <parameter name="INTERSECTION_SERVICE_DELAY" value="0.1"/>
                 <parameter name="INTERSECTION_TRAVERSE_TIME" value="1"/>
                 <parameter name="CONTROLLER_GREEN_DURATION" value="0.1"/>
@@ -237,9 +238,9 @@
                 </connector>
 
                 <connector id="co_s6_t1">
-                    <track order="1" fromSectionId="s3_t3" fromSectionType="STREET_SECTION" toSectionId="sk6_t1" toSectionType="STREET_SECTION"/>
-                    <track order="2" fromSectionId="s4_t1" fromSectionType="STREET_SECTION" toSectionId="sk6_t1" toSectionType="STREET_SECTION"/>
-                    <track order="3" fromSectionId="s5_t1" fromSectionType="STREET_SECTION" toSectionId="sk6_t1" toSectionType="STREET_SECTION"/>
+                    <track order="1" fromSectionId="s3_t3" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
+                    <track order="2" fromSectionId="s4_t1" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
+                    <track order="3" fromSectionId="s5_t1" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
                 </connector>
 
                 <connector id="co_s6_t2">
