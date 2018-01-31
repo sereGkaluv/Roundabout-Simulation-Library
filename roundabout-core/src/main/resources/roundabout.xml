@@ -12,6 +12,7 @@
                 <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="3.0"/>
                 <parameter name="MAX_TIME_BETWEEN_CAR_ARRIVALS" value="10.0"/>
                 <parameter name="MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS" value="1.0"/>
+                <parameter name="STANDARD_CAR_ACCELERATION_TIME" value="2"/>
             </parameters>
             <sources>
                 <source id="so_s5_t1" sectionId="s5_t1"/>

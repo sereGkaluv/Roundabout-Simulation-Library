@@ -1,4 +1,4 @@
-package at.fhv.itm3.s2.roundabout;
+package at.fhv.itm3.s2.roundabout.model;
 
 import at.fhv.itm14.trafsim.model.ModelFactory;
 import desmoj.core.dist.ContDist;

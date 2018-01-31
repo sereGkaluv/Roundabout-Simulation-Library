@@ -13,6 +13,7 @@ public class Route implements IRoute {
 
     private List<IConsumer> route;
     private AbstractSource source;
+    private float probability;
 
     public Route() {
         route = new ArrayList<>();
@@ -75,6 +76,14 @@ public class Route implements IRoute {
     @Override
     public boolean isEmpty() {
         return route.isEmpty();
+    }
+
+    public float getProbability() {
+        return probability;
+    }
+
+    public void setProbability(float probability) {
+        this.probability = probability;
     }
 
     public int getIndexOfSection(IConsumer streetSection) {

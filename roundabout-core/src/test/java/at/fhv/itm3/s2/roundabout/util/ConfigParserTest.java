@@ -114,7 +114,7 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_generateStructure() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
-        IRoundaboutStructure roundaboutStructure = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
+        IRoundaboutStructure roundaboutStructure = configParser.assembleModel(roundAboutConfig, exp);
 
         assertNotNull("has connectors", roundaboutStructure.getStreetConnectors());
         assertEquals("has 5 street connectors", 5, roundaboutStructure.getStreetConnectors().size());
@@ -126,7 +126,7 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_structureConnectorsHaveData() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
-        IRoundaboutStructure roundaboutStructure = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
+        IRoundaboutStructure roundaboutStructure = configParser.assembleModel(roundAboutConfig, exp);
 
         for (IStreetConnector connector : roundaboutStructure.getStreetConnectors()) {
             assertNotEquals("next street sections not empty", 0, connector.getNextConsumers().size());
@@ -137,7 +137,7 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_structureParameterSet() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
-        IRoundaboutStructure roundaboutStructure = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
+        IRoundaboutStructure roundaboutStructure = configParser.assembleModel(roundAboutConfig, exp);
 
         assertNotNull("parameters map not empty", roundaboutStructure.getParameters());
         assertEquals("5 parameters read", 5, roundaboutStructure.getParameters().size());
@@ -148,7 +148,7 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_structureCorrect() throws ConfigParserException {
         Experiment exp = new Experiment("Experiment");
-        IRoundaboutStructure roundaboutStructure = configParser.generateRoundaboutStructure(roundAboutConfig, exp);
+        IRoundaboutStructure roundaboutStructure = configParser.assembleModel(roundAboutConfig, exp);
 
         for (IStreetConnector connector : roundaboutStructure.getStreetConnectors()) {
             Integer exitSectionId = null;

@@ -1,6 +1,9 @@
-package at.fhv.itm3.s2.roundabout_ui;
+package at.fhv.itm3.s2.roundabout.ui.controller;
 
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutSource;
+import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -250,14 +253,15 @@ public class UIController {
     private void initialize() {
     }
 
-    public void initSectionObservers(BiFunction<String, String, Street> sResolver) {
+    public void initSourceObservers(BiFunction<String, String, RoundaboutSource> sResolver) {
+        //TODO
+    }
 
-        // Component id, section id. for roundabout
-        addIsPsStreetLabels(sResolver.apply("ro1", "s1_t1"), lbl_s1_t1_is_ro1, lbl_s1_t1_ps_ro1);
+    public void initStreetSectionObservers(BiFunction<String, String, StreetSection> sResolver) {
         addIsPsStreetLabels(sResolver.apply("ro1", "s2_t2"), lbl_s2_t2_is_ro1, lbl_s2_t2_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s2_t1"), lbl_s2_t1_is_ro1, lbl_s2_t1_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s3_t1"), lbl_s3_t1_is_ro1, lbl_s3_t1_ps_ro1);
-        addIsPsStreetLabels(sResolver.apply("ro1", "t2_ps"), lbl_s3_t2_is_ro1, lbl_s3_t2_ps_ro1);
+        addIsPsStreetLabels(sResolver.apply("ro1", "s3_t2"), lbl_s3_t2_is_ro1, lbl_s3_t2_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s4_t1"), lbl_s4_t1_is_ro1, lbl_s4_t1_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s5_t1"), lbl_s5_t1_is_ro1, lbl_s5_t1_ps_ro1);
         addIsPsStreetLabels(sResolver.apply("ro1", "s6_t1"), lbl_s6_t1_is_ro1, lbl_s6_t1_ps_ro1);
@@ -283,15 +287,18 @@ public class UIController {
         addIsPsStreetLabels(sResolver.apply("ro1", "s19_t2"), lbl_s19_t2_is_ro1, lbl_s19_t2_ps_ro1);
 
         // Component id, section id. for intersection
-        addIsPsStreetLabels(sResolver.apply("s1", "s3_t4"), lbl_s3_t4_is_s1, lbl_s3_t4_ps_s1);
-        addIsPsStreetLabels(sResolver.apply("s1", "s3_t3"), lbl_s3_t3_is_s1, lbl_s3_t3_ps_s1);
-        addIsPsStreetLabels(sResolver.apply("s1", "s4_t1"), lbl_s4_t1_is_s1, lbl_s4_t1_ps_s1);
-        addIsPsStreetLabels(sResolver.apply("s1", "s5_t1"), lbl_s5_t1_is_s1, lbl_s5_t1_ps_s1);
-        addIsPsStreetLabels(sResolver.apply("s1", "s6_t1"), lbl_s6_t1_is_s1, lbl_s6_t1_ps_s1);
-        addIsPsStreetLabels(sResolver.apply("s1", "s6_t2"), lbl_s6_t2_is_s1, lbl_s6_t2_ps_s1);
-        addIsPsStreetLabels(sResolver.apply("s1", "s2_t1"), lbl_s2_t1_is_s1, lbl_s2_t1_ps_s1);
-        addIsPsStreetLabels(sResolver.apply("s1", "s2_t2"), lbl_s2_t2_is_s1, lbl_s2_t2_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("is1", "s3_t4"), lbl_s3_t4_is_s1, lbl_s3_t4_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("is1", "s3_t3"), lbl_s3_t3_is_s1, lbl_s3_t3_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("is1", "s4_t1"), lbl_s4_t1_is_s1, lbl_s4_t1_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("is1", "s5_t1"), lbl_s5_t1_is_s1, lbl_s5_t1_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("is1", "s6_t1"), lbl_s6_t1_is_s1, lbl_s6_t1_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("is1", "s6_t2"), lbl_s6_t2_is_s1, lbl_s6_t2_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("is1", "s2_t1"), lbl_s2_t1_is_s1, lbl_s2_t1_ps_s1);
+        addIsPsStreetLabels(sResolver.apply("is1", "s2_t2"), lbl_s2_t2_is_s1, lbl_s2_t2_ps_s1);
+    }
 
+    public void initSinkObservers(BiFunction<String, String, RoundaboutSink> sResolver) {
+        //TODO
     }
 
     private void addIsPsStreetLabels(final Street street, Label isLabel, Label psLabel) {
