@@ -20,7 +20,6 @@ import java.util.*;
 public class MainViewController extends JfxController {
 
     @FXML private ScrollPane scrollPane;
-    @FXML private VBox vBoxContainer;
     @FXML private ImageView imageView;
 
     @FXML private HBox hBoxContainer;

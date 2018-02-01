@@ -8,7 +8,7 @@
 
 <ScrollPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController" hbarPolicy="NEVER" fx:id="scrollPane">
-    <VBox fx:id="vBoxContainer">
+    <VBox>
         <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true">
             <Image url="@../img/back.png" />
         </ImageView>
