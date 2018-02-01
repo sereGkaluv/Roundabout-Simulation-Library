@@ -53,7 +53,6 @@ public class ConfigParser {
 
     private String filename;
     private Map<String, ArrayList<String>> routes = new HashMap<>(); // Source, Sink and Route
-    //private Map<Street, Map<Street, IRoute>> routes; // Source, Sink and Route
 
     public ConfigParser(String filename) {
         this.filename = filename;
@@ -132,7 +131,8 @@ public class ConfigParser {
                     ArrayList<String> currentPathTmp = new ArrayList<>(currentPath);
                     String nextStreetID = trackIt.getToSectionId();
                     if(checkStreetIsSink(nextStreetID)){ // sink is reached = end of path
-                        addRoute(currentPath.get(0), currentStreetID, currentPathTmp);
+                        currentPathTmp.add(nextStreetID);
+                        addRoute(currentPath.get(0), nextStreetID, currentPathTmp);
                         return;
                     }
                     if(!currentPath.contains(nextStreetID)){ // do not loop
