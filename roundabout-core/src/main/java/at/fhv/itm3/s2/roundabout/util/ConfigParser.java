@@ -9,6 +9,10 @@ import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
+import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
+import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
+import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.entity.*;
 import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
@@ -55,8 +59,7 @@ public class ConfigParser {
     }
 
     public ModelConfig loadConfig() throws ConfigParserException {
-        String test1 = "D:\\Roundabout-Simulation-Library\\roundabout-core\\src\\main\\resources\\test\\roundabout.xml";
-        File configFile = new File(test1);//filename); //TODO
+        File configFile = new File(filename);
         if (!configFile.exists()) {
             configFile = new File(getClass().getResource(filename).getPath());
             if (!configFile.exists()) {
@@ -433,5 +436,407 @@ public class ConfigParser {
         model.init();
 
         return experiment;
+    }
+
+    public Map<String, List<Route>> initRoutes() {
+        final Map<String, List<Route>> resultMap = new HashMap<>();
+
+        // Route so_s6_t1  --> Sk_s6_t1
+        final List<Route> so_s6_t1_routes = new LinkedList<>();
+        final Route route1 = new Route();
+        route1.addSource(SOURCE_REGISTRY.get("ro1").get("so_s6_t1"));
+        route1.addSection(SECTION_REGISTRY.get("ro1").get("s6_t1"));
+        route1.addSection(SINK_REGISTRY.get("ro1").get("sk_s6_t1"));
+        so_s6_t1_routes.add(route1);
+        resultMap.put("so_s6_t1", so_s6_t1_routes);
+
+        // all routes from so_s5_t1
+        // Route so_s5_t1 --> ro1 sk_s13_t1
+        final List<Route> so_s5_t1_routes = new LinkedList<>();
+        final Route route2 = new Route();
+        route2.addSource(SOURCE_REGISTRY.get("ro1").get("so_s5_t1"));
+        route2.addSection(SECTION_REGISTRY.get("ro1").get("s5_t1"));
+        route2.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route2.addSection(SECTION_REGISTRY.get("ro1").get("s12_t1"));
+        route2.addSection(SECTION_REGISTRY.get("ro1").get("s13_t1"));
+        route2.addSection(SINK_REGISTRY.get("ro1").get("sk_s13_t1"));
+        so_s5_t1_routes.add(route2);
+        // Route so_s5_t1 --> ro1 sk_s17_t1
+        final Route route3 = new Route();
+        route3.addSource(SOURCE_REGISTRY.get("ro1").get("so_s5_t1"));
+        route3.addSection(SECTION_REGISTRY.get("ro1").get("s5_t1"));
+        route3.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route3.addSection(SECTION_REGISTRY.get("ro1").get("s12_t1"));
+        route3.addSection(SECTION_REGISTRY.get("ro1").get("s16_t1"));
+        route3.addSection(SECTION_REGISTRY.get("ro1").get("s17_t1"));
+        route3.addSection(SINK_REGISTRY.get("ro1").get("sk_s17_t1"));
+        so_s5_t1_routes.add(route3);
+        // Route so_s5_t1 --> is1 sk_s2_t1
+        final Route route4 = new Route();
+        route4.addSource(SOURCE_REGISTRY.get("ro1").get("so_s5_t1"));
+        route4.addSection(SECTION_REGISTRY.get("ro1").get("s5_t1"));
+        route4.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route4.addSection(SECTION_REGISTRY.get("ro1").get("s12_t1"));
+        route4.addSection(SECTION_REGISTRY.get("ro1").get("s16_t1"));
+        route4.addSection(SECTION_REGISTRY.get("ro1").get("s19_t1"));
+        route4.addSection(SECTION_REGISTRY.get("ro1").get("s1_t1"));
+        route4.addSection(SECTION_REGISTRY.get("is1").get("s2_t1"));
+        route4.addSection(SINK_REGISTRY.get("is1").get("sk_s2_t1"));
+        so_s5_t1_routes.add(route4);
+        resultMap.put("so_s5_t1", so_s5_t1_routes);
+
+        //all routes from  ro1 so_s10_t1
+        // route so_s10_t1 --> sk_s17_t1
+        final List<Route> so_s10_t1_routes = new LinkedList<>();
+        final Route route5 = new Route();
+        route5.addSource(SOURCE_REGISTRY.get("ro1").get("so_s10_t1"));
+        route5.addSection(SECTION_REGISTRY.get("ro1").get("s10_t1"));
+        route5.addSection(SECTION_REGISTRY.get("ro1").get("s16_t1"));
+        route5.addSection(SECTION_REGISTRY.get("ro1").get("s17_t1"));
+        route5.addSection(SINK_REGISTRY.get("ro1").get("sk_s17_t1"));
+        so_s10_t1_routes.add(route5);
+        // route s0_s10_t1 --> is1 sk_s2_t1
+        final Route route6 = new Route();
+        route6.addSource(SOURCE_REGISTRY.get("ro1").get("so_s10_t1"));
+        route6.addSection(SECTION_REGISTRY.get("ro1").get("s10_t1"));
+        route6.addSection(SECTION_REGISTRY.get("ro1").get("s16_t1"));
+        route6.addSection(SECTION_REGISTRY.get("ro1").get("s19_t1"));
+        route6.addSection(SECTION_REGISTRY.get("ro1").get("s1_t1"));
+        route6.addSection(SECTION_REGISTRY.get("is1").get("s2_t1"));
+        route6.addSection(SINK_REGISTRY.get("is1").get("sk_s2_t1"));
+        so_s10_t1_routes.add(route6);
+        resultMap.put("so_s10_t1", so_s10_t1_routes);
+
+        //all routes from  ro1 so_s10_t2
+        // route so_s10_t2 --> sk_s4_t1
+        final List<Route> so_s10_t2_routes = new LinkedList<>();
+        final Route route7 = new Route();
+        route7.addSource(SOURCE_REGISTRY.get("ro1").get("so_s10_t2"));
+        route7.addSection(SECTION_REGISTRY.get("ro1").get("s10_t2"));
+        route7.addSection(SECTION_REGISTRY.get("ro1").get("s16_t2"));
+        route7.addSection(SECTION_REGISTRY.get("ro1").get("s19_t2"));
+        route7.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route7.addSection(SECTION_REGISTRY.get("ro1").get("s4_t1"));
+        route7.addSection(SINK_REGISTRY.get("ro1").get("sk_s4_t1"));
+        so_s10_t2_routes.add(route7);
+        resultMap.put("so_s10_t2", so_s10_t2_routes);
+
+        //all routes from  ro1 so_s11_t1
+        // route so_s11_t1 --> sk_s11_t1
+        final List<Route> so_s11_t1_routes = new LinkedList<>();
+        final Route route8 = new Route();
+        route8.addSource(SOURCE_REGISTRY.get("ro1").get("so_s11_t1"));
+        route8.addSection(SECTION_REGISTRY.get("ro1").get("s11_t1"));
+        route8.addSection(SINK_REGISTRY.get("ro1").get("sk_s11_t1"));
+        so_s11_t1_routes.add(route8);
+        resultMap.put("so_s11_t1", so_s11_t1_routes);
+
+        //all routes from  ro1 so_s14_t1
+        // route so_s14_t1 --> is1 sk_s2_t1
+        final List<Route> so_s14_t1_routes = new LinkedList<>();
+        final Route route9 = new Route();
+        route9.addSource(SOURCE_REGISTRY.get("ro1").get("so_s14_t1"));
+        route9.addSection(SECTION_REGISTRY.get("ro1").get("s14_t1"));
+        route9.addSection(SECTION_REGISTRY.get("ro1").get("s19_t1"));
+        route9.addSection(SECTION_REGISTRY.get("ro1").get("s1_t1"));
+        route9.addSection(SECTION_REGISTRY.get("is1").get("s2_t1"));
+        route9.addSection(SINK_REGISTRY.get("is1").get("sk_s2_t1"));
+        so_s14_t1_routes.add(route9);
+        resultMap.put("so_s14_t1", so_s14_t1_routes);
+
+        //all routes from  ro1 so_s15_t1
+        // route so_s15_t1 -->  sk_s15_t1
+        final List<Route> so_s15_t1_routes = new LinkedList<>();
+        final Route route10 = new Route();
+        route10.addSource(SOURCE_REGISTRY.get("ro1").get("so_s15_t1"));
+        route10.addSection(SECTION_REGISTRY.get("ro1").get("s15_t1"));
+        route10.addSection(SINK_REGISTRY.get("ro1").get("sk_s15_t1"));
+        so_s15_t1_routes.add(route9);
+        resultMap.put("so_s15_t1", so_s15_t1_routes);
+
+        //all routes from  ro1 so_s14_t2
+        // route so_s14_t2 --> ro1 sk_s4_t1
+        final List<Route> so_s14_t2_routes = new LinkedList<>();
+        final Route route11 = new Route();
+        route11.addSource(SOURCE_REGISTRY.get("ro1").get("so_s14_t2"));
+        route11.addSection(SECTION_REGISTRY.get("ro1").get("s14_t2"));
+        route11.addSection(SECTION_REGISTRY.get("ro1").get("s19_t2"));
+        route11.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route11.addSection(SECTION_REGISTRY.get("ro1").get("s4_t1"));
+        route11.addSection(SINK_REGISTRY.get("ro1").get("sk_s4_t1"));
+        so_s14_t2_routes.add(route11);
+        // route so_s14_t2 --> ro1 sk_s9_t1
+        final Route route12 = new Route();
+        route12.addSource(SOURCE_REGISTRY.get("ro1").get("so_s14_t2"));
+        route12.addSection(SECTION_REGISTRY.get("ro1").get("s14_t2"));
+        route12.addSection(SECTION_REGISTRY.get("ro1").get("s19_t2"));
+        route12.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route12.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route12.addSection(SECTION_REGISTRY.get("ro1").get("s8_t1"));
+        route12.addSection(SECTION_REGISTRY.get("ro1").get("s9_t1"));
+        route12.addSection(SINK_REGISTRY.get("ro1").get("sk_s9_t1"));
+        so_s14_t2_routes.add(route12);
+        // route so_s14_t2 --> ro1 sk_s9_t2
+        final Route route13 = new Route();
+        route13.addSource(SOURCE_REGISTRY.get("ro1").get("so_s14_t2"));
+        route13.addSection(SECTION_REGISTRY.get("ro1").get("s14_t2"));
+        route13.addSection(SECTION_REGISTRY.get("ro1").get("s19_t2"));
+        route13.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route13.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route13.addSection(SECTION_REGISTRY.get("ro1").get("s8_t1"));
+        route13.addSection(SECTION_REGISTRY.get("ro1").get("s9_t2"));
+        route13.addSection(SINK_REGISTRY.get("ro1").get("sk_s9_t2"));
+        so_s14_t2_routes.add(route13);
+        resultMap.put("so_s14_t2", so_s14_t2_routes);
+
+        //all routes from  ro1 so_s18_t1
+        // route so_s18_t1 --> is1 sk_s2_t1
+        final List<Route> so_s18_t1_routes = new LinkedList<>();
+        final Route route14 = new Route();
+        route14.addSource(SOURCE_REGISTRY.get("ro1").get("so_s18_t1"));
+        route14.addSection(SECTION_REGISTRY.get("ro1").get("s18_t1"));
+        route14.addSection(SECTION_REGISTRY.get("ro1").get("s19_t1"));
+        route14.addSection(SECTION_REGISTRY.get("ro1").get("s1_t1"));
+        route14.addSection(SECTION_REGISTRY.get("is1").get("s2_t1"));
+        route14.addSection(SINK_REGISTRY.get("is1").get("sk_s2_t1"));
+        so_s18_t1_routes.add(route14);
+        // route so_s18_t1 --> ro1 sk_s4_t1
+        final Route route15 = new Route();
+        route15.addSource(SOURCE_REGISTRY.get("ro1").get("so_s18_t1"));
+        route15.addSection(SECTION_REGISTRY.get("ro1").get("s18_t1"));
+        route15.addSection(SECTION_REGISTRY.get("ro1").get("s19_t2"));
+        route15.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route15.addSection(SECTION_REGISTRY.get("ro1").get("s4_t1"));
+        route15.addSection(SINK_REGISTRY.get("ro1").get("sk_s4_t1"));
+        so_s18_t1_routes.add(route15);
+        // route so_s18_t1 --> ro1 sk_s9_t1
+        final Route route16 = new Route();
+        route16.addSource(SOURCE_REGISTRY.get("ro1").get("so_s18_t1"));
+        route16.addSection(SECTION_REGISTRY.get("ro1").get("s18_t1"));
+        route16.addSection(SECTION_REGISTRY.get("ro1").get("s19_t2"));
+        route16.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route16.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route16.addSection(SECTION_REGISTRY.get("ro1").get("s8_t1"));
+        route16.addSection(SECTION_REGISTRY.get("ro1").get("s9_t1"));
+        route16.addSection(SINK_REGISTRY.get("ro1").get("sk_s9_t1"));
+        so_s18_t1_routes.add(route16);
+        // route so_s18_t1 --> ro1 sk_s9_t2
+        final Route route17 = new Route();
+        route17.addSource(SOURCE_REGISTRY.get("ro1").get("so_s18_t1"));
+        route17.addSection(SECTION_REGISTRY.get("ro1").get("s18_t1"));
+        route17.addSection(SECTION_REGISTRY.get("ro1").get("s19_t2"));
+        route17.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route17.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route17.addSection(SECTION_REGISTRY.get("ro1").get("s8_t1"));
+        route17.addSection(SECTION_REGISTRY.get("ro1").get("s9_t2"));
+        route17.addSection(SINK_REGISTRY.get("ro1").get("sk_s9_t2"));
+        so_s18_t1_routes.add(route17);
+        // route so_s18_t1 --> ro1 sk_s11_t1
+        final Route route18 = new Route();
+        route18.addSource(SOURCE_REGISTRY.get("ro1").get("so_s18_t1"));
+        route18.addSection(SECTION_REGISTRY.get("ro1").get("s18_t1"));
+        route18.addSection(SECTION_REGISTRY.get("ro1").get("s19_t2"));
+        route18.addSection(SECTION_REGISTRY.get("ro1").get("s3_t2"));
+        route18.addSection(SECTION_REGISTRY.get("ro1").get("s7_t2"));
+        route18.addSection(SECTION_REGISTRY.get("ro1").get("s12_t1"));
+        route18.addSection(SECTION_REGISTRY.get("ro1").get("s13_t1"));
+        route18.addSection(SINK_REGISTRY.get("ro1").get("sk_s13_t1"));
+        so_s18_t1_routes.add(route18);
+        resultMap.put("so_s18_t1", so_s18_t1_routes);
+
+        //all routes from  is1 so_s4_t1
+        // route is1 so_s4_t1 --> ro1 sk_s4_t1
+        final List<Route> is1_so_s4_t1_routes = new LinkedList<>();
+        final Route route19 = new Route();
+        route19.addSource(SOURCE_REGISTRY.get("is1").get("so_s4_t1"));
+        route19.addSection(SECTION_REGISTRY.get("is1").get("s4_t1"));
+        route19.addSection(SECTION_REGISTRY.get("is1").get("s6_t1"));
+        route19.addSection(SECTION_REGISTRY.get("ro1").get("s2_t1"));
+        route19.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route19.addSection(SECTION_REGISTRY.get("ro1").get("s4_t1"));
+        route19.addSection(SINK_REGISTRY.get("is1").get("sk_s4_t1"));
+        is1_so_s4_t1_routes.add(route19);
+        // route is1_so_s4_t1 --> ro1 sk_s9_t1
+        final Route route20 = new Route();
+        route20.addSource(SOURCE_REGISTRY.get("is1").get("so_s4_t1"));
+        route20.addSection(SECTION_REGISTRY.get("is1").get("s4_t1"));
+        route20.addSection(SECTION_REGISTRY.get("is1").get("s6_t1"));
+        route20.addSection(SECTION_REGISTRY.get("ro1").get("s2_t1"));
+        route20.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route20.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route20.addSection(SECTION_REGISTRY.get("ro1").get("s8_t1"));
+        route20.addSection(SECTION_REGISTRY.get("ro1").get("s9_t1"));
+        route20.addSection(SINK_REGISTRY.get("ro1").get("sk_s9_t1"));
+        is1_so_s4_t1_routes.add(route20);
+        // route is1_so_s4_t1 --> ro1 sk_s9_t2
+        final Route route21 = new Route();
+        route21.addSource(SOURCE_REGISTRY.get("is1").get("so_s4_t1"));
+        route21.addSection(SECTION_REGISTRY.get("is1").get("s4_t1"));
+        route21.addSection(SECTION_REGISTRY.get("is1").get("s6_t1"));
+        route21.addSection(SECTION_REGISTRY.get("ro1").get("s2_t1"));
+        route21.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route21.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route21.addSection(SECTION_REGISTRY.get("ro1").get("s8_t1"));
+        route21.addSection(SECTION_REGISTRY.get("ro1").get("s9_t2"));
+        route21.addSection(SINK_REGISTRY.get("ro1").get("sk_s9_t2"));
+        is1_so_s4_t1_routes.add(route21);
+        // route is1_so_s4_t1 --> ro1 sk_s13_t1
+        final Route route22 = new Route();
+        route22.addSource(SOURCE_REGISTRY.get("is1").get("so_s4_t1"));
+        route22.addSection(SECTION_REGISTRY.get("is1").get("s4_t1"));
+        route22.addSection(SECTION_REGISTRY.get("is1").get("s6_t2"));
+        route22.addSection(SECTION_REGISTRY.get("ro1").get("s2_t2"));
+        route22.addSection(SECTION_REGISTRY.get("ro1").get("s3_t2"));
+        route22.addSection(SECTION_REGISTRY.get("ro1").get("s7_t2"));
+        route22.addSection(SECTION_REGISTRY.get("ro1").get("s12_t1"));
+        route22.addSection(SECTION_REGISTRY.get("ro1").get("s13_t1"));
+        route22.addSection(SINK_REGISTRY.get("ro1").get("sk_s13_t1"));
+        is1_so_s4_t1_routes.add(route22);
+        // route is1_so_s4_t1 --> ro1 sk_s17_t1
+        final Route route23 = new Route();
+        route23.addSource(SOURCE_REGISTRY.get("is1").get("so_s4_t1"));
+        route23.addSection(SECTION_REGISTRY.get("is1").get("s4_t1"));
+        route23.addSection(SECTION_REGISTRY.get("is1").get("s6_t2"));
+        route23.addSection(SECTION_REGISTRY.get("ro1").get("s2_t2"));
+        route23.addSection(SECTION_REGISTRY.get("ro1").get("s3_t2"));
+        route23.addSection(SECTION_REGISTRY.get("ro1").get("s7_t2"));
+        route23.addSection(SECTION_REGISTRY.get("ro1").get("s12_t1"));
+        route23.addSection(SECTION_REGISTRY.get("ro1").get("s16_t1"));
+        route23.addSection(SECTION_REGISTRY.get("ro1").get("s17_t1"));
+        route23.addSection(SINK_REGISTRY.get("ro1").get("sk_s17_t1"));
+        is1_so_s4_t1_routes.add(route23);
+        resultMap.put("is1_so_s4_t1", is1_so_s4_t1_routes);
+
+        //all routes from  is1 so_s5_t1
+        // route is1 so_s5_t1 --> ro1 sk_s4_t1
+        final List<Route> is1_so_s5_t1_routes = new LinkedList<>();
+        final Route route24 = new Route();
+        route24.addSource(SOURCE_REGISTRY.get("is1").get("so_s5_t1"));
+        route24.addSection(SECTION_REGISTRY.get("is1").get("s5_t1"));
+        route24.addSection(SECTION_REGISTRY.get("is1").get("s6_t1"));
+        route24.addSection(SECTION_REGISTRY.get("ro1").get("s2_t1"));
+        route24.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route24.addSection(SECTION_REGISTRY.get("ro1").get("s4_t1"));
+        route24.addSection(SINK_REGISTRY.get("ro1").get("sk_s4_t1"));
+        is1_so_s5_t1_routes.add(route24);
+        // route is1_so_s5_t1 --> ro1 sk_s9_t1
+        final Route route25 = new Route();
+        route25.addSource(SOURCE_REGISTRY.get("is1").get("so_s5_t1"));
+        route25.addSection(SECTION_REGISTRY.get("is1").get("s5_t1"));
+        route25.addSection(SECTION_REGISTRY.get("is1").get("s6_t1"));
+        route25.addSection(SECTION_REGISTRY.get("ro1").get("s2_t1"));
+        route25.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route25.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route25.addSection(SECTION_REGISTRY.get("ro1").get("s8_t1"));
+        route25.addSection(SECTION_REGISTRY.get("ro1").get("s9_t1"));
+        route25.addSection(SINK_REGISTRY.get("ro1").get("sk_s9_t1"));
+        is1_so_s5_t1_routes.add(route25);
+        // route is1_so_s5_t1 --> ro1 sk_s9_t2
+        final Route route26 = new Route();
+        route26.addSource(SOURCE_REGISTRY.get("is1").get("so_s5_t1"));
+        route26.addSection(SECTION_REGISTRY.get("is1").get("s5_t1"));
+        route26.addSection(SECTION_REGISTRY.get("is1").get("s6_t1"));
+        route26.addSection(SECTION_REGISTRY.get("ro1").get("s2_t1"));
+        route26.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route26.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route26.addSection(SECTION_REGISTRY.get("ro1").get("s8_t1"));
+        route26.addSection(SECTION_REGISTRY.get("ro1").get("s9_t2"));
+        route26.addSection(SINK_REGISTRY.get("ro1").get("sk_s9_t2"));
+        is1_so_s5_t1_routes.add(route26);
+        // route is1_so_s5_t1 --> ro1 sk_s13_t1
+        final Route route27 = new Route();
+        route27.addSource(SOURCE_REGISTRY.get("is1").get("so_s5_t1"));
+        route27.addSection(SECTION_REGISTRY.get("is1").get("s5_t1"));
+        route27.addSection(SECTION_REGISTRY.get("is1").get("s6_t2"));
+        route27.addSection(SECTION_REGISTRY.get("ro1").get("s2_t2"));
+        route27.addSection(SECTION_REGISTRY.get("ro1").get("s3_t2"));
+        route27.addSection(SECTION_REGISTRY.get("ro1").get("s7_t2"));
+        route27.addSection(SECTION_REGISTRY.get("ro1").get("s12_t1"));
+        route27.addSection(SECTION_REGISTRY.get("ro1").get("s13_t1"));
+        route27.addSection(SINK_REGISTRY.get("ro1").get("sk_s13_t1"));
+        is1_so_s5_t1_routes.add(route27);
+        // route is1_so_s5_t1 --> ro1 sk_s17_t1
+        final Route route28 = new Route();
+        route28.addSource(SOURCE_REGISTRY.get("is1").get("so_s5_t1"));
+        route28.addSection(SECTION_REGISTRY.get("is1").get("s5_t1"));
+        route28.addSection(SECTION_REGISTRY.get("is1").get("s6_t2"));
+        route28.addSection(SECTION_REGISTRY.get("ro1").get("s2_t2"));
+        route28.addSection(SECTION_REGISTRY.get("ro1").get("s3_t2"));
+        route28.addSection(SECTION_REGISTRY.get("ro1").get("s7_t2"));
+        route28.addSection(SECTION_REGISTRY.get("ro1").get("s12_t1"));
+        route28.addSection(SECTION_REGISTRY.get("ro1").get("s16_t1"));
+        route28.addSection(SECTION_REGISTRY.get("ro1").get("s17_t1"));
+        route28.addSection(SINK_REGISTRY.get("ro1").get("sk_s17_t1"));
+        is1_so_s5_t1_routes.add(route28);
+        resultMap.put("is1_so_s5_t1", is1_so_s5_t1_routes);
+
+        //all routes from  is1 so_s3_t4
+        // route is1_so_s3_t4 --> ro1 sk_s13_t1
+        final List<Route> is1_so_s3_t4_routes = new LinkedList<>();
+        final Route route29 = new Route();
+        route29.addSource(SOURCE_REGISTRY.get("is1").get("so_s3_t4"));
+        route29.addSection(SECTION_REGISTRY.get("is1").get("s3_t4"));
+        route29.addSection(SECTION_REGISTRY.get("is1").get("s6_t2"));
+        route29.addSection(SECTION_REGISTRY.get("ro1").get("s2_t2"));
+        route29.addSection(SECTION_REGISTRY.get("ro1").get("s3_t2"));
+        route29.addSection(SECTION_REGISTRY.get("ro1").get("s7_t2"));
+        route29.addSection(SECTION_REGISTRY.get("ro1").get("s12_t1"));
+        route29.addSection(SECTION_REGISTRY.get("ro1").get("s13_t1"));
+        route29.addSection(SINK_REGISTRY.get("ro1").get("sk_s13_t1"));
+        is1_so_s3_t4_routes.add(route29);
+        // route is1_so_s3_t4 --> ro1 sk_s17_t1
+        final Route route30 = new Route();
+        route30.addSource(SOURCE_REGISTRY.get("is1").get("so_s3_t4"));
+        route30.addSection(SECTION_REGISTRY.get("is1").get("s3_t4"));
+        route30.addSection(SECTION_REGISTRY.get("is1").get("s6_t2"));
+        route30.addSection(SECTION_REGISTRY.get("ro1").get("s2_t2"));
+        route30.addSection(SECTION_REGISTRY.get("ro1").get("s3_t2"));
+        route30.addSection(SECTION_REGISTRY.get("ro1").get("s7_t2"));
+        route30.addSection(SECTION_REGISTRY.get("ro1").get("s12_t1"));
+        route30.addSection(SECTION_REGISTRY.get("ro1").get("s16_t1"));
+        route30.addSection(SECTION_REGISTRY.get("ro1").get("s17_t1"));
+        route30.addSection(SINK_REGISTRY.get("ro1").get("sk_s17_t1"));
+        is1_so_s3_t4_routes.add(route30);
+        resultMap.put("is1_so_s3_t4", is1_so_s3_t4_routes);
+
+        //all routes from  is1 so_s3_t3
+        // route is1 so_s3_t3 --> ro1 sk_s4_t1
+        final List<Route> is1_so_s3_t3_routes = new LinkedList<>();
+        final Route route31 = new Route();
+        route31.addSource(SOURCE_REGISTRY.get("is1").get("so_s3_t3"));
+        route31.addSection(SECTION_REGISTRY.get("is1").get("s3_t3"));
+        route31.addSection(SECTION_REGISTRY.get("is1").get("s6_t1"));
+        route31.addSection(SECTION_REGISTRY.get("ro1").get("s2_t1"));
+        route31.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route31.addSection(SECTION_REGISTRY.get("ro1").get("s4_t1"));
+        route31.addSection(SINK_REGISTRY.get("ro1").get("sk_s4_t1"));
+        is1_so_s3_t3_routes.add(route31);
+        // route is1_so_s3_t3 --> ro1 sk_s9_t1
+        final Route route32 = new Route();
+        route32.addSource(SOURCE_REGISTRY.get("is1").get("so_s3_t3"));
+        route32.addSection(SECTION_REGISTRY.get("is1").get("s3_t3"));
+        route32.addSection(SECTION_REGISTRY.get("is1").get("s6_t1"));
+        route32.addSection(SECTION_REGISTRY.get("ro1").get("s2_t1"));
+        route32.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route32.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route32.addSection(SECTION_REGISTRY.get("ro1").get("s8_t1"));
+        route32.addSection(SECTION_REGISTRY.get("ro1").get("s9_t1"));
+        route32.addSection(SINK_REGISTRY.get("ro1").get("sk_s9_t1"));
+        is1_so_s3_t3_routes.add(route32);
+        // route is1_so_s3_t3 --> ro1 sk_s9_t2
+        final Route route33 = new Route();
+        route33.addSource(SOURCE_REGISTRY.get("is1").get("so_s3_t3"));
+        route33.addSection(SECTION_REGISTRY.get("is1").get("s3_t3"));
+        route33.addSection(SECTION_REGISTRY.get("is1").get("s6_t1"));
+        route33.addSection(SECTION_REGISTRY.get("ro1").get("s2_t1"));
+        route33.addSection(SECTION_REGISTRY.get("ro1").get("s3_t1"));
+        route33.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+        route33.addSection(SECTION_REGISTRY.get("ro1").get("s8_t1"));
+        route33.addSection(SECTION_REGISTRY.get("ro1").get("s9_t2"));
+        route33.addSection(SINK_REGISTRY.get("ro1").get("sk_s9_t2"));
+        is1_so_s3_t3_routes.add(route33);
+        resultMap.put("Is1_so_s3_t3", is1_so_s3_t3_routes);
+
+        return resultMap;
     }
 }
