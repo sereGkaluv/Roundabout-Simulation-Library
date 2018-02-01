@@ -3,11 +3,11 @@ package at.fhv.itm3.s2.roundabout.util.dto;
 import at.fhv.itm3.s2.roundabout.api.util.dto.IDTO;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import java.util.List;
 
 public class Section implements IDTO {
     private String id;
     private Double length;
+    private Integer order;
 
     @XmlAttribute
     public String getId() {
@@ -25,5 +25,14 @@ public class Section implements IDTO {
 
     public void setLength(Double length) {
         this.length = length;
+    }
+
+    @XmlAttribute
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 }

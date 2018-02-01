@@ -13,9 +13,16 @@ public class Route implements IRoute {
 
     private List<IConsumer> route;
     private AbstractSource source;
+    private Double flowRatio;
 
     public Route() {
         route = new ArrayList<>();
+    }
+
+    public Route(List<IConsumer> route, AbstractSource source, Double flowRatio) {
+        this.route = route;
+        this.source = source;
+        this.flowRatio = flowRatio;
     }
 
     @Override
@@ -53,7 +60,7 @@ public class Route implements IRoute {
     }
 
     @Override
-    public void addSource(AbstractSource source) {
+    public void setSource(AbstractSource source) {
         this.source = source;
     }
 
@@ -70,6 +77,11 @@ public class Route implements IRoute {
         } else {
             throw new IllegalArgumentException("Destination section is not an instance of Sink.");
         }
+    }
+
+    @Override
+    public Double getRatio() {
+        return flowRatio;
     }
 
     @Override
