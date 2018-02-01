@@ -13,10 +13,16 @@ public class Route implements IRoute {
 
     private List<IConsumer> route;
     private AbstractSource source;
-    private float probability;
+    private Double flowRatio;
 
     public Route() {
         route = new ArrayList<>();
+    }
+
+    public Route(List<IConsumer> route, AbstractSource source, Double flowRatio) {
+        this.route = route;
+        this.source = source;
+        this.flowRatio = flowRatio;
     }
 
     @Override
@@ -54,7 +60,7 @@ public class Route implements IRoute {
     }
 
     @Override
-    public void addSource(AbstractSource source) {
+    public void setSource(AbstractSource source) {
         this.source = source;
     }
 
@@ -74,16 +80,13 @@ public class Route implements IRoute {
     }
 
     @Override
+    public Double getRatio() {
+        return flowRatio;
+    }
+
+    @Override
     public boolean isEmpty() {
         return route.isEmpty();
-    }
-
-    public float getProbability() {
-        return probability;
-    }
-
-    public void setProbability(float probability) {
-        this.probability = probability;
     }
 
     public int getIndexOfSection(IConsumer streetSection) {

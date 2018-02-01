@@ -9,8 +9,10 @@ import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
+import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.*;
 import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.entity.Route;
 import at.fhv.itm3.s2.roundabout.util.dto.*;
 import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.Model;
@@ -43,6 +45,7 @@ public class ConfigParser {
     private static final Map<String, Map<String, RoundaboutSource>> SOURCE_REGISTRY = new HashMap<>();
     private static final Map<String, Map<String, RoundaboutSink>> SINK_REGISTRY = new HashMap<>();
     private static final Map<String, Map<String, StreetSection>> SECTION_REGISTRY = new HashMap<>();
+    private static final Map<String, Set<Route>> ROUTE_REGISTRY = new HashMap<>();
 
     private static final Comparator<Track> TRACK_COMPARATOR = Comparator.comparingLong(Track::getOrder);
     private static final Function<Connector, List<Track>> SORTED_TRACK_EXTRACTOR = co -> co.getTrack().stream().sorted(TRACK_COMPARATOR).collect(Collectors.toList());
@@ -64,7 +67,7 @@ public class ConfigParser {
         return JAXB.unmarshal(configFile, ModelConfig.class);
     }
 
-    public Experiment assembleExperiment(ModelConfig modelConfig, boolean isProgressBarShown) {
+    public IRoundaboutStructure generateRoundaboutStructure(ModelConfig modelConfig, Experiment experiment) {
         final Map<String, String> parameters = handleParameters(modelConfig);
         final RoundaboutSimulationModel model = new RoundaboutSimulationModel(
             null,
@@ -78,13 +81,17 @@ public class ConfigParser {
             extractParameter(parameters::get, Double::valueOf, MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS),
             extractParameter(parameters::get, Double::valueOf, STANDARD_CAR_ACCELERATION_TIME)
         );
-        final Experiment experiment = initExperiment("Stock management experiment", model, isProgressBarShown);
+        model.connectToExperiment(experiment);
 
         final IRoundaboutStructure roundaboutStructure = new RoundaboutStructure(model, parameters);
 
         handleComponents(roundaboutStructure, modelConfig.getComponents());
-        handleConnectors(null, modelConfig.getComponents().getConnectors());
-        return experiment;
+        if (modelConfig.getComponents().getConnectors() != null) {
+            handleConnectors(null, modelConfig.getComponents().getConnectors());
+        }
+
+        RouteController.getInstance(model).setRoutes(roundaboutStructure.getRoutes());
+        return roundaboutStructure;
     }
 
     public BiFunction<String, String, StreetSection> getStreetSectionResolver() {
@@ -133,28 +140,39 @@ public class ConfigParser {
         final Model model = roundaboutStructure.getModel();
 
         // Handle configuration.
-        handleSections(
+        Map<String, StreetSection> sections = handleSections(
             roundaboutComponent.getId(),
             roundaboutComponent.getSections(),
             model
         );
 
-        handleSinks(
+        Map<String, RoundaboutSink> sinks = handleSinks(
             roundaboutComponent.getId(),
             roundaboutComponent.getSinks(),
             model
         );
 
-        handleSources(
+        Map<String, RoundaboutSource> sources = handleSources(
             roundaboutComponent.getId(),
             roundaboutComponent.getSources(),
             model
         );
 
-        handleConnectors(
+        Map<String, StreetConnector> connectors = handleConnectors(
             roundaboutComponent.getId(),
             roundaboutComponent.getConnectors()
         );
+
+        Set<Route> routes = handleRoutes(
+            roundaboutComponent.getId(),
+            roundaboutComponent.getRoutes()
+        );
+
+        roundaboutStructure.addStreets(sections.values());
+        roundaboutStructure.addStreetConnectors(connectors.values());
+        roundaboutStructure.addSources(sources.values());
+        roundaboutStructure.addSinks(sinks.values());
+        roundaboutStructure.addRoutes(routes);
     }
 
     private void handleIntersection(IRoundaboutStructure roundaboutStructure, Component intersectionComponent) {
@@ -359,19 +377,49 @@ public class ConfigParser {
     }
 
     private <K, V, R> R extractParameter(Function<K, V> supplier, Function<V, R> converter, K constant) {
-        return converter.apply(supplier.apply(constant));
+        try {
+            return converter.apply(supplier.apply(constant));
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
-    private static Experiment initExperiment(String description, Model model, boolean isShowProgressBar) {
-        Experiment experiment = new Experiment(description);
-        model.connectToExperiment(experiment); // ! - Should be done before anything else.
+    private Set<Route> handleRoutes(String scopeComponentId, Routes routes) {
+        if (!ROUTE_REGISTRY.containsKey(scopeComponentId)) {
+            ROUTE_REGISTRY.put(scopeComponentId, new HashSet<>());
+        }
 
-        experiment.setShowProgressBar(isShowProgressBar);
+        for (at.fhv.itm3.s2.roundabout.util.dto.Route routeDTO : routes.getRoute()) {
+            LinkedList<IConsumer> route = new LinkedList<>();
 
-        // Just to be sure everything is initialised as expected.
-        model.reset();
-        model.init();
+            List<Section> sortedSections = routeDTO.getSection().stream().sorted(Comparator.comparing(Section::getOrder)).collect(Collectors.toList());
 
-        return experiment;
+            for (Section section : sortedSections) {
+                StreetSection streetSection = SECTION_REGISTRY.get(scopeComponentId).get(section.getId());
+                if (streetSection == null) {
+                    throw new IllegalArgumentException("unknown section id in route: " + section.getId());
+                }
+                route.add(streetSection);
+            }
+
+            if (routeDTO.getSink() != null) {
+                route.add(SINK_REGISTRY.get(scopeComponentId).get(routeDTO.getSink().getId()));
+            } else {
+                throw new IllegalArgumentException("every route needs to have a sink");
+            }
+
+            Route routeEntity;
+            RoundaboutSource source;
+            if (routeDTO.getSource() != null) {
+                source = SOURCE_REGISTRY.get(scopeComponentId).get(routeDTO.getSource().getId());
+                routeEntity = new Route(route, source, routeDTO.getRatio());
+            } else {
+                throw new IllegalArgumentException("every route needs to have a source");
+            }
+
+            ROUTE_REGISTRY.get(scopeComponentId).add(routeEntity);
+        }
+
+        return ROUTE_REGISTRY.get(scopeComponentId);
     }
 }

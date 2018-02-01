@@ -8,11 +8,12 @@ import java.util.*;
 public class RoundaboutStructure implements IRoundaboutStructure {
     private final Model model;
     private Set<IStreetConnector> connectors;
-    private Set<IRoute> routes;
+    private Map<AbstractSource, List<IRoute>> routes;
     private Set<Street> streets;
     private Map<String, String> parameters;
     private Set<AbstractSource> sources;
     private Set<AbstractSink> sinks;
+    private Set<Street> roundaboutInlets;
 
     public RoundaboutStructure(Model model) {
         this(model, new HashMap<>());
@@ -21,21 +22,31 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     public RoundaboutStructure(Model model, Map<String, String> parameters) {
         this.model = model;
         this.connectors = new HashSet<>();
-        this.routes = new HashSet<>();
+        this.routes = new HashMap<>();
         this.streets = new HashSet<>();
         this.parameters = parameters;
         this.sources = new HashSet<>();
         this.sinks = new HashSet<>();
+        this.roundaboutInlets = new HashSet<>();
     }
 
     @Override
-    public void addStreetConnector(IStreetConnector streetConnector) {
-        connectors.add(streetConnector);
+    public void addStreetConnectors(Collection<? extends IStreetConnector> streetConnectors) {
+        this.connectors.addAll(streetConnectors);
     }
 
     @Override
-    public void addRoute(IRoute route) {
-        routes.add(route);
+    public void addRoutes(Collection<? extends IRoute> routes) {
+        routes.stream().forEach(route -> {
+            List<IRoute> routeList = this.routes.get(route.getSource());
+            if (routeList == null) {
+                routeList = new ArrayList<>();
+            }
+
+            routeList.add(route);
+
+            this.routes.put(route.getSource(), routeList);
+        });
     }
 
     @Override
@@ -46,18 +57,24 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     }
 
     @Override
-    public void addStreet(Street street) {
-        streets.add(street);
+    public void addStreets(Collection<? extends Street> streets) {
+        this.streets.addAll(streets);
+
+        for (Street street : streets) {
+            if (street.getNextStreetConnector() != null && street.getNextStreetConnector().getTypeOfConsumer(street) == ConsumerType.ROUNDABOUT_INLET) {
+                roundaboutInlets.add(street);
+            }
+        }
     }
 
     @Override
-    public void addSink(AbstractSink sink) {
-        sinks.add(sink);
+    public void addSinks(Collection<? extends AbstractSink> sinks) {
+        this.sinks.addAll(sinks);
     }
 
     @Override
-    public void addSource(AbstractSource source) {
-        sources.add(source);
+    public void addSources(Collection<? extends AbstractSource> sources) {
+        this.sources.addAll(sources);
     }
 
     @Override
@@ -66,8 +83,8 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     }
 
     @Override
-    public Set<IRoute> getRoutes() {
-        return Collections.unmodifiableSet(routes);
+    public Map<AbstractSource, List<IRoute>> getRoutes() {
+        return Collections.unmodifiableMap(routes);
     }
 
     @Override
@@ -83,6 +100,11 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     @Override
     public Set<AbstractSource> getSources() {
         return sources;
+    }
+
+    @Override
+    public Set<Street> getRoundaboutInlets() {
+        return roundaboutInlets;
     }
 
     @Override

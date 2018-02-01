@@ -71,7 +71,7 @@ public interface IRoute {
      */
     AbstractSource getSource();
 
-    void addSource(AbstractSource source);
+    void setSource(AbstractSource source);
 
     /**
      * Returns the {@link Street} sink of the route
@@ -79,4 +79,11 @@ public interface IRoute {
      * @return  the sink of the route as {@link Street}
      */
     AbstractSink getSink();
+
+    /**
+     * Returns the ratio of the traffic flow compared to the main traffic flow.
+     *
+     * @return ratio of traffic flow
+     */
+    Double getRatio();
 }

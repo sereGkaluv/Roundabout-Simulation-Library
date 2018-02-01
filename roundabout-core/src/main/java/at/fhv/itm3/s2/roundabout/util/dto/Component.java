@@ -13,6 +13,7 @@ public class Component implements IDTO {
     private Sinks sinks;
     private Sections sections;
     private Connectors connectors;
+    private Routes routes;
 
     @XmlAttribute
     public String getId() {
@@ -79,5 +80,13 @@ public class Component implements IDTO {
 
     public void setConnectors(Connectors connectors) {
         this.connectors = connectors;
+    }
+
+    public Routes getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(Routes routes) {
+        this.routes = routes;
     }
 }

@@ -10,19 +10,19 @@ import java.util.concurrent.TimeUnit;
 
 public class RoundaboutSimulationModel extends Model {
 
-    public static final double DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
-    public static final double DEFAULT_MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
-    public static final double DEFAULT_MIN_DISTANCE_FACTOR_BETWEEN_CARS = 0.0;
-    public static final double DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS = 1.0;
-    public static final double DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS = 1;
-    public static final double DEFAULT_STANDARD_CAR_ACCELERATION_TIME = 2;
+    public static final Double DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
+    public static final Double DEFAULT_MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
+    public static final Double DEFAULT_MIN_DISTANCE_FACTOR_BETWEEN_CARS = 0.0;
+    public static final Double DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS = 1.0;
+    public static final Double DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS = 1.0;
+    public static final Double DEFAULT_STANDARD_CAR_ACCELERATION_TIME = 2.0;
 
-    public final double minDistanceFactorBetweenCars;
-    public final double maxDistanceFactorBetweenCars;
-    public final double minTimeBetweenCarArrivals;
-    public final double maxTimeBetweenCarArrivals;
-    public final double mainArrivalRateForOneWayStreets;
-    public final double standardCarAccelerationTime;
+    public final Double minDistanceFactorBetweenCars;
+    public final Double maxDistanceFactorBetweenCars;
+    public final Double minTimeBetweenCarArrivals;
+    public final Double maxTimeBetweenCarArrivals;
+    public final Double mainArrivalRateForOneWayStreets;
+    public final Double standardCarAccelerationTime;
 
     private static final long MODEL_SEED = new Random().nextLong();
     private static final TimeUnit MODEL_TIME_UNIT = TimeUnit.SECONDS;
@@ -95,16 +95,16 @@ public class RoundaboutSimulationModel extends Model {
      * @param showInTrace flag to indicate if this model shall produce output to the trace file
      */
     public RoundaboutSimulationModel(
-        Model model,
-        String name,
-        boolean showInReport,
-        boolean showInTrace,
-        double minTimeBetweenCarArrivals,
-        double maxTimeBetweenCarArrivals,
-        double minDistanceFactorBetweenCars,
-        double maxDistanceFactorBetweenCars,
-        double mainArrivalRateForOneWayStreets,
-        double standardCarAccelerationTime
+            Model model,
+            String name,
+            boolean showInReport,
+            boolean showInTrace,
+            Double minTimeBetweenCarArrivals,
+            Double maxTimeBetweenCarArrivals,
+            Double minDistanceFactorBetweenCars,
+            Double maxDistanceFactorBetweenCars,
+            Double mainArrivalRateForOneWayStreets,
+            Double standardCarAccelerationTime
     ) {
         super(model, name, showInReport, showInTrace);
 
@@ -147,7 +147,9 @@ public class RoundaboutSimulationModel extends Model {
         );
         timeBetweenCarArrivals.setSeed(MODEL_SEED);
 
-        timeBetweenCarArrivalsOnOneWayStreets = ModelFactory.getInstance(this).createContDistConstant(mainArrivalRateForOneWayStreets);
+        if (mainArrivalRateForOneWayStreets != null) {
+            timeBetweenCarArrivalsOnOneWayStreets = ModelFactory.getInstance(this).createContDistConstant(mainArrivalRateForOneWayStreets);
+        }
     }
 
     /**
@@ -195,7 +197,7 @@ public class RoundaboutSimulationModel extends Model {
      *
      * @return standardCarAccelerationTime
      */
-    public double getStandardCarAccelerationTime(){
+    public Double getStandardCarAccelerationTime() {
         return standardCarAccelerationTime;
     }
 }

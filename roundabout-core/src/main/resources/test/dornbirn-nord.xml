@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<model name="S2 Roundabout Simulation">
+    <!-- global parameters needed for simulation -->
+    <parameters>
+        <parameter name="SIMULATION_SEED" value="1.0"/>
+    </parameters>
+    <components>
+        <component id="roundabout_dornbirn_nord" type="ROUNDABOUT" name="Kreisverkehr Dornbirn Nord">
+            <parameters>
+                <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="2.0"/>
+                <parameter name="MAX_DISTANCE_FACTOR_BETWEEN_CARS" value="4.0"/>
+                <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="2.0"/>
+                <parameter name="MAX_TIME_BETWEEN_CAR_ARRIVALS" value="10.0"/>
+            </parameters>
+            <sources>
+                <source id="source_lauterach" sectionId="section_lauterach_inlet"/>
+                <source id="source_a14" sectionId="section_a14_inlet"/>
+                <source id="source_schwefel" sectionId="section_schwefel_inlet"/>
+                <source id="source_achrain" sectionId="section_achrain_inlet"/>
+            </sources>
+            <sinks>
+                <sink id="sink_lauterach"/>
+                <sink id="sink_a14"/>
+                <sink id="sink_schwefel"/>
+                <sink id="sink_achrain"/>
+            </sinks>
+            <sections>
+                <!-- Lauterach -->
+                <section id="section_lauterach_inlet" length="250"/>
+                <section id="section_lauterach_exit" length="20"/>
+                <section id="section_lauterach" length="8.6"/>
+                <section id="section_lauterach_a14" length="11.9"/>
+                <!-- A14 -->
+                <section id="section_a14_inlet" length="250"/>
+                <section id="section_a14_exit" length="20"/>
+                <section id="section_a14" length="7.1"/>
+                <section id="section_a14_schwefel" length="11.9"/>
+                <!-- Schwefel -->
+                <section id="section_schwefel_inlet" length="250"/>
+                <section id="section_schwefel_exit" length="20"/>
+                <section id="section_schwefel" length="7.1"/>
+                <section id="section_schwefel_achrain" length="11"/>
+                <!-- Achrain -->
+                <section id="section_achrain_inlet" length="250"/>
+                <section id="section_achrain_exit" length="20"/>
+                <section id="section_achrain" length="7.1"/>
+                <section id="section_achrain_lauterach" length="13.5"/>
+            </sections>
+            <connectors>
+                <!-- Lauterach -->
+                <connector id="connector_lauterach_outlet">
+                    <track order="1" fromSectionId="section_achrain_lauterach" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_lauterach" toSectionType="ROUNDABOUT_SECTION"/>
+                    <track order="2" fromSectionId="section_achrain_lauterach" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_lauterach_out" toSectionType="ROUNDABOUT_SECTION"/>
+                </connector>
+                <connector id="connector_lauterach_sink">
+                    <track fromSectionId="section_lauterach_out" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="sink_lauterach" toSectionType="ROUNDABOUT_EXIT"/>
+                </connector>
+                <connector id="connector_lauterach_inlet">
+                    <track order="1" fromSectionId="section_lauterach" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_lauterach_a14" toSectionType="ROUNDABOUT_SECTION"/>
+                    <track order="2" fromSectionId="section_lauterach_inlet" fromSectionType="ROUNDABOUT_INLET"
+                           toSectionId="section_lauterach_a14" toSectionType="ROUNDABOUT_SECTION"/>
+                </connector>
+                <!-- A14 -->
+                <connector id="connector_a14_outlet">
+                    <track order="1" fromSectionId="section_lauterach_a14" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_a14" toSectionType="ROUNDABOUT_SECTION"/>
+                    <track order="2" fromSectionId="section_lauterach_a14" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_a14_out" toSectionType="ROUNDABOUT_SECTION"/>
+                </connector>
+                <connector id="connector_a14_sink">
+                    <track fromSectionId="section_a14_out" fromSectionType="ROUNDABOUT_SECTION" toSectionId="sink_a14"
+                           toSectionType="ROUNDABOUT_EXIT"/>
+                </connector>
+                <connector id="connector_a14_inlet">
+                    <track order="1" fromSectionId="section_a14" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_a14_schwefel" toSectionType="ROUNDABOUT_SECTION"/>
+                    <track order="2" fromSectionId="section_a14_inlet" fromSectionType="ROUNDABOUT_INLET"
+                           toSectionId="section_a14_schwefel" toSectionType="ROUNDABOUT_SECTION"/>
+                </connector>
+                <!-- Schwefel -->
+                <connector id="connector_schwefel_outlet">
+                    <track order="1" fromSectionId="section_a14_schwefel" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_schwefel" toSectionType="ROUNDABOUT_SECTION"/>
+                    <track order="2" fromSectionId="section_a14_schwefel" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_schwefel_out" toSectionType="ROUNDABOUT_EXIT"/>
+                </connector>
+                <connector id="connector_schwefel_sink">
+                    <track fromSectionId="section_schwefel_out" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="sink_schwefel" toSectionType="ROUNDABOUT_EXIT"/>
+                </connector>
+                <connector id="connector_schhwefel_inlet">
+                    <track order="1" fromSectionId="section_schwefel" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_schwefel_achrain" toSectionType="ROUNDABOUT_SECTION"/>
+                    <track order="2" fromSectionId="section_schwefel_inlet" fromSectionType="ROUNDABOUT_INLET"
+                           toSectionId="section_schwefel_achrain" toSectionType="ROUNDABOUT_SECTION"/>
+                </connector>
+                <!-- Achrain -->
+                <connector id="connector_achrain_outlet">
+                    <track order="1" fromSectionId="section_schwefel_achrain" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_achrain" toSectionType="ROUNDABOUT_SECTION"/>
+                    <track order="2" fromSectionId="section_schwefel_achrain" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_achrain_out" toSectionType="ROUNDABOUT_EXIT"/>
+                </connector>
+                <connector id="connector_achrain_sink">
+                    <track fromSectionId="section_achrain_out" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="sink_achrain" toSectionType="ROUNDABOUT_EXIT"/>
+                </connector>
+                <connector id="connector_achrain_inlet">
+                    <track order="1" fromSectionId="section_achrain" fromSectionType="ROUNDABOUT_SECTION"
+                           toSectionId="section_achrain_lauterach" toSectionType="ROUNDABOUT_SECTION"/>
+                    <track order="2" fromSectionId="section_achrain_inlet" fromSectionType="ROUNDABOUT_INLET"
+                           toSectionId="section_achrain_lauterach" toSectionType="ROUNDABOUT_SECTION"/>
+                </connector>
+            </connectors>
+            <routes>
+                <route ratio="0.3">
+                    <source id="source_lauterach"/>
+                    <section order="1" id="section_lauterach_inlet"/>
+                    <section order="2" id="section_lauterach_a14"/>
+                    <section order="3" id="section_a14"/>
+                    <section order="4" id="section_a14_schwefel"/>
+                    <section order="5" id="section_schwefel_exit"/>
+                    <sink id="sink_schwefel"/>
+                </route>
+                <route ratio="0.2">
+                    <source id="source_lauterach"/>
+                    <section order="1" id="section_lauterach_inlet"/>
+                    <section order="2" id="section_lauterach_a14"/>
+                    <section order="3" id="section_a14"/>
+                    <section order="4" id="section_a14_schwefel"/>
+                    <section order="5" id="section_schwefel"/>
+                    <section order="6" id="section_schwefel_achrain"/>
+                    <section order="7" id="section_achrain_exit"/>
+                    <sink id="sink_achrain"/>
+                </route>
+                <route ratio="1.0">
+                    <source id="source_a14"/>
+                    <section order="1" id="section_a14_inlet"/>
+                    <section order="2" id="section_a14_schwefel"/>
+                    <section order="3" id="section_schwefel"/>
+                    <section order="4" id="section_schwefel_achrain"/>
+                    <section order="5" id="section_achrain_exit"/>
+                    <sink id="sink_achrain"/>
+                </route>
+                <route ratio="0.6">
+                    <source id="source_a14"/>
+                    <section order="1" id="section_a14_inlet"/>
+                    <section order="2" id="section_a14_schwefel"/>
+                    <section order="3" id="section_schwefel"/>
+                    <section order="4" id="section_schwefel_achrain"/>
+                    <section order="5" id="section_achrain"/>
+                    <section order="6" id="section_achrain_lauterach"/>
+                    <section order="7" id="section_lauterach_exit"/>
+                    <sink id="sink_lauterach"/>
+                </route>
+                <route ratio="0.5">
+                    <source id="source_schwefel"/>
+                    <section order="1" id="section_schwefel_inlet"/>
+                    <section order="2" id="section_schwefel_achrain"/>
+                    <section order="3" id="section_achrain"/>
+                    <section order="4" id="section_achrain_lauterach"/>
+                    <section order="5" id="section_lauterach_exit"/>
+                    <sink id="sink_lauterach"/>
+                </route>
+                <route ratio="0.6">
+                    <source id="source_schwefel"/>
+                    <section order="1" id="section_schwefel_inlet"/>
+                    <section order="2" id="section_schwefel_achrain"/>
+                    <section order="3" id="section_achrain"/>
+                    <section order="4" id="section_achrain_lauterach"/>
+                    <section order="5" id="section_lauterach"/>
+                    <section order="6" id="section_lauterach_a14"/>
+                    <section order="7" id="section_a14_exit"/>
+                    <sink id="sink_a14"/>
+                </route>
+                <route ratio="0.9">
+                    <source id="source_achrain"/>
+                    <section order="1" id="section_achrain_inlet"/>
+                    <section order="2" id="section_achrain_lauterach"/>
+                    <section order="3" id="section_lauterach"/>
+                    <section order="4" id="section_lauterach_a14"/>
+                    <section order="5" id="section_a14_exit"/>
+                    <sink id="sink_a14"/>
+                </route>
+                <route ratio="0.3">
+                    <source id="source_achrain"/>
+                    <section order="1" id="section_achrain_inlet"/>
+                    <section order="2" id="section_achrain_lauterach"/>
+                    <section order="3" id="section_lauterach"/>
+                    <section order="4" id="section_lauterach_a14"/>
+                    <section order="5" id="section_a14"/>
+                    <section order="6" id="section_a14_schwefel"/>
+                    <section order="7" id="section_schwefel_exit"/>
+                    <sink id="sink_schwefel"/>
+                </route>
+            </routes>
+        </component>
+    </components>
+</model>
