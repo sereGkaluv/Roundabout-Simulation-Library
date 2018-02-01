@@ -52,7 +52,8 @@ public class ConfigParser {
     private static final Function<Connector, List<Track>> SORTED_TRACK_EXTRACTOR = co -> co.getTrack().stream().sorted(TRACK_COMPARATOR).collect(Collectors.toList());
 
     private String filename;
-    private Map<Street, Map<Street, IRoute>> routes; // Source, Sink and Route
+    private Map<String, ArrayList<String>> routes = new HashMap<>(); // Source, Sink and Route
+    //private Map<Street, Map<Street, IRoute>> routes; // Source, Sink and Route
 
     public ConfigParser(String filename) {
         this.filename = filename;
@@ -90,16 +91,8 @@ public class ConfigParser {
         handleComponents(modelStructure, modelConfig.getComponents());
         handleConnectors(null, modelConfig.getComponents().getConnectors());
 
-        inizializeRoutes(modelConfig, modelStructure);
+        initializeRoutes(modelConfig);
 
-        // just verify the routes
-        int cnt = 0;
-        for (Street i : modelStructure.getRoutes().keySet()){
-            System.out.print("Path " + cnt + " with Start " + i);
-            for (Street j : modelStructure.getRoutes().get(i).keySet()){
-                System.out.print(" " + modelStructure.getRoutes().get(i).get(j) );
-            }
-        }
         return experiment;
     }
 
@@ -115,51 +108,77 @@ public class ConfigParser {
         return (componentId, elementId) -> SINK_REGISTRY.get(componentId).get(elementId);
     }
 
-    void inizializeRoutes(ModelConfig modelConfig, IModelStructure modelStructure){
+    private void initializeRoutes(ModelConfig modelConfig){
         for( Component componentIt : modelConfig.getComponents().getComponent()){ //Iterate through Roundabouts and Intersections
             //start from every possible source
             for (Source sourceIt : componentIt.getSources().getSource()) {
                 String currentStreetSectionID = sourceIt.getSectionId();
-                IRoute currentPath = new Route();
-                DepthFirstSearch(currentStreetSectionID, currentPath, componentIt, modelStructure);
+                ArrayList<String> currentPath = new ArrayList();
+                DepthFirstSearch(currentStreetSectionID, currentPath, componentIt);
             }
         }
     }
 
-    void DepthFirstSearch(String currentStreetID, IRoute currentPath, Component component, IModelStructure modelStructure){
-
+    void DepthFirstSearch(String currentStreetID, ArrayList<String> currentPath, Component component){
         // solely store if the start-street section is not stored
-        Street currentStreet = modelStructure.getStreetFromID(currentStreetID);
         if(currentPath.isEmpty()){
-            currentPath.addSection(currentStreet);
+            currentPath.add(currentStreetID);
         }
 
-        boolean endOfPath = true;
         // check each connector
         for(Connector connectorIt : component.getConnectors().getConnector()){
-            IRoute currentPathTmp = currentPath;
             for(Track trackIt : connectorIt.getTrack()){
                 if(trackIt.getFromSectionId().equals(currentStreetID)){
+                    ArrayList<String> currentPathTmp = new ArrayList<>(currentPath);
                     String nextStreetID = trackIt.getToSectionId();
-                    Street nextStreet = modelStructure.getStreetFromID(nextStreetID);
-                    if(!currentPathTmp.contains(nextStreet)){ // do not loop
-                        endOfPath = false;
-                        currentPathTmp.addSection(nextStreet);
-                        DepthFirstSearch(nextStreetID, currentPathTmp, component, modelStructure);
+                    if(checkStreetIsSink(nextStreetID)){ // sink is reached = end of path
+                        addRoute(currentPath.get(0), currentStreetID, currentPathTmp);
+                        return;
+                    }
+                    if(!currentPath.contains(nextStreetID)){ // do not loop
+                        currentPathTmp.add(nextStreetID);
+                        DepthFirstSearch(nextStreetID, currentPathTmp, component);
                     }
                 }
             }
         }
-        if(endOfPath) {
-            Street firstStreet;
-            if (currentPath.getStartSection() instanceof Street) {
-                firstStreet = (Street) currentPath.getStartSection();
-            } else {
-                throw new IllegalArgumentException("Section can not be converted to Street");
-            }
-            modelStructure.addRoute(firstStreet, currentStreet, currentPath);
-        }
         return;
+    }
+
+    public boolean checkStreetIsSink (String ID){
+        for(String componentIDIt : SINK_REGISTRY.keySet()){
+            for(String sectionIDIt : SINK_REGISTRY.get(componentIDIt).keySet()){
+                if(sectionIDIt.equals(ID)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Street getStreetFromID (String ID){
+        for(String componentIDIt : SECTION_REGISTRY.keySet()){
+            for(String sectionIDIt : SECTION_REGISTRY.get(componentIDIt).keySet()){
+                if(sectionIDIt.equals(ID)) {
+                    return SECTION_REGISTRY.get(componentIDIt).get(sectionIDIt);
+                }
+            }
+        }
+        throw new IllegalArgumentException( ID + " is not a legit Street ID Name.");
+    }
+
+    public void addRoute(String source , String sink, ArrayList<String> route) {
+        String key = source + " " + sink;
+        routes.put(key, route);
+    }
+
+    public Map<String, ArrayList<String>> getRoutes() {
+        return routes;
+    }
+
+    public ArrayList<String> getRoute(String start, String destination){
+        String key = start + " " + destination;
+        return routes.get(key);
     }
 
     private Map<String, String> handleParameters(ModelConfig modelConfig) {
