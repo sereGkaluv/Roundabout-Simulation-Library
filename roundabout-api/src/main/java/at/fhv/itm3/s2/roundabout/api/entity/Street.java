@@ -25,6 +25,10 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
         this(owner, name, showInTrace, false);
     }
 
+    public Street(String id, Model owner, String name, boolean showInTrace) {
+        this(id, owner, name, showInTrace, false);
+    }
+
     public Street(Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
         this(UUID.randomUUID().toString(), owner, name, showInTrace, trafficLightActive);
     }

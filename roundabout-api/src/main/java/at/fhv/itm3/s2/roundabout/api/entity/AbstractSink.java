@@ -3,14 +3,19 @@ package at.fhv.itm3.s2.roundabout.api.entity;
 import desmoj.core.simulator.Model;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Karin on 05.01.2018.
  */
 public abstract class AbstractSink extends Street implements ICarCountable {
 
+    public AbstractSink(String id, Model model, String string, boolean bln) {
+        super(id, model, string, bln);
+    }
+
     public AbstractSink(Model model, String string, boolean bln) {
-        super(model, string, bln);
+        this(UUID.randomUUID().toString(), model, string, bln);
     }
 
     /**

@@ -88,7 +88,7 @@ public class RouteController {
 
         List<IRoute> routes = this.routes.get(source);
 
-        double totalRatio = routes.stream().mapToDouble(route -> route.getRatio()).sum();
+        double totalRatio = routes.stream().mapToDouble(IRoute::getRatio).sum();
         double randomRatio = (new Random().nextDouble()) * totalRatio;
 
         double sumRatio = 0.0;

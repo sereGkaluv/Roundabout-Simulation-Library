@@ -21,6 +21,7 @@
     <modules>
         <module>roundabout-api</module>
         <module>roundabout-core</module>
+        <module>roundabout-ui</module>
     </modules>
 
     <build>

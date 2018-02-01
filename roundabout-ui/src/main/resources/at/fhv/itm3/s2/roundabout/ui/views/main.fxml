@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController" hbarPolicy="NEVER" fx:id="scrollPane">
+    <VBox fx:id="vBoxContainer">
+        <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../img/back.png" />
+        </ImageView>
+        <HBox fx:id="hBoxContainer" spacing="15.0" />
+    </VBox>
+</ScrollPane>

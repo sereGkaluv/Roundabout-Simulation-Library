@@ -37,7 +37,7 @@ public class RoundaboutStructure implements IRoundaboutStructure {
 
     @Override
     public void addRoutes(Collection<? extends IRoute> routes) {
-        routes.stream().forEach(route -> {
+        routes.forEach(route -> {
             List<IRoute> routeList = this.routes.get(route.getSource());
             if (routeList == null) {
                 routeList = new ArrayList<>();

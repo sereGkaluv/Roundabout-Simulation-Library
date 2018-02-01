@@ -39,6 +39,11 @@ public class StreetConnector implements IStreetConnector {
     }
 
     @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
     public Collection<IConsumer> getNextConsumers() {
         return nextSections;
     }
@@ -76,7 +81,12 @@ public class StreetConnector implements IStreetConnector {
     @Override
     public boolean isNextConsumerOnSameTrackAsCurrent(IConsumer currentConsumer, IConsumer nextConsumer) {
         if (!this.previousSectionsOnTrackMap.containsKey(nextConsumer) || !this.nextSectionsOnTrackMap.containsKey(currentConsumer)) {
-            throw new IllegalArgumentException("There are no tracks defined for the given streets");
+            throw new IllegalArgumentException(String.format(
+                "Connector: %s | There are no tracks defined for the given streets: \"%s\" |--> \"%s\"",
+                getId(),
+                currentConsumer,
+                nextConsumer
+            ));
         }
         List<IConsumer> nextStreetsOnTrack = this.nextSectionsOnTrackMap.get(currentConsumer);
 

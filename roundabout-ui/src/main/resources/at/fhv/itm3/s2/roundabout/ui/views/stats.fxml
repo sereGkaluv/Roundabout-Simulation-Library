@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.itm3.s2.roundabout.ui.controllers.StatsViewController">
+    <VBox spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label fx:id="lblStatsTitle">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <HBox spacing="15.0">
+            <VBox>
+                <Label text="SECTIONS">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <HBox spacing="10.0">
+                    <VBox fx:id="sectionIdContainer">
+                        <Label text="ID" />
+                    </VBox>
+                    <VBox fx:id="sectionISContainer">
+                        <Label text="IS" />
+                    </VBox>
+                    <VBox fx:id="sectionPSContainer">
+                        <Label text="PS" />
+                    </VBox>
+                </HBox>
+            </VBox>
+            <VBox>
+                <Label text="SINKS">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <HBox spacing="10.0">
+                    <VBox fx:id="sinkIdContainer">
+                        <Label text="ID" />
+                    </VBox>
+                    <VBox fx:id="sinkMinContainer">
+                        <Label text="MIN" />
+                    </VBox>
+                    <VBox fx:id="sinkAvgContainer">
+                        <Label text="AVG" />
+                    </VBox>
+                    <VBox fx:id="sinkMaxContainer">
+                        <Label text="MAX" />
+                    </VBox>
+                </HBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</AnchorPane>

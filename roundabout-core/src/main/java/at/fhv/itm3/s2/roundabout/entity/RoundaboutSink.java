@@ -14,6 +14,7 @@ import desmoj.core.simulator.Model;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class RoundaboutSink extends AbstractSink {
 
@@ -21,7 +22,11 @@ public class RoundaboutSink extends AbstractSink {
     private List<ICar> enteredCars;
 
     public RoundaboutSink(Model owner, String name, boolean showInTrace) {
-        super(owner, name, showInTrace);
+        this(UUID.randomUUID().toString(), owner, name, showInTrace);
+    }
+
+    public RoundaboutSink(String id, Model owner, String name, boolean showInTrace) {
+        super(id, owner, name, showInTrace);
         enteredCars = new LinkedList<>();
     }
 

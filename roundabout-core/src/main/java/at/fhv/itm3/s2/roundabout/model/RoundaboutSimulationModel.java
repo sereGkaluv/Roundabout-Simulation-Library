@@ -95,16 +95,16 @@ public class RoundaboutSimulationModel extends Model {
      * @param showInTrace flag to indicate if this model shall produce output to the trace file
      */
     public RoundaboutSimulationModel(
-            Model model,
-            String name,
-            boolean showInReport,
-            boolean showInTrace,
-            Double minTimeBetweenCarArrivals,
-            Double maxTimeBetweenCarArrivals,
-            Double minDistanceFactorBetweenCars,
-            Double maxDistanceFactorBetweenCars,
-            Double mainArrivalRateForOneWayStreets,
-            Double standardCarAccelerationTime
+        Model model,
+        String name,
+        boolean showInReport,
+        boolean showInTrace,
+        Double minTimeBetweenCarArrivals,
+        Double maxTimeBetweenCarArrivals,
+        Double minDistanceFactorBetweenCars,
+        Double maxDistanceFactorBetweenCars,
+        Double mainArrivalRateForOneWayStreets,
+        Double standardCarAccelerationTime
     ) {
         super(model, name, showInReport, showInTrace);
 

@@ -16,7 +16,7 @@ public class Route implements IRoute {
     private Double flowRatio;
 
     public Route() {
-        route = new ArrayList<>();
+        this(new ArrayList<>(), null, 1.0);
     }
 
     public Route(List<IConsumer> route, AbstractSource source, Double flowRatio) {
