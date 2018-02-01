@@ -34,7 +34,7 @@ public class Main extends Application {
 
     private static final String DEFAULT_UI_RESOURCE = "/fxml/ui_roundabout_south_v2.fxml";
 
-    private static final double EXPERIMENT_STOP_TIME = 250 * 7; // 250 times * 7 days -> 250 weeks
+    private static final double EXPERIMENT_STOP_TIME = 250 * 7 * 10000; // 250 times * 7 days -> 250 weeks
     private static final TimeUnit EXPERIMENT_TIME_UNIT = TimeUnit.DAYS;
 
     private static final boolean IS_PROGRESS_BAR_SHOWN = true;
@@ -86,7 +86,7 @@ public class Main extends Application {
                 configParser.getSinkResolver()
             );
 
-            /*// Starting experiment
+            // Starting experiment
             experiment.start();
 
             if (IS_TRACE_ENABLED || IS_DEBUG_ENABLED) {
@@ -94,7 +94,7 @@ public class Main extends Application {
                 experiment.report();
             }
 
-            experiment.finish();*/
+            experiment.finish();
 
         } catch (Exception e) {
             LOGGER.error("Failed to start.", e);

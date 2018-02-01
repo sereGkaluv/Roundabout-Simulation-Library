@@ -1,6 +1,7 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
 import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
+import at.fhv.itm3.s2.roundabout.api.CarObserverType;
 import desmoj.core.simulator.Model;
 
 import java.util.List;
@@ -9,13 +10,16 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.UUID;
 
-public abstract class Street extends AbstractProSumer implements ICarCountable, IObservable {
+public abstract class Street extends AbstractProSumer implements ICarCountable {
 
     private final String id;
     private long enteredCarsCounter;
     private long leftCarsCounter;
     private TrafficLight trafficLight;
-    private Observable internalObservable;
+
+    protected Observable carObserver;
+    protected Observable enteredCarObserver;
+    protected Observable leftCarObserver;
 
     public Street(Model owner, String name, boolean showInTrace) {
         this(owner, name, showInTrace, false);
@@ -33,13 +37,10 @@ public abstract class Street extends AbstractProSumer implements ICarCountable, 
         this.leftCarsCounter = 0;
 
         this.trafficLight = new TrafficLight(trafficLightActive);
-        this.internalObservable = new Observable() {
-            @Override
-            public void notifyObservers(Object arg) {
-                super.setChanged();
-                super.notifyObservers(arg);
-            }
-        };
+
+        this.carObserver = new RoundaboutObservable();
+        this.enteredCarObserver = new RoundaboutObservable();
+        this.leftCarObserver = new RoundaboutObservable();
     }
 
     public String getId() {
@@ -69,14 +70,15 @@ public abstract class Street extends AbstractProSumer implements ICarCountable, 
      */
     protected void incrementEnteredCarCounter() {
         this.enteredCarsCounter++;
+        this.enteredCarObserver.notifyObservers(this.enteredCarsCounter);
     }
 
     /**
      * Internal method for counter incrementation.
      */
-    protected void incrementLeftCarsCounter() {
+    protected void incrementLeftCarCounter() {
         this.leftCarsCounter++;
-        this.notifyObservers(this.leftCarsCounter);
+        this.leftCarObserver.notifyObservers(this.leftCarsCounter);
     }
 
     /**
@@ -236,28 +238,11 @@ public abstract class Street extends AbstractProSumer implements ICarCountable, 
         trafficLight.setFreeToGo(isFreeToGo);
     }
 
-    @Override
-    public synchronized void addObserver(Observer o) {
-        this.internalObservable.addObserver(o);
-    }
-
-    @Override
-    public synchronized void deleteObserver(Observer o) {
-        this.internalObservable.addObserver(o);
-    }
-
-    @Override
-    public synchronized void deleteObservers() {
-        this.internalObservable.deleteObservers();
-    }
-
-    @Override
-    public void notifyObservers() {
-        this.internalObservable.notifyObservers();
-    }
-
-    @Override
-    public void notifyObservers(Object arg) {
-        this.internalObservable.notifyObservers(arg);
+    public synchronized void addObserver(CarObserverType observerType, Observer o) {
+        switch (observerType) {
+            case CAR_ENTERED: enteredCarObserver.addObserver(o); break;
+            case CAR_ENTITY: carObserver.addObserver(o); break;
+            case CAR_LEFT: leftCarObserver.addObserver(o); break;
+        }
     }
 }

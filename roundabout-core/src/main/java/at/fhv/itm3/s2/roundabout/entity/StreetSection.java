@@ -519,7 +519,7 @@ public class StreetSection extends Street {
             );
             carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, TimeUnit.SECONDS));
         } else {
-            incrementLeftCarsCounter();
+            incrementLeftCarCounter();
             car.leaveSystem();
             CarController.addLostCar(this, iCar);
         }

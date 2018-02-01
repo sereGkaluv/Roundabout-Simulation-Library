@@ -310,12 +310,12 @@
             <Label fx:id="lbl_S2_t1_CO_SK_MAX_s1" layoutX="1217.0" layoutY="662.0" text="MAX_SK" />
             <Label fx:id="lbl_S3_t1_CO_SK_MAX_s1" layoutX="1217.0" layoutY="679.0" text="MAX_SK" />
             <Label fx:id="lbl_S4_t1_CO_SK_MAX_s1" layoutX="1217.0" layoutY="697.0" text="MAX_SK" />
-            <Label layoutX="973.0" layoutY="615.0" text="Intersection_Waiting">
+            <Label layoutX="973.0" layoutY="615.0" text="Intersection Waiting">
                <font>
                   <Font name="System Bold Italic" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="437.0" layoutY="621.0" text="Roundabout_Waiting">
+            <Label layoutX="437.0" layoutY="621.0" text="Roundabout Waiting">
                <font>
                   <Font name="System Bold Italic" size="16.0" />
                </font>

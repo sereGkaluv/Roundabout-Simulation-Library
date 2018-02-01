@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.ui.controller;
 
-import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
+import at.fhv.itm3.s2.roundabout.api.CarObserverType;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSource;
@@ -8,10 +8,14 @@ import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 public class UIController {
+
+    private final static Map<String, Double> SINK_STATS = new HashMap<>();
 
     //Roundabout
     //in section roundabout ~ number of cars in section
@@ -301,20 +305,19 @@ public class UIController {
 
     public void initSinkObservers(BiFunction<String, String, RoundaboutSink> sResolver) {
         //sink roundabout
-        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s17_t1"), lbl_s17_t1_CO_SK_MIN_ro1, lbl_s17_t1_CO_SK_AVG_ro1, lbl_s17_t1_CO_SK_MAX_ro1);
-        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s4_t1"), lbl_s4_t1_CO_SK_MIN_ro1, lbl_s4_t1_CO_SK_AVG_ro1, lbl_s4_t1_CO_SK_MAX_ro1);
-        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s6_t1"), lbl_s6_t1_CO_SK_MIN_ro1, lbl_s6_t1_CO_SK_AVG_ro1, lbl_s6_t1_CO_SK_MAX_ro1);
-        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s9_t1"), lbl_s9_t1_CO_SK_MIN_ro1, lbl_s9_t1_CO_SK_AVG_ro1, lbl_s9_t1_CO_SK_MAX_ro1);
-        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s9_t2"), lbl_s9_t2_CO_SK_MIN_ro1, lbl_s9_t2_CO_SK_AVG_ro1, lbl_s9_t2_CO_SK_MAX_ro1);
-        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s11_t1"), lbl_s11_t1_CO_SK_MIN_ro1, lbl_s11_t1_CO_SK_AVG_ro1, lbl_s11_t1_CO_SK_MAX_ro1);
-        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s13_t1"), lbl_s13_t1_CO_SK_MIN_ro1, lbl_s13_t1_CO_SK_AVG_ro1, lbl_s13_t1_CO_SK_MAX_ro1);
-        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "s15_t1"), lbl_s15_t1_CO_SK_MIN_ro1, lbl_s15_t1_CO_SK_AVG_ro1, lbl_s15_t1_CO_SK_MAX_ro1);
-
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "sk_s4_t1"), lbl_s4_t1_CO_SK_MIN_ro1, lbl_s4_t1_CO_SK_AVG_ro1, lbl_s4_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "sk_s6_t1"), lbl_s6_t1_CO_SK_MIN_ro1, lbl_s6_t1_CO_SK_AVG_ro1, lbl_s6_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "sk_s9_t1"), lbl_s9_t1_CO_SK_MIN_ro1, lbl_s9_t1_CO_SK_AVG_ro1, lbl_s9_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "sk_s9_t2"), lbl_s9_t2_CO_SK_MIN_ro1, lbl_s9_t2_CO_SK_AVG_ro1, lbl_s9_t2_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "sk_s11_t1"), lbl_s11_t1_CO_SK_MIN_ro1, lbl_s11_t1_CO_SK_AVG_ro1, lbl_s11_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "sk_s13_t1"), lbl_s13_t1_CO_SK_MIN_ro1, lbl_s13_t1_CO_SK_AVG_ro1, lbl_s13_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "sk_s15_t1"), lbl_s15_t1_CO_SK_MIN_ro1, lbl_s15_t1_CO_SK_AVG_ro1, lbl_s15_t1_CO_SK_MAX_ro1);
+        addMinAvgMaxSinkLabels(sResolver.apply("ro1", "sk_s17_t1"), lbl_s17_t1_CO_SK_MIN_ro1, lbl_s17_t1_CO_SK_AVG_ro1, lbl_s17_t1_CO_SK_MAX_ro1);
 
         //sink intersection
-        addMinAvgMaxSinkLabels(sResolver.apply("is1", "S2_t1"), lbl_S2_t1_CO_SK_MIN_s1, lbl_S2_t1_CO_SK_AVG_s1, lbl_S2_t1_CO_SK_MAX_s1);
-        addMinAvgMaxSinkLabels(sResolver.apply("is1", "S3_t1"), lbl_S3_t1_CO_SK_MIN_s1, lbl_S3_t1_CO_SK_AVG_s1, lbl_S3_t1_CO_SK_MAX_s1);
-        addMinAvgMaxSinkLabels(sResolver.apply("is1", "s4_t1"), lbl_S4_t1_CO_SK_MIN_s1, lbl_S4_t1_CO_SK_AVG_s1, lbl_S4_t1_CO_SK_MAX_s1);
+        addMinAvgMaxSinkLabels(sResolver.apply("is1", "sk1_t1"), lbl_S2_t1_CO_SK_MIN_s1, lbl_S2_t1_CO_SK_AVG_s1, lbl_S2_t1_CO_SK_MAX_s1);
+        addMinAvgMaxSinkLabels(sResolver.apply("is1", "sk2_t1"), lbl_S3_t1_CO_SK_MIN_s1, lbl_S3_t1_CO_SK_AVG_s1, lbl_S3_t1_CO_SK_MAX_s1);
+        addMinAvgMaxSinkLabels(sResolver.apply("is1", "sk3_t1"), lbl_S4_t1_CO_SK_MIN_s1, lbl_S4_t1_CO_SK_AVG_s1, lbl_S4_t1_CO_SK_MAX_s1);
     }
 
     private void addIsPsStreetLabels(final Street street, Label isLabel, Label psLabel) {
@@ -326,11 +329,36 @@ public class UIController {
     }
 
     private void addMinAvgMaxObservers(final RoundaboutSink sink, Consumer<String> minConsumer, Consumer<String> avgMinConsumer, Consumer<String> maxConsumer) {
-        //TODO
+        sink.addObserver(CarObserverType.CAR_ENTERED, (o, arg) -> {
+            final String rawValue = toStringOrEmpty(arg);
+            final Double carWaitTime = Double.valueOf(rawValue);
+
+            final String minSinkId = String.format("min_%s", sink.getId());
+            final double minValue = SINK_STATS.getOrDefault(minSinkId, Double.MAX_VALUE);
+            if (carWaitTime < minValue) {
+                SINK_STATS.put(minSinkId, carWaitTime);
+                minConsumer.accept(toStringOrEmpty(carWaitTime));
+            }
+
+            avgMinConsumer.accept(toStringOrEmpty(sink.getMeanWaitingTimePerStopForEnteredCars()));
+
+            final String maxSinkId = String.format("max_%s", sink.getId());
+            final double maxValue = SINK_STATS.getOrDefault(maxSinkId, Double.MIN_VALUE);
+            if (carWaitTime > maxValue) {
+                SINK_STATS.put(maxSinkId, carWaitTime);
+                maxConsumer.accept(toStringOrEmpty(carWaitTime));
+            }
+        });
     }
 
     private void addIsPsStreetObservers(final Street street, Consumer<String> isConsumer, Consumer<String> psConsumer) {
-        street.addObserver((o, arg) -> {
+        street.addObserver(CarObserverType.CAR_ENTERED, (o, arg) -> {
+            final String rawValue = toStringOrEmpty(arg);
+            final long is_counter = Math.max(Long.valueOf(rawValue) - street.getNrOfLeftCars(), 0);
+            isConsumer.accept(toStringOrEmpty(is_counter));
+        });
+
+        street.addObserver(CarObserverType.CAR_LEFT, (o, arg) -> {
             final String rawValue = toStringOrEmpty(arg);
             psConsumer.accept(rawValue);
 
