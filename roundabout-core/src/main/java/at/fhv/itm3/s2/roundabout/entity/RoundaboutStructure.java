@@ -59,9 +59,10 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     @Override
     public void addStreets(Collection<? extends Street> streets) {
         this.streets.addAll(streets);
-        if (street.getNextStreetConnector().getTypeOfConsumer(street) == ConsumerType.ROUNDABOUT_INLET) {
-            roundaboutInlets.add(street);
-        }
+
+        streets.stream()
+                .filter(street -> street.getNextStreetConnector().getTypeOfConsumer(street) == ConsumerType.ROUNDABOUT_INLET)
+                .forEach(roundaboutInlets::add);
     }
 
     @Override
@@ -97,6 +98,11 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     @Override
     public Set<AbstractSource> getSources() {
         return sources;
+    }
+
+    @Override
+    public Set<Street> getRoundaboutInlets() {
+        return roundaboutInlets;
     }
 
     @Override
