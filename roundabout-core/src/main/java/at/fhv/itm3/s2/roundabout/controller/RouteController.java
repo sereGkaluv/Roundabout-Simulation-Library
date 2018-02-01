@@ -81,18 +81,25 @@ public class RouteController {
         initializeRoutes();
     }
 
-    // TODO: specify more attributes for random route
     public IRoute getRandomRoute(AbstractSource source) {
         if (this.routes.isEmpty()) {
             throw new IllegalStateException("Routes must not be empty");
         }
-//        int randNr = new Random().nextInt(this.routes.size());
-//        AbstractSource source =  this.sources.get(randNr);
 
         List<IRoute> routes = this.routes.get(source);
 
-        int randNr = new Random().nextInt(routes.size());
-        return routes.get(randNr);
+        double totalRatio = routes.stream().mapToDouble(route -> route.getRatio()).sum();
+        double randomRatio = (new Random().nextDouble()) * totalRatio;
+
+        double sumRatio = 0.0;
+        for (IRoute route : routes) {
+            sumRatio += route.getRatio();
+            if (sumRatio >= randomRatio) {
+                return route;
+            }
+        }
+
+        throw new IllegalStateException("no route chosen");
     }
 
     private void initializeRoutes() {

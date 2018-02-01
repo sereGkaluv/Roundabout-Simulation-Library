@@ -1,6 +1,8 @@
 package at.fhv.itm3.s2.roundabout.util;
 
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
+import desmoj.core.simulator.Experiment;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,6 +22,10 @@ public class ConfigParserTest {
 
         configParser = new ConfigParser(path.getPath());
         roundAboutConfig = configParser.loadConfig();
+
+        Experiment experiment = new Experiment("Config Parser Test");
+        RoundaboutStructure structure = (RoundaboutStructure) configParser.generateRoundaboutStructure(roundAboutConfig, experiment);
+        structure.getModel();
     }
 
     @Test
@@ -68,5 +74,11 @@ public class ConfigParserTest {
     public void configParserTest_connectorsComponentLoaded() {
         assertNotNull("connectors in component not null", roundAboutConfig.getComponents().getComponent().get(0).getConnectors().getConnector());
         assertEquals("12 connectors loaded", 12, roundAboutConfig.getComponents().getComponent().get(0).getConnectors().getConnector().size());
+    }
+
+    @Test
+    public void configParserTest_routesComponentLoaded() {
+        assertNotNull("routes in component not null", roundAboutConfig.getComponents().getComponent().get(0).getRoutes().getRoute());
+        assertEquals("8 routes loaded", 8, roundAboutConfig.getComponents().getComponent().get(0).getRoutes().getRoute().size());
     }
 }
