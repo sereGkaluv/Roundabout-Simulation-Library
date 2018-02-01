@@ -10,6 +10,7 @@ import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
+import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.*;
 import at.fhv.itm3.s2.roundabout.entity.Route;
 import at.fhv.itm3.s2.roundabout.util.dto.*;
@@ -89,6 +90,8 @@ public class ConfigParser {
         if (modelConfig.getComponents().getConnectors() != null) {
             handleConnectors(null, modelConfig.getComponents().getConnectors());
         }
+
+        RouteController.getInstance(model).setRoutes(roundaboutStructure.getRoutes());
 
         return roundaboutStructure;
     }
