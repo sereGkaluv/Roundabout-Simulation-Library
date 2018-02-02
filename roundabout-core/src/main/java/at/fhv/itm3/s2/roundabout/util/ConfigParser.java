@@ -448,7 +448,7 @@ public class ConfigParser {
 //        final Route route2 = new Route();
 //        route2.setSource(SOURCE_REGISTRY.get("ro1").get("so_s5_t1"));
 //        route2.addSection(SECTION_REGISTRY.get("ro1").get("s5_t1"));
-//        route2.addSection(SECTION_REGISTRY.get("ro1").get("s7_t1"));
+//        route2.addSection(SECTION_REGISTRY.get("ro1").get("s7_t2"));
 //        route2.addSection(SECTION_REGISTRY.get("ro1").get("s12_t1"));
 //        route2.addSection(SECTION_REGISTRY.get("ro1").get("s13_t1"));
 //        route2.addSection(SINK_REGISTRY.get("ro1").get("sk_s13_t1"));

@@ -3,7 +3,6 @@ package at.fhv.itm3.s2.roundabout.ui.executable;
 
 import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController;
-import at.fhv.itm3.s2.roundabout.ui.controllers.StatsViewController;
 import at.fhv.itm3.s2.roundabout.ui.util.DaemonThreadFactory;
 import at.fhv.itm3.s2.roundabout.ui.util.ViewLoader;
 import at.fhv.itm3.s2.roundabout.util.ConfigParser;

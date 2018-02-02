@@ -15,6 +15,7 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     private final String id;
     private long enteredCarsCounter;
     private long leftCarsCounter;
+    private long lostCarsCounter;
     private TrafficLight trafficLight;
 
     protected Observable carObserver;
@@ -39,6 +40,7 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
         this.id = id;
         this.enteredCarsCounter = 0;
         this.leftCarsCounter = 0;
+        this.lostCarsCounter = 0;
 
         this.trafficLight = new TrafficLight(trafficLightActive);
 
@@ -70,6 +72,16 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     public long getNrOfLeftCars() { return leftCarsCounter; }
 
     /**
+     * Gets total car counter lost in {@code this} {@link Street}.
+     *
+     * @return total car counter.
+     */
+    @Override
+    public long getNrOfLostCars() {
+        return lostCarsCounter;
+    }
+
+    /**
      * Internal method for counter incrementation.
      */
     protected void incrementEnteredCarCounter() {
@@ -83,6 +95,13 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     protected void incrementLeftCarCounter() {
         this.leftCarsCounter++;
         this.leftCarObserver.notifyObservers(this.leftCarsCounter);
+    }
+
+    /**
+     * Internal method for counter incrementation.
+     */
+    protected void incrementLostCarCounter() {
+        this.lostCarsCounter++;
     }
 
     /**

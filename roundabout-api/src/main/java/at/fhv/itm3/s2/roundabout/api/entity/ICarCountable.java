@@ -18,4 +18,11 @@ public interface ICarCountable {
      * @return the number of cars as int.
      */
     long getNrOfLeftCars();
+
+    /**
+     * Returns the number of cars that were lost in the component.
+     *
+     * @return the number of cars as int.
+     */
+    long getNrOfLostCars();
 }

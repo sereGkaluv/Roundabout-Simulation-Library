@@ -117,6 +117,7 @@ public class StreetSection extends Street {
 
     @Override
     public ICar removeFirstCar() {
+        incrementLeftCarCounter();
         return carQueue.removeFirst();
     }
 
@@ -519,7 +520,7 @@ public class StreetSection extends Street {
             );
             carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, TimeUnit.SECONDS));
         } else {
-            incrementLeftCarCounter();
+            incrementLostCarCounter();
             car.leaveSystem();
             CarController.addLostCar(this, iCar);
         }
