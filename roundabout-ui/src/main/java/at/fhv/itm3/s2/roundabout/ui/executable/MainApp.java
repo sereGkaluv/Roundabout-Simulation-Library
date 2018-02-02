@@ -37,8 +37,6 @@ public class MainApp extends Application {
     private static final boolean IS_TRACE_ENABLED = false;
     private static final boolean IS_DEBUG_ENABLED = false;
 
-    private static final boolean IS_PROGRESS_BAR_SHOWN = true;
-
     /**
      * Default (empty) constructor for this utility class.
      */
@@ -58,11 +56,13 @@ public class MainApp extends Application {
             final ConfigParser configParser = new ConfigParser("/at/fhv/itm3/s2/roundabout/model/model.xml");
             final ModelConfig modelConfig = configParser.loadConfig();
 
+            final Experiment experiment = new Experiment("Trafsim experiment");
+            experiment.setShowProgressBar(false);
 
-            final Experiment experiment = initExperiment("Trafsim experiment", IS_PROGRESS_BAR_SHOWN);
             IRoundaboutStructure roundaboutStructure = configParser.generateRoundaboutStructure(modelConfig, experiment);
 
-            viewLoader.getController().generateComponentStatContainers(
+            final MainViewController mainViewController = viewLoader.getController();
+            mainViewController.generateComponentStatContainers(
                 modelConfig.getComponents().getComponent(),
                 configParser.getSectionRegistry(),
                 configParser.getSinkRegistry()
@@ -93,12 +93,11 @@ public class MainApp extends Application {
                     );
                 }
 
-                roundaboutStructure.getRoutes().keySet().forEach(s -> s.startGeneratingCars(1));
-                experiment.setExecutionSpeedRate(0.000001);
+                roundaboutStructure.getRoutes().keySet().forEach(s -> s.startGeneratingCars(0));
+                mainViewController.setProgressSupplier(experiment.getSimClock(), experiment.getStopTime());
+
                 // Starting experiment
                 experiment.start();
-
-                //roundaboutStructure.getRoutes().keySet().forEach(s -> s.startGeneratingCars(1));
 
                 if (IS_TRACE_ENABLED || IS_DEBUG_ENABLED) {
                     // Should be wrapped into if guard to prevent NPE when trace / debug are disabled above.
@@ -136,12 +135,5 @@ public class MainApp extends Application {
      */
     public static void main(String[] args) {
         Application.launch(args);
-    }
-
-    private static Experiment initExperiment(String description, boolean isShowProgressBar) {
-        Experiment experiment = new Experiment(description);
-
-        experiment.setShowProgressBar(isShowProgressBar);
-        return experiment;
     }
 }

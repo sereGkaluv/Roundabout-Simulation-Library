@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 
 public class StatsViewController extends JfxController {
 
@@ -27,6 +28,8 @@ public class StatsViewController extends JfxController {
     private static final String SINK_MIN_SUFFIX = "_min";
     private static final String SINK_AVG_SUFFIX = "_avg";
     private static final String SINK_MAX_SUFFIX = "_max";
+
+    private static final Function<Double, String> DOUBLE_STRING_FORMATTER_FUNCTION = v -> String.format("%.2f", v);
 
     private final Map<String, Double> sinkStats = new HashMap<>();
     private final Map<String, Label> labelMap = new HashMap<>();
@@ -67,8 +70,9 @@ public class StatsViewController extends JfxController {
             labelMap.put(sourcePS, lblSourcePS);
 
             streetSection.addObserver(CarObserverType.CAR_ENTERED, (o, arg) -> {
-                final String rawValue = toStringOrEmpty(arg);
-                final long is_counter = Math.max(Long.valueOf(rawValue) - streetSection.getNrOfLeftCars(), 0);
+                final String rawValue = toStringOrEmpty(arg) ;
+                final long longValue = rawValue != null ? Long.valueOf(rawValue) : 0;
+                final long is_counter = Math.max(longValue - streetSection.getNrOfLeftCars(), 0);
                 Platform.runLater(() ->
                     lblSourceIS.setText(toStringOrEmpty(is_counter))
                 );
@@ -76,11 +80,12 @@ public class StatsViewController extends JfxController {
 
             streetSection.addObserver(CarObserverType.CAR_LEFT, (o, arg) -> {
                 final String rawValue = toStringOrEmpty(arg);
+                final long longValue = rawValue != null ? Long.valueOf(rawValue) : 0;
                 Platform.runLater(() ->
                     lblSourcePS.setText(rawValue)
                 );
 
-                final long is_counter = Math.max(streetSection.getNrOfEnteredCars() - Long.valueOf(rawValue), 0);
+                final long is_counter = Math.max(streetSection.getNrOfEnteredCars() - longValue, 0);
                 Platform.runLater(() ->
                     lblSourceIS.setText(toStringOrEmpty(is_counter))
                 );
@@ -109,33 +114,36 @@ public class StatsViewController extends JfxController {
             sinkMaxContainer.getChildren().add(lblSinkMax);
             labelMap.put(sinkMax, lblSinkMax);
 
-            sink.addObserver(CarObserverType.CAR_ENTERED, (o, arg) -> {
-                final String rawValue = toStringOrEmpty(arg);
-                final Double carWaitTime = Double.valueOf(rawValue);
+            sink.addObserver(CarObserverType.CAR_ENTITY, (o, arg) -> {
+                final Double carWaitTime = sink.getMeanWaitingTimePerStopForEnteredCars();
 
                 final double minValue = sinkStats.getOrDefault(sinkMin, Double.MAX_VALUE);
                 if (carWaitTime < minValue) {
                     sinkStats.put(sinkMin, carWaitTime);
 
-                    final String sinkMinValue = toStringOrEmpty(carWaitTime);
+                    final String sinkMinValue = toStringOrEmpty(carWaitTime, DOUBLE_STRING_FORMATTER_FUNCTION);
                     Platform.runLater(() -> lblSinkMin.setText(sinkMinValue));
                 }
 
-                final String sinkAvgValue = toStringOrEmpty(sink.getMeanWaitingTimePerStopForEnteredCars());
+                final String sinkAvgValue = toStringOrEmpty(carWaitTime, DOUBLE_STRING_FORMATTER_FUNCTION);
                 Platform.runLater(() -> lblSinkAvg.setText(sinkAvgValue));
 
                 final double maxValue = sinkStats.getOrDefault(sinkMax, Double.MIN_VALUE);
                 if (carWaitTime > maxValue) {
                     sinkStats.put(sinkMax, carWaitTime);
 
-                    final String sinkMaxValue = toStringOrEmpty(carWaitTime);
+                    final String sinkMaxValue = toStringOrEmpty(carWaitTime, DOUBLE_STRING_FORMATTER_FUNCTION);
                     Platform.runLater(() -> lblSinkMax.setText(sinkMaxValue));
                 }
             });
         });
     }
 
-    private String toStringOrEmpty(Object value) {
-        return value != null ? value.toString() : "0";
+    private <T> String toStringOrEmpty(T value) {
+        return toStringOrEmpty(value, Object::toString);
+    }
+
+    private <T> String toStringOrEmpty(T value, Function<T, String> converterFunction) {
+        return value != null ? converterFunction.apply(value) : null;
     }
 }

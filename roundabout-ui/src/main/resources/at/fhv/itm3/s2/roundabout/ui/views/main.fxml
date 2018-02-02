@@ -9,19 +9,31 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Label?>
-<ScrollPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController" hbarPolicy="NEVER" fx:id="scrollPane">
-    <VBox>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController" fx:id="borderPaneContainer">
+    <top>
         <ToolBar>
             <Label text="Simulation speed:"/>
             <Label fx:id="lblCurrentSimSpeed"/>
-            <Label fx:id="lblMinSimSpeed"/>
             <Slider fx:id="sliderSimSpeed" />
-            <Label fx:id="lblMaxSimSpeed"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Label text="Progress:"/>
+            <Label fx:id="lblProgress"/>
+            <ProgressBar fx:id="progressBar" />
         </ToolBar>
-        <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../img/back.png" />
-        </ImageView>
-        <HBox fx:id="hBoxContainer" spacing="15.0" />
-    </VBox>
-</ScrollPane>
+    </top>
+    <center>
+        <VBox>
+            <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../img/back.png" />
+            </ImageView>
+            <ScrollPane hbarPolicy="NEVER">
+                <HBox fx:id="hBoxContainer" spacing="15.0" />
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>
