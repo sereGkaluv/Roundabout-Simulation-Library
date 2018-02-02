@@ -232,7 +232,7 @@ public class ConfigParser {
             for (Track track : trackList) {
                 // In direction.
                 final String fromSectionId = track.getFromSectionId();
-                final Street fromSection = resolveStreet(intersectionComponent.getId(), fromSectionId, track.getFromSectionType());
+                final Street fromSection = resolveStreet(intersectionComponent.getId(), fromSectionId);
                 if (!DIRECTION_MAP.containsKey(fromSectionId)) {
                     DIRECTION_MAP.put(fromSectionId, directionIndexer++);
 
@@ -253,7 +253,7 @@ public class ConfigParser {
 
                 // Out direction.
                 final String toSectionId = track.getToSectionId();
-                final Street toSection = resolveStreet(intersectionComponent.getId(), toSectionId, track.getToSectionType());
+                final Street toSection = resolveStreet(intersectionComponent.getId(), toSectionId);
                 if (!DIRECTION_MAP.containsKey(toSectionId)) {
                     DIRECTION_MAP.put(toSectionId, directionIndexer++);
                 }
@@ -351,11 +351,11 @@ public class ConfigParser {
                 final List<Track> trackList = SORTED_TRACK_EXTRACTOR.apply(co);
                 for (Track track : trackList) {
                     final String fromComponentId = track.getFromComponentId() != null ? track.getFromComponentId() : scopeComponentId;
-                    final Street fromSection = resolveStreet(fromComponentId, track.getFromSectionId(), track.getFromSectionType());
+                    final Street fromSection = resolveStreet(fromComponentId, track.getFromSectionId());
                     if (!previousSections.contains(fromSection)) previousSections.add(fromSection);
 
                     final String toComponentId = track.getToComponentId() != null ? track.getToComponentId() : scopeComponentId;
-                    final Street toSection = resolveStreet(toComponentId, track.getToSectionId(), track.getToSectionType());
+                    final Street toSection = resolveStreet(toComponentId, track.getToSectionId());
                     if (!nextSections.contains(toSection)) nextSections.add(toSection);
 
                     trackInitializers.add(connector -> connector.initializeTrack(
@@ -410,11 +410,9 @@ public class ConfigParser {
         return ROUTE_REGISTRY.get(scopeComponentId);
     }
 
-    private Street resolveStreet(String componentId, String streetId, ConsumerType consumerType) {
-        switch (consumerType) {
-            case ROUNDABOUT_EXIT: return resolveSink(componentId, streetId);
-            default: return resolveSection(componentId, streetId);
-        }
+    private Street resolveStreet(String componentId, String streetId) {
+        final Street resolvedSection = resolveSection(componentId, streetId);
+        return resolvedSection != null ? resolvedSection : resolveSink(componentId, streetId);
     }
 
     private StreetSection resolveSection(String componentId, String sectionId) {
