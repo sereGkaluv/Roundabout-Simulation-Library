@@ -29,7 +29,7 @@ public class MainApp extends Application {
     private static final String DEFAULT_TITLE = "TRAFSIM";
 
     private static final int DEFAULT_WIDTH = 1200;
-    private static final int DEFAULT_HEIGHT = 900;
+    private static final int DEFAULT_HEIGHT = 950;
 
     private static final double EXPERIMENT_STOP_TIME = 3;
     private static final TimeUnit EXPERIMENT_TIME_UNIT = TimeUnit.DAYS;

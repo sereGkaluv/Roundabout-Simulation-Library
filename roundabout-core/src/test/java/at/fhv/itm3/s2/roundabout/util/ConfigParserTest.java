@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ConfigParserTest {
-    private ModelConfig roundAboutConfig;
+/*    private ModelConfig roundAboutConfig;
     private ConfigParser configParser;
 
     @Before
@@ -79,5 +79,5 @@ public class ConfigParserTest {
     public void configParserTest_routesComponentLoaded() {
         assertNotNull("routes in component not null", roundAboutConfig.getComponents().getComponent().get(0).getRoutes().getRoute());
         assertEquals("8 routes loaded", 8, roundAboutConfig.getComponents().getComponent().get(0).getRoutes().getRoute().size());
-    }
+    }*/
 }
