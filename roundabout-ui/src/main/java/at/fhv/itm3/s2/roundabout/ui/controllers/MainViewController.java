@@ -9,7 +9,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -19,6 +21,13 @@ import java.util.*;
 
 public class MainViewController extends JfxController {
 
+    private static final int DEFAULT_SIM_SPEED_VALUE = 0;
+    private static final int MAX_SIM_SPEED_VALUE = 10;
+
+    @FXML private Label lblCurrentSimSpeed;
+    @FXML private Label lblMinSimSpeed;
+    @FXML private Label lblMaxSimSpeed;
+    @FXML private Slider sliderSimSpeed;
     @FXML private ScrollPane scrollPane;
     @FXML private ImageView imageView;
 
@@ -27,6 +36,13 @@ public class MainViewController extends JfxController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         imageView.fitWidthProperty().bind(scrollPane.widthProperty());
+
+        lblCurrentSimSpeed.textProperty().bind(sliderSimSpeed.valueProperty().asString());
+        lblMinSimSpeed.textProperty().bind(sliderSimSpeed.minProperty().asString());
+        lblMaxSimSpeed.textProperty().bind(sliderSimSpeed.maxProperty().asString());
+
+        sliderSimSpeed.setMin(DEFAULT_SIM_SPEED_VALUE);
+        sliderSimSpeed.setMax(MAX_SIM_SPEED_VALUE);
     }
 
     public void generateComponentStatContainers(

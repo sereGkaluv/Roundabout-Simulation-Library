@@ -6,9 +6,19 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Label?>
 <ScrollPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController" hbarPolicy="NEVER" fx:id="scrollPane">
     <VBox>
+        <ToolBar>
+            <Label text="Simulation speed:"/>
+            <Label fx:id="lblCurrentSimSpeed"/>
+            <Label fx:id="lblMinSimSpeed"/>
+            <Slider fx:id="sliderSimSpeed" />
+            <Label fx:id="lblMaxSimSpeed"/>
+        </ToolBar>
         <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true">
             <Image url="@../img/back.png" />
         </ImageView>
