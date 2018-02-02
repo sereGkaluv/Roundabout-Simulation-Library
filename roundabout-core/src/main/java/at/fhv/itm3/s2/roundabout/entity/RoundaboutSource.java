@@ -40,7 +40,7 @@ public class RoundaboutSource extends AbstractSource {
     }
 
     public double getGenerateRatio() {
-        return generateRatio;
+        return Double.compare(generateRatio, 0.0) == 0 ? 1.0 : generateRatio;
     }
 
     public void addGenerateRatio(Double ratio) {
