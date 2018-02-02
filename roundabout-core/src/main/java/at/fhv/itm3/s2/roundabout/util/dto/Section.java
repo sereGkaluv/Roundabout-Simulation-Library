@@ -8,6 +8,7 @@ public class Section implements IDTO {
     private String id;
     private Double length;
     private Integer order;
+    private Boolean isTrafficLightActive;
 
     @XmlAttribute
     public String getId() {
@@ -34,5 +35,14 @@ public class Section implements IDTO {
 
     public void setOrder(Integer order) {
         this.order = order;
+    }
+
+    @XmlAttribute
+    public Boolean getTrafficLightActive() {
+        return isTrafficLightActive;
+    }
+
+    public void setTrafficLightActive(Boolean trafficLightActive) {
+        isTrafficLightActive = trafficLightActive;
     }
 }
