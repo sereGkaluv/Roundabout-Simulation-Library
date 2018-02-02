@@ -16,6 +16,7 @@ public class RoundaboutSource extends AbstractSource {
     private Street connectedStreet;
     private RoundaboutSimulationModel model;
     protected RoundaboutEventFactory roundaboutEventFactory;
+    private double generateRatio;
 
     public RoundaboutSource(Model model, String description, boolean showInTrace, Street connectedStreet) {
         super(model, description, showInTrace);
@@ -31,12 +32,19 @@ public class RoundaboutSource extends AbstractSource {
 
     public void startGeneratingCars(double afterModelTimeUnits) {
         CarGenerateEvent event = this.roundaboutEventFactory.createCarGenerateEvent(model);
-//        event.schedule(connectedStreet, new TimeSpan(afterModelTimeUnits));
         event.schedule(this, new TimeSpan(afterModelTimeUnits));
     }
 
     public Street getConnectedStreet() {
         return connectedStreet;
+    }
+
+    public double getGenerateRatio() {
+        return generateRatio;
+    }
+
+    public void addGenerateRatio(Double ratio) {
+        this.generateRatio += ratio;
     }
 
     @Override

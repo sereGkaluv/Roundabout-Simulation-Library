@@ -1,8 +1,12 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.api.entity.*;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
+import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutSource;
 import at.fhv.itm3.s2.roundabout.mocks.RoundaboutSinkMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteType;
@@ -99,9 +103,11 @@ public class StatisticsIntegration {
 
         IRoute route1 = routeGeneratorMock.getRoute(RouteType.STOPS_FOUR_CARS_CHANGE_TRACK);
         AbstractSource source1 = route1.getSource();
+        ((RoundaboutSource) source1).addGenerateRatio(1.0);
 
         IRoute route2 = routeGeneratorMock.getRoute(RouteType.STOPS_FOUR_CARS_STAY_ON_TRACK);
         AbstractSource source2 = route2.getSource();
+        ((RoundaboutSource) source2).addGenerateRatio(1.0);
 
         // start generating cars simultaneously so one have to give precedence to another
         source1.startGeneratingCars(0.0);

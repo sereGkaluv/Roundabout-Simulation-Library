@@ -11,6 +11,7 @@ import at.fhv.itm3.s2.roundabout.controller.CarController;
 import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.DriverBehaviour;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutCar;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutSource;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import desmoj.core.simulator.Event;
 import desmoj.core.simulator.Model;
@@ -87,7 +88,14 @@ public class CarGenerateEvent extends Event<AbstractSource> {
             CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
             carCouldLeaveSectionEvent.schedule((Street)nextSection, new TimeSpan(traverseTime, TimeUnit.SECONDS));
 
-            double timeBetweenCarArrivals = roundaboutSimulationModel.getRandomTimeBetweenCarArrivals();
+            double carGenerateRatio;
+            if (source instanceof RoundaboutSource) {
+                carGenerateRatio = ((RoundaboutSource) source).getGenerateRatio();
+            } else {
+                throw new IllegalStateException("Source should be of type RoundaboutSource");
+            }
+
+            double timeBetweenCarArrivals = roundaboutSimulationModel.getRandomTimeBetweenCarArrivalsOnMainFlow() * carGenerateRatio;
             CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);
             carGenerateEvent.schedule(source, new TimeSpan(timeBetweenCarArrivals, TimeUnit.SECONDS));
         } else {
