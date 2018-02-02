@@ -86,4 +86,11 @@ public interface IRoute {
      * @return ratio of traffic flow
      */
     Double getRatio();
+
+    /**
+    * Checks if there is a specific {@link Street}s already in the route.
+    *
+    * @return true if there is a specific {@link Street} in the route, otherwise false.
+    */
+    boolean contains(IConsumer section);
 }

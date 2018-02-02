@@ -5,7 +5,7 @@ import desmoj.core.simulator.Model;
 
 import java.util.*;
 
-public class RoundaboutStructure implements IRoundaboutStructure {
+public class ModelStructure implements IModelStructure {
     private final Model model;
     private Set<IStreetConnector> connectors;
     private Map<AbstractSource, List<IRoute>> routes;
@@ -15,11 +15,11 @@ public class RoundaboutStructure implements IRoundaboutStructure {
     private Set<AbstractSink> sinks;
     private Set<Street> roundaboutInlets;
 
-    public RoundaboutStructure(Model model) {
+    public ModelStructure(Model model) {
         this(model, new HashMap<>());
     }
 
-    public RoundaboutStructure(Model model, Map<String, String> parameters) {
+    public ModelStructure(Model model, Map<String, String> parameters) {
         this.model = model;
         this.connectors = new HashSet<>();
         this.routes = new HashMap<>();

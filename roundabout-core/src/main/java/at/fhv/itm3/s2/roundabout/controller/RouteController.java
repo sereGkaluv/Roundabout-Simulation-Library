@@ -77,8 +77,6 @@ public class RouteController {
 
         this.routes = new HashMap<>();
         this.sources = new LinkedList<>();
-
-        initializeRoutes();
     }
 
     public IRoute getRandomRoute(AbstractSource source) {
@@ -100,9 +98,5 @@ public class RouteController {
         }
 
         throw new IllegalStateException("no route chosen");
-    }
-
-    private void initializeRoutes() {
-        // TODO implement
     }
 }

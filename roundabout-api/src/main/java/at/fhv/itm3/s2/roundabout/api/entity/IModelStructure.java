@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface IRoundaboutStructure {
+public interface IModelStructure {
 
     /**
      * Add a collection of street connectors to the structure.
