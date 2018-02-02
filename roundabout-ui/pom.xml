@@ -11,6 +11,23 @@
 
     <artifactId>roundabout-ui</artifactId>
 
+    <properties>
+        <local.repository.folder>${project.basedir}/../libs/</local.repository.folder>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>local-maven-repository</id>
+            <url>file://${local.repository.folder}</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>at.fhv.itm3.s2.roundabout</groupId>
