@@ -17,9 +17,11 @@ import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.entity.*;
 import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.util.dto.*;
+import co.paralleluniverse.common.util.Tuple;
 import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.Model;
 
+import javax.vecmath.Tuple2d;
 import javax.xml.bind.JAXB;
 import java.io.File;
 import java.util.*;
@@ -29,6 +31,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toMap;
+
 
 public class ConfigParser {
     private static final String MIN_TIME_BETWEEN_CAR_ARRIVALS = "MIN_TIME_BETWEEN_CAR_ARRIVALS";
@@ -52,7 +55,7 @@ public class ConfigParser {
     private static final Function<Connector, List<Track>> SORTED_TRACK_EXTRACTOR = co -> co.getTrack().stream().sorted(TRACK_COMPARATOR).collect(Collectors.toList());
 
     private String filename;
-    private Map<String, ArrayList<String>> routes = new HashMap<>(); // Source, Sink and Route
+    private Map<String, ArrayList<RouteSegmentsId>> routes = new HashMap<>(); // ID <Source&&Sink> and Route<ComponentID,StreetID>
 
     public ConfigParser(String filename) {
         this.filename = filename;
@@ -112,36 +115,73 @@ public class ConfigParser {
             //start from every possible source
             for (Source sourceIt : componentIt.getSources().getSource()) {
                 String currentStreetSectionID = sourceIt.getSectionId();
-                ArrayList<String> currentPath = new ArrayList();
-                DepthFirstSearch(currentStreetSectionID, currentPath, componentIt);
+                ArrayList<RouteSegmentsId> currentPath = new ArrayList();
+                currentPath.add(new RouteSegmentsId (componentIt.getId(), currentStreetSectionID));
+                DepthFirstSearch(currentStreetSectionID, currentPath, componentIt, modelConfig);
             }
         }
     }
 
-    void DepthFirstSearch(String currentStreetID, ArrayList<String> currentPath, Component component){
-        // solely store if the start-street section is not stored
-        if(currentPath.isEmpty()){
-            currentPath.add(currentStreetID);
-        }
-
+    void DepthFirstSearch(String currentStreetID,
+                          ArrayList<RouteSegmentsId> currentPath,
+                          Component component,
+                          ModelConfig modelConfig){
         // check each connector
         for(Connector connectorIt : component.getConnectors().getConnector()){
             for(Track trackIt : connectorIt.getTrack()){
                 if(trackIt.getFromSectionId().equals(currentStreetID)){
-                    ArrayList<String> currentPathTmp = new ArrayList<>(currentPath);
+                    ArrayList<RouteSegmentsId> currentPathTmp = new ArrayList<>(currentPath);
                     String nextStreetID = trackIt.getToSectionId();
                     if(checkStreetIsSink(nextStreetID)){ // sink is reached = end of path
-                        currentPathTmp.add(nextStreetID);
-                        addRoute(currentPath.get(0), nextStreetID, currentPathTmp);
+                        currentPathTmp.add(new RouteSegmentsId(component.getId(), nextStreetID));
+
+                        String sourceId = currentPath.get(0).getComponentId() + " " + currentPath.get(0).getStreetId();
+                        String sinkId = component.getId() + " " + nextStreetID;
+                        String routeID = sourceId + " " + sinkId;
+
+                        if(routes.containsKey(routeID) &&
+                           routes.get(routeID).size() < currentPathTmp.size()) {
+                           return;
+                        }
+
+                        addRoute(sourceId, sinkId, currentPathTmp);
                         return;
                     }
-                    if(!currentPath.contains(nextStreetID)){ // do not loop
-                        currentPathTmp.add(nextStreetID);
-                        DepthFirstSearch(nextStreetID, currentPathTmp, component);
+
+                    boolean continueDFS = true;
+                    for(RouteSegmentsId routeSegIdIt : currentPath){
+                        if (routeSegIdIt.contains(component.getId(), nextStreetID)) continueDFS = false;
+                    }
+
+                    if(continueDFS){ // do not loop
+                        currentPathTmp.add(new RouteSegmentsId(component.getId(), nextStreetID));
+                        DepthFirstSearch(nextStreetID, currentPathTmp, component, modelConfig);
                     }
                 }
             }
         }
+
+        // check the connectors between networks components (Roundabouts or Intersections)
+        for (Connector connectorIt : modelConfig.getComponents().getConnectors().getConnector()) {
+            for(Track trackIt : connectorIt.getTrack()) {
+                if (trackIt.getFromSectionId().equals(currentStreetID) &&
+                    trackIt.getFromComponentId().equals(component.getId())) {
+
+                    String toComponentID = trackIt.getToComponentId();
+                    String nextStreetID = trackIt.getToSectionId();
+
+                    // get access to the "toSection"
+                    for (Component component1 : modelConfig.getComponents().getComponent()) {
+                        if(component1.getId().equals(toComponentID)){
+                            ArrayList<RouteSegmentsId> currentPathTmp = new ArrayList<>(currentPath);
+                            DepthFirstSearch(nextStreetID, currentPathTmp, component1, modelConfig);
+                        }
+
+                    }
+                }
+            }
+        }
+
         return;
     }
 
@@ -167,16 +207,16 @@ public class ConfigParser {
         throw new IllegalArgumentException( ID + " is not a legit Street ID Name.");
     }
 
-    public void addRoute(String source , String sink, ArrayList<String> route) {
+    public void addRoute(String source , String sink, ArrayList<RouteSegmentsId> route) {
         String key = source + " " + sink;
         routes.put(key, route);
     }
 
-    public Map<String, ArrayList<String>> getRoutes() {
+    public Map<String, ArrayList<RouteSegmentsId>> getRoutes() {
         return routes;
     }
 
-    public ArrayList<String> getRoute(String start, String destination){
+    public ArrayList<RouteSegmentsId> getRoute(String start, String destination){
         String key = start + " " + destination;
         return routes.get(key);
     }

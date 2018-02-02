@@ -250,19 +250,19 @@
         </component>
         <connectors>
             <connector id="co_ro1_s1_t1_is1_s2_t1">
-                <track fromConnectorId="ro1" fromSectionId="s1_t1" fromSectionType="STREET_SECTION" toConnetorId="is1" toSectionId="s2_t1" toSectionType="STREET_SECTION"/>
+                <track fromComponentId="ro1" fromSectionId="s1_t1" fromSectionType="STREET_SECTION" toComponentId="is1" toSectionId="s2_t1" toSectionType="STREET_SECTION"/>
             </connector>
 
             <connector id="co_ro1_s1_t1_is1_s2_t2">
-                <track fromConnectorId="ro1" fromSectionId="s1_t1" fromSectionType="STREET_SECTION" toConnetorId="is1" toSectionId="s2_t2" toSectionType="STREET_SECTION"/>
+                <track fromComponentId="ro1" fromSectionId="s1_t1" fromSectionType="STREET_SECTION" toComponentId="is1" toSectionId="s2_t2" toSectionType="STREET_SECTION"/>
             </connector>
 
             <connector id="co_is1_s6_t1_ro1_s2_t1">
-                <track fromConnectorId="is1" fromSectionId="s6_t1" fromSectionType="STREET_SECTION" toConnetorId="ro1" toSectionId="s2_t1" toSectionType="STREET_SECTION"/>
+                <track fromComponentId="is1" fromSectionId="s6_t1" fromSectionType="STREET_SECTION" toComponentId="ro1" toSectionId="s2_t1" toSectionType="STREET_SECTION"/>
             </connector>
 
             <connector id="co_is1_s6_t2_ro1_s2_t2">
-                <track fromConnectorId="is1" fromSectionId="s6_t2" fromSectionType="STREET_SECTION" toConnetorId="ro1" toSectionId="s2_t2" toSectionType="STREET_SECTION"/>
+                <track fromComponentId="is1" fromSectionId="s6_t2" fromSectionType="STREET_SECTION" toComponentId="ro1" toSectionId="s2_t2" toSectionType="STREET_SECTION"/>
             </connector>
         </connectors>
     </components>

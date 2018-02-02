@@ -10,10 +10,12 @@ public class Track implements IDTO {
     private Long order;
 
     private String fromComponentId;
+    private String fromConnectorId;
     private String fromSectionId;
     private ConsumerType fromSectionType;
 
     private String toComponentId;
+    private String toConnectorId;
     private String toSectionId;
     private ConsumerType toSectionType;
 
@@ -33,6 +35,15 @@ public class Track implements IDTO {
 
     public void setFromComponentId(String fromComponentId) {
         this.fromComponentId = fromComponentId;
+    }
+
+    @XmlAttribute
+    public String getFromConnectorId() {
+        return fromConnectorId;
+    }
+
+    public void setFromConnectorId(String fromConnectorId) {
+        this.fromConnectorId = fromConnectorId;
     }
 
     @XmlAttribute
@@ -60,6 +71,15 @@ public class Track implements IDTO {
 
     public void setToComponentId(String toComponentId) {
         this.toComponentId = toComponentId;
+    }
+
+    @XmlAttribute
+    public String getToConnectorId() {
+        return toConnectorId;
+    }
+
+    public void setToConnectorId(String toConnectorId) {
+        this.toConnectorId = toConnectorId;
     }
 
     @XmlAttribute
