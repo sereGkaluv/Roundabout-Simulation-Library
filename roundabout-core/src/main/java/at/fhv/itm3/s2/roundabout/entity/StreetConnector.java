@@ -90,7 +90,7 @@ public class StreetConnector implements IStreetConnector {
         }
         List<IConsumer> nextStreetsOnTrack = this.nextSectionsOnTrackMap.get(currentConsumer);
 
-        for (IConsumer street: nextStreetsOnTrack) {
+        for (IConsumer street : nextStreetsOnTrack) {
             if (street == nextConsumer) {
                 return true;
             }
