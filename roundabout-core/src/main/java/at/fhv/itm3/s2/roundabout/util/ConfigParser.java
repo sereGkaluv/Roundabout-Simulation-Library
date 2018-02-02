@@ -405,6 +405,7 @@ public class ConfigParser {
             RoundaboutSource source;
             if (routeDTO.getSource() != null) {
                 source = SOURCE_REGISTRY.get(scopeComponentId).get(routeDTO.getSource().getId());
+                source.addGenerateRatio(routeDTO.getRatio());
                 routeEntity = new Route(route, source, routeDTO.getRatio());
             } else {
                 throw new IllegalArgumentException("every route needs to have a source");

@@ -39,7 +39,7 @@ public class RoundaboutSimulationModel extends Model {
      * Random number stream used to draw a time between two car arrivals.
      * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
      */
-    private ContDistUniform timeBetweenCarArrivals;
+    private ContDistUniform timeBetweenCarArrivalsOnMainFlow;
 
     /**
      * Constructs a new RoundaboutSimulationModel
@@ -137,7 +137,7 @@ public class RoundaboutSimulationModel extends Model {
         );
         distanceFactorBetweenCars.setSeed(MODEL_SEED);
 
-        timeBetweenCarArrivals = new ContDistUniform(
+        timeBetweenCarArrivalsOnMainFlow = new ContDistUniform(
             this,
             "TimeBetweenCarArrivalsStream",
                 minTimeBetweenCarArrivals,
@@ -145,7 +145,7 @@ public class RoundaboutSimulationModel extends Model {
             true,
             false
         );
-        timeBetweenCarArrivals.setSeed(MODEL_SEED);
+        timeBetweenCarArrivalsOnMainFlow.setSeed(MODEL_SEED);
 
         if (mainArrivalRateForOneWayStreets != null) {
             timeBetweenCarArrivalsOnOneWayStreets = ModelFactory.getInstance(this).createContDistConstant(mainArrivalRateForOneWayStreets);
@@ -164,10 +164,10 @@ public class RoundaboutSimulationModel extends Model {
     /**
      * Returns a sample of the random stream {@link ContDistUniform} used to determine the time between car arrivals.
      *
-     * @return a {@code timeBetweenCarArrivals} sample as double.
+     * @return a {@code timeBetweenCarArrivalsOnMainFlow} sample as double.
      */
-    public double getRandomTimeBetweenCarArrivals() {
-        return timeBetweenCarArrivals.sample();
+    public double getRandomTimeBetweenCarArrivalsOnMainFlow() {
+        return timeBetweenCarArrivalsOnMainFlow.sample();
     }
 
     /**
