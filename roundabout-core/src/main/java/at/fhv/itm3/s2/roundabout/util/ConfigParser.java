@@ -197,17 +197,6 @@ public class ConfigParser {
         return false;
     }
 
-    public Street getStreetFromID (String ID){
-        for(String componentIDIt : SECTION_REGISTRY.keySet()){
-            for(String sectionIDIt : SECTION_REGISTRY.get(componentIDIt).keySet()){
-                if(sectionIDIt.equals(ID)) {
-                    return SECTION_REGISTRY.get(componentIDIt).get(sectionIDIt);
-                }
-            }
-        }
-        throw new IllegalArgumentException( ID + " is not a legit Street ID Name.");
-    }
-
     public void addRoute(String source , String sink, ArrayList<RouteSegmentsId> route) {
         String key = source + " " + sink;
         routes.put(key, route);
