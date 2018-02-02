@@ -174,6 +174,7 @@ public class ConfigParser {
                     for (Component component1 : modelConfig.getComponents().getComponent()) {
                         if(component1.getId().equals(toComponentID)){
                             ArrayList<RouteSegmentsId> currentPathTmp = new ArrayList<>(currentPath);
+                            currentPathTmp.add(new RouteSegmentsId(component1.getId(), nextStreetID));
                             DepthFirstSearch(nextStreetID, currentPathTmp, component1, modelConfig);
                         }
 
