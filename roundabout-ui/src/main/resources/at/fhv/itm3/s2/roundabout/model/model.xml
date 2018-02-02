@@ -97,7 +97,8 @@
             </sections>
             <connectors>
                 <connector id="co_1">
-                    <track order="1" fromSectionId="s19_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s1_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="1" fromSectionId="s19_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s1_t1"
+                           toSectionType="ROUNDABOUT_SECTION"/>
 
                     <track order="2" fromSectionId="s19_t2" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s3_t1" toSectionType="ROUNDABOUT_SECTION"/>
                     <track order="3" fromSectionId="s19_t2" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s3_t2" toSectionType="ROUNDABOUT_SECTION"/>
@@ -106,7 +107,8 @@
                     <track order="5" fromSectionId="s2_t2" fromSectionType="ROUNDABOUT_INLET" toSectionId="s3_t2" toSectionType="ROUNDABOUT_SECTION"/>
                 </connector>
                 <connector id="co_2">
-                    <track order="1" fromSectionId="s3_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s4_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="1" fromSectionId="s3_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s4_t1"
+                           toSectionType="ROUNDABOUT_SECTION"/>
 
                     <track order="2" fromSectionId="s3_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s7_t1" toSectionType="ROUNDABOUT_SECTION"/>
                     <track order="3" fromSectionId="s3_t2" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s7_t2" toSectionType="ROUNDABOUT_SECTION"/>
@@ -114,7 +116,8 @@
                     <track order="4" fromSectionId="s5_t1" fromSectionType="ROUNDABOUT_INLET" toSectionId="s7_t2" toSectionType="ROUNDABOUT_SECTION"/>
                 </connector>
                 <connector id="co_3">
-                    <track order="1" fromSectionId="s7_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s8_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="1" fromSectionId="s7_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s8_t1"
+                           toSectionType="ROUNDABOUT_SECTION"/>
 
                     <track order="2" fromSectionId="s7_t2" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s12_t1" toSectionType="ROUNDABOUT_SECTION"/>
                     <track order="3" fromSectionId="s7_t2" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s12_t2" toSectionType="ROUNDABOUT_SECTION"/>
@@ -123,7 +126,8 @@
                     <track order="5" fromSectionId="s10_t2" fromSectionType="ROUNDABOUT_INLET" toSectionId="s12_t2" toSectionType="ROUNDABOUT_SECTION"/>
                 </connector>
                 <connector id="co_4">
-                    <track order="1" fromSectionId="s12_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s13_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="1" fromSectionId="s12_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s13_t1"
+                           toSectionType="ROUNDABOUT_SECTION"/>
 
                     <track order="2" fromSectionId="s12_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s16_t1" toSectionType="ROUNDABOUT_SECTION"/>
                     <track order="3" fromSectionId="s12_t2" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s16_t2" toSectionType="ROUNDABOUT_SECTION"/>
@@ -132,7 +136,8 @@
                     <track order="5" fromSectionId="s14_t2" fromSectionType="ROUNDABOUT_INLET" toSectionId="s16_t2" toSectionType="ROUNDABOUT_SECTION"/>
                 </connector>
                 <connector id="co_5">
-                    <track order="1" fromSectionId="s16_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s17_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="1" fromSectionId="s16_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s17_t1"
+                           toSectionType="ROUNDABOUT_SECTION"/>
 
                     <track order="2" fromSectionId="s16_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s19_t1" toSectionType="ROUNDABOUT_SECTION"/>
                     <track order="3" fromSectionId="s16_t2" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s19_t2" toSectionType="ROUNDABOUT_SECTION"/>
