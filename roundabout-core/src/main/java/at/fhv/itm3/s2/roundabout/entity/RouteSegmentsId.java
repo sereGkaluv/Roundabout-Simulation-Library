@@ -9,11 +9,15 @@ public class RouteSegmentsId {
         this.streetId = streetId;
     }
 
-    public String getComponentId() {return this.componentId;}
-    public String getStreetId() {return this.streetId;}
+    public String getComponentId() {
+        return componentId;
+    }
+
+    public String getStreetId() {
+        return streetId;
+    }
 
     public boolean contains(String componentId, String streetId) {
-        if(this.componentId.equals(componentId) && this.streetId.equals(streetId)) return true;
-        return false;
+        return this.componentId.equals(componentId) && this.streetId.equals(streetId);
     }
 }
