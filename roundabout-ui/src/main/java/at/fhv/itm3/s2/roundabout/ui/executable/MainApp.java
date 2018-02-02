@@ -94,8 +94,10 @@ public class MainApp extends Application {
                 }
 
                 roundaboutStructure.getRoutes().keySet().forEach(s -> s.startGeneratingCars(1));
+                experiment.setExecutionSpeedRate(0.000001);
                 // Starting experiment
                 experiment.start();
+
                 //roundaboutStructure.getRoutes().keySet().forEach(s -> s.startGeneratingCars(1));
 
                 if (IS_TRACE_ENABLED || IS_DEBUG_ENABLED) {
