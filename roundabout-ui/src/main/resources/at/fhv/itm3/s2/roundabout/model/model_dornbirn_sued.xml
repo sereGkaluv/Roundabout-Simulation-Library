@@ -180,7 +180,5 @@
                 </connector>			
             </connectors>
         </component>
-		<connectors>
-		<connectors/>
     </components>
 </model>
