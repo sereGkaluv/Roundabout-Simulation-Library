@@ -14,7 +14,6 @@ import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.*;
 import at.fhv.itm3.s2.roundabout.entity.Route;
 import at.fhv.itm3.s2.roundabout.util.dto.*;
-import desmoj.core.simulator.Experiment;
 import desmoj.core.simulator.Model;
 
 import javax.xml.bind.JAXB;
@@ -66,22 +65,8 @@ public class ConfigParser {
         return JAXB.unmarshal(configFile, ModelConfig.class);
     }
 
-    public IRoundaboutStructure generateRoundaboutStructure(ModelConfig modelConfig, Experiment experiment) {
+    public IRoundaboutStructure generateRoundaboutStructure(ModelConfig modelConfig, RoundaboutSimulationModel model) {
         final Map<String, String> parameters = handleParameters(modelConfig);
-
-        RoundaboutSimulationModel model = new RoundaboutSimulationModel(
-                null,
-                modelConfig.getName(),
-                false,
-                false,
-                extractParameter(parameters::get, Double::valueOf, MIN_TIME_BETWEEN_CAR_ARRIVALS),
-                extractParameter(parameters::get, Double::valueOf, MAX_TIME_BETWEEN_CAR_ARRIVALS),
-                extractParameter(parameters::get, Double::valueOf, MIN_DISTANCE_FACTOR_BETWEEN_CARS),
-                extractParameter(parameters::get, Double::valueOf, MAX_DISTANCE_FACTOR_BETWEEN_CARS),
-                extractParameter(parameters::get, Double::valueOf, MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS),
-                extractParameter(parameters::get, Double::valueOf, STANDARD_CAR_ACCELERATION_TIME)
-        );
-        model.connectToExperiment(experiment);
 
         IRoundaboutStructure roundaboutStructure = new RoundaboutStructure(model, parameters);
 
