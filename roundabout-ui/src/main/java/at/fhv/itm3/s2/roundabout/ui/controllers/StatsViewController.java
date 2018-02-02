@@ -4,16 +4,16 @@ import at.fhv.itm3.s2.roundabout.api.CarObserverType;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.ui.controllers.core.JfxController;
+import at.fhv.itm3.s2.roundabout.util.dto.Sink;
+import com.google.common.base.Strings;
+import com.google.common.collect.ComparisonChain;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.Function;
 
 public class StatsViewController extends JfxController {
@@ -52,7 +52,7 @@ public class StatsViewController extends JfxController {
     public void generateStatLabels(String title, Collection<StreetSection> streetSections, Collection<RoundaboutSink> sinks) {
         Platform.runLater(() -> lblStatsTitle.setText(title));
 
-        streetSections.forEach(streetSection -> {
+        streetSections.stream().sorted(Comparator.comparing(StreetSection::getId)).forEach(streetSection -> {
             final String sourceId = String.format(KEY_FORMAT, streetSection.getId(), SOURCE_ID_SUFFIX);
             final String sourceIS = String.format(KEY_FORMAT, streetSection.getId(), SOURCE_IS_SUFFIX);
             final String sourcePS = String.format(KEY_FORMAT, streetSection.getId(), SOURCE_PS_SUFFIX);
@@ -92,7 +92,7 @@ public class StatsViewController extends JfxController {
             });
         });
 
-        sinks.forEach(sink -> {
+        sinks.stream().sorted(Comparator.comparing(RoundaboutSink::getId)).forEach(sink -> {
             final String sinkId = String.format(KEY_FORMAT, sink.getId(), SINK_ID_SUFFIX);
             final String sinkMin = String.format(KEY_FORMAT, sink.getId(), SINK_MIN_SUFFIX);
             final String sinkAvg = String.format(KEY_FORMAT, sink.getId(), SINK_AVG_SUFFIX);
