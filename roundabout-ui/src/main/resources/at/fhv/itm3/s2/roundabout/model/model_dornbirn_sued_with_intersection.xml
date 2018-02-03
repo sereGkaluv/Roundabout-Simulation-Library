@@ -48,52 +48,52 @@
                 <sink id="sk_s17_t1"/>
             </sinks>
             <sections>
-                <section id="s1_t1" length="100"/>
+                <section id="s1_t1" length="110.45"/>
 
-                <section id="s2_t1" length="100"/>
-                <section id="s2_t2" length="100"/>
+                <section id="s2_t1" length="110.45"/>
+                <section id="s2_t2" length="110.45"/>
 
-                <section id="s3_t1" length="100"/>
-                <section id="s3_t2" length="100"/>
+                <section id="s3_t1" length="31.77"/>
+                <section id="s3_t2" length="27.5"/>
 
-                <section id="s4_t1" length="100"/>
+                <section id="s4_t1" length="114.55"/>
 
-                <section id="s5_t1" length="100"/>
+                <section id="s5_t1" length="111.27"/>
 
-                <section id="s6_t1" length="100"/>
+                <section id="s6_t1" length="237.27"/>
 
-                <section id="s7_t2" length="100"/>
-                <section id="s7_t1" length="100"/>
+                <section id="s7_t2" length="42.35"/>
+                <section id="s7_t1" length="49.28"/>
 
-                <section id="s8_t1" length="100"/>
+                <section id="s8_t1" length="5"/>
 
-                <section id="s9_t1" length="100"/>
-                <section id="s9_t2" length="100"/>
+                <section id="s9_t1" length="229"/>
+                <section id="s9_t2" length="229"/>
 
-                <section id="s10_t1" length="100" isTrafficLightActive="true"/>
-                <section id="s10_t2" length="100" isTrafficLightActive="true"/>
+                <section id="s10_t1" length="229" isTrafficLightActive="true"/>
+                <section id="s10_t2" length="229" isTrafficLightActive="true"/>
 
-                <section id="s11_t1" length="100"/>
+                <section id="s11_t1" length="474.55"/>
 
-                <section id="s12_t1" length="100"/>
-                <section id="s12_t2" length="100"/>
+                <section id="s12_t1" length="29.12"/>
+                <section id="s12_t2" length="23.85"/>
 
-                <section id="s13_t1" length="100"/>
+                <section id="s13_t1" length="245.45"/>
 
-                <section id="s14_t1" length="100"/>
-                <section id="s14_t2" length="100"/>
+                <section id="s14_t1" length="81.82"/>
+                <section id="s14_t2" length="81.82"/>
 
-                <section id="s15_t1" length="100"/>
+                <section id="s15_t1" length="327.27"/>
 
-                <section id="s16_t1" length="100"/>
-                <section id="s16_t2" length="100"/>
+                <section id="s16_t1" length="28.08"/>
+                <section id="s16_t2" length="23.31"/>
 
-                <section id="s17_t1" length="100"/>
+                <section id="s17_t1" length="81.82"/>
 
-                <section id="s18_t1" length="100"/>
+                <section id="s18_t1" length="90"/>
 
-                <section id="s19_t1" length="100"/>
-                <section id="s19_t2" length="100"/>
+                <section id="s19_t1" length="22.23"/>
+                <section id="s19_t2" length="24.89"/>
             </sections>
             <connectors>
                 <connector id="co_1">
@@ -200,23 +200,23 @@
                 <sink id="sk3_t1"/>
             </sinks>
             <sections>
-                <section id="s2_t1" length="100"/>
-                <section id="s2_t2" length="100"/>
+                <section id="s2_t1" length="110.45"/>
+                <section id="s2_t2" length="110.45"/>
 
-                <section id="s3_t1" length="100"/>
-                <section id="s3_t2" length="100"/>
-                <section id="s3_t3" length="100"/>
-                <section id="s3_t4" length="100"/>
+                <section id="s3_t1" length="102.27"/>
+                <section id="s3_t2" length="102.27"/>
+                <section id="s3_t3" length="102.27"/>
+                <section id="s3_t4" length="102.27"/>
 
-                <section id="s4_t2" length="100"/>
-                <section id="s4_t1" length="100"/>
+                <section id="s4_t2" length="149.72"/>
+                <section id="s4_t1" length="147.27"/>
 
-                <section id="s5_t1" length="100"/>
-                <section id="s5_t2" length="100"/>
-                <section id="s5_t3" length="100"/>
+                <section id="s5_t1" length="106.36"/>
+                <section id="s5_t2" length="106.36"/>
+                <section id="s5_t3" length="106.36"/>
 
-                <section id="s6_t1" length="100"/>
-                <section id="s6_t2" length="100"/>
+                <section id="s6_t1" length="110.45"/>
+                <section id="s6_t2" length="110.45"/>
             </sections>
             <connectors>
                 <connector id="co_sk1_t1">
