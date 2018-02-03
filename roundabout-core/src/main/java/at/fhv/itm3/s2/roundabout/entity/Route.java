@@ -9,6 +9,7 @@ import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Route implements IRoute {
 
@@ -17,10 +18,10 @@ public class Route implements IRoute {
     private Double flowRatio;
 
     public Route() {
-        this(new ArrayList<>(), null, 1.0);
+        this(null, new ArrayList<>(), 1.0);
     }
 
-    public Route(List<IConsumer> route, AbstractSource source, Double flowRatio) {
+    public Route(AbstractSource source, List<IConsumer> route, Double flowRatio) {
         this.route = route;
         this.source = source;
         this.flowRatio = flowRatio;
@@ -102,9 +103,6 @@ public class Route implements IRoute {
         if (!(section instanceof Street)) {
            throw new IllegalStateException("All previous IConsumer should be of type Street");
         }
-        for(int i = 0; i < route.size(); ++i){
-            if(route.get(i).equals((Street) section)) return true;
-         }
-        return false;
+        return IntStream.range(0, route.size()).anyMatch(i -> route.get(i).equals(section));
     }
 }

@@ -1,4 +1,4 @@
-package at.fhv.itm3.s2.roundabout.api.entity;
+package at.fhv.itm3.s2.roundabout.api.util.observable;
 
 import java.util.Observable;
 

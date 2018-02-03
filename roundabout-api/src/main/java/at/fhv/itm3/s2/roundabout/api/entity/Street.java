@@ -1,7 +1,8 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
 import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
-import at.fhv.itm3.s2.roundabout.api.CarObserverType;
+import at.fhv.itm3.s2.roundabout.api.util.observable.CarObserverType;
+import at.fhv.itm3.s2.roundabout.api.util.observable.RoundaboutObservable;
 import desmoj.core.simulator.Model;
 
 import java.util.List;

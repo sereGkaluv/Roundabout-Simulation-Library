@@ -31,8 +31,8 @@
 
                 <source id="so_s18_t1" sectionId="s18_t1"/>
 				
-				<source id="so_s2_t1"  sectionId="s2_t1"/>
-				<source id="so_s2_t2"  sectionId="s2_t2"/>
+				<source id="so_s2_t1" sectionId="s2_t1"/>
+				<source id="so_s2_t2" sectionId="s2_t2"/>
             </sources>
             <sinks>
                 <sink id="sk_s4_t1"/>
@@ -145,11 +145,9 @@
                     <track order="4" fromSectionId="s18_t1" fromSectionType="ROUNDABOUT_INLET" toSectionId="s19_t1" toSectionType="ROUNDABOUT_SECTION"/>
                     <track order="5" fromSectionId="s18_t1" fromSectionType="ROUNDABOUT_INLET" toSectionId="s19_t2" toSectionType="ROUNDABOUT_SECTION"/>
                 </connector>
-                <connector id="co_s8_t1_s9_t1">
-                    <track fromSectionId="s8_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s9_t1" toSectionType="STREET_SECTION"/>
-                </connector>
-                <connector id="co_s8_t1_s9_t2">
-                    <track fromSectionId="s8_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s9_t2" toSectionType="STREET_SECTION"/>
+                <connector id="co_s8_t1_s9">
+                    <track order="1" fromSectionId="s8_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s9_t1" toSectionType="STREET_SECTION"/>
+                    <track order="2" fromSectionId="s8_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s9_t2" toSectionType="STREET_SECTION"/>
                 </connector>
                 <connector id="co_s4_t1_sk_s4_t1">
                     <track fromSectionId="s4_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="sk_s4_t1" toSectionType="ROUNDABOUT_EXIT"/>
@@ -176,7 +174,7 @@
                     <track fromSectionId="s17_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="sk_s17_t1" toSectionType="ROUNDABOUT_EXIT"/>
                 </connector>				
                 <connector id="co_s1_t1_sk_s1_t1">
-                    <track fromSectionId="s2_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="sk_s2_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track fromSectionId="s1_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="sk_s1_t1" toSectionType="ROUNDABOUT_EXIT"/>
                 </connector>			
             </connectors>
         </component>

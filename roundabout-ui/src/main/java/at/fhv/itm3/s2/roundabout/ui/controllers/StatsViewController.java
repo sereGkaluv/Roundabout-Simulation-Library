@@ -1,12 +1,9 @@
 package at.fhv.itm3.s2.roundabout.ui.controllers;
 
-import at.fhv.itm3.s2.roundabout.api.CarObserverType;
+import at.fhv.itm3.s2.roundabout.api.util.observable.CarObserverType;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.ui.controllers.core.JfxController;
-import at.fhv.itm3.s2.roundabout.util.dto.Sink;
-import com.google.common.base.Strings;
-import com.google.common.collect.ComparisonChain;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

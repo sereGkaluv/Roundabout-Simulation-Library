@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.util;
 
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutStructure;
+import at.fhv.itm3.s2.roundabout.entity.ModelStructure;
 import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
 import desmoj.core.simulator.Experiment;
 import org.junit.Before;

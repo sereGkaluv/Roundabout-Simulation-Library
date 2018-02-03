@@ -1,7 +1,7 @@
 package at.fhv.itm3.s2.roundabout.ui.executable;
 
 
-import at.fhv.itm3.s2.roundabout.api.entity.IRoundaboutStructure;
+import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
 import at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController;
 import at.fhv.itm3.s2.roundabout.ui.util.DaemonThreadFactory;
 import at.fhv.itm3.s2.roundabout.ui.util.ViewLoader;
@@ -47,7 +47,7 @@ public class MainApp extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
     }
 
     @Override
@@ -62,7 +62,7 @@ public class MainApp extends Application {
             final Experiment experiment = new Experiment("Trafsim experiment");
             experiment.setShowProgressBar(false);
 
-            IRoundaboutStructure roundaboutStructure = configParser.generateRoundaboutStructure(modelConfig, experiment);
+            IModelStructure modelStructure = configParser.generateRoundaboutStructure(modelConfig, experiment);
 
             final MainViewController mainViewController = viewLoader.getController();
             mainViewController.generateComponentStatContainers(
@@ -72,7 +72,7 @@ public class MainApp extends Application {
             );
 
             prepareNewStage(mainStage).show();
-            roundaboutStructure.getRoutes().keySet().forEach(s -> s.startGeneratingCars(0));
+            modelStructure.getRoutes().keySet().forEach(s -> s.startGeneratingCars(0));
 
             Thread thread = initExperimentThread(
                 experiment,

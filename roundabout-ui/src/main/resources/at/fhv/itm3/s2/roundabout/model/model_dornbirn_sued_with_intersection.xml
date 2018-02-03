@@ -140,11 +140,9 @@
                     <track order="4" fromSectionId="s18_t1" fromSectionType="ROUNDABOUT_INLET" toSectionId="s19_t1" toSectionType="ROUNDABOUT_SECTION"/>
                     <track order="5" fromSectionId="s18_t1" fromSectionType="ROUNDABOUT_INLET" toSectionId="s19_t2" toSectionType="ROUNDABOUT_SECTION"/>
                 </connector>
-                <connector id="co_s8_t1_s9_t1">
-                    <track fromSectionId="s8_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s9_t1" toSectionType="STREET_SECTION"/>
-                </connector>
-                <connector id="co_s8_t1_s9_t2">
-                    <track fromSectionId="s8_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s9_t2" toSectionType="STREET_SECTION"/>
+                <connector id="co_s8_t1_s9">
+                    <track order="1" fromSectionId="s8_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s9_t1" toSectionType="STREET_SECTION"/>
+                    <track order="2" fromSectionId="s8_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="s9_t2" toSectionType="STREET_SECTION"/>
                 </connector>
                 <connector id="co_s4_t1_sk_s4_t1">
                     <track fromSectionId="s4_t1" fromSectionType="ROUNDABOUT_SECTION" toSectionId="sk_s4_t1" toSectionType="ROUNDABOUT_EXIT"/>
@@ -220,31 +218,28 @@
             </sections>
             <connectors>
                 <connector id="co_sk1_t1">
-                    <track order="1" fromSectionId="s2_t1" fromSectionType="STREET_SECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="2" fromSectionId="s4_t2" fromSectionType="STREET_SECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="3" fromSectionId="s5_t2" fromSectionType="STREET_SECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="1" fromSectionId="s2_t1" fromSectionType="INTERSECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="2" fromSectionId="s4_t2" fromSectionType="INTERSECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="3" fromSectionId="s5_t2" fromSectionType="INTERSECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
                 </connector>
 
                 <connector id="co_sk2_t1">
-                    <track order="1" fromSectionId="s2_t1" fromSectionType="STREET_SECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="2" fromSectionId="s3_t1" fromSectionType="STREET_SECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="3" fromSectionId="s5_t3" fromSectionType="STREET_SECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="1" fromSectionId="s2_t1" fromSectionType="INTERSECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="2" fromSectionId="s3_t1" fromSectionType="INTERSECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="3" fromSectionId="s5_t3" fromSectionType="INTERSECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
                 </connector>
 
                 <connector id="co_sk3_t1">
-                    <track order="1" fromSectionId="s2_t2" fromSectionType="STREET_SECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="2" fromSectionId="s3_t2" fromSectionType="STREET_SECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="3" fromSectionId="s4_t1" fromSectionType="STREET_SECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="1" fromSectionId="s2_t2" fromSectionType="INTERSECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="2" fromSectionId="s3_t2" fromSectionType="INTERSECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track order="3" fromSectionId="s4_t1" fromSectionType="INTERSECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
                 </connector>
 
-                <connector id="co_s6_t1">
+                <connector id="co_s6">
                     <track order="1" fromSectionId="s3_t3" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
                     <track order="2" fromSectionId="s4_t1" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
                     <track order="3" fromSectionId="s5_t1" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
-                </connector>
-
-                <connector id="co_s6_t2">
-                    <track fromSectionId="s3_t4" fromSectionType="STREET_SECTION" toSectionId="s6_t2" toSectionType="STREET_SECTION"/>
+                    <track order="4" fromSectionId="s3_t4" fromSectionType="STREET_SECTION" toSectionId="s6_t2" toSectionType="STREET_SECTION"/>
                 </connector>
             </connectors>
         </component>
