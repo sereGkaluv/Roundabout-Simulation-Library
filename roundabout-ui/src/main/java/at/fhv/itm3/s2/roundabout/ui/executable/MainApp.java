@@ -8,6 +8,7 @@ import at.fhv.itm3.s2.roundabout.ui.util.ViewLoader;
 import at.fhv.itm3.s2.roundabout.util.ConfigParser;
 import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
 import desmoj.core.simulator.Experiment;
+import desmoj.core.simulator.SimClock;
 import desmoj.core.simulator.TimeInstant;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -18,6 +19,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * This is Utility class which starts the whole application.
@@ -69,50 +72,67 @@ public class MainApp extends Application {
             );
 
             prepareNewStage(mainStage).show();
+            roundaboutStructure.getRoutes().keySet().forEach(s -> s.startGeneratingCars(0));
 
-            new DaemonThreadFactory().newThread(() ->  {
-                Experiment.setReferenceUnit(EXPERIMENT_TIME_UNIT);
-                experiment.stop(new TimeInstant(
-                    EXPERIMENT_STOP_TIME,
-                    EXPERIMENT_TIME_UNIT
-                ));
+            Thread thread = initExperimentThread(
+                experiment,
+                mainViewController::getCurrentSimSpeed,
+                mainViewController::setProgress
+            );
 
-                //final Experiment experiment = initExperiment(model, IS_PROGRESS_BAR_SHOWN);
-
-                if (IS_TRACE_ENABLED) {
-                    experiment.tracePeriod(
-                        new TimeInstant(0),
-                        new TimeInstant(70, EXPERIMENT_TIME_UNIT)
-                    );
-                }
-
-                if (IS_DEBUG_ENABLED) {
-                    experiment.tracePeriod(
-                        new TimeInstant(0),
-                        new TimeInstant(70, EXPERIMENT_TIME_UNIT)
-                    );
-                }
-
-                roundaboutStructure.getRoutes().keySet().forEach(s -> s.startGeneratingCars(0));
-                mainViewController.setProgressSupplier(experiment.getSimClock(), experiment.getStopTime());
-
-                //set real time, default value is 0
-                experiment.setExecutionSpeedRate(Double.parseDouble(mainViewController.getLblCurrentSimSpeed().getText()));
-
-                // Starting experiment
-                experiment.start();
-
-                if (IS_TRACE_ENABLED || IS_DEBUG_ENABLED) {
-                    // Should be wrapped into if guard to prevent NPE when trace / debug are disabled above.
-                    experiment.report();
-                }
-
-                experiment.finish();
-            }).start();
+            mainViewController.setStartRunnable(thread::start);
+            mainViewController.setStopRunnable(experiment::stop);
 
         } catch (Throwable t) {
             LOGGER.error("Error occurred during start of the application.", t);
         }
+    }
+
+    private Thread initExperimentThread(
+        Experiment experiment,
+        Supplier<Double> executionSpeedRateSupplier,
+        Consumer<Double> progressConsumer
+    ) {
+        return new DaemonThreadFactory().newThread(() ->  {
+            Experiment.setReferenceUnit(EXPERIMENT_TIME_UNIT);
+            experiment.stop(new TimeInstant(
+                EXPERIMENT_STOP_TIME,
+                EXPERIMENT_TIME_UNIT
+            ));
+
+            if (IS_TRACE_ENABLED) {
+                experiment.tracePeriod(
+                    new TimeInstant(0),
+                    new TimeInstant(70, EXPERIMENT_TIME_UNIT)
+                );
+            }
+
+            if (IS_DEBUG_ENABLED) {
+                experiment.tracePeriod(
+                    new TimeInstant(0),
+                    new TimeInstant(70, EXPERIMENT_TIME_UNIT)
+                );
+            }
+
+            final SimClock simClock = experiment.getSimClock();
+            simClock.addObserver((o, arg) -> {
+                final double progress = simClock.getTime().getTimeAsDouble() / experiment.getStopTime().getTimeAsDouble();
+                progressConsumer.accept(progress);
+            });
+
+            //set real time, default value is 0
+            experiment.setExecutionSpeedRate(executionSpeedRateSupplier.get());
+
+            // Starting experiment
+            experiment.start();
+
+            if (IS_TRACE_ENABLED || IS_DEBUG_ENABLED) {
+                // Should be wrapped into if guard to prevent NPE when trace / debug are disabled above.
+                experiment.report();
+            }
+
+            experiment.finish();
+        });
     }
 
     /**

@@ -5,10 +5,9 @@ import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.ui.controllers.core.JfxController;
 import at.fhv.itm3.s2.roundabout.ui.util.ViewLoader;
 import at.fhv.itm3.s2.roundabout.util.dto.Component;
-import desmoj.core.simulator.SimClock;
-import desmoj.core.simulator.TimeInstant;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -31,7 +30,7 @@ public class MainViewController extends JfxController {
 
     private static final int DEFAULT_SIM_SPEED_VALUE = 0;
     private static final int MAX_SIM_SPEED_VALUE = 50;
-    private boolean isSimulationRunning = false;
+    private static final SimpleBooleanProperty IS_SIMULATION_RUNNING = new SimpleBooleanProperty(false);
 
     @FXML private Button btnStartSimulation;
     @FXML private BorderPane borderPaneContainer;
@@ -41,6 +40,9 @@ public class MainViewController extends JfxController {
     @FXML private ProgressBar progressBar;
     @FXML private ImageView imageView;
     @FXML private HBox hBoxContainer;
+
+    private Runnable startRunnable;
+    private Runnable stopRunnable;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,33 +58,28 @@ public class MainViewController extends JfxController {
 
         lblProgress.textProperty().bind(progressBar.progressProperty().multiply(100).asString("%.0f %%"));
 
+        sliderSimSpeed.visibleProperty().bind(IS_SIMULATION_RUNNING.not());
         btnStartSimulation.setOnAction(e -> {
-            isSimulationRunning = !isSimulationRunning;
-            if(isSimulationRunning){
-                btnStartSimulation.setText("Cancel Simulation");
-                sliderSimSpeed.setVisible(false);
-                //TODO start simulation
-            }else{
+            if(IS_SIMULATION_RUNNING.get()){
                 btnStartSimulation.setText("Start Simulation");
-                sliderSimSpeed.setVisible(true);
-                //TODO stop simulation
+                stopRunnable.run();
+            }else{
+                btnStartSimulation.setText("Cancel Simulation");
+                startRunnable.run();
             }
+            IS_SIMULATION_RUNNING.set(!IS_SIMULATION_RUNNING.get());
         });
 
-        DropShadow shadow = new DropShadow();
         //Adding the shadow when the mouse cursor is on
         btnStartSimulation.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                e -> btnStartSimulation.setEffect(shadow));
+                e -> btnStartSimulation.setEffect(new DropShadow()));
         //Removing the shadow when the mouse cursor is off
         btnStartSimulation.addEventHandler(MouseEvent.MOUSE_EXITED,
                 e -> btnStartSimulation.setEffect(null));
     }
 
-    public void setProgressSupplier(SimClock simClock, TimeInstant stopTime) {
-        simClock.addObserver((o, arg) -> {
-            final double progress = simClock.getTime().getTimeAsDouble() / stopTime.getTimeAsDouble();
-            Platform.runLater(() -> progressBar.setProgress(progress));
-        });
+    public void setProgress(double progressValue) {
+        Platform.runLater(() -> progressBar.setProgress(progressValue));
     }
 
     public void generateComponentStatContainers(
@@ -105,6 +102,15 @@ public class MainViewController extends JfxController {
         });
     }
 
-    public Label getLblCurrentSimSpeed(){ return lblCurrentSimSpeed; }
-    public boolean isSimulationRunning(){ return isSimulationRunning; }
+    public double getCurrentSimSpeed() {
+        return Double.valueOf(lblCurrentSimSpeed.getText());
+    }
+
+    public void setStartRunnable(Runnable startRunnable) {
+        this.startRunnable = startRunnable;
+    }
+
+    public void setStopRunnable(Runnable stopRunnable) {
+        this.stopRunnable = stopRunnable;
+    }
 }
