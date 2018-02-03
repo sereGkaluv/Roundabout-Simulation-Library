@@ -96,6 +96,9 @@ public class MainApp extends Application {
                 roundaboutStructure.getRoutes().keySet().forEach(s -> s.startGeneratingCars(0));
                 mainViewController.setProgressSupplier(experiment.getSimClock(), experiment.getStopTime());
 
+                //set real time, default value is 0
+                experiment.setExecutionSpeedRate(Double.parseDouble(mainViewController.getLblCurrentSimSpeed().getText()));
+
                 // Starting experiment
                 experiment.start();
 

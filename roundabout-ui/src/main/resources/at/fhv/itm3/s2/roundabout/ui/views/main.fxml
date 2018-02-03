@@ -13,13 +13,15 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.BorderPane?>
 
+<?import javafx.scene.control.Button?>
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController" fx:id="borderPaneContainer">
     <top>
         <ToolBar>
-            <Label text="Simulation speed:"/>
-            <Label fx:id="lblCurrentSimSpeed"/>
+            <Button fx:id="btnStartSimulation"></Button>
             <Slider fx:id="sliderSimSpeed" />
+            <Label text="Simulation slowdown factor:"/>
+            <Label fx:id="lblCurrentSimSpeed"/>
             <Pane HBox.hgrow="ALWAYS"/>
             <Label text="Progress:"/>
             <Label fx:id="lblProgress"/>
