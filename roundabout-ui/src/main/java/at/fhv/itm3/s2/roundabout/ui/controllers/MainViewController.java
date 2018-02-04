@@ -21,10 +21,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
+import java.util.*;
 
 public class MainViewController extends JfxController {
 
@@ -128,7 +127,8 @@ public class MainViewController extends JfxController {
     }
 
     public double getCurrentSimSpeed() {
-        return Double.valueOf(lblCurrentSimSpeed.getText());
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+        return numberFormat.parse(lblCurrentSimSpeed.getText(), new ParsePosition(0)).doubleValue();
     }
 
     public void setStartRunnable(Runnable startRunnable) {
