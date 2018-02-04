@@ -56,7 +56,7 @@ public class MainApp extends Application {
             ViewLoader<MainViewController> viewLoader = ViewLoader.loadView(MainViewController.class);
             Parent mainStage = (Parent) viewLoader.loadNode();
 
-            final ConfigParser configParser = new ConfigParser("/at/fhv/itm3/s2/roundabout/model/model_dornbirn_sued_with_intersection.xml");
+            final ConfigParser configParser = new ConfigParser("/at/fhv/itm3/s2/roundabout/model/model_dornbirn_sued.xml");
             final ModelConfig modelConfig = configParser.loadConfig();
 
             final Experiment experiment = new Experiment("Trafsim experiment");
