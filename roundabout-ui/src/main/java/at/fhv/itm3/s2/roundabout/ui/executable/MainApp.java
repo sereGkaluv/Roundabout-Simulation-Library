@@ -72,7 +72,8 @@ public class MainApp extends Application {
             );
 
             prepareNewStage(mainStage).show();
-            modelStructure.getRoutes().keySet().forEach(s -> s.startGeneratingCars(0));
+            modelStructure.getIntersections().forEach(is -> is.getController().start());
+            modelStructure.getRoutes().keySet().forEach(so -> so.startGeneratingCars(0));
 
             Thread thread = initExperimentThread(
                 experiment,

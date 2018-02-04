@@ -73,24 +73,33 @@ public class CarGenerateEvent extends Event<AbstractSource> {
     @Override
     public void eventRoutine(AbstractSource source) {
         // TODO: use meaningful values!!
-        Car car = new Car(roundaboutSimulationModel, "", false);
-        IRoute route = this.routeController.getRandomRoute(source);
-        DriverBehaviour driverBehaviour = new DriverBehaviour(6.0, 0.5, 1, 1, 1);
-        ICar roundaboutCar = new RoundaboutCar(getModel(), car, 2.0, driverBehaviour, route);
+        final Car car = new Car(roundaboutSimulationModel, "", false);
+        final IRoute route = this.routeController.getRandomRoute(source);
+        final DriverBehaviour driverBehaviour = new DriverBehaviour(6.0, 0.5, 1, 1, 1);
+        final ICar roundaboutCar = new RoundaboutCar(getModel(), car, 4.5, driverBehaviour, route);
         roundaboutCar.enterSystem();
+
         CarController.addCarMapping(car, roundaboutCar);
-        IConsumer nextSection = source.getConnectedStreet();
+        final IConsumer nextSection = source.getConnectedStreet();
 
         if (nextSection instanceof StreetSection) {
             ((Street)nextSection).addCar(roundaboutCar);
-            double traverseTime = roundaboutCar.getTimeToTraverseCurrentSection();
-            CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
+            final double traverseTime = roundaboutCar.getTimeToTraverseCurrentSection();
+            final CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
             carCouldLeaveSectionEvent.schedule((Street)nextSection, new TimeSpan(traverseTime, TimeUnit.SECONDS));
 
-            double timeBetweenCarArrivals = roundaboutSimulationModel.getRandomTimeBetweenCarArrivals();
-            CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);
-            //TODO use generatorRate
-            carGenerateEvent.schedule(source, new TimeSpan(timeBetweenCarArrivals, TimeUnit.SECONDS));
+            final CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);
+
+            final double minTimeBetweenCarArrivals = roundaboutSimulationModel.getMinTimeBetweenCarArrivals();
+            final double meanTimeBetweenCarArrivals = roundaboutSimulationModel.getMeanTimeBetweenCarArrivals();
+
+            final double randomTimeUntilCarArrival = roundaboutSimulationModel.getRandomTimeBetweenCarArrivals();
+            final double generatorExpectationShift = source.getGeneratorExpectation() - meanTimeBetweenCarArrivals;
+
+            final double shiftedTimeUntilCarArrival = randomTimeUntilCarArrival + generatorExpectationShift;
+            final double actualTimeUntilCarArrival = Math.max(shiftedTimeUntilCarArrival, minTimeBetweenCarArrivals);
+
+            carGenerateEvent.schedule(source, new TimeSpan(actualTimeUntilCarArrival, TimeUnit.SECONDS));
         } else {
             throw new IllegalStateException("NextSection should be of type Street");
         }

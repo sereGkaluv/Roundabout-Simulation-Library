@@ -2,6 +2,7 @@ package at.fhv.itm3.s2.roundabout.model;
 
 import at.fhv.itm14.trafsim.model.ModelFactory;
 import desmoj.core.dist.ContDist;
+import desmoj.core.dist.ContDistNormal;
 import desmoj.core.dist.ContDistUniform;
 import desmoj.core.simulator.Model;
 
@@ -21,6 +22,7 @@ public class RoundaboutSimulationModel extends Model {
     public final Double maxDistanceFactorBetweenCars;
     public final Double minTimeBetweenCarArrivals;
     public final Double maxTimeBetweenCarArrivals;
+    public final Double meanTimeBetweenCarArrivals;
     public final Double mainArrivalRateForOneWayStreets;
     public final Double standardCarAccelerationTime;
 
@@ -39,7 +41,7 @@ public class RoundaboutSimulationModel extends Model {
      * Random number stream used to draw a time between two car arrivals.
      * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
      */
-    private ContDistUniform timeBetweenCarArrivals;
+    private ContDistNormal timeBetweenCarArrivals;
 
     /**
      * Constructs a new RoundaboutSimulationModel
@@ -110,6 +112,7 @@ public class RoundaboutSimulationModel extends Model {
 
         this.minTimeBetweenCarArrivals = minTimeBetweenCarArrivals;
         this.maxTimeBetweenCarArrivals = maxTimeBetweenCarArrivals;
+        this.meanTimeBetweenCarArrivals = (minTimeBetweenCarArrivals + maxTimeBetweenCarArrivals) / 2;
         this.minDistanceFactorBetweenCars = minDistanceFactorBetweenCars;
         this.maxDistanceFactorBetweenCars = maxDistanceFactorBetweenCars;
         this.mainArrivalRateForOneWayStreets = mainArrivalRateForOneWayStreets;
@@ -137,11 +140,11 @@ public class RoundaboutSimulationModel extends Model {
         );
         distanceFactorBetweenCars.setSeed(MODEL_SEED);
 
-        timeBetweenCarArrivals = new ContDistUniform(
+        timeBetweenCarArrivals = new ContDistNormal(
             this,
             "TimeBetweenCarArrivalsStream",
-                minTimeBetweenCarArrivals,
-                maxTimeBetweenCarArrivals,
+                getMeanTimeBetweenCarArrivals(),
+                getStdDeviationTimeBetweenCarArrivals(),
             true,
             false
         );
@@ -162,12 +165,44 @@ public class RoundaboutSimulationModel extends Model {
     }
 
     /**
+     * Returns a min value of time between car arrivals.
+     *
+     * @return min time between car arrivals.
+     */
+    public double getMinTimeBetweenCarArrivals() {
+        return minTimeBetweenCarArrivals;
+    }
+
+    /**
+     * Returns a max value of time between car arrivals.
+     *
+     * @return max time between car arrivals.
+     */
+    public double getMaxTimeBetweenCarArrivals() {
+        return maxTimeBetweenCarArrivals;
+    }
+
+    /**
+     * Returns a mean value of time between car arrivals (is calculated based on min and max).
+     *
+     * @return mean time between car arrivals.
+     */
+    public double getMeanTimeBetweenCarArrivals() {
+        return meanTimeBetweenCarArrivals;
+    }
+
+    public double getStdDeviationTimeBetweenCarArrivals() {
+        return Math.abs(getMaxTimeBetweenCarArrivals() - getMeanTimeBetweenCarArrivals());
+    }
+
+    /**
      * Returns a sample of the random stream {@link ContDistUniform} used to determine the time between car arrivals.
      *
      * @return a {@code timeBetweenCarArrivals} sample as double.
      */
     public double getRandomTimeBetweenCarArrivals() {
-        return timeBetweenCarArrivals.sample();
+        final double value = timeBetweenCarArrivals.sample();
+        return Math.max(Math.min(value, maxTimeBetweenCarArrivals), minDistanceFactorBetweenCars);
     }
 
     /**

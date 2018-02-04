@@ -10,7 +10,6 @@
                 <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="0.1"/>
                 <parameter name="MAX_DISTANCE_FACTOR_BETWEEN_CARS" value="1.0"/>
                 <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="3.0"/>
-                <parameter name="MAX_TIME_BETWEEN_CAR_ARRIVALS" value="10.0"/>
                 <parameter name="MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS" value="1.0"/>
                 <parameter name="STANDARD_CAR_ACCELERATION_TIME" value="2"/>
             </parameters>
@@ -173,11 +172,11 @@
         <component id="is1" type="INTERSECTION" name="Basic intersection">
             <parameters>
                 <parameter name="INTERSECTION_SIZE" value="16"/>
-                <parameter name="INTERSECTION_SERVICE_DELAY" value="0.1"/>
-                <parameter name="INTERSECTION_TRAVERSE_TIME" value="1"/>
-                <parameter name="CONTROLLER_GREEN_DURATION" value="0.1"/>
-                <parameter name="CONTROLLER_YELLOW_DURATION" value="0.1"/>
-                <parameter name="CONTROLLER_PHASE_SHIFT_TIME" value="0.1"/>
+                <parameter name="INTERSECTION_SERVICE_DELAY" value="2"/>
+                <parameter name="INTERSECTION_TRAVERSE_TIME" value="5"/>
+                <parameter name="CONTROLLER_GREEN_DURATION" value="22.5"/>
+                <parameter name="CONTROLLER_YELLOW_DURATION" value="7.5"/>
+                <parameter name="CONTROLLER_PHASE_SHIFT_TIME" value="0"/>
             </parameters>
             <sources>
                 <source id="so_s3_t1" sectionId="s3_t1"/>

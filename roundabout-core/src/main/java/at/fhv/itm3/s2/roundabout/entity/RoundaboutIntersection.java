@@ -13,7 +13,6 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
 
     @Override
     public void carEnter(Car car, int inDirection) {
-
         try {
             // notify last section that car was successfully delivered
             // CarDeliveredEvent is never used, so it can be null
@@ -38,7 +37,6 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
         } catch (IndexOutOfBoundsException e) {
             throw new IllegalArgumentException("Given inDirection is not available on this intersection");
         }
-
     }
 
     @Override
@@ -53,6 +51,5 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
         } catch (IndexOutOfBoundsException e) {
             throw new IllegalArgumentException("Given inDirection and/or outDirection is not available on this intersection");
         }
-
     }
 }

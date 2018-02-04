@@ -3,17 +3,14 @@
     <!-- global parameters needed for simulation -->
     <parameters>
         <parameter name="SIMULATION_SEED" value="1"/>
+        <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="0.1"/>
+        <parameter name="MAX_DISTANCE_FACTOR_BETWEEN_CARS" value="1.0"/>
+        <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="3.0"/>
+        <parameter name="MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS" value="1.0"/>
+        <parameter name="STANDARD_CAR_ACCELERATION_TIME" value="2"/>
     </parameters>
     <components>
         <component id="ro1" type="ROUNDABOUT" name="Kreisverkehr Dornbirn Süd">
-            <parameters>
-                <parameter name="MIN_DISTANCE_FACTOR_BETWEEN_CARS" value="0.1"/>
-                <parameter name="MAX_DISTANCE_FACTOR_BETWEEN_CARS" value="1.0"/>
-                <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="3.0"/>
-                <parameter name="MAX_TIME_BETWEEN_CAR_ARRIVALS" value="10.0"/>
-                <parameter name="MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS" value="1.0"/>
-                <parameter name="STANDARD_CAR_ACCELERATION_TIME" value="2"/>
-            </parameters>
             <sources>
                 <source id="so_s5_t1" sectionId="s5_t1" generatorExpectation="56.18"/>
 

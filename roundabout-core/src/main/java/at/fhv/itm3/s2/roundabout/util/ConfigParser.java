@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.summarizingDouble;
 import static java.util.stream.Collectors.toMap;
 
 
@@ -74,6 +75,15 @@ public class ConfigParser {
 
     public IModelStructure generateRoundaboutStructure(ModelConfig modelConfig, Experiment experiment) {
         final Map<String, String> parameters = handleParameters(modelConfig);
+
+        final List<Component> components = modelConfig.getComponents().getComponent();
+        final List<Source> modelSources = components.stream().map(Component::getSources).map(Sources::getSource).flatMap(Collection::stream).collect(Collectors.toList());
+        final List<Double> generatorExpectations = modelSources.stream().map(Source::getGeneratorExpectation).sorted().collect(Collectors.toList());
+
+        // Compatibility for the rest of structure is achieved via insertion of property.
+        final double generatorExpectationMedian = calculateMedian(generatorExpectations);
+        parameters.put(MAX_TIME_BETWEEN_CAR_ARRIVALS, String.valueOf(generatorExpectationMedian));
+
         final RoundaboutSimulationModel model = new RoundaboutSimulationModel(
             null,
             modelConfig.getName(),
@@ -98,6 +108,10 @@ public class ConfigParser {
             handleConnectors(null, modelConfig.getComponents().getConnectors());
         }
 
+        // Adding intersections.
+        modelStructure.addIntersections(INTERSECTION_REGISTRY.values());
+
+        // Handling and adding routes.
         final List<Route> routes = handleRoutes(modelConfig).values().stream().map(Map::values).flatMap(Collection::stream).collect(Collectors.toList());
         modelStructure.addRoutes(routes);
 
@@ -115,12 +129,14 @@ public class ConfigParser {
 
     private Map<String, String> handleParameters(ModelConfig modelConfig) {
         final Map<String, String> modelParameters = new HashMap<>();
-        Consumer<Parameter> parameterRegistrator = p -> modelParameters.put(p.getName(), p.getValue());
+        final Consumer<Parameter> parameterRegistrator = p -> modelParameters.put(p.getName(), p.getValue());
         modelConfig.getParameters().getParameter().forEach(parameterRegistrator);
 
         final List<Component> componentList = modelConfig.getComponents().getComponent();
         for (Component component : componentList) {
-            component.getParameters().getParameter().forEach(parameterRegistrator);
+            if (component.getParameters() != null) {
+                component.getParameters().getParameter().forEach(parameterRegistrator);
+            }
         }
         return modelParameters;
     }
@@ -190,7 +206,7 @@ public class ConfigParser {
         intersection.setServiceDelay(
             extractParameter(modelStructure::getParameter, Double::valueOf, INTERSECTION_SERVICE_DELAY)
         );
-        final FixedCirculationController ic = ModelFactory.getInstance(model).createOneWayController(
+        final FixedCirculationController ic = ModelFactory.getInstance(model).createStdFull4Controller(
             intersection,
             extractParameter(modelStructure::getParameter, Double::valueOf, CONTROLLER_GREEN_DURATION),
             extractParameter(modelStructure::getParameter, Double::valueOf, CONTROLLER_YELLOW_DURATION),
@@ -408,6 +424,15 @@ public class ConfigParser {
     private <K, V, R> R extractParameter(Function<K, V> supplier, Function<V, R> converter, K key)
     throws NullPointerException {
         return converter.apply(supplier.apply(key));
+    }
+
+    private Double calculateMedian(List<Double> numbers) {
+        int indexLeft = (int) Math.floor((numbers.size() - 1) / 2);
+        int indexRight = (int) Math.ceil((numbers.size() - 1) / 2);
+        if (indexLeft == indexRight) {
+            return numbers.get(indexLeft);
+        }
+        return (numbers.get(indexLeft) + numbers.get(indexRight)) / 2;
     }
 
     private void doDepthFirstSearch(
