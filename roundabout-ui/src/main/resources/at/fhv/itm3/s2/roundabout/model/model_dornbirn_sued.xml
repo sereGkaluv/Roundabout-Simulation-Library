@@ -204,7 +204,7 @@
             <route fromComponentId="ro1" fromSourceId="so_s11_t1" toComponentId="ro1" toSinkId="sk_s11_t1" ratio="1.0"/>
 
             <route fromComponentId="ro1" fromSourceId="so_s14_t1" toComponentId="ro1" toSinkId="sk_s1_t1"
-                   ratio="0.944"/>
+                   ratio="1.0"/>
 
             <route fromComponentId="ro1" fromSourceId="so_s14_t2" toComponentId="ro1" toSinkId="sk_s4_t1"
                    ratio="0.333"/>
