@@ -15,24 +15,24 @@
                 <parameter name="STANDARD_CAR_ACCELERATION_TIME" value="2"/>
             </parameters>
             <sources>
-                <source id="so_s5_t1" sectionId="s5_t1"/>
+                <source id="so_s5_t1" sectionId="s5_t1" generatorExpectation="1.0"/>
 
-                <source id="so_s6_t1" sectionId="s6_t1"/>
+                <source id="so_s6_t1" sectionId="s6_t1" generatorExpectation="1.0"/>
 
-                <source id="so_s10_t1" sectionId="s10_t1"/>
-                <source id="so_s10_t2" sectionId="s10_t2"/>
+                <source id="so_s10_t1" sectionId="s10_t1" generatorExpectation="1.0"/>
+                <source id="so_s10_t2" sectionId="s10_t2" generatorExpectation="1.0"/>
 
-                <source id="so_s11_t1" sectionId="s11_t1"/>
+                <source id="so_s11_t1" sectionId="s11_t1" generatorExpectation="1.0"/>
 
-                <source id="so_s14_t1" sectionId="s14_t1"/>
-                <source id="so_s14_t2" sectionId="s14_t2"/>
+                <source id="so_s14_t1" sectionId="s14_t1" generatorExpectation="1.0"/>
+                <source id="so_s14_t2" sectionId="s14_t2" generatorExpectation="1.0"/>
 
-                <source id="so_s15_t1" sectionId="s15_t1"/>
+                <source id="so_s15_t1" sectionId="s15_t1" generatorExpectation="1.0"/>
 
-                <source id="so_s18_t1" sectionId="s18_t1"/>
+                <source id="so_s18_t1" sectionId="s18_t1" generatorExpectation="1.0"/>
 				
-				<source id="so_s2_t1" sectionId="s2_t1"/>
-				<source id="so_s2_t2" sectionId="s2_t2"/>
+				<source id="so_s2_t1" sectionId="s2_t1" generatorExpectation="1.0"/>
+				<source id="so_s2_t2" sectionId="s2_t2" generatorExpectation="1.0"/>
             </sources>
             <sinks>
                 <sink id="sk_s4_t1"/>
@@ -178,5 +178,9 @@
                 </connector>			
             </connectors>
         </component>
+        <routes>
+            <route fromComponentId="ro1" fromSourceId="s6_t2" toComponentId="ro1" toSinkId="sk_1" ratio="0.1"/>
+            <route fromComponentId="ro1" fromSourceId="s6_t2" toComponentId="ro1" toSinkId="sk_1" ratio="0.2"/>
+        </routes>
     </components>
 </model>

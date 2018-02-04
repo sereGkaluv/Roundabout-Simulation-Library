@@ -15,16 +15,16 @@ public class Route implements IRoute {
 
     private List<IConsumer> route;
     private AbstractSource source;
-    private Double flowRatio;
+    private Double ratio;
 
     public Route() {
         this(null, new ArrayList<>(), 1.0);
     }
 
-    public Route(AbstractSource source, List<IConsumer> route, Double flowRatio) {
+    public Route(AbstractSource source, List<IConsumer> route, Double ratio) {
         this.route = route;
         this.source = source;
-        this.flowRatio = flowRatio;
+        this.ratio = ratio;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class Route implements IRoute {
 
     @Override
     public Double getRatio() {
-        return flowRatio;
+        return ratio;
     }
 
     @Override

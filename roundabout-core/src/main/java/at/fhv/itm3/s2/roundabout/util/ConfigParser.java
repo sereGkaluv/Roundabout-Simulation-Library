@@ -5,7 +5,11 @@ import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
 import at.fhv.itm14.trafsim.model.entities.AbstractProducer;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
-import at.fhv.itm3.s2.roundabout.api.entity.*;
+import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
+import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
+import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.*;
@@ -44,6 +48,9 @@ public class ConfigParser {
     private static final Map<String, Map<String, RoundaboutSink>> SINK_REGISTRY = new HashMap<>();
     private static final Map<String, Map<String, StreetSection>> SECTION_REGISTRY = new HashMap<>();
     private static final Map<AbstractSource, Map<RoundaboutSink, Route>> ROUTE_REGISTRY = new HashMap<>(); // source, sink, route
+    private static final Map<String, Intersection> INTERSECTION_REGISTRY = new HashMap<>(); // componentId, intersection
+
+    private static final double DEFAULT_ROUTE_RATIO = 1.0;
 
     private static final Comparator<Track> TRACK_COMPARATOR = Comparator.comparingLong(Track::getOrder);
     private static final Function<Connector, List<Track>> SORTED_TRACK_EXTRACTOR = co -> co.getTrack().stream().sorted(TRACK_COMPARATOR).collect(Collectors.toList());
@@ -217,8 +224,13 @@ public class ConfigParser {
         // Assembling intersection sections (init connection queues, connectors, etc.)
         int directionIndexer = 0;
         double intersectionTraverseTime = Double.valueOf(modelStructure.getParameter(INTERSECTION_TRAVERSE_TIME));
+
         for (Connector connector : intersectionComponent.getConnectors().getConnector()) {
             final List<Track> trackList = SORTED_TRACK_EXTRACTOR.apply(connector);
+
+            final Collection<IConsumer> previousSections = new LinkedHashSet<>();
+            final Collection<IConsumer> nextSections = new LinkedHashSet<>();
+
             for (Track track : trackList) {
                 // In direction.
                 final String fromSectionId = track.getFromSectionId();
@@ -228,15 +240,8 @@ public class ConfigParser {
 
                     // Handling section -> intersections connectors, should be done only once per section.
                     // Connection intersection -> section is handled via connection queue.
-                    final String connectorId = String.format("%s_%s_is", connector.getId(), fromSectionId);
-                    final Collection<IConsumer> previousSections = new LinkedHashSet<>();
                     previousSections.add(fromSection);
-
-                    final Collection<IConsumer> nextSections = new LinkedHashSet<>();
                     nextSections.add(intersection);
-
-                    final StreetConnector streetConnector = new StreetConnector(connectorId, previousSections, nextSections);
-                    streetConnector.initializeTrack(fromSection, track.getFromSectionType(), intersection, ConsumerType.INTERSECTION);
                 }
                 final int inDirection = DIRECTION_MAP.get(fromSectionId);
                 intersectionController.setIntersectionInDirectionMapping(intersection, fromSection, inDirection);
@@ -275,7 +280,17 @@ public class ConfigParser {
                     new double[]{1} // probability should be always 1 in our case?
                 );
             }
+            final StreetConnector streetConnector = new StreetConnector(connector.getId(), previousSections, nextSections);
+            previousSections.forEach(fromSection -> streetConnector.initializeTrack(
+                fromSection,
+                ConsumerType.STREET_SECTION,
+                intersection,
+                ConsumerType.INTERSECTION
+            ));
         }
+
+        // Registering intersection.
+        INTERSECTION_REGISTRY.put(intersectionComponent.getId(), intersection);
 
         modelStructure.addStreets(sections.values());
         modelStructure.addSources(sources.values());
@@ -287,7 +302,7 @@ public class ConfigParser {
             Source::getId,
             so -> {
                 final Street street = resolveSection(scopeComponentId, so.getSectionId());
-                final RoundaboutSource source = new RoundaboutSource(model, so.getId(), false, street);
+                final RoundaboutSource source = new RoundaboutSource(so.getId(), so.getGeneratorExpectation(), model, so.getId(), false, street);
                 if (!SOURCE_REGISTRY.containsKey(scopeComponentId)) {
                     SOURCE_REGISTRY.put(scopeComponentId, new HashMap<>());
                 }
@@ -411,12 +426,16 @@ public class ConfigParser {
         for (Connector connector : component.getConnectors().getConnector()) {
             for (Track track : connector.getTrack()) {
                 if (track.getFromSectionId().equals(currentSectionId)) {
+                    final String fromComponentId = track.getFromComponentId() != null ? track.getFromComponentId() : component.getId();
                     final String toComponentId = track.getToComponentId() != null ? track.getToComponentId() : component.getId();
                     final String toSectionId = track.getToSectionId();
 
                     final Street toSection = resolveStreet(toComponentId, toSectionId);
                     if (!routeSections.contains(toSection)) {
                         final List<IConsumer> newRouteSections = new LinkedList<>(routeSections);
+                        if (component.getType() == ComponentType.INTERSECTION) {
+                            newRouteSections.add((IConsumer) INTERSECTION_REGISTRY.get(component.getId()));
+                        }
                         newRouteSections.add(toSection);
 
                         if (toSection instanceof RoundaboutSink) {
@@ -428,7 +447,16 @@ public class ConfigParser {
 
                             final Map<RoundaboutSink, Route> targetRoutes = ROUTE_REGISTRY.get(source);
                             if (!targetRoutes.containsKey(sink) || targetRoutes.get(sink).getNumberOfSections() > newRouteSections.size()) {
-                                final double flowRatio = 1.0; //TODO prepared for XML
+                                final double flowRatio;
+                                if (modelConfig.getComponents().getRoutes() != null) {
+                                    final Optional<Double> optionalRatio = modelConfig.getComponents().getRoutes().getRoute().stream().filter(r ->
+                                        fromComponentId.equals(r.getFromComponentId()) && source.getId().equals(r.getFromSourceId()) &&
+                                        toComponentId.equals(r.getToComponentId()) && sink.getId().equals(r.getToSinkId())
+                                    ).map(at.fhv.itm3.s2.roundabout.util.dto.Route::getRatio).findFirst();
+                                    flowRatio = optionalRatio.orElse(DEFAULT_ROUTE_RATIO);
+                                } else {
+                                    flowRatio = DEFAULT_ROUTE_RATIO;
+                                }
                                 targetRoutes.put(sink, new Route(source, newRouteSections, flowRatio));
                             }
                             return;
@@ -456,6 +484,9 @@ public class ConfigParser {
                                 final Street toSection = resolveSection(toComponentId, toSectionId);
 
                                 final List<IConsumer> newRouteSections = new LinkedList<>(routeSections);
+                                if (component.getType() == ComponentType.INTERSECTION) {
+                                    newRouteSections.add((IConsumer) INTERSECTION_REGISTRY.get(component.getId()));
+                                }
                                 newRouteSections.add(toSection);
 
                                 doDepthFirstSearch(source, newRouteSections, localComponent, modelConfig);

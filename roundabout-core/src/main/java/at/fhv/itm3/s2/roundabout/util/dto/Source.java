@@ -8,6 +8,7 @@ import java.util.List;
 public class Source implements IDTO {
     private String id;
     private String sectionId;
+    private Double generatorExpectation;
 
     @XmlAttribute
     public String getId() {
@@ -25,5 +26,14 @@ public class Source implements IDTO {
 
     public void setSectionId(String sectionId) {
         this.sectionId = sectionId;
+    }
+
+    @XmlAttribute
+    public Double getGeneratorExpectation() {
+        return generatorExpectation;
+    }
+
+    public void setGeneratorExpectation(Double generatorExpectation) {
+        this.generatorExpectation = generatorExpectation;
     }
 }

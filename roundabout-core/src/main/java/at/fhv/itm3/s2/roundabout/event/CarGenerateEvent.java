@@ -89,6 +89,7 @@ public class CarGenerateEvent extends Event<AbstractSource> {
 
             double timeBetweenCarArrivals = roundaboutSimulationModel.getRandomTimeBetweenCarArrivals();
             CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);
+            //TODO use generatorRate
             carGenerateEvent.schedule(source, new TimeSpan(timeBetweenCarArrivals, TimeUnit.SECONDS));
         } else {
             throw new IllegalStateException("NextSection should be of type Street");

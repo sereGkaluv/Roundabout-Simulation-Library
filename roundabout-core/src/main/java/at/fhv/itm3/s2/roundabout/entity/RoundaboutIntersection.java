@@ -31,7 +31,9 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
             } else {
                 // Otherwise queue car
                 queues[inDirection][outIndex].insert(car);
-                car.startWaiting();
+                if (!car.isWaitingInIntersection()) {
+                    car.startWaiting();
+                }
             }
         } catch (IndexOutOfBoundsException e) {
             throw new IllegalArgumentException("Given inDirection is not available on this intersection");

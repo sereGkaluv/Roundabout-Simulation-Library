@@ -7,6 +7,7 @@ import java.util.List;
 public class Components implements IDTO {
     private List<Component> componentList;
     private Connectors connectors;
+    private Routes routes;
 
     public List<Component> getComponent() {
         return componentList;
@@ -22,5 +23,13 @@ public class Components implements IDTO {
 
     public void setConnectors(Connectors connectors) {
         this.connectors = connectors;
+    }
+
+    public Routes getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(Routes routes) {
+        this.routes = routes;
     }
 }
