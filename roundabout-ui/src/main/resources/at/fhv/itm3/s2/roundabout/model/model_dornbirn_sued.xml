@@ -70,10 +70,10 @@
                 <section id="s7_t2" length="42.35"/>
                 <section id="s7_t1" length="49.28"/>
 
-                <section id="s8_t1" length="5"/>
+                <section id="s8_t1" length="29"/>
 
-                <section id="s9_t1" length="229"/>
-                <section id="s9_t2" length="229"/>
+                <section id="s9_t1" length="200"/>
+                <section id="s9_t2" length="200"/>
 
                 <section id="s10_t1" length="229" isTrafficLightActive="true"/>
                 <section id="s10_t2" length="229" isTrafficLightActive="true"/>
