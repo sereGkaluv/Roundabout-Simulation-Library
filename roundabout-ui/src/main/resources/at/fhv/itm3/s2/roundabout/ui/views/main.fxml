@@ -19,6 +19,7 @@
     <top>
         <ToolBar>
             <Button fx:id="btnStartSimulation"></Button>
+            <Button fx:id="btnPauseSimulation"></Button>
             <Slider fx:id="sliderSimSpeed" />
             <Label text="Simulation slowdown factor:"/>
             <Label fx:id="lblCurrentSimSpeed"/>

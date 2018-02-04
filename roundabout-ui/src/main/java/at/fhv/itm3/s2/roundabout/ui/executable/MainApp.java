@@ -82,6 +82,8 @@ public class MainApp extends Application {
 
             mainViewController.setStartRunnable(thread::start);
             mainViewController.setStopRunnable(experiment::stop);
+            mainViewController.setProceedRunnable(experiment::proceed);
+
 
         } catch (Throwable t) {
             LOGGER.error("Error occurred during start of the application.", t);

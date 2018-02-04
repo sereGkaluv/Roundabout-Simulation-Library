@@ -31,8 +31,10 @@ public class MainViewController extends JfxController {
     private static final int DEFAULT_SIM_SPEED_VALUE = 0;
     private static final int MAX_SIM_SPEED_VALUE = 50;
     private static final SimpleBooleanProperty IS_SIMULATION_RUNNING = new SimpleBooleanProperty(false);
+    private static final SimpleBooleanProperty IS_SIMULATION_PAUSED = new SimpleBooleanProperty(false);
 
     @FXML private Button btnStartSimulation;
+    @FXML private Button btnPauseSimulation;
     @FXML private BorderPane borderPaneContainer;
     @FXML private Label lblCurrentSimSpeed;
     @FXML private Slider sliderSimSpeed;
@@ -43,12 +45,14 @@ public class MainViewController extends JfxController {
 
     private Runnable startRunnable;
     private Runnable stopRunnable;
+    private Runnable proceedRunnable;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         imageView.fitWidthProperty().bind(borderPaneContainer.widthProperty());
         lblCurrentSimSpeed.textProperty().bind(Bindings.format("%.2f", sliderSimSpeed.valueProperty()));
         btnStartSimulation.setText("Start Simulation");
+        btnPauseSimulation.setText("Pause Simulation");
         sliderSimSpeed.setShowTickMarks(true);
         sliderSimSpeed.setShowTickLabels(true);
         sliderSimSpeed.setMajorTickUnit(25);
@@ -59,6 +63,8 @@ public class MainViewController extends JfxController {
         lblProgress.textProperty().bind(progressBar.progressProperty().multiply(100).asString("%.0f %%"));
 
         sliderSimSpeed.visibleProperty().bind(IS_SIMULATION_RUNNING.not());
+
+        //initialize Start/Cancel Button
         btnStartSimulation.setOnAction(e -> {
             if(IS_SIMULATION_RUNNING.get()){
                 btnStartSimulation.setText("Start Simulation");
@@ -76,6 +82,25 @@ public class MainViewController extends JfxController {
         //Removing the shadow when the mouse cursor is off
         btnStartSimulation.addEventHandler(MouseEvent.MOUSE_EXITED,
                 e -> btnStartSimulation.setEffect(null));
+
+        //initialize Pause/Proceed Button
+        btnPauseSimulation.setOnAction(e -> {
+            if(IS_SIMULATION_PAUSED.get()){
+                btnPauseSimulation.setText("Proceed Simulation");
+                stopRunnable.run();
+            }else{
+                btnPauseSimulation.setText("Pause Simulation");
+                proceedRunnable.run();
+            }
+            IS_SIMULATION_PAUSED.set(!IS_SIMULATION_PAUSED.get());
+        });
+
+        //Adding the shadow when the mouse cursor is on
+        btnPauseSimulation.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                e -> btnPauseSimulation.setEffect(new DropShadow()));
+        //Removing the shadow when the mouse cursor is off
+        btnPauseSimulation.addEventHandler(MouseEvent.MOUSE_EXITED,
+                e -> btnPauseSimulation.setEffect(null));
     }
 
     public void setProgress(double progressValue) {
@@ -112,5 +137,9 @@ public class MainViewController extends JfxController {
 
     public void setStopRunnable(Runnable stopRunnable) {
         this.stopRunnable = stopRunnable;
+    }
+
+    public void setProceedRunnable(Runnable proceedRunnable) {
+        this.proceedRunnable = proceedRunnable;
     }
 }
