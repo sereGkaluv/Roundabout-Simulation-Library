@@ -1,5 +1,6 @@
 package at.fhv.itm3.s2.roundabout.entity;
 
+import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import desmoj.core.simulator.Model;
 
@@ -9,6 +10,7 @@ public class ModelStructure implements IModelStructure {
     private final Model model;
     private Set<IStreetConnector> connectors;
     private Map<AbstractSource, List<IRoute>> routes;
+    private Set<Intersection> intersections;
     private Set<Street> streets;
     private Map<String, String> parameters;
     private Set<AbstractSource> sources;
@@ -23,6 +25,7 @@ public class ModelStructure implements IModelStructure {
         this.model = model;
         this.connectors = new HashSet<>();
         this.routes = new HashMap<>();
+        this.intersections = new HashSet<>();
         this.streets = new HashSet<>();
         this.parameters = parameters;
         this.sources = new HashSet<>();
@@ -47,6 +50,11 @@ public class ModelStructure implements IModelStructure {
 
             this.routes.put(route.getSource(), routeList);
         });
+    }
+
+    @Override
+    public void addIntersections(Collection<? extends Intersection> intersections) {
+        this.intersections.addAll(intersections);
     }
 
     @Override
@@ -85,6 +93,11 @@ public class ModelStructure implements IModelStructure {
     @Override
     public Map<AbstractSource, List<IRoute>> getRoutes() {
         return Collections.unmodifiableMap(routes);
+    }
+
+    @Override
+    public Set<Intersection> getIntersections() {
+        return Collections.unmodifiableSet(intersections);
     }
 
     @Override
