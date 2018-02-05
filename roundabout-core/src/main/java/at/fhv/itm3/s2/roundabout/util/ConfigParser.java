@@ -44,6 +44,8 @@ public class ConfigParser {
     private static final String MAX_TRUCK_LENGTH = "MAX_TRUCK_LENGTH";
     private static final String EXPECTED_TRUCK_LENGTH = "EXPECTED_TRUCK_LENGTH";
     private static final String CAR_RATIO_PER_TOTAL_VEHICLE = "CAR_RATIO_PER_TOTAL_VEHICLE";
+    private static final String JAM_INDICATOR_IN_SECONDS = "JAM_INDICATOR_IN_SECONDS";
+    private static final String RED_PHASE_TRAFFIC_LIGHT_JAM = "RED_PHASE_TRAFFIC_LIGHT_JAM";
 
     private static final String INTERSECTION_SIZE = "INTERSECTION_SIZE";
     private static final String INTERSECTION_SERVICE_DELAY = "INTERSECTION_SERVICE_DELAY";
@@ -109,7 +111,9 @@ public class ConfigParser {
             extractParameter(parameters::get, Double::valueOf, MIN_TRUCK_LENGTH),
             extractParameter(parameters::get, Double::valueOf, MAX_TRUCK_LENGTH),
             extractParameter(parameters::get, Double::valueOf, EXPECTED_TRUCK_LENGTH),
-            extractParameter(parameters::get, Double::valueOf, CAR_RATIO_PER_TOTAL_VEHICLE)
+            extractParameter(parameters::get, Double::valueOf, CAR_RATIO_PER_TOTAL_VEHICLE),
+            extractParameter(parameters::get, Double::valueOf, JAM_INDICATOR_IN_SECONDS),
+            extractParameter(parameters::get, Double::valueOf, RED_PHASE_TRAFFIC_LIGHT_JAM)
         );
         model.connectToExperiment(experiment);  // ! - Should be done before anything else.
         // Just to be sure everything is initialised as expected.

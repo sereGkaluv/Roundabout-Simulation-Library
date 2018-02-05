@@ -5,6 +5,7 @@ import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import co.paralleluniverse.fibers.SuspendExecution;
 import desmoj.core.simulator.Event;
 import desmoj.core.simulator.Model;
+import desmoj.core.simulator.TimeInstant;
 import desmoj.core.simulator.TimeSpan;
 
 public class ToggleTrafficLightStateEvent extends Event<Street> {

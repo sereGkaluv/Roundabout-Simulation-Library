@@ -55,6 +55,13 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     }
 
     /**
+     * Triggers active traffic light to red if there is a jam in the next street section {@Link Street}
+     *
+     * @return void
+     */
+    public void trafficLightActiveAndJamInNextSection() { return; }
+
+    /**
      * Gets total car counter passed into {@code this} {@link Street}.
      *
      * @return total car counter.

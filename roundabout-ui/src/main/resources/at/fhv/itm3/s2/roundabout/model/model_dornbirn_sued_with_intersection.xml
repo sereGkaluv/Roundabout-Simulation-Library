@@ -15,6 +15,8 @@
         <parameter name="MAX_TRUCK_LENGTH" value="19.5"/>
         <parameter name="EXPECTED_TRUCK_LENGTH" value="16.5"/>
         <parameter name="CAR_RATIO_PER_TOTAL_VEHICLE" value="0.9"/>
+        <parameter name="JAM_INDICATOR_IN_SECONDS" value="5"/>
+        <parameter name="RED_PHASE_TRAFFIC_LIGHT_JAM" value="20"/>
     </parameters>
     <components>
         <component id="ro1" type="ROUNDABOUT" name="Kreisverkehr Dornbirn Süd">

@@ -11,6 +11,7 @@ import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import desmoj.core.simulator.Model;
+import desmoj.core.simulator.TimeInstant;
 import desmoj.core.simulator.TimeSpan;
 
 import java.util.*;
@@ -19,6 +20,10 @@ import java.util.concurrent.TimeUnit;
 public class StreetSection extends Street {
 
     private final double length;
+
+    // next two values are for the controlling of a traffic light [checking for jam/ needed for optimization]
+    private double currentWaitingTime;
+    private double currentTimeLastMovement;
 
     private final LinkedList<ICar> carQueue;
     private final Map<ICar, Double> carPositions;
@@ -113,6 +118,33 @@ public class StreetSection extends Street {
         if (consumer instanceof Street) {
             ((Street)consumer).carDelivered(null, car, true);
         }
+    }
+
+    @Override
+    public void trafficLightActiveAndJamInNextSection(){
+        if(this.isTrafficLightActive()) {
+            ICar car = getFirstCar();
+            if(car != null) {
+                int idx = car.getRoute().getIndexOfSection(this);
+                if(idx + 1 < car.getRoute().getNumberOfSections()) {
+                    IConsumer consumerNext = car.getRoute().getSectionAt(idx + 1);
+                    //TODO check if half of streetSection is full??????
+                    if (!(consumerNext instanceof StreetSection))
+                        throw new IllegalArgumentException("Failing cast form IConsumer to StreetSection.");
+                        StreetSection streetSectionNext = (StreetSection) consumerNext;
+
+                    if (streetSectionNext.currentWaitingTime > getRoundaboutModel().jamIndicatorInSeconds) {
+                        // trigger red
+                        RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(getRoundaboutModel()).
+                                schedule(this, new TimeSpan(0));
+                        // schedule trigger of green
+                        RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(getRoundaboutModel()).
+                                schedule(this, new TimeSpan(getRoundaboutModel().redPhaseTrafficLightJam));
+                    }
+                }
+            }
+        }
+        return;
     }
 
     @Override
@@ -222,6 +254,10 @@ public class StreetSection extends Street {
 
                 if (newCarPosition < carPosition) {
                     newCarPosition = carPosition;
+                    currentTimeLastMovement =  getModel().getExperiment().getSimClock().getTime().getTimeAsDouble();
+                    currentWaitingTime = 0; //reset
+                } else {
+                    currentWaitingTime = getModel().getExperiment().getSimClock().getTime().getTimeAsDouble() - currentTimeLastMovement;
                 }
 
                 if (carPosition == newCarPosition && !currentCar.isWaiting()) {

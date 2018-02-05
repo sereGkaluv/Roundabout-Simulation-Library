@@ -29,6 +29,8 @@ public class RoundaboutSimulationModel extends Model {
     public static final Double DEFAULT_MAX_TRUCK_LENGTH = 19.5;
     public static final Double DEFAULT_EXPECTED_TRUCK_LENGTH = 4.5;
     public static final Double DEFAULT_CAR_RATIO_PER_TOTAL_VEHICLE = 0.8;
+    public static final Double DEFAULT_JAM_INDICATOR_IN_SECONDS = 5.0;
+    public static final Double DEFAULT_RED_PHASE_TRAFFIC_LIGHT_JAM = 20.0;
 
     public static final Double VEHICLE_LENGTH_STEPSIZE = 0.1;
 
@@ -46,6 +48,8 @@ public class RoundaboutSimulationModel extends Model {
     public final Double maxTruckLength;
     public final Double expectedTruckLength;
     public final Double carRatioPerTotalVehicle;
+    public final Double jamIndicatorInSeconds;
+    public final Double redPhaseTrafficLightJam;
 
     private static final long MODEL_SEED = new Random().nextLong();
     private static final TimeUnit MODEL_TIME_UNIT = TimeUnit.SECONDS;
@@ -112,7 +116,9 @@ public class RoundaboutSimulationModel extends Model {
             DEFAULT_STANDARD_CAR_ACCELERATION_TIME,
             DEFAULT_MIN_CAR_LENGTH, DEFAULT_MAX_CAR_LENGTH, DEFAULT_EXPECTED_CAR_LENGTH,
             DEFAULT_MIN_TRUCK_LENGTH, DEFAULT_MAX_TRUCK_LENGTH, DEFAULT_EXPECTED_TRUCK_LENGTH,
-            DEFAULT_CAR_RATIO_PER_TOTAL_VEHICLE
+            DEFAULT_CAR_RATIO_PER_TOTAL_VEHICLE,
+            DEFAULT_JAM_INDICATOR_IN_SECONDS,
+            DEFAULT_RED_PHASE_TRAFFIC_LIGHT_JAM
         );
     }
 
@@ -141,7 +147,9 @@ public class RoundaboutSimulationModel extends Model {
         Double minTruckLength,
         Double maxTruckLength,
         Double expectedTruckLength,
-        Double carRatioPerTotalVehicle
+        Double carRatioPerTotalVehicle,
+        Double jamIndicatorInSeconds,
+        Double redPhaseTrafficLightJam
     ) {
         super(model, name, showInReport, showInTrace);
 
@@ -159,6 +167,8 @@ public class RoundaboutSimulationModel extends Model {
         this.maxTruckLength = maxTruckLength;
         this.expectedTruckLength = expectedTruckLength;
         this.carRatioPerTotalVehicle = carRatioPerTotalVehicle;
+        this.jamIndicatorInSeconds = jamIndicatorInSeconds;
+        this.redPhaseTrafficLightJam = redPhaseTrafficLightJam;
     }
 
     @Override
