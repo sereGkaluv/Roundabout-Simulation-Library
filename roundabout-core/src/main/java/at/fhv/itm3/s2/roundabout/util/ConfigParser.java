@@ -366,7 +366,7 @@ public class ConfigParser {
             s -> {
                 if(s.getLength() < minStreetLength) throw new IllegalArgumentException("Street must not be smaller than " +
                                                                 "the biggest vehicle incl. distance to other vehicles");
-                final boolean isTrafficLightActive = s.getTrafficLightActive() != null ? s.getTrafficLightActive() : false;
+                final boolean isTrafficLightActive = s.getIsTrafficLightActive() != null ? s.getIsTrafficLightActive() : false;
                 final StreetSection streetSection = new StreetSection(s.getId(), s.getLength(), model, s.getId(), false, isTrafficLightActive);
                 if (!SECTION_REGISTRY.containsKey(scopeComponentId)) {
                     SECTION_REGISTRY.put(scopeComponentId, new HashMap<>());

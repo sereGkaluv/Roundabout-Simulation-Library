@@ -38,11 +38,9 @@ public class Section implements IDTO {
     }
 
     @XmlAttribute
-    public Boolean getTrafficLightActive() {
-        return isTrafficLightActive;
-    }
+    public Boolean getIsTrafficLightActive() { return isTrafficLightActive; }
 
-    public void setTrafficLightActive(Boolean trafficLightActive) {
-        isTrafficLightActive = trafficLightActive;
+    public void setIsTrafficLightActive(Boolean isTrafficLightActive) {
+        this.isTrafficLightActive = isTrafficLightActive;
     }
 }
