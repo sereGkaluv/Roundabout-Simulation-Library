@@ -195,7 +195,7 @@ public class RoundaboutSimulationModel extends Model {
         // calculate the standard deviation (of skew normal distribution) for vehicle length
         ArrayList<Double> listTmp = new ArrayList<>();
         Double mean = 0.;
-        for(double curLength = minCarLength; curLength < maxCarLength + VEHICLE_LENGTH_STEPSIZE;
+        for(double curLength = minCarLength; curLength <= maxCarLength;
             curLength += VEHICLE_LENGTH_STEPSIZE) {
             listTmp.add(curLength);
             mean += curLength;
@@ -222,7 +222,7 @@ public class RoundaboutSimulationModel extends Model {
 
         listTmp.clear();
         mean = 0.;
-        for(double curLength = minTruckLength; curLength < maxTruckLength + VEHICLE_LENGTH_STEPSIZE;
+        for(double curLength = minTruckLength; curLength <= maxTruckLength;
             curLength += VEHICLE_LENGTH_STEPSIZE) {
             listTmp.add(curLength);
             mean += curLength;
