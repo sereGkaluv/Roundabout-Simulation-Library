@@ -37,6 +37,13 @@ public class ConfigParser {
     private static final String MAX_DISTANCE_FACTOR_BETWEEN_CARS = "MAX_DISTANCE_FACTOR_BETWEEN_CARS";
     private static final String MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS = "MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS";
     private static final String STANDARD_CAR_ACCELERATION_TIME = "STANDARD_CAR_ACCELERATION_TIME";
+    private static final String MIN_CAR_LENGTH = "MIN_CAR_LENGTH";
+    private static final String MAX_CAR_LENGTH = "MAX_CAR_LENGTH";
+    private static final String EXPECTED_CAR_LENGTH = "EXPECTED_CAR_LENGTH";
+    private static final String MIN_TRUCK_LENGTH = "MIN_CAR_LENGTH";
+    private static final String MAX_TRUCK_LENGTH = "MAX_CAR_LENGTH";
+    private static final String EXPECTED_TRUCK_LENGTH = "EXPECTED_CAR_LENGTH";
+    private static final String CAR_RATIO_PER_TOTAL_VEHICLE = "CAR_RATIO_PER_TOTAL_VEHICLE";
 
     private static final String INTERSECTION_SIZE = "INTERSECTION_SIZE";
     private static final String INTERSECTION_SERVICE_DELAY = "INTERSECTION_SERVICE_DELAY";
@@ -57,6 +64,7 @@ public class ConfigParser {
     private static final Function<Connector, List<Track>> SORTED_TRACK_EXTRACTOR = co -> co.getTrack().stream().sorted(TRACK_COMPARATOR).collect(Collectors.toList());
 
     private String filename;
+    private Double minStreetLength;
 
     public ConfigParser(String filename) {
         this.filename = filename;
@@ -94,7 +102,14 @@ public class ConfigParser {
             extractParameter(parameters::get, Double::valueOf, MIN_DISTANCE_FACTOR_BETWEEN_CARS),
             extractParameter(parameters::get, Double::valueOf, MAX_DISTANCE_FACTOR_BETWEEN_CARS),
             extractParameter(parameters::get, Double::valueOf, MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS),
-            extractParameter(parameters::get, Double::valueOf, STANDARD_CAR_ACCELERATION_TIME)
+            extractParameter(parameters::get, Double::valueOf, STANDARD_CAR_ACCELERATION_TIME),
+            extractParameter(parameters::get, Double::valueOf, MIN_CAR_LENGTH),
+            extractParameter(parameters::get, Double::valueOf, MAX_CAR_LENGTH),
+            extractParameter(parameters::get, Double::valueOf, EXPECTED_CAR_LENGTH),
+            extractParameter(parameters::get, Double::valueOf, MIN_TRUCK_LENGTH),
+            extractParameter(parameters::get, Double::valueOf, MAX_TRUCK_LENGTH),
+            extractParameter(parameters::get, Double::valueOf, EXPECTED_TRUCK_LENGTH),
+            extractParameter(parameters::get, Double::valueOf, CAR_RATIO_PER_TOTAL_VEHICLE)
         );
         model.connectToExperiment(experiment);  // ! - Should be done before anything else.
         // Just to be sure everything is initialised as expected.
@@ -102,7 +117,8 @@ public class ConfigParser {
         model.init();
 
         final IModelStructure modelStructure = new ModelStructure(model, parameters);
-
+        minStreetLength = Double.parseDouble(parameters.get(MAX_TRUCK_LENGTH)) +
+                          Double.parseDouble(parameters.get(MAX_DISTANCE_FACTOR_BETWEEN_CARS)) * 2;
         handleComponents(modelStructure, modelConfig.getComponents());
         if (modelConfig.getComponents().getConnectors() != null) {
             handleConnectors(null, modelConfig.getComponents().getConnectors());
@@ -348,6 +364,8 @@ public class ConfigParser {
         return sections.getSection().stream().collect(toMap(
             Section::getId,
             s -> {
+                if(s.getLength() < minStreetLength) throw new IllegalArgumentException("Street must not be smaller than " +
+                                                                "the biggest vehicle incl. distance to other vehicles");
                 final boolean isTrafficLightActive = s.getTrafficLightActive() != null ? s.getTrafficLightActive() : false;
                 final StreetSection streetSection = new StreetSection(s.getId(), s.getLength(), model, s.getId(), false, isTrafficLightActive);
                 if (!SECTION_REGISTRY.containsKey(scopeComponentId)) {

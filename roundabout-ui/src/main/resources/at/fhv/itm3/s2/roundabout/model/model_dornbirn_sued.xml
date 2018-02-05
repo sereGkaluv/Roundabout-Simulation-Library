@@ -8,6 +8,13 @@
         <parameter name="MIN_TIME_BETWEEN_CAR_ARRIVALS" value="3.0"/>
         <parameter name="MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS" value="1.0"/>
         <parameter name="STANDARD_CAR_ACCELERATION_TIME" value="2"/>
+        <parameter name="MIN_CAR_LENGTH" value="3.0"/>
+        <parameter name="MIN_CAR_LENGTH" value="6.0"/>
+        <parameter name="EXPECTED_CAR_LENGTH" value="4.5"/>
+        <parameter name="MIN_TRUCK_LENGTH" value="6.0"/>
+        <parameter name="MIN_TRUCK_LENGTH" value="19.5"/>
+        <parameter name="EXPECTED_TRUCK_LENGTH" value="16.5"/>
+        <parameter name="CAR_RATIO_PER_TOTAL_VEHICLE" value="0.8"/>
     </parameters>
     <components>
         <component id="ro1" type="ROUNDABOUT" name="Kreisverkehr Dornbirn Süd">

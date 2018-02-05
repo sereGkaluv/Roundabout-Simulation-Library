@@ -54,7 +54,6 @@ public class CarGenerateEvent extends Event<AbstractSource> {
         } else {
             throw new IllegalArgumentException("No suitable model given over.");
         }
-
         routeController = RouteController.getInstance(roundaboutSimulationModel);
 
     }
