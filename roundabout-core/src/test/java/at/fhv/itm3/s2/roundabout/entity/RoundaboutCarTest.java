@@ -40,7 +40,7 @@ public class RoundaboutCarTest {
 
         RoundaboutSimulationModel model = getPreparedModel();
         Car car = new Car(model, "", false);
-        ICar iCar = new RoundaboutCar(model, car, driverBehaviour, route);
+        ICar iCar = new RoundaboutCar(model, length, car, driverBehaviour, route);
         Assert.assertNotNull(car);
 
         //test attributes
@@ -58,7 +58,7 @@ public class RoundaboutCarTest {
         model.connectToExperiment(exp);
 
         Car car = new Car(model, "", false);
-        new RoundaboutCar(model, car, driverBehaviour, null);
+        new RoundaboutCar(model, 10, car, driverBehaviour, null);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class RoundaboutCarTest {
         model.connectToExperiment(exp);
 
         Car car = new Car(model, "", false);
-        return new RoundaboutCar(model, car, driverBehaviour, route);
+        return new RoundaboutCar(model, length, car, driverBehaviour, route);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class RoundaboutCarTest {
         IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
         RoundaboutSimulationModel model = getPreparedModel();
         Car car = new Car(model, "", false);
-        ICar iCar = new RoundaboutCar(model, car, driverBehaviourMock, route);
+        ICar iCar = new RoundaboutCar(model, 10, car, driverBehaviourMock, route);
 
         assertEquals(iCar.getCurrentSection(), currentSectionMock);
         assertEquals(iCar.getNextSection(), destinationMock);
@@ -133,7 +133,7 @@ public class RoundaboutCarTest {
         IDriverBehaviour driverBehaviourMock = mock(DriverBehaviour.class);
         RoundaboutSimulationModel model = getPreparedModel();
         Car car = new Car(model, "", false);
-        ICar iCar = new RoundaboutCar(model, car, driverBehaviourMock, route);
+        ICar iCar = new RoundaboutCar(model, 10, car, driverBehaviourMock, route);
 
         assertEquals(iCar.getCurrentSection(), currentSectionMock);
         assertNotEquals(iCar.getCurrentSection(), destinationMock);
@@ -149,7 +149,7 @@ public class RoundaboutCarTest {
         route.addSection(section);
 
         Car car = new Car(model, "", false);
-        ICar iCar = new RoundaboutCar(model, car, driverBehaviour, route);
+        ICar iCar = new RoundaboutCar(model, 10, car, driverBehaviour, route);
 
         Assert.assertEquals(2.0, iCar.getTimeToTraverseCurrentSection(), 0.0);
     }
@@ -165,7 +165,7 @@ public class RoundaboutCarTest {
         route.addSection(currentSection);
 
         Car car = new Car(model, "", false);
-        ICar iCar = new RoundaboutCar(model, car, driverBehaviour, route);
+        ICar iCar = new RoundaboutCar(model, 10, car, driverBehaviour, route);
 
         Assert.assertEquals(4, iCar.getTimeToTraverseSection(otherSection), 0.0);
 

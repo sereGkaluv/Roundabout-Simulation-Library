@@ -71,11 +71,13 @@ public class CarGenerateEvent extends Event<AbstractSource> {
      */
     @Override
     public void eventRoutine(AbstractSource source) {
-        // TODO: use meaningful values!!
+        final IRoute route = routeController.getRandomRoute(source);
+        final double carLength = roundaboutSimulationModel.getRandomLengthOfVehicle();
+
         final Car car = new Car(roundaboutSimulationModel, "", false);
-        final IRoute route = this.routeController.getRandomRoute(source);
+        //TODO take values from xml
         final DriverBehaviour driverBehaviour = new DriverBehaviour(6.0, 0.5, 1, 1, 1);
-        final ICar roundaboutCar = new RoundaboutCar(getModel(), car, driverBehaviour, route);
+        final ICar roundaboutCar = new RoundaboutCar(getModel(), carLength, car, driverBehaviour, route);
         roundaboutCar.enterSystem();
 
         CarController.addCarMapping(car, roundaboutCar);
