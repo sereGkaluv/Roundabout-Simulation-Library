@@ -26,6 +26,8 @@ public class StatsViewController extends JfxController {
     private static final String SINK_AVG_SUFFIX = "_avg";
     private static final String SINK_MAX_SUFFIX = "_max";
 
+    private static final String NOT_AVAILABLE = "N/A";
+
     private static final Function<Double, String> DOUBLE_STRING_FORMATTER_FUNCTION = v -> String.format("%.2f", v);
 
     private final Map<String, Double> sinkStats = new HashMap<>();
@@ -58,11 +60,11 @@ public class StatsViewController extends JfxController {
             sectionIdContainer.getChildren().add(lblSourceId);
             labelMap.put(sourceId, lblSourceId);
 
-            final Label lblSourceIS = new Label(sourceIS);
+            final Label lblSourceIS = new Label(NOT_AVAILABLE);
             sectionISContainer.getChildren().add(lblSourceIS);
             labelMap.put(sourceIS, lblSourceIS);
 
-            final Label lblSourcePS = new Label(sourcePS);
+            final Label lblSourcePS = new Label(NOT_AVAILABLE);
             sectionPSContainer.getChildren().add(lblSourcePS);
             labelMap.put(sourcePS, lblSourcePS);
 
@@ -99,15 +101,15 @@ public class StatsViewController extends JfxController {
             sinkIdContainer.getChildren().add(lblSinkId);
             labelMap.put(sinkId, lblSinkId);
 
-            final Label lblSinkMin = new Label(sinkMin);
+            final Label lblSinkMin = new Label(NOT_AVAILABLE);
             sinkMinContainer.getChildren().add(lblSinkMin);
             labelMap.put(sinkMin, lblSinkMin);
 
-            final Label lblSinkAvg = new Label(sinkAvg);
+            final Label lblSinkAvg = new Label(NOT_AVAILABLE);
             sinkAvgContainer.getChildren().add(lblSinkAvg);
             labelMap.put(sinkAvg, lblSinkAvg);
 
-            final Label lblSinkMax = new Label(sinkMax);
+            final Label lblSinkMax = new Label(NOT_AVAILABLE);
             sinkMaxContainer.getChildren().add(lblSinkMax);
             labelMap.put(sinkMax, lblSinkMax);
 
