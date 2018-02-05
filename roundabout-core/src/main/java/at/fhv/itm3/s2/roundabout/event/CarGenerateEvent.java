@@ -86,7 +86,7 @@ public class CarGenerateEvent extends Event<AbstractSource> {
             ((Street)nextSection).addCar(roundaboutCar);
             final double traverseTime = roundaboutCar.getTimeToTraverseCurrentSection();
             final CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
-            carCouldLeaveSectionEvent.schedule((Street)nextSection, new TimeSpan(traverseTime, TimeUnit.SECONDS));
+            carCouldLeaveSectionEvent.schedule((Street)nextSection, new TimeSpan(traverseTime, roundaboutSimulationModel.getModelTimeUnit()));
 
             final CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);
 
@@ -99,7 +99,7 @@ public class CarGenerateEvent extends Event<AbstractSource> {
             final double shiftedTimeUntilCarArrival = randomTimeUntilCarArrival + generatorExpectationShift;
             final double actualTimeUntilCarArrival = Math.max(shiftedTimeUntilCarArrival, minTimeBetweenCarArrivals);
 
-            carGenerateEvent.schedule(source, new TimeSpan(actualTimeUntilCarArrival, TimeUnit.SECONDS));
+            carGenerateEvent.schedule(source, new TimeSpan(actualTimeUntilCarArrival, roundaboutSimulationModel.getModelTimeUnit()));
         } else {
             throw new IllegalStateException("NextSection should be of type Street");
         }

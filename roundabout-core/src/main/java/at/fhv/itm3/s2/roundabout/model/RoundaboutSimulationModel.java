@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 public class RoundaboutSimulationModel extends Model {
 
-    private static final TimeUnit MODEL_TIME_UNIT = TimeUnit.SECONDS;
     private static final long DEFAULT_SIMULATION_SEED = 1L;
 
     private static final double DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
@@ -397,7 +396,7 @@ public class RoundaboutSimulationModel extends Model {
      * @return configured model {@link TimeUnit}.
      */
     public TimeUnit getModelTimeUnit() {
-        return MODEL_TIME_UNIT;
+        return getExperiment().getReferenceUnit();
     }
 
     /**

@@ -86,7 +86,7 @@ public class ConfigParser {
 
         final List<Component> components = modelConfig.getComponents().getComponent();
         final List<Source> modelSources = components.stream().map(Component::getSources).map(Sources::getSource).flatMap(Collection::stream).collect(Collectors.toList());
-        final List<Double> generatorExpectations = modelSources.stream().map(Source::getGeneratorExpectation).sorted().collect(Collectors.toList());
+        final List<Double> generatorExpectations = modelSources.stream().map(Source::getGeneratorExpectation).filter(Objects::nonNull).sorted().collect(Collectors.toList());
 
         // Compatibility for the rest of structure is achieved via insertion of property.
         final double generatorExpectationMedian = calculateMedian(generatorExpectations);
@@ -113,9 +113,6 @@ public class ConfigParser {
             extractParameter(parameters::get, Double::valueOf, CAR_RATIO_PER_TOTAL_VEHICLE)
         );
         model.connectToExperiment(experiment);  // ! - Should be done before anything else.
-        // Just to be sure everything is initialised as expected.
-        model.reset();
-        model.init();
 
         final IModelStructure modelStructure = new ModelStructure(model, parameters);
         minStreetLength = Double.parseDouble(parameters.get(MAX_TRUCK_LENGTH)) +

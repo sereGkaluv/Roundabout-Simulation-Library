@@ -29,6 +29,7 @@ public class CarDrivingStreetIntegration {
     public void setUp() {
         model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
+        Experiment.setReferenceUnit(TimeUnit.SECONDS);
         model.connectToExperiment(exp);
         model.registerModelStructure(new ModelStructure(model));
         exp.setShowProgressBar(false);
@@ -37,7 +38,7 @@ public class CarDrivingStreetIntegration {
     @Test
     public void twoStreetSectionsTwoCars_carsShouldEnterSinks() {
 
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
@@ -58,7 +59,7 @@ public class CarDrivingStreetIntegration {
     @Test
     public void twoStreetSectionsOneCar_trafficLightRed() {
 
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
@@ -82,7 +83,7 @@ public class CarDrivingStreetIntegration {
     @Test
     public void twoStreetSectionsOneCar_trafficLightGreen() {
 
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
@@ -106,7 +107,7 @@ public class CarDrivingStreetIntegration {
     @Test
     public void precedence_oneCarStaysOnTrack_oneCarWantsToChangeTrackAndHasToGivePrecedence() {
 
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 

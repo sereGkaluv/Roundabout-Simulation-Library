@@ -29,6 +29,7 @@ public class TrafficJamIntegration {
     public void setUp() {
         model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
+        Experiment.setReferenceUnit(TimeUnit.SECONDS);
         model.connectToExperiment(exp);
         model.registerModelStructure(new ModelStructure(model));
         exp.setShowProgressBar(false);
@@ -37,7 +38,7 @@ public class TrafficJamIntegration {
     @Test
     public void twoStreetSectionsWithTwoCars_lastStreetSectionCouldNotBeEntered() {
 
-        exp.stop(new TimeInstant(10000, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(10000, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
@@ -61,7 +62,7 @@ public class TrafficJamIntegration {
     @Test
     public void intersection_streetSectionAfterIntersectionIsFull() {
 
-        exp.stop(new TimeInstant(10000, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(10000, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 

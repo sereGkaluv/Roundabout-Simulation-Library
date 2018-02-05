@@ -23,6 +23,7 @@ public class ZeroCarStreetIntegration {
     public void setUp() {
         model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
+        Experiment.setReferenceUnit(TimeUnit.SECONDS);
         model.connectToExperiment(exp);
         model.registerModelStructure(new ModelStructure(model));
         exp.setShowProgressBar(false);
@@ -31,7 +32,7 @@ public class ZeroCarStreetIntegration {
     @Test
     public void zeroCarsPassingTwoStreetSections() {
 
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
         IRoute route = routeGeneratorMock.getRoute(RouteType.TWO_STREETSECTIONS_TWO_CARS);
         AbstractSink sink = route.getSink();

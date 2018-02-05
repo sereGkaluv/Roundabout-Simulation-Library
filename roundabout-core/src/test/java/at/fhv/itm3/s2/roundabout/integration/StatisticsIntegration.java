@@ -25,6 +25,7 @@ public class StatisticsIntegration {
     public void setUp() {
         model = new RoundaboutSimulationModel(null, "", false, false, 0.5, 0.5);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
+        Experiment.setReferenceUnit(TimeUnit.SECONDS);
         model.connectToExperiment(exp);
         model.registerModelStructure(new ModelStructure(model));
         exp.setShowProgressBar(false);
@@ -34,7 +35,7 @@ public class StatisticsIntegration {
     @Test
     public void twoStreetSectionsTwoCars_noStops() {
 
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
@@ -60,7 +61,7 @@ public class StatisticsIntegration {
     @Test
     public void precedence_oneCarStaysOnTrack_oneCarWantsToChangeTrackAndHasToGivePrecedence_oneStop() {
 
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
@@ -98,7 +99,7 @@ public class StatisticsIntegration {
     @Test
     public void precedence_fourCarStaysOnTrack_fourCarWantsToChangeTrackAndHasToGivePrecedence_maxOneStopPerCar() {
 
-        exp.stop(new TimeInstant(100, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(100, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 

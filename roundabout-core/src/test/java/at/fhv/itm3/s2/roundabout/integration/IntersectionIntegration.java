@@ -25,6 +25,7 @@ public class IntersectionIntegration {
     public void setUp() {
         model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
+        Experiment.setReferenceUnit(TimeUnit.SECONDS);
         model.connectToExperiment(exp);
         model.registerModelStructure(new ModelStructure(model));
         exp.setShowProgressBar(false);
@@ -33,7 +34,7 @@ public class IntersectionIntegration {
     @Test
     public void intersectionWith2DirectionsAndStreetSections_twoCarsShouldEnterSinks() {
 
-        exp.stop(new TimeInstant(10000, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(10000, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 

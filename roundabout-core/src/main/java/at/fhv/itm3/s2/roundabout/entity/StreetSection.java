@@ -518,7 +518,7 @@ public class StreetSection extends Street {
             CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(
                     getRoundaboutModel()
             );
-            carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, TimeUnit.SECONDS));
+            carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, getRoundaboutModel().getModelTimeUnit()));
         } else {
             incrementLostCarCounter();
             car.leaveSystem();

@@ -1,55 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.itm3.s2.roundabout.ui.controllers.StatsViewController">
+<?import javafx.geometry.Insets?>
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.itm3.s2.roundabout.ui.controllers.StatsViewController"
+            style="-fx-background-color: #E8E8E8;">
     <VBox spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <padding>
+            <Insets top="15.0" left="15.0" right ="15.0" bottom="15.0"/>
+        </padding>
         <Label fx:id="lblStatsTitle">
             <font>
-                <Font name="System Bold" size="12.0" />
+                <Font name="System Bold" size="16.0"/>
             </font>
+            <graphic>
+                <ImageView>
+                    <Image url="@../img/component.png"/>
+                </ImageView>
+            </graphic>
         </Label>
-        <HBox spacing="15.0">
-            <VBox>
+        <HBox>
+            <VBox spacing="10.0" style="-fx-background-color: #D3D3D3;">
+                <padding>
+                    <Insets top="15.0" left="15.0" right ="15.0" bottom="15.0"/>
+                </padding>
                 <Label text="SECTIONS">
                     <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="12.0"/>
                     </font>
+                    <graphic>
+                        <ImageView>
+                            <Image url="@../img/street.png"/>
+                        </ImageView>
+                    </graphic>
                 </Label>
                 <HBox spacing="10.0">
                     <VBox fx:id="sectionIdContainer">
-                        <Label text="ID" />
+                        <Label text="ID">
+                            <font>
+                                <Font name="System Bold Italic" size="12.0" />
+                            </font>
+                        </Label>
                     </VBox>
                     <VBox fx:id="sectionISContainer">
-                        <Label text="IS" />
+                        <Label text="IS">
+                            <font>
+                                <Font name="System Bold Italic" size="12.0" />
+                            </font>
+                        </Label>
                     </VBox>
                     <VBox fx:id="sectionPSContainer">
-                        <Label text="PS" />
+                        <Label text="PS">
+                            <font>
+                                <Font name="System Bold Italic" size="12.0" />
+                            </font>
+                        </Label>
                     </VBox>
                 </HBox>
             </VBox>
-            <VBox>
+            <VBox spacing="10.0" style="-fx-background-color: #DCDCDC;">
+                <padding>
+                    <Insets top="15.0" left="15.0" right ="15.0" bottom="15.0"/>
+                </padding>
                 <Label text="SINKS">
                     <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="12.0"/>
                     </font>
+                    <graphic>
+                        <ImageView>
+                            <Image url="@../img/sink.png"/>
+                        </ImageView>
+                    </graphic>
                 </Label>
                 <HBox spacing="10.0">
                     <VBox fx:id="sinkIdContainer">
-                        <Label text="ID" />
+                        <Label text="ID">
+                            <font>
+                                <Font name="System Bold Italic" size="12.0"/>
+                            </font>
+                        </Label>
                     </VBox>
                     <VBox fx:id="sinkMinContainer">
-                        <Label text="MIN" />
+                        <Label text="MIN">
+                            <font>
+                                <Font name="System Bold Italic" size="12.0"/>
+                            </font>
+                        </Label>
                     </VBox>
                     <VBox fx:id="sinkAvgContainer">
-                        <Label text="AVG" />
+                        <Label text="AVG">
+                            <font>
+                                <Font name="System Bold Italic" size="12.0"/>
+                            </font>
+                        </Label>
                     </VBox>
                     <VBox fx:id="sinkMaxContainer">
-                        <Label text="MAX" />
+                        <Label text="MAX">
+                            <font>
+                                <Font name="System Bold Italic" size="12.0"/>
+                            </font>
+                        </Label>
                     </VBox>
                 </HBox>
             </VBox>
