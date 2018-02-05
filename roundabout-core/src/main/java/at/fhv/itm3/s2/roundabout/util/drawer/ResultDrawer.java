@@ -66,9 +66,6 @@ public class ResultDrawer extends JFrame {
 
         ResultDrawer window = new ResultDrawer("Kreisverkehr Dornbirn Nord", "/dornbirn-nord.png", statistics);
         window.setVisible(true);
-
-
-        window.repaint();
     }
 
     static private class Example {

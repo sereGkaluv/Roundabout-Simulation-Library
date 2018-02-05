@@ -295,7 +295,12 @@ public class ConfigParser {
         return sections.getSection().stream().collect(toMap(
                 Section::getId,
                 s -> {
-                    final StreetSection streetSection = new StreetSection(s.getLength(), model, s.getId(), false);
+                    StreetSection streetSection = null;
+                    if (s.getTrafficLight() != null && s.getTrafficLight().equals("active")) {
+                        streetSection = new StreetSection(s.getLength(), model, s.getId(), false, true);
+                    } else {
+                        streetSection = new StreetSection(s.getLength(), model, s.getId(), false);
+                    }
                     if (!SECTION_REGISTRY.containsKey(scopeComponentId)) {
                         SECTION_REGISTRY.put(scopeComponentId, new HashMap<>());
                     }

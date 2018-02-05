@@ -28,45 +28,42 @@ public class StreetSection extends Street {
 
     protected IntersectionController intersectionController;
 
-    private ICar lastFirstCar;
-    private int tryToLeaveCounter;
-
     public StreetSection(
-        double length,
-        Model model,
-        String modelDescription,
-        boolean showInTrace
+            double length,
+            Model model,
+            String modelDescription,
+            boolean showInTrace
     ) {
         this(length, model, modelDescription, showInTrace, false);
     }
 
     public StreetSection(
-        String id,
-        double length,
-        Model model,
-        String modelDescription,
-        boolean showInTrace
+            String id,
+            double length,
+            Model model,
+            String modelDescription,
+            boolean showInTrace
     ) {
         this(id, length, model, modelDescription, showInTrace, false);
     }
 
     public StreetSection(
-        double length,
-        Model model,
-        String modelDescription,
-        boolean showInTrace,
-        boolean trafficLightActive
+            double length,
+            Model model,
+            String modelDescription,
+            boolean showInTrace,
+            boolean trafficLightActive
     ) {
         this(UUID.randomUUID().toString(), length, model, modelDescription, showInTrace, trafficLightActive);
     }
 
     public StreetSection(
-        String id,
-        double length,
-        Model model,
-        String modelDescription,
-        boolean showInTrace,
-        boolean trafficLightActive
+            String id,
+            double length,
+            Model model,
+            String modelDescription,
+            boolean showInTrace,
+            boolean trafficLightActive
     ) {
         super(id, model, modelDescription, showInTrace, trafficLightActive);
 
@@ -99,7 +96,7 @@ public class StreetSection extends Street {
             connector = nextStreetConnector;
         }
 
-        if (connector!= null) {
+        if (connector != null) {
             if (connector.getTypeOfConsumer(this) == ConsumerType.ROUNDABOUT_INLET) {
                 iCar.enterRoundabout();
             } else if (connector.getTypeOfConsumer(this) == ConsumerType.ROUNDABOUT_EXIT) { // TODO doesn't work
@@ -114,7 +111,7 @@ public class StreetSection extends Street {
         Car car = CarController.getCar(iCar);
         IConsumer consumer = iCar.getLastSection();
         if (consumer instanceof Street) {
-            ((Street)consumer).carDelivered(null, car, true);
+            ((Street) consumer).carDelivered(null, car, true);
         }
     }
 
@@ -145,7 +142,7 @@ public class StreetSection extends Street {
 
     @Override
     public List<ICar> getCarQueue()
-    throws IllegalStateException {
+            throws IllegalStateException {
         if (carQueue == null) {
             throw new IllegalStateException("carQueue in section cannot be null");
         }
@@ -201,25 +198,25 @@ public class StreetSection extends Street {
 
                 // Calculate distance to next car / end of street section based on distributed driver behaviour values.
                 final double distanceToNextCar = calculateDistanceToNextCar(
-                    carDriverBehaviour.getMinDistanceToNextCar(),
-                    carDriverBehaviour.getMaxDistanceToNextCar(),
-                    getRoundaboutModel().getRandomDistanceFactorBetweenCars()
+                        carDriverBehaviour.getMinDistanceToNextCar(),
+                        carDriverBehaviour.getMaxDistanceToNextCar(),
+                        getRoundaboutModel().getRandomDistanceFactorBetweenCars()
                 );
 
                 // Calculate possible car positions.
                 final double maxTheoreticallyPossiblePositionValue = calculateMaxPossibleCarPosition(
-                    getLength(),
-                    distanceToNextCar,
-                    getCarPosition(previousCar),
-                    previousCar
+                        getLength(),
+                        distanceToNextCar,
+                        getCarPosition(previousCar),
+                        previousCar
                 );
 
                 final double maxActuallyPossiblePositionValue = carPosition + (currentTime - carLastUpdateTime) * carSpeed;
 
                 // Select the new RoundaboutCar position based on previous calculations.
                 double newCarPosition = Math.min(
-                    maxTheoreticallyPossiblePositionValue,
-                    maxActuallyPossiblePositionValue
+                        maxTheoreticallyPossiblePositionValue,
+                        maxActuallyPossiblePositionValue
                 );
 
                 if (newCarPosition < carPosition) {
@@ -229,10 +226,10 @@ public class StreetSection extends Street {
                 if (carPosition == newCarPosition && !currentCar.isWaiting()) {
                     currentCar.startWaiting();
                 } else if (
-                    (carPosition != newCarPosition || carPosition == currentCar.getLength())
-                    && currentCar.isWaiting()
-                    && newCarPosition - carPosition > currentCar.getLength()
-                ) {
+                        (carPosition != newCarPosition || carPosition == currentCar.getLength())
+                                && currentCar.isWaiting()
+                                && newCarPosition - carPosition > currentCar.getLength()
+                        ) {
                     currentCar.stopWaiting();
                 }
 
@@ -265,17 +262,6 @@ public class StreetSection extends Street {
         if (isFirstCarOnExitPoint()) {
             ICar firstCarInQueue = getFirstCar();
 
-            // for debugging
-            if (lastFirstCar != firstCarInQueue) {
-                lastFirstCar = firstCarInQueue;
-                tryToLeaveCounter = 0;
-            } else {
-                tryToLeaveCounter++;
-                if (tryToLeaveCounter > 200) {
-                    Integer.toString(tryToLeaveCounter); // debug!
-                }
-            }
-
             if (firstCarInQueue != null) {
                 IConsumer nextConsumer = firstCarInQueue.getNextSection();
 
@@ -296,9 +282,9 @@ public class StreetSection extends Street {
                                 // case 1: car is in the roundabout and wants to remain on the track
                                 // (it has precedence)
                                 case ROUNDABOUT_SECTION:
-                                // case 2: car is on a normal street section and wants to remain on the track
+                                    // case 2: car is on a normal street section and wants to remain on the track
                                 case STREET_SECTION:
-                                // case 3: car is on a roundabout exit and wants to remain on the track
+                                    // case 3: car is on a roundabout exit and wants to remain on the track
                                 case ROUNDABOUT_EXIT:
                                     return true;
                                 // case 4: car wants to enter the roundabout from an inlet
@@ -306,12 +292,12 @@ public class StreetSection extends Street {
                                 // the car has to cross)
                                 case ROUNDABOUT_INLET:
                                     Collection<IConsumer> previousStreets = nextConnector.getPreviousConsumers();
-                                    for (IConsumer previousStreet: previousStreets) {
+                                    for (IConsumer previousStreet : previousStreets) {
                                         if (!(previousStreet instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
                                         }
-                                        ((Street)previousStreet).updateAllCarsPositions();
-                                        if (((Street)previousStreet).isFirstCarOnExitPoint()) {
+                                        ((Street) previousStreet).updateAllCarsPositions();
+                                        if (((Street) previousStreet).isFirstCarOnExitPoint()) {
                                             firstCarInQueue.startWaiting();
                                             return false;
                                         }
@@ -326,16 +312,16 @@ public class StreetSection extends Street {
                                 // case 5: car wants to change the track in the roundabout exit
                                 // (it has to give precedence to a car on that track)
                                 case ROUNDABOUT_EXIT:
-                                // case 6: car wants to change the track on a streetsection
-                                // (it has to give precedence to a car on that track)
+                                    // case 6: car wants to change the track on a streetsection
+                                    // (it has to give precedence to a car on that track)
                                 case STREET_SECTION:
                                     List<IConsumer> streetsThatHavePrecedence = nextConnector.getPreviousTrackConsumers(nextStreet, currentConsumerType);
-                                    for (IConsumer precedenceSection: streetsThatHavePrecedence) {
+                                    for (IConsumer precedenceSection : streetsThatHavePrecedence) {
                                         if (!(precedenceSection instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
                                         }
-                                        ((Street)precedenceSection).updateAllCarsPositions();
-                                        if (((Street)precedenceSection).isFirstCarOnExitPoint()) {
+                                        ((Street) precedenceSection).updateAllCarsPositions();
+                                        if (((Street) precedenceSection).isFirstCarOnExitPoint()) {
                                             firstCarInQueue.startWaiting();
                                             return false;
                                         }
@@ -347,12 +333,12 @@ public class StreetSection extends Street {
                                 // the car has to cross and to all cars on the inlets of the track it wants to change to)
                                 case ROUNDABOUT_INLET:
                                     List<IConsumer> previousStreets = nextConnector.getPreviousConsumers(ConsumerType.ROUNDABOUT_SECTION);
-                                    for (IConsumer previousStreet: previousStreets) {
+                                    for (IConsumer previousStreet : previousStreets) {
                                         if (!(previousStreet instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
                                         }
-                                        ((Street)previousStreet).updateAllCarsPositions();
-                                        if (((Street)previousStreet).isFirstCarOnExitPoint()) {
+                                        ((Street) previousStreet).updateAllCarsPositions();
+                                        if (((Street) previousStreet).isFirstCarOnExitPoint()) {
                                             firstCarInQueue.startWaiting();
                                             return false;
                                         }
@@ -361,12 +347,12 @@ public class StreetSection extends Street {
                                         }
                                     }
                                     List<IConsumer> inlets = nextConnector.getPreviousTrackConsumers(nextStreet, ConsumerType.ROUNDABOUT_INLET);
-                                    for (IConsumer inlet: inlets) {
+                                    for (IConsumer inlet : inlets) {
                                         if (!(inlet instanceof Street)) {
                                             throw new IllegalStateException("All previous IConsumer should be of type Street");
                                         }
-                                        ((Street)inlet).updateAllCarsPositions();
-                                        if (((Street)inlet).isFirstCarOnExitPoint()) {
+                                        ((Street) inlet).updateAllCarsPositions();
+                                        if (((Street) inlet).isFirstCarOnExitPoint()) {
                                             firstCarInQueue.startWaiting();
                                             return false;
                                         }
@@ -381,12 +367,12 @@ public class StreetSection extends Street {
                                         // sections of this track)
                                         case ROUNDABOUT_SECTION:
                                             previousSections = nextConnector.getPreviousTrackConsumers(nextStreet, ConsumerType.ROUNDABOUT_SECTION);
-                                            for (IConsumer previousSection: previousSections) {
+                                            for (IConsumer previousSection : previousSections) {
                                                 if (!(previousSection instanceof Street)) {
                                                     throw new IllegalStateException("All previous IConsumer should be of type Street");
                                                 }
-                                                ((Street)previousSection).updateAllCarsPositions();
-                                                if (((Street)previousSection).isFirstCarOnExitPoint()) {
+                                                ((Street) previousSection).updateAllCarsPositions();
+                                                if (((Street) previousSection).isFirstCarOnExitPoint()) {
                                                     firstCarInQueue.startWaiting();
                                                     return false;
                                                 }
@@ -403,8 +389,8 @@ public class StreetSection extends Street {
                                                 if (!(previousSection instanceof Street)) {
                                                     throw new IllegalStateException("All previous IConsumer should be of type Street");
                                                 }
-                                                ((Street)previousSection).updateAllCarsPositions();
-                                                if (((Street)previousSection).isFirstCarOnExitPoint()) {
+                                                ((Street) previousSection).updateAllCarsPositions();
+                                                if (((Street) previousSection).isFirstCarOnExitPoint()) {
                                                     firstCarInQueue.startWaiting();
                                                     return false;
                                                 }
@@ -419,6 +405,15 @@ public class StreetSection extends Street {
                         return true;
                     } else {
                         firstCarInQueue.startWaiting();
+
+                        // control traffic lights
+                        try {
+                            if (getRoundaboutModel().getTrafficLightsController() != null) {
+                                getRoundaboutModel().getTrafficLightsController().controlTrafficLights();
+                            }
+                        } catch (IllegalArgumentException e) {
+                            // TODO mocks in test have no model
+                        }
                     }
                 } else if (nextConsumer instanceof RoundaboutIntersection) {
                     return true; // because Intersection is never full (isFull() of Intersection returns always false)
@@ -436,7 +431,7 @@ public class StreetSection extends Street {
 
     @Override
     public void moveFirstCarToNextSection()
-    throws IllegalStateException {
+            throws IllegalStateException {
         ICar firstCar = removeFirstCar();
         if (firstCar != null) {
             if (!Objects.equals(firstCar.getCurrentSection(), firstCar.getDestination())) {
@@ -446,7 +441,7 @@ public class StreetSection extends Street {
                     // Move logically first car to next section.
                     firstCar.traverseToNextSection();
                     // Move physically first car to next section.
-                    ((Street)nextSection).addCar(firstCar);
+                    ((Street) nextSection).addCar(firstCar);
                 } else if (nextSection != null && nextSection instanceof RoundaboutIntersection) {
                     RoundaboutIntersection intersection = (RoundaboutIntersection) nextSection;
                     Car car = CarController.getCar(firstCar);
@@ -494,19 +489,19 @@ public class StreetSection extends Street {
     }
 
     private static double calculateDistanceToNextCar(
-        double carMinDistanceToNextCar,
-        double carMaxDistanceToNextCar,
-        double randomDistanceFactorBetweenCars
+            double carMinDistanceToNextCar,
+            double carMaxDistanceToNextCar,
+            double randomDistanceFactorBetweenCars
     ) {
         final double carVariationDistanceToNextCar = carMaxDistanceToNextCar - carMinDistanceToNextCar;
         return carMinDistanceToNextCar + carVariationDistanceToNextCar * randomDistanceFactorBetweenCars;
     }
 
     private static double calculateMaxPossibleCarPosition(
-        double lengthInMeters,
-        double distanceToNextCar,
-        double previousCarPosition,
-        ICar previousCar
+            double lengthInMeters,
+            double distanceToNextCar,
+            double previousCarPosition,
+            ICar previousCar
     ) {
         if (previousCar != null) {
             return previousCarPosition - previousCar.getLength() - distanceToNextCar;

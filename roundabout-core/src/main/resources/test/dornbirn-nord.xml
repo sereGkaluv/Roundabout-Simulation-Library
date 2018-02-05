@@ -31,7 +31,7 @@
                 <section id="section_lauterach" length="8.6"/>
                 <section id="section_lauterach_a14" length="11.9"/>
                 <!-- A14 -->
-                <section id="section_a14_inlet" length="250"/>
+                <section id="section_a14_inlet" length="250" trafficLight="active"/>
                 <section id="section_a14_exit" length="20"/>
                 <section id="section_a14" length="7.1"/>
                 <section id="section_a14_schwefel" length="11.9"/>
@@ -41,7 +41,7 @@
                 <section id="section_schwefel" length="7.1"/>
                 <section id="section_schwefel_achrain" length="11"/>
                 <!-- Achrain -->
-                <section id="section_achrain_inlet" length="250"/>
+                <section id="section_achrain_inlet" length="250" trafficLight="active"/>
                 <section id="section_achrain_exit" length="20"/>
                 <section id="section_achrain" length="7.1"/>
                 <section id="section_achrain_lauterach" length="13.5"/>

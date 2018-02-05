@@ -1,6 +1,7 @@
 package at.fhv.itm3.s2.roundabout;
 
 import at.fhv.itm14.trafsim.model.ModelFactory;
+import at.fhv.itm3.s2.roundabout.api.controller.ITrafficLightController;
 import desmoj.core.dist.ContDist;
 import desmoj.core.dist.ContDistUniform;
 import desmoj.core.simulator.Model;
@@ -44,6 +45,7 @@ public class RoundaboutSimulationModel extends Model {
      * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
      */
     private ContDistUniform timeBetweenCarArrivalsOnMainFlow;
+    private ITrafficLightController trafficLightsController;
 
     /**
      * Constructs a new RoundaboutSimulationModel
@@ -210,5 +212,18 @@ public class RoundaboutSimulationModel extends Model {
      */
     public Double getStandardCarAccelerationTime() {
         return standardCarAccelerationTime;
+    }
+
+    /**
+     * Sets the specific traffic light controller for this roundabout.
+     *
+     * @param trafficLightsController
+     */
+    public void setTrafficLightsController(ITrafficLightController trafficLightsController) {
+        this.trafficLightsController = trafficLightsController;
+    }
+
+    public ITrafficLightController getTrafficLightsController() {
+        return trafficLightsController;
     }
 }

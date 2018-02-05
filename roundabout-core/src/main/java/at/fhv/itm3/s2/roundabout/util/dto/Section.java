@@ -8,6 +8,7 @@ public class Section implements IDTO {
     private String id;
     private Double length;
     private Integer order;
+    private String trafficLight;
 
     @XmlAttribute
     public String getId() {
@@ -34,5 +35,14 @@ public class Section implements IDTO {
 
     public void setOrder(Integer order) {
         this.order = order;
+    }
+
+    @XmlAttribute
+    public String getTrafficLight() {
+        return trafficLight;
+    }
+
+    public void setTrafficLight(String trafficLight) {
+        this.trafficLight = trafficLight;
     }
 }

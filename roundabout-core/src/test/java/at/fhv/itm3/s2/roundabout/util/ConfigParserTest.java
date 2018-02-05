@@ -3,6 +3,7 @@ package at.fhv.itm3.s2.roundabout.util;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutStructure;
 import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
+import at.fhv.itm3.s2.roundabout.util.dto.Section;
 import desmoj.core.simulator.Experiment;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,6 +77,17 @@ public class ConfigParserTest {
     @Test
     public void configParserTest_sectionsComponentLoaded() {
         assertNotNull("sections in component not null", roundAboutConfig.getComponents().getComponent().get(0).getSections().getSection());
+        assertEquals("16 sections loaded", 16, roundAboutConfig.getComponents().getComponent().get(0).getSections().getSection().size());
+    }
+
+    @Test
+    public void configParserTest_sectionsTrafficLightsLoaded() {
+        assertNotNull("sections in component not null", roundAboutConfig.getComponents().getComponent().get(0).getSections().getSection());
+        for (Section section : roundAboutConfig.getComponents().getComponent().get(0).getSections().getSection()) {
+            if (section.getId().contains("section_a14_inlet") || section.getId().contains("section_achrain_inlet")) {
+                section.getTrafficLight().equals("active");
+            }
+        }
         assertEquals("16 sections loaded", 16, roundAboutConfig.getComponents().getComponent().get(0).getSections().getSection().size());
     }
 
