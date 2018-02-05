@@ -115,7 +115,7 @@ public class StatsViewController extends JfxController {
                 final Double carWaitTime = sink.getMeanWaitingTimePerStopForEnteredCars();
 
                 final double minValue = sinkStats.getOrDefault(sinkMin, Double.MAX_VALUE);
-                if (carWaitTime < minValue) {
+                if (carWaitTime < minValue || !sinkStats.containsKey(sinkMin)) {
                     sinkStats.put(sinkMin, carWaitTime);
 
                     final String sinkMinValue = toStringOrEmpty(carWaitTime, DOUBLE_STRING_FORMATTER_FUNCTION);
@@ -126,7 +126,7 @@ public class StatsViewController extends JfxController {
                 Platform.runLater(() -> lblSinkAvg.setText(sinkAvgValue));
 
                 final double maxValue = sinkStats.getOrDefault(sinkMax, Double.MIN_VALUE);
-                if (carWaitTime > maxValue) {
+                if (carWaitTime > maxValue || !sinkStats.containsKey(sinkMax)) {
                     sinkStats.put(sinkMax, carWaitTime);
 
                     final String sinkMaxValue = toStringOrEmpty(carWaitTime, DOUBLE_STRING_FORMATTER_FUNCTION);
