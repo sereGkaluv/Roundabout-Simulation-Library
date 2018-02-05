@@ -53,8 +53,7 @@ public class RoundaboutEventFactory {
      * Creates a new {@link ToggleTrafficLightStateEvent} within the given model.
      *
      * @param model the model the event is part of.
-     * @return the newly created {@link ToggleTrafficLightS
-     * tateEvent}.
+     * @return the newly created {@link ToggleTrafficLightStateEvent}.
      */
     public ToggleTrafficLightStateEvent createToggleTrafficLightStateEvent(RoundaboutSimulationModel model) {
         return new ToggleTrafficLightStateEvent(model, "ToggleTrafficLightStateEvent", true);
