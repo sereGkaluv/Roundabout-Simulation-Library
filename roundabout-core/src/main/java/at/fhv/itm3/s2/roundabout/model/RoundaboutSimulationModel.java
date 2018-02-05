@@ -7,8 +7,6 @@ import desmoj.core.dist.ContDistNormal;
 import desmoj.core.dist.ContDistUniform;
 import desmoj.core.simulator.Model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class RoundaboutSimulationModel extends Model {
@@ -251,6 +249,10 @@ public class RoundaboutSimulationModel extends Model {
         }
     }
 
+    /**
+     * Registers structure of the model for init scheduling.
+     * @param modelStructure structure to be registered.
+     */
     public void registerModelStructure(IModelStructure modelStructure) {
         this.modelStructure = modelStructure;
     }
@@ -291,6 +293,10 @@ public class RoundaboutSimulationModel extends Model {
         return meanTimeBetweenCarArrivals;
     }
 
+    /**
+     * Returns standard deviation between car arrivals.
+     * @return standard deviation value.
+     */
     public double getStdDeviationTimeBetweenCarArrivals() {
         return Math.abs(getMaxTimeBetweenCarArrivals() - getMeanTimeBetweenCarArrivals());
     }
@@ -308,28 +314,37 @@ public class RoundaboutSimulationModel extends Model {
     /**
      * Returns a sample of the random stream {@link ContDistNormal} used to determine the length of a vehicle
      *
-     * @return a {@code getRandomLengthOfVehicle} sample as double.
+     * @return a {@code getRandomVehicleLength} sample as double.
      */
-    public double getRandomLengthOfVehicle () {
-        return (typeOfVehicle.sample() <= carRatioPerTotalVehicle) ? getRandomLengthOfCar() : getRandomLengthOfTruck();
+    public double getRandomVehicleLength() {
+        return (typeOfVehicle.sample() <= carRatioPerTotalVehicle) ? getRandomCarLength() : getRandomTruckLength();
     }
 
     /**
      * Returns a sample of the random stream {@link ContDistNormal} used to determine the length of a car.
      *
-     * @return a {@code getRandomLengthOfCar} sample as double.
+     * @return a {@code getRandomCarLength} sample as double.
      */
-    public double getRandomLengthOfCar(){
-        return Math.max( Math.min(lengthOfCar.sample(), maxCarLength), minCarLength);
+    public double getRandomCarLength() {
+        return Math.max(Math.min(lengthOfCar.sample(), maxCarLength), minCarLength);
     }
 
     /**
      * Returns a sample of the random stream {@link ContDistNormal} used to determine the length of a truck.
      *
-     * @return a {@code getRandomLengthOfTruck} sample as double.
+     * @return a {@code getRandomTruckLength} sample as double.
      */
-    public double getRandomLengthOfTruck(){
-        return Math.max( Math.min(lengthOfTruck.sample(), maxTruckLength), minTruckLength);
+    public double getRandomTruckLength() {
+        return Math.max(Math.min(lengthOfTruck.sample(), maxTruckLength), minTruckLength);
+    }
+
+    /**
+     * Returns max possible length of vehicle.
+     *
+     * @return max vehicle length.
+     */
+    public double getMaxVehicleLength() {
+        return Math.max(maxCarLength, maxTruckLength);
     }
 
     /**
@@ -350,6 +365,11 @@ public class RoundaboutSimulationModel extends Model {
         return currentModel().getExperiment().getSimClock().getTime().getTimeAsDouble(getModelTimeUnit());
     }
 
+    /**
+     * Provides for time between car arrivals random number stream.
+     *
+     * @return instance of {@link ContDist}.
+     */
     public ContDist getTimeBetweenCarArrivalsOnOneWayStreets() {
         return timeBetweenCarArrivalsOnOneWayStreets;
     }

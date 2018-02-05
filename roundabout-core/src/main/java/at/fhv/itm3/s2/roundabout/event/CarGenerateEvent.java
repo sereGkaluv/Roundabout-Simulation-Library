@@ -72,7 +72,7 @@ public class CarGenerateEvent extends Event<AbstractSource> {
     @Override
     public void eventRoutine(AbstractSource source) {
         final IRoute route = routeController.getRandomRoute(source);
-        final double carLength = roundaboutSimulationModel.getRandomLengthOfVehicle();
+        final double carLength = roundaboutSimulationModel.getRandomVehicleLength();
 
         final Car car = new Car(roundaboutSimulationModel, "", false);
         //TODO take values from xml
