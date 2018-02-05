@@ -42,7 +42,7 @@ public class DriverBehaviour implements IDriverBehaviour {
     @Override
     public void setMinDistanceToNextCar(double minDistanceToNextCar)
     throws IllegalArgumentException {
-        if(minDistanceToNextCar > 0){
+        if (minDistanceToNextCar > 0) {
             this.minDistanceToNextCar = minDistanceToNextCar;
         } else {
             throw new IllegalArgumentException("Min distance must be positive");
@@ -57,7 +57,7 @@ public class DriverBehaviour implements IDriverBehaviour {
     @Override
     public void setMaxDistanceToNextCar(double maxDistanceToNextCar)
     throws IllegalArgumentException {
-        if(maxDistanceToNextCar > 0){
+        if (maxDistanceToNextCar > 0) {
             this.maxDistanceToNextCar = maxDistanceToNextCar;
         } else {
             throw new IllegalArgumentException("Max distance must be positive");

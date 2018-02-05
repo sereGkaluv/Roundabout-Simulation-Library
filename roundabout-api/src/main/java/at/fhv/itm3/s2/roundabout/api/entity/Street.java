@@ -227,10 +227,8 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
      * @throws IllegalStateException if car cannot move further e.g. next section is null.
      */
     public abstract void moveFirstCarToNextSection()
-            throws IllegalStateException;
+    throws IllegalStateException;
 
-    @Deprecated
-    // TODO consider removal i think this logic can be packed into addCar method, otherwise consider rename to isCarAbleToEnter()
     public abstract boolean carCouldEnterNextSection();
 
     /**

@@ -1,6 +1,7 @@
 package at.fhv.itm3.s2.roundabout.model;
 
 import at.fhv.itm14.trafsim.model.ModelFactory;
+import at.fhv.itm14.trafsim.model.entities.OneWayStreet;
 import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
 import desmoj.core.dist.ContDist;
 import desmoj.core.dist.ContDistNormal;
@@ -48,15 +49,39 @@ public class RoundaboutSimulationModel extends Model {
     private IModelStructure modelStructure;
 
     /**
+     * Random number stream used to calculate a random route ratio.
+     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+     */
+    private ContDistUniform randomRouteRatioFactor;
+
+    /**
      * Random number stream used to calculate a distance between two cars.
      * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
      */
     private ContDistUniform distanceFactorBetweenCars;
 
+    /**
+     * Random number stream used to calculate a length of a car.
+     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+     */
     private ContDistNormal lengthOfCar;
+
+    /**
+     * Random number stream used to calculate a length of a truck.
+     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+     */
     private ContDistNormal lengthOfTruck;
+
+    /**
+     * Random number stream used to calculate a length of a vehicle.
+     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+     */
     private ContDistUniform typeOfVehicle;
 
+    /**
+     * Random number stream used to calculate a time between car arrivals on one {@link OneWayStreet}.
+     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+     */
     private ContDist timeBetweenCarArrivalsOnOneWayStreets;
 
     /**
@@ -180,6 +205,16 @@ public class RoundaboutSimulationModel extends Model {
     public void init() {
         getExperiment().setSeedGenerator(simulationSeed);
 
+        randomRouteRatioFactor = new ContDistUniform(
+            this,
+            "RandomRouteRatioFactor",
+            0,
+            1,
+            true,
+            false
+        );
+        randomRouteRatioFactor.setSeed(simulationSeed);
+
         distanceFactorBetweenCars = new ContDistUniform(
             this,
             "DistanceFactorBetweenCarsStream",
@@ -255,6 +290,15 @@ public class RoundaboutSimulationModel extends Model {
      */
     public void registerModelStructure(IModelStructure modelStructure) {
         this.modelStructure = modelStructure;
+    }
+
+    /**
+     * Returns a sample of the random stream {@link ContDistUniform} used to determine the random route ratio factor.
+     *
+     * @return a {@code randomRouteRatioFactor} sample as double.
+     */
+    public double getRandomRouteRatioFactor() {
+        return randomRouteRatioFactor.sample();
     }
 
     /**

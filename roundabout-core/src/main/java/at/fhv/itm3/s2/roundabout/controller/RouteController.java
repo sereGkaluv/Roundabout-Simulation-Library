@@ -81,15 +81,13 @@ public class RouteController {
 
     public IRoute getRandomRoute(AbstractSource source) {
         if (this.routes.isEmpty()) {
-            throw new IllegalStateException("Routes must not be empty");
+            throw new IllegalStateException("Routes must not be empty.");
         }
 
-        List<IRoute> routes = this.routes.get(source);
+        final List<IRoute> routes = this.routes.get(source);
 
-        double totalRatio = routes.stream().mapToDouble(IRoute::getRatio).sum();
-
-        //TODO REPLACE WITH RANDOM STREAM
-        double randomRatio = (new Random().nextDouble()) * totalRatio;
+        final double totalRatio = routes.stream().mapToDouble(IRoute::getRatio).sum();
+        final double randomRatio = model.getRandomRouteRatioFactor() * totalRatio;
 
         double sumRatio = 0.0;
         for (IRoute route : routes) {
@@ -99,6 +97,6 @@ public class RouteController {
             }
         }
 
-        throw new IllegalStateException("no route chosen");
+        throw new IllegalStateException("No route was chosen.");
     }
 }
