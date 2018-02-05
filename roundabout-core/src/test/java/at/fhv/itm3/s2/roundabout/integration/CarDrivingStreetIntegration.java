@@ -1,5 +1,7 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
+import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.controller.CarController;
 import at.fhv.itm3.s2.roundabout.entity.ModelStructure;
 import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
@@ -15,6 +17,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class CarDrivingStreetIntegration {
@@ -123,9 +126,16 @@ public class CarDrivingStreetIntegration {
         exp.finish();
 
         Assert.assertEquals(2, sink1.getNrOfEnteredCars());
-        // first car that enters is from source 1
-        Assert.assertEquals(source1, sink1.getEnteredCars().get(0).getRoute().getSource());
-        // second car that enters is from source 2
-        Assert.assertEquals(source2, sink1.getEnteredCars().get(1).getRoute().getSource());
+        // ! - We can not predict how cars will be generated anymore (after car generation event delay was randomised)
+
+//        // first car that enters is from source 1
+//        Assert.assertEquals(source1, sink1.getEnteredCars().get(0).getRoute().getSource());
+//        // second car that enters is from source 2
+//        Assert.assertEquals(source2, sink1.getEnteredCars().get(1).getRoute().getSource());
+
+        List<ICar> cars = CarController.getICars();
+        for (ICar car: cars) {
+            Assert.assertFalse(car.isWaiting());
+        }
     }
 }
