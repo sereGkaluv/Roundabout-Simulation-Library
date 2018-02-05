@@ -9,12 +9,12 @@ public class RoundaboutSimulationModelTest {
     @Test
     public void getTimeBetweenCarArrivalsTest_validTimeBoundary() {
         RoundaboutSimulationModel model = new RoundaboutSimulationModel(
-            null,
-            "",
-            false,
-            false,
+                null,
+                "",
+                false,
+                false,
                 3.5,
-                10.0
+                10.0, 6.0, 2.0
         );
 
         // create experiment and connect it with the model

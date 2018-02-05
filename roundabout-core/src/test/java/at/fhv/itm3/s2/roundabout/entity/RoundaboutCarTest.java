@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class RoundaboutCarTest {
 
     private RoundaboutSimulationModel getPreparedModel() {
-        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
+        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0, 6.0, 2.0);
         Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
 
@@ -51,7 +51,7 @@ public class RoundaboutCarTest {
     public void shouldThrowIfRouteIsNull() {
         IDriverBehaviour driverBehaviour = new DriverBehaviour(10.0, 2.0, 5.0, 1.5, 1);
 
-        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
+        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0, 6.0, 2.0);
         Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
 
@@ -83,7 +83,7 @@ public class RoundaboutCarTest {
         Street streetSectionMock = mock(StreetSection.class);
         route.addSection(streetSectionMock);
 
-        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
+        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0, 6.0, 2.0);
         Experiment exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
 

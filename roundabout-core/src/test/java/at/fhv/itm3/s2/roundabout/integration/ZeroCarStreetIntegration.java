@@ -20,7 +20,7 @@ public class ZeroCarStreetIntegration {
 
     @Before
     public void setUp() {
-        model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
+        model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0, 6.0, 2.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
         exp.setShowProgressBar(false);

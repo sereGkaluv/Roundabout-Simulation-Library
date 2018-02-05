@@ -2,14 +2,15 @@ package at.fhv.itm3.s2.roundabout.util.drawer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 import java.util.LinkedList;
 
 public class ResultDrawer extends JFrame {
-    private final LinkedList<Statistics> statistics;
+    private final Collection<Statistics> statistics;
     private final Image background;
     private Graphics2D grapics;
 
-    public ResultDrawer(String title, String backgroundPicture, LinkedList<Statistics> statistics) {
+    public ResultDrawer(String title, String backgroundPicture, Collection<Statistics> statistics) {
         this.background = Toolkit.getDefaultToolkit().getImage(getClass().getResource(backgroundPicture));
 
         ImageIcon icon = new ImageIcon(background);

@@ -28,6 +28,9 @@ public class StreetSection extends Street {
 
     protected IntersectionController intersectionController;
 
+    private ICar lastFirstCar;
+    private int tryToLeaveCounter;
+
     public StreetSection(
         double length,
         Model model,
@@ -99,7 +102,7 @@ public class StreetSection extends Street {
         if (connector!= null) {
             if (connector.getTypeOfConsumer(this) == ConsumerType.ROUNDABOUT_INLET) {
                 iCar.enterRoundabout();
-            } else if (connector.getTypeOfConsumer(this) == ConsumerType.ROUNDABOUT_EXIT) {
+            } else if (connector.getTypeOfConsumer(this) == ConsumerType.ROUNDABOUT_EXIT) { // TODO doesn't work
                 iCar.leaveRoundabout();
             }
         }
@@ -261,6 +264,17 @@ public class StreetSection extends Street {
 
         if (isFirstCarOnExitPoint()) {
             ICar firstCarInQueue = getFirstCar();
+
+            // for debugging
+            if (lastFirstCar != firstCarInQueue) {
+                lastFirstCar = firstCarInQueue;
+                tryToLeaveCounter = 0;
+            } else {
+                tryToLeaveCounter++;
+                if (tryToLeaveCounter > 200) {
+                    Integer.toString(tryToLeaveCounter); // debug!
+                }
+            }
 
             if (firstCarInQueue != null) {
                 IConsumer nextConsumer = firstCarInQueue.getNextSection();

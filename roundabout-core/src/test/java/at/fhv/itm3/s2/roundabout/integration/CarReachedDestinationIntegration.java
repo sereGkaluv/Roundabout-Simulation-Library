@@ -2,8 +2,11 @@ package at.fhv.itm3.s2.roundabout.integration;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.api.entity.*;
-import at.fhv.itm3.s2.roundabout.entity.*;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
+import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
+import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteType;
 import desmoj.core.simulator.Experiment;
@@ -12,9 +15,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import static org.mockito.Mockito.*;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.mockito.Mockito.*;
 
 
 public class CarReachedDestinationIntegration {
@@ -24,7 +28,7 @@ public class CarReachedDestinationIntegration {
 
     @Before
     public void setUp() {
-        model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
+        model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0, 6.0, 2.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
         exp.setShowProgressBar(false);

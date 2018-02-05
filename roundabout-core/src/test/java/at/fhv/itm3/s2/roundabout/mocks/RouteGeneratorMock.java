@@ -60,8 +60,8 @@ public class RouteGeneratorMock {
 
         // INITIALIZE ROUTE WITH TWO STREETSECTIONS
         // initialize streets and sink
-        Street street1_1 = new StreetSection(10.0, model, "", false, true);
-        Street street1_2 = new StreetSection(10.0, model, "", false);
+        Street street1_1 = new StreetSection(20.0, model, "", false, true);
+        Street street1_2 = new StreetSection(20.0, model, "", false);
         RoundaboutSink roundaboutSink1 = new RoundaboutSink(model, "", false);
 
         // initialize connectors
@@ -473,12 +473,12 @@ public class RouteGeneratorMock {
     private void initializeRouteWithTwoTracksAndTwoStreetSectionsPerTrackForStopCounting() {
 
         // initialize streets and sink
-        Street street1_1 = new StreetSection(100.0, model, "", false);
-        Street street1_2 = new StreetSection(100.0, model, "", false);
+        Street street1_1 = new StreetSection(200.0, model, "", false);
+        Street street1_2 = new StreetSection(200.0, model, "", false);
         RoundaboutSink sink1 = new RoundaboutSinkMock(model, "", false);
 
-        Street street2_1 = new StreetSection(100.0, model, "", false);
-        Street street2_2 = new StreetSection(100.0, model, "", false);
+        Street street2_1 = new StreetSection(200.0, model, "", false);
+        Street street2_2 = new StreetSection(200.0, model, "", false);
         RoundaboutSink sink2 = new RoundaboutSinkMock(model, "", false);
 
         // initialize connectors

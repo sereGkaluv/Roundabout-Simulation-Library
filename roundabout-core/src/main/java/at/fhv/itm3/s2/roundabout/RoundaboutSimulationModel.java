@@ -16,13 +16,17 @@ public class RoundaboutSimulationModel extends Model {
     public static final Double DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS = 1.0;
     public static final Double DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS = 1.0;
     public static final Double DEFAULT_STANDARD_CAR_ACCELERATION_TIME = 2.0;
+    public static final Double DEFAULT_STANDARD_CAR_SPEED = 5.0;
+    public static final Double DEFAULT_STANDARD_CAR_LENGTH = 4.0;
 
-    public final Double minDistanceFactorBetweenCars;
-    public final Double maxDistanceFactorBetweenCars;
+    public final Double minDistanceBetweenCars;
+    public final Double maxDistanceBetweenCars;
     public final Double minTimeBetweenCarArrivals;
     public final Double maxTimeBetweenCarArrivals;
     public final Double mainArrivalRateForOneWayStreets;
     public final Double standardCarAccelerationTime;
+    public final Double standardCarSpeed;
+    public final Double standardCarLength;
 
     private static final long MODEL_SEED = new Random().nextLong();
     private static final TimeUnit MODEL_TIME_UNIT = TimeUnit.SECONDS;
@@ -44,55 +48,31 @@ public class RoundaboutSimulationModel extends Model {
     /**
      * Constructs a new RoundaboutSimulationModel
      *
-     * @param model the model this model is part of (set to null when there is no such model)
-     * @param name this model's name
+     * @param model        the model this model is part of (set to null when there is no such model)
+     * @param name         this model's name
      * @param showInReport flag to indicate if this model shall produce output to the report file
-     * @param showInTrace flag to indicate if this model shall produce output to the trace file
+     * @param showInTrace  flag to indicate if this model shall produce output to the trace file
      */
     public RoundaboutSimulationModel(
-        Model model,
-        String name,
-        boolean showInReport,
-        boolean showInTrace
+            Model model,
+            String name,
+            boolean showInReport,
+            boolean showInTrace
     ) {
         this(
-            model, name, showInReport, showInTrace,
-            DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS, DEFAULT_MAX_TIME_BETWEEN_CAR_ARRIVALS
+                model, name, showInReport, showInTrace,
+                DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS, DEFAULT_MAX_TIME_BETWEEN_CAR_ARRIVALS,
+                DEFAULT_STANDARD_CAR_SPEED, DEFAULT_STANDARD_CAR_LENGTH
         );
     }
 
     /**
      * Constructs a new RoundaboutSimulationModel
      *
-     * @param model the model this model is part of (set to null when there is no such model)
-     * @param name this model's name
+     * @param model        the model this model is part of (set to null when there is no such model)
+     * @param name         this model's name
      * @param showInReport flag to indicate if this model shall produce output to the report file
-     * @param showInTrace flag to indicate if this model shall produce output to the trace file
-     */
-    public RoundaboutSimulationModel(
-        Model model,
-        String name,
-        boolean showInReport,
-        boolean showInTrace,
-        double minTimeBetweenCarArrivals,
-        double maxTimeBetweenCarArrivals
-    ) {
-        this(
-            model, name, showInReport, showInTrace,
-            minTimeBetweenCarArrivals, maxTimeBetweenCarArrivals,
-            DEFAULT_MIN_DISTANCE_FACTOR_BETWEEN_CARS, DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS,
-            DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS,
-            DEFAULT_STANDARD_CAR_ACCELERATION_TIME
-        );
-    }
-
-    /**
-     * Constructs a new RoundaboutSimulationModel
-     *
-     * @param model the model this model is part of (set to null when there is no such model)
-     * @param name this model's name
-     * @param showInReport flag to indicate if this model shall produce output to the report file
-     * @param showInTrace flag to indicate if this model shall produce output to the trace file
+     * @param showInTrace  flag to indicate if this model shall produce output to the trace file
      */
     public RoundaboutSimulationModel(
             Model model,
@@ -101,19 +81,50 @@ public class RoundaboutSimulationModel extends Model {
             boolean showInTrace,
             Double minTimeBetweenCarArrivals,
             Double maxTimeBetweenCarArrivals,
-            Double minDistanceFactorBetweenCars,
-            Double maxDistanceFactorBetweenCars,
+            Double standardCarSpeed,
+            Double standardCarLength
+    ) {
+        this(
+                model, name, showInReport, showInTrace,
+                minTimeBetweenCarArrivals, maxTimeBetweenCarArrivals,
+                DEFAULT_MIN_DISTANCE_FACTOR_BETWEEN_CARS, DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS,
+                DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS,
+                DEFAULT_STANDARD_CAR_ACCELERATION_TIME, standardCarSpeed, standardCarLength
+        );
+    }
+
+    /**
+     * Constructs a new RoundaboutSimulationModel
+     *
+     * @param model        the model this model is part of (set to null when there is no such model)
+     * @param name         this model's name
+     * @param showInReport flag to indicate if this model shall produce output to the report file
+     * @param showInTrace  flag to indicate if this model shall produce output to the trace file
+     */
+    public RoundaboutSimulationModel(
+            Model model,
+            String name,
+            boolean showInReport,
+            boolean showInTrace,
+            Double minTimeBetweenCarArrivals,
+            Double maxTimeBetweenCarArrivals,
+            Double minDistanceBetweenCars,
+            Double maxDistanceBetweenCars,
             Double mainArrivalRateForOneWayStreets,
-            Double standardCarAccelerationTime
+            Double standardCarAccelerationTime,
+            Double standardCarSpeed,
+            Double standardCarLength
     ) {
         super(model, name, showInReport, showInTrace);
 
         this.minTimeBetweenCarArrivals = minTimeBetweenCarArrivals;
         this.maxTimeBetweenCarArrivals = maxTimeBetweenCarArrivals;
-        this.minDistanceFactorBetweenCars = minDistanceFactorBetweenCars;
-        this.maxDistanceFactorBetweenCars = maxDistanceFactorBetweenCars;
+        this.minDistanceBetweenCars = minDistanceBetweenCars;
+        this.maxDistanceBetweenCars = maxDistanceBetweenCars;
         this.mainArrivalRateForOneWayStreets = mainArrivalRateForOneWayStreets;
         this.standardCarAccelerationTime = standardCarAccelerationTime;
+        this.standardCarSpeed = standardCarSpeed;
+        this.standardCarLength = standardCarLength;
     }
 
     @Override
@@ -128,22 +139,22 @@ public class RoundaboutSimulationModel extends Model {
     @Override
     public void init() {
         distanceFactorBetweenCars = new ContDistUniform(
-            this,
-            "DistanceFactorBetweenCarsStream",
-            minDistanceFactorBetweenCars,
-            maxDistanceFactorBetweenCars,
-            true,
-            false
+                this,
+                "DistanceFactorBetweenCarsStream",
+                minDistanceBetweenCars,
+                maxDistanceBetweenCars,
+                true,
+                false
         );
         distanceFactorBetweenCars.setSeed(MODEL_SEED);
 
         timeBetweenCarArrivalsOnMainFlow = new ContDistUniform(
-            this,
-            "TimeBetweenCarArrivalsStream",
+                this,
+                "TimeBetweenCarArrivalsStream",
                 minTimeBetweenCarArrivals,
                 maxTimeBetweenCarArrivals,
-            true,
-            false
+                true,
+                false
         );
         timeBetweenCarArrivalsOnMainFlow.setSeed(MODEL_SEED);
 
