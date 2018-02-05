@@ -26,11 +26,11 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.summarizingDouble;
 import static java.util.stream.Collectors.toMap;
 
 
 public class ConfigParser {
+    private static final String SIMULATION_SEED = "SIMULATION_SEED";
     private static final String MIN_TIME_BETWEEN_CAR_ARRIVALS = "MIN_TIME_BETWEEN_CAR_ARRIVALS";
     private static final String MAX_TIME_BETWEEN_CAR_ARRIVALS = "MAX_TIME_BETWEEN_CAR_ARRIVALS";
     private static final String MIN_DISTANCE_FACTOR_BETWEEN_CARS = "MIN_DISTANCE_FACTOR_BETWEEN_CARS";
@@ -81,7 +81,7 @@ public class ConfigParser {
         return JAXB.unmarshal(configFile, ModelConfig.class);
     }
 
-    public IModelStructure generateRoundaboutStructure(ModelConfig modelConfig, Experiment experiment) {
+    public IModelStructure initRoundaboutStructure(ModelConfig modelConfig, Experiment experiment) {
         final Map<String, String> parameters = handleParameters(modelConfig);
 
         final List<Component> components = modelConfig.getComponents().getComponent();
@@ -93,6 +93,7 @@ public class ConfigParser {
         parameters.put(MAX_TIME_BETWEEN_CAR_ARRIVALS, String.valueOf(generatorExpectationMedian));
 
         final RoundaboutSimulationModel model = new RoundaboutSimulationModel(
+            extractParameter(parameters::get, Long::valueOf, SIMULATION_SEED),
             null,
             modelConfig.getName(),
             false,
@@ -132,6 +133,8 @@ public class ConfigParser {
         modelStructure.addRoutes(routes);
 
         RouteController.getInstance(model).setRoutes(modelStructure.getRoutes());
+
+        model.registerModelStructure(modelStructure);
         return modelStructure;
     }
 

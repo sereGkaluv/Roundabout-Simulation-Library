@@ -1,5 +1,6 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
+import at.fhv.itm3.s2.roundabout.entity.ModelStructure;
 import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
@@ -25,6 +26,7 @@ public class StatisticsIntegration {
         model = new RoundaboutSimulationModel(null, "", false, false, 0.5, 0.5);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
+        model.registerModelStructure(new ModelStructure(model));
         exp.setShowProgressBar(false);
         CarController.clear();
     }

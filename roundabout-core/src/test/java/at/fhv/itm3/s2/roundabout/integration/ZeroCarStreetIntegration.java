@@ -1,5 +1,6 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
+import at.fhv.itm3.s2.roundabout.entity.ModelStructure;
 import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
@@ -23,6 +24,7 @@ public class ZeroCarStreetIntegration {
         model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
         model.connectToExperiment(exp);
+        model.registerModelStructure(new ModelStructure(model));
         exp.setShowProgressBar(false);
     }
 
