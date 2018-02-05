@@ -40,9 +40,9 @@ public class ConfigParser {
     private static final String MIN_CAR_LENGTH = "MIN_CAR_LENGTH";
     private static final String MAX_CAR_LENGTH = "MAX_CAR_LENGTH";
     private static final String EXPECTED_CAR_LENGTH = "EXPECTED_CAR_LENGTH";
-    private static final String MIN_TRUCK_LENGTH = "MIN_CAR_LENGTH";
-    private static final String MAX_TRUCK_LENGTH = "MAX_CAR_LENGTH";
-    private static final String EXPECTED_TRUCK_LENGTH = "EXPECTED_CAR_LENGTH";
+    private static final String MIN_TRUCK_LENGTH = "MIN_TRUCK_LENGTH";
+    private static final String MAX_TRUCK_LENGTH = "MAX_TRUCK_LENGTH";
+    private static final String EXPECTED_TRUCK_LENGTH = "EXPECTED_TRUCK_LENGTH";
     private static final String CAR_RATIO_PER_TOTAL_VEHICLE = "CAR_RATIO_PER_TOTAL_VEHICLE";
 
     private static final String INTERSECTION_SIZE = "INTERSECTION_SIZE";

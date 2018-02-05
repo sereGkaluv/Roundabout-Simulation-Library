@@ -34,7 +34,7 @@ public class RoundaboutCar implements ICar {
     private IConsumer nextSection;
     private IConsumer sectionAfterNextSection;
 
-    public RoundaboutCar(Model model, Car car, double length, IDriverBehaviour driverBehaviour, IRoute route)
+    public RoundaboutCar(Model model, Car car, IDriverBehaviour driverBehaviour, IRoute route)
     throws IllegalArgumentException {
 
         if (car != null) {
@@ -43,7 +43,7 @@ public class RoundaboutCar implements ICar {
             throw new IllegalArgumentException("Car should not be null.");
         }
 
-        this.length = length;
+        this.length = getRoundaboutModel().getRandomLengthOfVehicle();
 
         if (driverBehaviour != null) {
             this.driverBehaviour = driverBehaviour;

@@ -192,21 +192,23 @@ public class RoundaboutSimulationModel extends Model {
         );
         timeBetweenCarArrivals.setSeed(MODEL_SEED);
 
-
         // calculate the standard deviation (of skew normal distribution) for vehicle length
-        int cntTmp = 0;
         ArrayList<Double> listTmp = new ArrayList<>();
+        Double mean = 0.;
         for(double curLength = minCarLength; curLength < maxCarLength + VEHICLE_LENGTH_STEPSIZE;
-            curLength += VEHICLE_LENGTH_STEPSIZE, ++cntTmp, listTmp.add(curLength));
+            curLength += VEHICLE_LENGTH_STEPSIZE) {
+            listTmp.add(curLength);
+            mean += curLength;
+        }
+        mean /= listTmp.size();
         Double variancePartSum = 0.0;
         for(Double curVal : listTmp)  {
-            curVal = Math.pow(curVal-cntTmp,2); //preparation vor variance
+            curVal = Math.pow(curVal-mean,2); //preparation vor variance
             variancePartSum += curVal;
         }
-        variancePartSum /= cntTmp;
-        Double lowerRatio = 100/(maxCarLength-minCarLength)*(expectedCarLength-minCarLength); //Ratio for the smaller trucks
-        Double upperRatio = 100-lowerRatio;
-        Double variance = Math.sqrt(variancePartSum);
+        Double lowerRatio = 1/(maxCarLength-minCarLength)*(expectedCarLength-minCarLength); //Ratio for the smaller trucks
+        Double upperRatio = 1-lowerRatio;
+        Double variance = Math.sqrt(variancePartSum/listTmp.size());
 
         lengthOfCar = new ContDistNormal(
             this,
@@ -218,23 +220,26 @@ public class RoundaboutSimulationModel extends Model {
             false
         );
 
-        cntTmp = 0;
         listTmp.clear();
+        mean = 0.;
         for(double curLength = minTruckLength; curLength < maxTruckLength + VEHICLE_LENGTH_STEPSIZE;
-            curLength += VEHICLE_LENGTH_STEPSIZE, ++cntTmp, listTmp.add(curLength));
+            curLength += VEHICLE_LENGTH_STEPSIZE) {
+            listTmp.add(curLength);
+            mean += curLength;
+        }
+        mean /= listTmp.size();
         variancePartSum = 0.0;
         for(Double curVal : listTmp)  {
-            curVal = Math.pow(curVal-cntTmp,2); //preparation vor variance
+            curVal = Math.pow(curVal-mean,2); //preparation vor variance
             variancePartSum += curVal;
         }
-        variancePartSum /= cntTmp;
-        lowerRatio = 100/(maxTruckLength-minTruckLength)*(expectedTruckLength-minTruckLength); //Ratio for the smaller trucks
-        upperRatio = 100-lowerRatio;
-        variance = Math.sqrt(variancePartSum);
+        lowerRatio = 1/(maxTruckLength-minTruckLength)*(expectedTruckLength-minTruckLength); //Ratio for the smaller trucks
+        upperRatio = 1-lowerRatio;
+        variance = Math.sqrt(variancePartSum/listTmp.size());
 
         lengthOfTruck = new ContDistNormal(
             this,
-            "LenghtOfTruck",
+            "LengthOfTruck",
             expectedTruckLength,
             variance*lowerRatio,
             variance*upperRatio,
