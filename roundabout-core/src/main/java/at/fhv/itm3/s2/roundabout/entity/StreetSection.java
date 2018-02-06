@@ -95,7 +95,8 @@ public class StreetSection extends Street {
         Long greenPhaseDuration,
         Long redPhaseDuration
     ) {
-        super(id,
+        super(
+                id,
             model,
             modelDescription,
             showInTrace,
