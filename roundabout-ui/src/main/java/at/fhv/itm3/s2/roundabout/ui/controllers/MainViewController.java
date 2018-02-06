@@ -103,6 +103,7 @@ public class MainViewController extends JfxController {
 
         btnFinishSimulation.setOnAction(e -> {
             IS_SIMULATION_RUNNING.set(false);
+            btnStartSimulation.setDisable(true);
             new DaemonThreadFactory().newThread(finishRunnable).start();
         });
 

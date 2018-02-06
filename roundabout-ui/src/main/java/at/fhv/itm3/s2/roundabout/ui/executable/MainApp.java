@@ -31,6 +31,9 @@ public class MainApp extends Application {
     private static final int DEFAULT_WIDTH = 1200;
     private static final int DEFAULT_HEIGHT = 950;
 
+    private static final String PATH_TO_DEFAULT_CSS_FILE = "/at/fhv/itm3/s2/roundabout/ui/css/main.css";
+    private static final String PATH_TO_MODEL_FILE = "/at/fhv/itm3/s2/roundabout/model/model_dornbirn_sued.xml";
+
     private static final double EXPERIMENT_STOP_TIME = 60 * 60 * 24 * 3;
     private static final TimeUnit EXPERIMENT_TIME_UNIT = TimeUnit.SECONDS;
 
@@ -56,7 +59,7 @@ public class MainApp extends Application {
             final MainViewController mainViewController = viewLoader.getController();
             prepareNewStage(mainStage).show();
 
-            final ConfigParser configParser = new ConfigParser("/at/fhv/itm3/s2/roundabout/model/model_dornbirn_sued.xml");
+            final ConfigParser configParser = new ConfigParser(PATH_TO_MODEL_FILE);
             final ModelConfig modelConfig = configParser.loadConfig();
 
             final Experiment experiment = new Experiment("Trafsim experiment");
@@ -148,6 +151,7 @@ public class MainApp extends Application {
      */
     private Stage prepareNewStage(Parent pane) {
         Scene scene = new Scene(pane, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        scene.getStylesheets().add(PATH_TO_DEFAULT_CSS_FILE);
 
         Stage primaryStage = new Stage();
         primaryStage.setScene(scene);
