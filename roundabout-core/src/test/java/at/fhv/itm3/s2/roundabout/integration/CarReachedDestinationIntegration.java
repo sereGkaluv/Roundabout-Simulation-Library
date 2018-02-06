@@ -26,13 +26,15 @@ public class CarReachedDestinationIntegration {
     public void setUp() {
         model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
+        Experiment.setReferenceUnit(TimeUnit.SECONDS);
         model.connectToExperiment(exp);
+        model.registerModelStructure(new ModelStructure(model));
         exp.setShowProgressBar(false);
     }
 
     @Test
     public void destinationReached() {
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
         ArgumentCaptor<ICar> varArgs = ArgumentCaptor.forClass(ICar.class);
 
         RoundaboutSink roundaboutSinkSpyMock = spy(new RoundaboutSink(model, "", false));

@@ -309,8 +309,8 @@ public class RouteGeneratorMock {
 
         // INITIALIZE ROUTE WITH TWO STREETSECTIONS
         // initialize streets and sink
-        Street street1 = new StreetSection(10.0, model, "", false);
-        Street street2 = new StreetSection(10.0, model, "", false);
+        Street street1 = new StreetSection(model.getMaxVehicleLength() * 3, model, "", false);
+        Street street2 = new StreetSection(model.getMaxVehicleLength() * 3, model, "", false);
         Street street3 = Mockito.mock(StreetSection.class);
         RoundaboutSink roundaboutSink = new RoundaboutSink(model, "", false);
 

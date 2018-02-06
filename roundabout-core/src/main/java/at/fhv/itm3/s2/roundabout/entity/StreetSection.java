@@ -118,6 +118,8 @@ public class StreetSection extends Street {
         if (consumer instanceof Street) {
             ((Street)consumer).carDelivered(null, car, true);
         }
+
+        carObserver.notifyObservers(iCar);
     }
 
     @Override
@@ -276,6 +278,8 @@ public class StreetSection extends Street {
 
             previousCar = currentCar;
         }
+
+        carPositionObserver.notifyObservers();
     }
 
     @Override
@@ -554,7 +558,7 @@ public class StreetSection extends Street {
             CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(
                     getRoundaboutModel()
             );
-            carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, TimeUnit.SECONDS));
+            carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, getRoundaboutModel().getModelTimeUnit()));
         } else {
             incrementLostCarCounter();
             car.leaveSystem();

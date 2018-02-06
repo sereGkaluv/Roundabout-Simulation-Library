@@ -1,13 +1,12 @@
 package at.fhv.itm3.s2.roundabout.ui.executable;
 
 
-import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
 import at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController;
-import at.fhv.itm3.s2.roundabout.ui.util.DaemonThreadFactory;
 import at.fhv.itm3.s2.roundabout.ui.util.ViewLoader;
 import at.fhv.itm3.s2.roundabout.util.ConfigParser;
 import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
 import desmoj.core.simulator.Experiment;
+import desmoj.core.simulator.Model;
 import desmoj.core.simulator.SimClock;
 import desmoj.core.simulator.TimeInstant;
 import javafx.application.Application;
@@ -34,8 +33,11 @@ public class MainApp extends Application {
     private static final int DEFAULT_WIDTH = 1200;
     private static final int DEFAULT_HEIGHT = 950;
 
-    private static final double EXPERIMENT_STOP_TIME = 3;
-    private static final TimeUnit EXPERIMENT_TIME_UNIT = TimeUnit.DAYS;
+    private static final String PATH_TO_DEFAULT_CSS_FILE = "/at/fhv/itm3/s2/roundabout/ui/css/main.css";
+    private static final String PATH_TO_MODEL_FILE = "/at/fhv/itm3/s2/roundabout/model/model_dornbirn_sued.xml";
+
+    private static final double EXPERIMENT_STOP_TIME = 60 * 60 * 24 * 3;
+    private static final TimeUnit EXPERIMENT_TIME_UNIT = TimeUnit.SECONDS;
 
     private static final boolean IS_TRACE_ENABLED = false;
     private static final boolean IS_DEBUG_ENABLED = false;
@@ -56,70 +58,85 @@ public class MainApp extends Application {
             ViewLoader<MainViewController> viewLoader = ViewLoader.loadView(MainViewController.class);
             Parent mainStage = (Parent) viewLoader.loadNode();
 
-            final ConfigParser configParser = new ConfigParser("/at/fhv/itm3/s2/roundabout/model/model_dornbirn_sued.xml");
+            final MainViewController mainViewController = viewLoader.getController();
+            prepareNewStage(mainStage).show();
+
+            final ConfigParser configParser = new ConfigParser(PATH_TO_MODEL_FILE);
             final ModelConfig modelConfig = configParser.loadConfig();
 
             final Experiment experiment = new Experiment("Trafsim experiment");
             experiment.setShowProgressBar(false);
+            configParser.initRoundaboutStructure(modelConfig, experiment);
 
-            IModelStructure modelStructure = configParser.generateRoundaboutStructure(modelConfig, experiment);
-
-            final MainViewController mainViewController = viewLoader.getController();
             mainViewController.generateComponentStatContainers(
                 modelConfig.getComponents().getComponent(),
                 configParser.getSectionRegistry(),
                 configParser.getSinkRegistry()
             );
 
-            prepareNewStage(mainStage).show();
-            modelStructure.getIntersections().forEach(is -> is.getController().start());
-            modelStructure.getRoutes().keySet().forEach(so -> so.startGeneratingCars(0));
-
-            Thread thread = initExperimentThread(
+            mainViewController.setStartRunnable(initExperimentRunnable(
                 experiment,
                 mainViewController::getCurrentSimSpeed,
                 mainViewController::setProgress
-            );
-
-            mainViewController.setStartRunnable(thread::start);
-            mainViewController.setStopRunnable(experiment::stop);
-            mainViewController.setProceedRunnable(experiment::proceed);
-
+            ));
+            mainViewController.setFinishRunnable(() -> {
+                if (IS_TRACE_ENABLED || IS_DEBUG_ENABLED) {
+                    // Should be wrapped into if guard to prevent NPE when trace / debug are disabled above.
+                    experiment.report();
+                }
+                experiment.finish();
+            });
+            mainViewController.setPauseRunnable(experiment::stop);
+            mainViewController.setDoStepRunnable(() -> {
+                final double stopTime = experiment.getSimClock().getTime().getTimeAsDouble(experiment.getReferenceUnit()) + 1;
+                experiment.stop(new TimeInstant(stopTime, experiment.getReferenceUnit()));
+                experiment.proceed();
+            });
+            mainViewController.setProceedRunnable(() -> {
+                experiment.stop(new TimeInstant(EXPERIMENT_STOP_TIME, experiment.getReferenceUnit()));
+                experiment.proceed();
+            });
 
         } catch (Throwable t) {
             LOGGER.error("Error occurred during start of the application.", t);
         }
     }
 
-    private Thread initExperimentThread(
+    private Runnable initExperimentRunnable(
         Experiment experiment,
         Supplier<Double> executionSpeedRateSupplier,
         Consumer<Double> progressConsumer
     ) {
-        return new DaemonThreadFactory().newThread(() ->  {
+        return () -> {
             Experiment.setReferenceUnit(EXPERIMENT_TIME_UNIT);
+
+            // Just to be sure everything is initialised as expected.
+            final Model model = experiment.getModel();
+            model.reset();
+            model.init();
+
             experiment.stop(new TimeInstant(
                 EXPERIMENT_STOP_TIME,
-                EXPERIMENT_TIME_UNIT
+                experiment.getReferenceUnit()
             ));
 
             if (IS_TRACE_ENABLED) {
                 experiment.tracePeriod(
                     new TimeInstant(0),
-                    new TimeInstant(70, EXPERIMENT_TIME_UNIT)
+                    new TimeInstant(70, experiment.getReferenceUnit())
                 );
             }
 
             if (IS_DEBUG_ENABLED) {
                 experiment.tracePeriod(
                     new TimeInstant(0),
-                    new TimeInstant(70, EXPERIMENT_TIME_UNIT)
+                    new TimeInstant(70, experiment.getReferenceUnit())
                 );
             }
 
             final SimClock simClock = experiment.getSimClock();
             simClock.addObserver((o, arg) -> {
-                final double progress = simClock.getTime().getTimeAsDouble() / experiment.getStopTime().getTimeAsDouble();
+                final double progress = simClock.getTime().getTimeAsDouble(experiment.getReferenceUnit()) / EXPERIMENT_STOP_TIME;
                 progressConsumer.accept(progress);
             });
 
@@ -128,14 +145,7 @@ public class MainApp extends Application {
 
             // Starting experiment
             experiment.start();
-
-            if (IS_TRACE_ENABLED || IS_DEBUG_ENABLED) {
-                // Should be wrapped into if guard to prevent NPE when trace / debug are disabled above.
-                experiment.report();
-            }
-
-            experiment.finish();
-        });
+        };
     }
 
     /**
@@ -146,6 +156,7 @@ public class MainApp extends Application {
      */
     private Stage prepareNewStage(Parent pane) {
         Scene scene = new Scene(pane, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        scene.getStylesheets().add(PATH_TO_DEFAULT_CSS_FILE);
 
         Stage primaryStage = new Stage();
         primaryStage.setScene(scene);

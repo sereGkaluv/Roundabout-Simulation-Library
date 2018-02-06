@@ -71,11 +71,12 @@ public class CarGenerateEvent extends Event<AbstractSource> {
      */
     @Override
     public void eventRoutine(AbstractSource source) {
-        // TODO: use meaningful values!!
+        final IRoute route = routeController.getRandomRoute(source);
+        final double carLength = roundaboutSimulationModel.getRandomVehicleLength();
+
         final Car car = new Car(roundaboutSimulationModel, "", false);
-        final IRoute route = this.routeController.getRandomRoute(source);
         final DriverBehaviour driverBehaviour = new DriverBehaviour(6.0, 0.5, 1, 1, 1);
-        final ICar roundaboutCar = new RoundaboutCar(getModel(), car, driverBehaviour, route);
+        final ICar roundaboutCar = new RoundaboutCar(getModel(), carLength, car, driverBehaviour, route);
         roundaboutCar.enterSystem();
 
         CarController.addCarMapping(car, roundaboutCar);
@@ -85,7 +86,7 @@ public class CarGenerateEvent extends Event<AbstractSource> {
             ((Street)nextSection).addCar(roundaboutCar);
             final double traverseTime = roundaboutCar.getTimeToTraverseCurrentSection();
             final CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
-            carCouldLeaveSectionEvent.schedule((Street)nextSection, new TimeSpan(traverseTime, TimeUnit.SECONDS));
+            carCouldLeaveSectionEvent.schedule((Street)nextSection, new TimeSpan(traverseTime, roundaboutSimulationModel.getModelTimeUnit()));
 
             final CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);
 
@@ -98,7 +99,7 @@ public class CarGenerateEvent extends Event<AbstractSource> {
             final double shiftedTimeUntilCarArrival = randomTimeUntilCarArrival + generatorExpectationShift;
             final double actualTimeUntilCarArrival = Math.max(shiftedTimeUntilCarArrival, minTimeBetweenCarArrivals);
 
-            carGenerateEvent.schedule(source, new TimeSpan(actualTimeUntilCarArrival, TimeUnit.SECONDS));
+            carGenerateEvent.schedule(source, new TimeSpan(actualTimeUntilCarArrival, roundaboutSimulationModel.getModelTimeUnit()));
         } else {
             throw new IllegalStateException("NextSection should be of type Street");
         }

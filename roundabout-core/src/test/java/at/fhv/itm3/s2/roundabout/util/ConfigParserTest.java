@@ -24,7 +24,7 @@ public class ConfigParserTest {
         roundAboutConfig = configParser.loadConfig();
 
         Experiment experiment = new Experiment("Config Parser Test");
-        RoundaboutStructure structure = (RoundaboutStructure) configParser.generateRoundaboutStructure(roundAboutConfig, experiment);
+        RoundaboutStructure structure = (RoundaboutStructure) configParser.initRoundaboutStructure(roundAboutConfig, experiment);
     }
 
     @Test

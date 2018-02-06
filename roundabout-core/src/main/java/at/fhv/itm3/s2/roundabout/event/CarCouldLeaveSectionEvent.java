@@ -73,8 +73,8 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
             IConsumer nextSection = donorStreet.getFirstCar().getNextSection();
             if (nextSection != null && nextSection instanceof StreetSection) {
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                        (StreetSection)nextSection,
-                        new TimeSpan((donorStreet.getFirstCar().getTimeToTraverseSection(nextSection)), TimeUnit.SECONDS)
+                    (StreetSection) nextSection,
+                    new TimeSpan((donorStreet.getFirstCar().getTimeToTraverseSection(nextSection)), roundaboutSimulationModel.getModelTimeUnit())
                 );
                 donorStreet.moveFirstCarToNextSection();
             }  else if (nextSection != null && (nextSection instanceof RoundaboutSink || nextSection instanceof Intersection)) {
@@ -86,8 +86,8 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
             // car is standing or driving
             if (!donorStreet.isEmpty()) {
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                        donorStreet,
-                        new TimeSpan(donorStreet.getFirstCar().getTransitionTime(), TimeUnit.SECONDS)
+                    donorStreet,
+                    new TimeSpan(donorStreet.getFirstCar().getTransitionTime(), roundaboutSimulationModel.getModelTimeUnit())
                 );
             }
 
@@ -98,8 +98,8 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
                 for (IConsumer previousSection : previousStreetConnector.getPreviousConsumers()) {
                     if (previousSection != null && previousSection instanceof StreetSection) {
                         roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                                (StreetSection)previousSection,
-                                new TimeSpan(0, TimeUnit.SECONDS)
+                            (StreetSection )previousSection,
+                            new TimeSpan(0, roundaboutSimulationModel.getModelTimeUnit())
                         );
                     }
                 }

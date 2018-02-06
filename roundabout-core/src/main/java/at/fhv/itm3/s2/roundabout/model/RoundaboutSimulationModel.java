@@ -1,20 +1,18 @@
 package at.fhv.itm3.s2.roundabout.model;
 
 import at.fhv.itm14.trafsim.model.ModelFactory;
-import com.sun.org.apache.bcel.internal.generic.SWAP;
+import at.fhv.itm14.trafsim.model.entities.OneWayStreet;
+import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
 import desmoj.core.dist.ContDist;
 import desmoj.core.dist.ContDistNormal;
 import desmoj.core.dist.ContDistUniform;
 import desmoj.core.simulator.Model;
-import org.apache.commons.math.stat.descriptive.rank.Max;
-import org.apache.commons.math.stat.descriptive.rank.Min;
-import org.jcp.xml.dsig.internal.dom.DOMUtils;
 
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class RoundaboutSimulationModel extends Model {
+
+    private static final long DEFAULT_SIMULATION_SEED = 1L;
 
     public static final Double DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
     public static final Double DEFAULT_MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
@@ -34,6 +32,7 @@ public class RoundaboutSimulationModel extends Model {
 
     public static final Double VEHICLE_LENGTH_STEPSIZE = 0.1;
 
+    public final Long simulationSeed;
     public final Double minDistanceFactorBetweenCars;
     public final Double maxDistanceFactorBetweenCars;
     public final Double minTimeBetweenCarArrivals;
@@ -51,8 +50,13 @@ public class RoundaboutSimulationModel extends Model {
     public final Double jamIndicatorInSeconds;
     public final Double redPhaseTrafficLightJam;
 
-    private static final long MODEL_SEED = new Random().nextLong();
-    private static final TimeUnit MODEL_TIME_UNIT = TimeUnit.SECONDS;
+    private IModelStructure modelStructure;
+
+    /**
+     * Random number stream used to calculate a random route ratio.
+     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+     */
+    private ContDistUniform randomRouteRatioFactor;
 
     /**
      * Random number stream used to calculate a distance between two cars.
@@ -60,10 +64,28 @@ public class RoundaboutSimulationModel extends Model {
      */
     private ContDistUniform distanceFactorBetweenCars;
 
+    /**
+     * Random number stream used to calculate a length of a car.
+     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+     */
     private ContDistNormal lengthOfCar;
+
+    /**
+     * Random number stream used to calculate a length of a truck.
+     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+     */
     private ContDistNormal lengthOfTruck;
+
+    /**
+     * Random number stream used to calculate a length of a vehicle.
+     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+     */
     private ContDistUniform typeOfVehicle;
 
+    /**
+     * Random number stream used to calculate a time between car arrivals on one {@link OneWayStreet}.
+     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+     */
     private ContDist timeBetweenCarArrivalsOnOneWayStreets;
 
     /**
@@ -109,7 +131,7 @@ public class RoundaboutSimulationModel extends Model {
         double maxTimeBetweenCarArrivals
     ) {
         this(
-            model, name, showInReport, showInTrace,
+            DEFAULT_SIMULATION_SEED, model, name, showInReport, showInTrace,
             minTimeBetweenCarArrivals, maxTimeBetweenCarArrivals,
             DEFAULT_MIN_DISTANCE_FACTOR_BETWEEN_CARS, DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS,
             DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS,
@@ -125,12 +147,14 @@ public class RoundaboutSimulationModel extends Model {
     /**
      * Constructs a new RoundaboutSimulationModel
      *
+     * @param simulationSeed simulation seed.
      * @param model the model this model is part of (set to null when there is no such model)
      * @param name this model's name
      * @param showInReport flag to indicate if this model shall produce output to the report file
      * @param showInTrace flag to indicate if this model shall produce output to the trace file
      */
     public RoundaboutSimulationModel(
+        Long simulationSeed,
         Model model,
         String name,
         boolean showInReport,
@@ -153,6 +177,7 @@ public class RoundaboutSimulationModel extends Model {
     ) {
         super(model, name, showInReport, showInTrace);
 
+        this.simulationSeed = simulationSeed;
         this.minTimeBetweenCarArrivals = minTimeBetweenCarArrivals;
         this.maxTimeBetweenCarArrivals = maxTimeBetweenCarArrivals;
         this.meanTimeBetweenCarArrivals = (minTimeBetweenCarArrivals + maxTimeBetweenCarArrivals) / 2;
@@ -178,10 +203,28 @@ public class RoundaboutSimulationModel extends Model {
 
     @Override
     public void doInitialSchedules() {
+        if (modelStructure != null) {
+            modelStructure.getIntersections().forEach(is -> is.getController().start());
+            modelStructure.getRoutes().keySet().forEach(so -> so.startGeneratingCars(0));
+        } else {
+            throw new IllegalArgumentException("Model structure should not be null!");
+        }
     }
 
     @Override
     public void init() {
+        getExperiment().setSeedGenerator(simulationSeed);
+
+        randomRouteRatioFactor = new ContDistUniform(
+            this,
+            "RandomRouteRatioFactor",
+            0,
+            1,
+            true,
+            false
+        );
+        randomRouteRatioFactor.setSeed(simulationSeed);
+
         distanceFactorBetweenCars = new ContDistUniform(
             this,
             "DistanceFactorBetweenCarsStream",
@@ -190,7 +233,7 @@ public class RoundaboutSimulationModel extends Model {
             true,
             false
         );
-        distanceFactorBetweenCars.setSeed(MODEL_SEED);
+        distanceFactorBetweenCars.setSeed(simulationSeed);
 
         timeBetweenCarArrivals = new ContDistNormal(
             this,
@@ -200,64 +243,41 @@ public class RoundaboutSimulationModel extends Model {
             true,
             false
         );
-        timeBetweenCarArrivals.setSeed(MODEL_SEED);
+        timeBetweenCarArrivals.setSeed(simulationSeed);
 
-        // calculate the standard deviation (of skew normal distribution) for vehicle length
-        ArrayList<Double> listTmp = new ArrayList<>();
-        Double mean = 0.;
-        for(double curLength = minCarLength; curLength <= maxCarLength;
-            curLength += VEHICLE_LENGTH_STEPSIZE) {
-            listTmp.add(curLength);
-            mean += curLength;
-        }
-        mean /= listTmp.size();
-        Double variancePartSum = 0.0;
-        for(Double curVal : listTmp)  {
-            curVal = Math.pow(curVal-mean,2); //preparation vor variance
-            variancePartSum += curVal;
-        }
-        Double lowerRatio = 1/(maxCarLength-minCarLength)*(expectedCarLength-minCarLength); //Ratio for the smaller trucks
-        Double upperRatio = 1-lowerRatio;
-        Double variance = Math.sqrt(variancePartSum/listTmp.size());
-
+        // calculate the standard deviation (of skew normal distribution) for car length
+        final StandardDeviation carLengthDeviation = StandardDeviation.calculate(
+            minCarLength, maxCarLength, expectedCarLength, VEHICLE_LENGTH_STEP_SIZE
+        );
         lengthOfCar = new ContDistNormal(
             this,
             "LengthOfCar",
             expectedCarLength,
-            variance*lowerRatio,
-            variance*upperRatio,
+            carLengthDeviation.getLeft(),
+            carLengthDeviation.getRight(),
             true,
             false
         );
+        lengthOfCar.setSeed(simulationSeed);
 
-        listTmp.clear();
-        mean = 0.;
-        for(double curLength = minTruckLength; curLength <= maxTruckLength;
-            curLength += VEHICLE_LENGTH_STEPSIZE) {
-            listTmp.add(curLength);
-            mean += curLength;
-        }
-        mean /= listTmp.size();
-        variancePartSum = 0.0;
-        for(Double curVal : listTmp)  {
-            curVal = Math.pow(curVal-mean,2); //preparation vor variance
-            variancePartSum += curVal;
-        }
-        lowerRatio = 1/(maxTruckLength-minTruckLength)*(expectedTruckLength-minTruckLength); //Ratio for the smaller trucks
-        upperRatio = 1-lowerRatio;
-        variance = Math.sqrt(variancePartSum/listTmp.size());
-
+        // calculate the standard deviation (of skew normal distribution) for truck length
+        final StandardDeviation truckLengthDeviation = StandardDeviation.calculate(
+            minTruckLength, maxTruckLength, expectedTruckLength, VEHICLE_LENGTH_STEP_SIZE
+        );
         lengthOfTruck = new ContDistNormal(
             this,
             "LengthOfTruck",
             expectedTruckLength,
-            variance*lowerRatio,
-            variance*upperRatio,
+            truckLengthDeviation.getLeft(),
+            truckLengthDeviation.getRight(),
             true,
             false
         );
+        lengthOfTruck.setSeed(simulationSeed);
 
-        if(carRatioPerTotalVehicle > 1.0) throw new IllegalArgumentException("carRatioPerTotalVehicle must not bigger than 1.");
+        if (carRatioPerTotalVehicle > 1.0) {
+            throw new IllegalArgumentException("carRatioPerTotalVehicle must smaller or equals 1.");
+        }
         typeOfVehicle = new ContDistUniform(
             this,
             "LengthOfVehicle",
@@ -266,10 +286,29 @@ public class RoundaboutSimulationModel extends Model {
             true,
             false
         );
+        typeOfVehicle.setSeed(simulationSeed);
 
         if (mainArrivalRateForOneWayStreets != null) {
             timeBetweenCarArrivalsOnOneWayStreets = ModelFactory.getInstance(this).createContDistConstant(mainArrivalRateForOneWayStreets);
+            timeBetweenCarArrivalsOnOneWayStreets.setSeed(simulationSeed);
         }
+    }
+
+    /**
+     * Registers structure of the model for init scheduling.
+     * @param modelStructure structure to be registered.
+     */
+    public void registerModelStructure(IModelStructure modelStructure) {
+        this.modelStructure = modelStructure;
+    }
+
+    /**
+     * Returns a sample of the random stream {@link ContDistUniform} used to determine the random route ratio factor.
+     *
+     * @return a {@code randomRouteRatioFactor} sample as double.
+     */
+    public double getRandomRouteRatioFactor() {
+        return randomRouteRatioFactor.sample();
     }
 
     /**
@@ -308,6 +347,10 @@ public class RoundaboutSimulationModel extends Model {
         return meanTimeBetweenCarArrivals;
     }
 
+    /**
+     * Returns standard deviation between car arrivals.
+     * @return standard deviation value.
+     */
     public double getStdDeviationTimeBetweenCarArrivals() {
         return Math.abs(getMaxTimeBetweenCarArrivals() - getMeanTimeBetweenCarArrivals());
     }
@@ -325,28 +368,37 @@ public class RoundaboutSimulationModel extends Model {
     /**
      * Returns a sample of the random stream {@link ContDistNormal} used to determine the length of a vehicle
      *
-     * @return a {@code getRandomLengthOfVehicle} sample as double.
+     * @return a {@code getRandomVehicleLength} sample as double.
      */
-    public double getRandomLengthOfVehicle () {
-        return (typeOfVehicle.sample() <= carRatioPerTotalVehicle) ? getRandomLengthOfCar() : getRandomLengthOfTruck();
+    public double getRandomVehicleLength() {
+        return (typeOfVehicle.sample() <= carRatioPerTotalVehicle) ? getRandomCarLength() : getRandomTruckLength();
     }
 
     /**
      * Returns a sample of the random stream {@link ContDistNormal} used to determine the length of a car.
      *
-     * @return a {@code getRandomLengthOfCar} sample as double.
+     * @return a {@code getRandomCarLength} sample as double.
      */
-    public double getRandomLengthOfCar(){
-        return Math.max( Math.min(lengthOfCar.sample(), maxCarLength), minCarLength);
+    public double getRandomCarLength() {
+        return Math.max(Math.min(lengthOfCar.sample(), maxCarLength), minCarLength);
     }
 
     /**
      * Returns a sample of the random stream {@link ContDistNormal} used to determine the length of a truck.
      *
-     * @return a {@code getRandomLengthOfTruck} sample as double.
+     * @return a {@code getRandomTruckLength} sample as double.
      */
-    public double getRandomLengthOfTruck(){
-        return Math.max( Math.min(lengthOfTruck.sample(), maxTruckLength), minTruckLength);
+    public double getRandomTruckLength() {
+        return Math.max(Math.min(lengthOfTruck.sample(), maxTruckLength), minTruckLength);
+    }
+
+    /**
+     * Returns max possible length of vehicle.
+     *
+     * @return max vehicle length.
+     */
+    public double getMaxVehicleLength() {
+        return Math.max(maxCarLength, maxTruckLength);
     }
 
     /**
@@ -355,7 +407,7 @@ public class RoundaboutSimulationModel extends Model {
      * @return configured model {@link TimeUnit}.
      */
     public TimeUnit getModelTimeUnit() {
-        return MODEL_TIME_UNIT;
+        return getExperiment().getReferenceUnit();
     }
 
     /**
@@ -367,6 +419,11 @@ public class RoundaboutSimulationModel extends Model {
         return currentModel().getExperiment().getSimClock().getTime().getTimeAsDouble(getModelTimeUnit());
     }
 
+    /**
+     * Provides for time between car arrivals random number stream.
+     *
+     * @return instance of {@link ContDist}.
+     */
     public ContDist getTimeBetweenCarArrivalsOnOneWayStreets() {
         return timeBetweenCarArrivalsOnOneWayStreets;
     }
