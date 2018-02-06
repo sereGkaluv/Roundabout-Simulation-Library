@@ -15,7 +15,7 @@
         <parameter name="MAX_TRUCK_LENGTH" value="19.5"/>
         <parameter name="EXPECTED_TRUCK_LENGTH" value="16.5"/>
         <parameter name="CAR_RATIO_PER_TOTAL_VEHICLE" value="0.9"/>
-        <parameter name="JAM_INDICATOR_IN_SECONDS" value="5"/>
+        <parameter name="JAM_INDICATOR_IN_SECONDS" value="10"/>
     </parameters>
     <components>
         <component id="ro1" type="ROUNDABOUT" name="Kreisverkehr Dornbirn Süd">
@@ -53,7 +53,8 @@
                 <sink id="sk_s17_t1"/>
             </sinks>
             <sections>
-                <section id="s1_t1" length="110.45" isTrafficLightActive="true" greenPhaseDuration="10" redPhaseDuration="10"/>
+                <section id="s1_t1" length="110.45" isTrafficLightActive="true" greenPhaseDuration="18"
+                         redPhaseDuration="50"/>
 
                 <section id="s2_t1" length="110.45"/>
                 <section id="s2_t2" length="110.45"/>
@@ -75,8 +76,10 @@
                 <section id="s9_t1" length="200"/>
                 <section id="s9_t2" length="200"/>
 
-                <section id="s10_t1" length="229" isTrafficLightActive="true"  minGreenPhaseDuration="60" redPhaseDuration="20"/>
-                <section id="s10_t2" length="229" isTrafficLightActive="true"  minGreenPhaseDuration="60" redPhaseDuration="20"/>
+                <section id="s10_t1" length="229" isTrafficLightActive="true" minGreenPhaseDuration="120"
+                         redPhaseDuration="40"/>
+                <section id="s10_t2" length="229" isTrafficLightActive="true" minGreenPhaseDuration="120"
+                         redPhaseDuration="40"/>
 
                 <section id="s11_t1" length="474.55"/>
 
@@ -263,27 +266,29 @@
             </connector>
         </connectors>
         <routes>
-            <route fromComponentId="ro1" fromSourceId="so_s2_t1" toComponentId="ro1" toSinkId="sk_s4_t1" ratio="0.143"/>
-            <route fromComponentId="ro1" fromSourceId="so_s2_t1" toComponentId="ro1" toSinkId="sk_s9_t1" ratio="0.4"/>
-            <route fromComponentId="ro1" fromSourceId="so_s2_t1" toComponentId="ro1" toSinkId="sk_s9_t2" ratio="0.457"/>
+            <route fromComponentId="is1" fromSourceId="so_s3_t3" toComponentId="ro1" toSinkId="sk_s4_t1" ratio="0.143"/>
+            <route fromComponentId="is1" fromSourceId="so_s4_t1" toComponentId="ro1" toSinkId="sk_s9_t1" ratio="0.4"/>
+            <route fromComponentId="is1" fromSourceId="so_s5_t1" toComponentId="ro1" toSinkId="sk_s9_t2" ratio="0.457"/>
 
-            <route fromComponentId="ro1" fromSourceId="so_s2_t2" toComponentId="ro1" toSinkId="sk_s13_t1" ratio="0.923"/>
-            <route fromComponentId="ro1" fromSourceId="so_s2_t2" toComponentId="ro1" toSinkId="sk_s17_t1" ratio="0.077"/>
+            <route fromComponentId="is1" fromSourceId="so_s4_t1" toComponentId="ro1" toSinkId="sk_s13_t1"
+                   ratio="0.923"/>
+            <route fromComponentId="is1" fromSourceId="so_s3_t4" toComponentId="ro1" toSinkId="sk_s17_t1"
+                   ratio="0.077"/>
 
             <route fromComponentId="ro1" fromSourceId="so_s5_t1" toComponentId="ro1" toSinkId="sk_s13_t1" ratio="0.8"/>
             <route fromComponentId="ro1" fromSourceId="so_s5_t1" toComponentId="ro1" toSinkId="sk_s17_t1" ratio="0.1"/>
-            <route fromComponentId="ro1" fromSourceId="so_s5_t1" toComponentId="ro1" toSinkId="sk1_t1" ratio="0.1"/>
+            <route fromComponentId="ro1" fromSourceId="so_s5_t1" toComponentId="is1" toSinkId="sk1_t1" ratio="0.1"/>
 
             <route fromComponentId="ro1" fromSourceId="so_s6_t1" toComponentId="ro1" toSinkId="sk_s6_t1" ratio="1.0"/>
 
             <route fromComponentId="ro1" fromSourceId="so_s10_t1" toComponentId="ro1" toSinkId="sk_s17_t1" ratio="0.333"/>
-            <route fromComponentId="ro1" fromSourceId="so_s10_t1" toComponentId="ro1" toSinkId="sk1_t1" ratio="0.667"/>
+            <route fromComponentId="ro1" fromSourceId="so_s10_t1" toComponentId="is1" toSinkId="sk2_t1" ratio="0.667"/>
 
             <route fromComponentId="ro1" fromSourceId="so_s10_t2" toComponentId="ro1" toSinkId="sk_s4_t1" ratio="1.0"/>
 
             <route fromComponentId="ro1" fromSourceId="so_s11_t1" toComponentId="ro1" toSinkId="sk_s11_t1" ratio="1.0"/>
 
-            <route fromComponentId="ro1" fromSourceId="so_s14_t1" toComponentId="ro1" toSinkId="sk1_t1" ratio="1.0"/>
+            <route fromComponentId="ro1" fromSourceId="so_s14_t1" toComponentId="is1" toSinkId="sk3_t1" ratio="1.0"/>
 
             <route fromComponentId="ro1" fromSourceId="so_s14_t2" toComponentId="ro1" toSinkId="sk_s4_t1" ratio="0.333"/>
             <route fromComponentId="ro1" fromSourceId="so_s14_t2" toComponentId="ro1" toSinkId="sk_s9_t1" ratio="0.3"/>

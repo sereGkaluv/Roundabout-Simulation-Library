@@ -15,7 +15,7 @@
         <parameter name="MAX_TRUCK_LENGTH" value="19.5"/>
         <parameter name="EXPECTED_TRUCK_LENGTH" value="16.5"/>
         <parameter name="CAR_RATIO_PER_TOTAL_VEHICLE" value="0.9"/>
-        <parameter name="JAM_INDICATOR_IN_SECONDS" value="5"/>
+        <parameter name="JAM_INDICATOR_IN_SECONDS" value="20"/>
     </parameters>
     <components>
         <component id="ro1" type="ROUNDABOUT" name="Kreisverkehr Dornbirn Süd">
@@ -58,7 +58,8 @@
 				<sink id="sk_s1_t1"/>
             </sinks>
             <sections>
-                <section id="s1_t1" length="110.45" isTrafficLightActive="true" greenPhaseDuration="10" redPhaseDuration="100"/>
+                <section id="s1_t1" length="110.45" isTrafficLightActive="true" greenPhaseDuration="18"
+                         redPhaseDuration="50"/>
 
                 <section id="s2_t1" length="110.45"/>
                 <section id="s2_t2" length="110.45"/>
@@ -80,8 +81,10 @@
                 <section id="s9_t1" length="200"/>
                 <section id="s9_t2" length="200"/>
 
-                <section id="s10_t1" length="229" isTrafficLightActive="true" minGreenPhaseDuration="60" redPhaseDuration="20"/>
-                <section id="s10_t2" length="229" isTrafficLightActive="true" minGreenPhaseDuration="60" redPhaseDuration="20"/>
+                <section id="s10_t1" length="229" isTrafficLightActive="true" minGreenPhaseDuration="120"
+                         redPhaseDuration="40"/>
+                <section id="s10_t2" length="229" isTrafficLightActive="true" minGreenPhaseDuration="120"
+                         redPhaseDuration="40"/>
 
                 <section id="s11_t1" length="474.55"/>
 
