@@ -5,6 +5,7 @@ import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import co.paralleluniverse.fibers.SuspendExecution;
 import desmoj.core.simulator.Event;
 import desmoj.core.simulator.Model;
+import desmoj.core.simulator.TimeInstant;
 import desmoj.core.simulator.TimeSpan;
 
 public class ToggleTrafficLightStateEvent extends Event<Street> {
@@ -46,14 +47,39 @@ public class ToggleTrafficLightStateEvent extends Event<Street> {
      */
     @Override
     public void eventRoutine(Street donorStreet) throws SuspendExecution {
-        boolean toggleState = !donorStreet.isTrafficLightFreeToGo();
-
-        // generate CarCouldLeaveSectionEvent if traffic light is free to go
-        if (toggleState) {
+        donorStreet.setTrafficLightFreeToGo( !donorStreet.isTrafficLightFreeToGo() );
+        if(donorStreet.isTrafficLightFreeToGo()){
             // TODO simulate acceleration
+            // generate CarCouldLeaveSectionEvent if traffic light is free to go
             roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(donorStreet, new TimeSpan(0));
         }
+        if(donorStreet.isTrafficLightTriggeredByJam()) {
+            if( !donorStreet.isTrafficLightFreeToGo()) {
+                RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(roundaboutSimulationModel).
+                        schedule(donorStreet, new TimeSpan(donorStreet.getRedPhaseDurationOfTrafficLight(), roundaboutSimulationModel.getModelTimeUnit()));
+            }
+        } else {
+            // cyclic traffic light
+            if (donorStreet.isTrafficLightFreeToGo()) {
+                // triggered to green
+                roundaboutEventFactory.createToggleTrafficLightStateEvent(roundaboutSimulationModel).schedule(
+                        donorStreet,
+                        new TimeSpan(
+                                donorStreet.getGreenPhaseDurationOfTrafficLight(),
+                                roundaboutSimulationModel.getModelTimeUnit()
+                        )
+                );
+            } else {
+                roundaboutEventFactory.createToggleTrafficLightStateEvent(roundaboutSimulationModel).schedule(
+                        donorStreet,
+                        new TimeSpan(
+                                donorStreet.getRedPhaseDurationOfTrafficLight(),
+                                roundaboutSimulationModel.getModelTimeUnit()
+                        )
+                );
+            }
+        }
 
-        donorStreet.setTrafficLightFreeToGo(toggleState);
+
     }
 }

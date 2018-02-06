@@ -3,6 +3,7 @@ package at.fhv.itm3.s2.roundabout.model;
 import at.fhv.itm14.trafsim.model.ModelFactory;
 import at.fhv.itm14.trafsim.model.entities.OneWayStreet;
 import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import desmoj.core.dist.ContDist;
 import desmoj.core.dist.ContDistNormal;
 import desmoj.core.dist.ContDistUniform;
@@ -14,20 +15,22 @@ public class RoundaboutSimulationModel extends Model {
 
     private static final long DEFAULT_SIMULATION_SEED = 1L;
 
-    private static final double DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
-    private static final double DEFAULT_MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
-    private static final double DEFAULT_MIN_DISTANCE_FACTOR_BETWEEN_CARS = 0.0;
-    private static final double DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS = 1.0;
-    private static final double DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS = 1.0;
-    private static final double DEFAULT_STANDARD_CAR_ACCELERATION_TIME = 2.0;
-    private static final double DEFAULT_MIN_CAR_LENGTH = 3.0;
-    private static final double DEFAULT_MAX_CAR_LENGTH = 19.5;
-    private static final double DEFAULT_EXPECTED_CAR_LENGTH = 4.5;
-    private static final double DEFAULT_MIN_TRUCK_LENGTH = 3.0;
-    private static final double DEFAULT_MAX_TRUCK_LENGTH = 19.5;
-    private static final double DEFAULT_EXPECTED_TRUCK_LENGTH = 4.5;
-    private static final double DEFAULT_CAR_RATIO_PER_TOTAL_VEHICLE = 0.8;
-    private static final double VEHICLE_LENGTH_STEP_SIZE = 0.1;
+    public static final Double DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
+    public static final Double DEFAULT_MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
+    public static final Double DEFAULT_MIN_DISTANCE_FACTOR_BETWEEN_CARS = 0.0;
+    public static final Double DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS = 1.0;
+    public static final Double DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS = 1.0;
+    public static final Double DEFAULT_STANDARD_CAR_ACCELERATION_TIME = 2.0;
+    public static final Double DEFAULT_MIN_CAR_LENGTH = 3.0;
+    public static final Double DEFAULT_MAX_CAR_LENGTH = 19.5;
+    public static final Double DEFAULT_EXPECTED_CAR_LENGTH = 4.5;
+    public static final Double DEFAULT_MIN_TRUCK_LENGTH = 3.0;
+    public static final Double DEFAULT_MAX_TRUCK_LENGTH = 19.5;
+    public static final Double DEFAULT_EXPECTED_TRUCK_LENGTH = 4.5;
+    public static final Double DEFAULT_CAR_RATIO_PER_TOTAL_VEHICLE = 0.8;
+    public static final Double DEFAULT_JAM_INDICATOR_IN_SECONDS = 5.0;
+
+    public static final Double VEHICLE_LENGTH_STEP_SIZE = 0.1;
 
     public final Long simulationSeed;
     public final Double minDistanceFactorBetweenCars;
@@ -44,6 +47,7 @@ public class RoundaboutSimulationModel extends Model {
     public final Double maxTruckLength;
     public final Double expectedTruckLength;
     public final Double carRatioPerTotalVehicle;
+    public final Double jamIndicatorInSeconds;
 
     private IModelStructure modelStructure;
 
@@ -133,7 +137,8 @@ public class RoundaboutSimulationModel extends Model {
             DEFAULT_STANDARD_CAR_ACCELERATION_TIME,
             DEFAULT_MIN_CAR_LENGTH, DEFAULT_MAX_CAR_LENGTH, DEFAULT_EXPECTED_CAR_LENGTH,
             DEFAULT_MIN_TRUCK_LENGTH, DEFAULT_MAX_TRUCK_LENGTH, DEFAULT_EXPECTED_TRUCK_LENGTH,
-            DEFAULT_CAR_RATIO_PER_TOTAL_VEHICLE
+            DEFAULT_CAR_RATIO_PER_TOTAL_VEHICLE,
+            DEFAULT_JAM_INDICATOR_IN_SECONDS
         );
     }
 
@@ -164,7 +169,8 @@ public class RoundaboutSimulationModel extends Model {
         Double minTruckLength,
         Double maxTruckLength,
         Double expectedTruckLength,
-        Double carRatioPerTotalVehicle
+        Double carRatioPerTotalVehicle,
+        Double jamIndicatorInSeconds
     ) {
         super(model, name, showInReport, showInTrace);
 
@@ -183,6 +189,7 @@ public class RoundaboutSimulationModel extends Model {
         this.maxTruckLength = maxTruckLength;
         this.expectedTruckLength = expectedTruckLength;
         this.carRatioPerTotalVehicle = carRatioPerTotalVehicle;
+        this.jamIndicatorInSeconds = jamIndicatorInSeconds;
     }
 
     @Override
@@ -195,6 +202,7 @@ public class RoundaboutSimulationModel extends Model {
         if (modelStructure != null) {
             modelStructure.getIntersections().forEach(is -> is.getController().start());
             modelStructure.getRoutes().keySet().forEach(so -> so.startGeneratingCars(0));
+            modelStructure.getStreets().forEach(Street::initTrafficLight);
         } else {
             throw new IllegalArgumentException("Model structure should not be null!");
         }

@@ -65,7 +65,8 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
      */
     @Override
     public void eventRoutine(Street donorStreet) throws SuspendExecution {
-        if (donorStreet.firstCarCouldEnterNextSection()) {
+        donorStreet.trafficLightActiveAndJamInNextSection();
+        if ( donorStreet.firstCarCouldEnterNextSection()) {
 
             // schedule a CarCouldLeaveSectionEvent for the next section, so it is thrown when the car should be able to
             // leave the next section under optimal conditions

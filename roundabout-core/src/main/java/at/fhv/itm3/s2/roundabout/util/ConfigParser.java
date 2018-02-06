@@ -44,6 +44,7 @@ public class ConfigParser {
     private static final String MAX_TRUCK_LENGTH = "MAX_TRUCK_LENGTH";
     private static final String EXPECTED_TRUCK_LENGTH = "EXPECTED_TRUCK_LENGTH";
     private static final String CAR_RATIO_PER_TOTAL_VEHICLE = "CAR_RATIO_PER_TOTAL_VEHICLE";
+    private static final String JAM_INDICATOR_IN_SECONDS = "JAM_INDICATOR_IN_SECONDS";
 
     private static final String INTERSECTION_SIZE = "INTERSECTION_SIZE";
     private static final String INTERSECTION_SERVICE_DELAY = "INTERSECTION_SERVICE_DELAY";
@@ -110,7 +111,8 @@ public class ConfigParser {
             extractParameter(parameters::get, Double::valueOf, MIN_TRUCK_LENGTH),
             extractParameter(parameters::get, Double::valueOf, MAX_TRUCK_LENGTH),
             extractParameter(parameters::get, Double::valueOf, EXPECTED_TRUCK_LENGTH),
-            extractParameter(parameters::get, Double::valueOf, CAR_RATIO_PER_TOTAL_VEHICLE)
+            extractParameter(parameters::get, Double::valueOf, CAR_RATIO_PER_TOTAL_VEHICLE),
+            extractParameter(parameters::get, Double::valueOf, JAM_INDICATOR_IN_SECONDS)
         );
         model.connectToExperiment(experiment);  // ! - Should be done before anything else.
 
@@ -368,10 +370,24 @@ public class ConfigParser {
         return sections.getSection().stream().collect(toMap(
             Section::getId,
             s -> {
-                if(s.getLength() < minStreetLength) throw new IllegalArgumentException("Street must not be smaller than " +
-                                                                "the biggest vehicle incl. distance to other vehicles");
+                if(s.getLength() < minStreetLength) {
+                    throw new IllegalArgumentException(
+                        "Street must not be smaller than the biggest vehicle incl. distance to other vehicles"
+                    );
+                }
+
                 final boolean isTrafficLightActive = s.getIsTrafficLightActive() != null ? s.getIsTrafficLightActive() : false;
-                final StreetSection streetSection = new StreetSection(s.getId(), s.getLength(), model, s.getId(), false, isTrafficLightActive);
+                final StreetSection streetSection = new StreetSection(
+                    s.getId(),
+                    s.getLength(),
+                    model,
+                    s.getId(),
+                    false,
+                    isTrafficLightActive,
+                    s.getGreenPhaseDuration(),
+                    s.getRedPhaseDuration()
+                );
+
                 if (!SECTION_REGISTRY.containsKey(scopeComponentId)) {
                     SECTION_REGISTRY.put(scopeComponentId, new HashMap<>());
                 }
