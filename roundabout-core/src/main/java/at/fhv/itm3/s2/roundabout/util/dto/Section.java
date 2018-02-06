@@ -9,6 +9,8 @@ public class Section implements IDTO {
     private Double length;
     private Integer order;
     private Boolean isTrafficLightActive;
+    private Long greenPhaseDuration;
+    private Long redPhaseDuration;
 
     @XmlAttribute
     public String getId() {
@@ -43,4 +45,14 @@ public class Section implements IDTO {
     public void setIsTrafficLightActive(Boolean isTrafficLightActive) {
         this.isTrafficLightActive = isTrafficLightActive;
     }
+
+    @XmlAttribute
+    public  Long getGreenPhaseDuration() { return greenPhaseDuration; }
+
+    private void setGreenPhaseDuration(Long greenPhaseDuration) {this.greenPhaseDuration = greenPhaseDuration; }
+
+    @XmlAttribute
+    public  Long getRedPhaseDuration() { return  redPhaseDuration; }
+
+    public  void setRedPhaseDuration(Long redPhaseDuration) { this.redPhaseDuration = redPhaseDuration; }
 }

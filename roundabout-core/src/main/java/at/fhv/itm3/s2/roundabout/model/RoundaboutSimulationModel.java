@@ -28,9 +28,8 @@ public class RoundaboutSimulationModel extends Model {
     public static final Double DEFAULT_EXPECTED_TRUCK_LENGTH = 4.5;
     public static final Double DEFAULT_CAR_RATIO_PER_TOTAL_VEHICLE = 0.8;
     public static final Double DEFAULT_JAM_INDICATOR_IN_SECONDS = 5.0;
-    public static final Double DEFAULT_RED_PHASE_TRAFFIC_LIGHT_JAM = 20.0;
 
-    public static final Double VEHICLE_LENGTH_STEPSIZE = 0.1;
+    public static final Double VEHICLE_LENGTH_STEP_SIZE = 0.1;
 
     public final Long simulationSeed;
     public final Double minDistanceFactorBetweenCars;
@@ -48,7 +47,6 @@ public class RoundaboutSimulationModel extends Model {
     public final Double expectedTruckLength;
     public final Double carRatioPerTotalVehicle;
     public final Double jamIndicatorInSeconds;
-    public final Double redPhaseTrafficLightJam;
 
     private IModelStructure modelStructure;
 
@@ -139,8 +137,7 @@ public class RoundaboutSimulationModel extends Model {
             DEFAULT_MIN_CAR_LENGTH, DEFAULT_MAX_CAR_LENGTH, DEFAULT_EXPECTED_CAR_LENGTH,
             DEFAULT_MIN_TRUCK_LENGTH, DEFAULT_MAX_TRUCK_LENGTH, DEFAULT_EXPECTED_TRUCK_LENGTH,
             DEFAULT_CAR_RATIO_PER_TOTAL_VEHICLE,
-            DEFAULT_JAM_INDICATOR_IN_SECONDS,
-            DEFAULT_RED_PHASE_TRAFFIC_LIGHT_JAM
+            DEFAULT_JAM_INDICATOR_IN_SECONDS
         );
     }
 
@@ -172,8 +169,7 @@ public class RoundaboutSimulationModel extends Model {
         Double maxTruckLength,
         Double expectedTruckLength,
         Double carRatioPerTotalVehicle,
-        Double jamIndicatorInSeconds,
-        Double redPhaseTrafficLightJam
+        Double jamIndicatorInSeconds
     ) {
         super(model, name, showInReport, showInTrace);
 
@@ -193,7 +189,6 @@ public class RoundaboutSimulationModel extends Model {
         this.expectedTruckLength = expectedTruckLength;
         this.carRatioPerTotalVehicle = carRatioPerTotalVehicle;
         this.jamIndicatorInSeconds = jamIndicatorInSeconds;
-        this.redPhaseTrafficLightJam = redPhaseTrafficLightJam;
     }
 
     @Override

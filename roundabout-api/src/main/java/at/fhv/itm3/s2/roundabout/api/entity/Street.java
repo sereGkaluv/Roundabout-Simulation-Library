@@ -5,6 +5,7 @@ import at.fhv.itm3.s2.roundabout.api.util.observable.ObserverType;
 import at.fhv.itm3.s2.roundabout.api.util.observable.RoundaboutObservable;
 import desmoj.core.simulator.Model;
 import javafx.beans.value.ObservableValueBase;
+import desmoj.core.simulator.TimeSpan;
 
 import java.util.List;
 import java.util.Map;
@@ -31,14 +32,15 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     }
 
     public Street(String id, Model owner, String name, boolean showInTrace) {
-        this(id, owner, name, showInTrace, false);
+        this(id, owner, name, showInTrace, false, 0, 0);
     }
 
     public Street(Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
-        this(UUID.randomUUID().toString(), owner, name, showInTrace, trafficLightActive);
+        this(UUID.randomUUID().toString(), owner, name, showInTrace, trafficLightActive, 0, 0);
     }
 
-    public Street(String id, Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
+    public Street(String id, Model owner, String name, boolean showInTrace,
+                  boolean trafficLightActive, long greenPhaseDuration, long redPhaseDuration) {
         super(owner, name, showInTrace);
 
         this.id = id;
@@ -46,7 +48,7 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
         this.leftCarsCounter = 0;
         this.lostCarsCounter = 0;
 
-        this.trafficLight = new TrafficLight(trafficLightActive);
+        this.trafficLight = new TrafficLight(trafficLightActive, greenPhaseDuration, redPhaseDuration);
 
         this.carObserver = new RoundaboutObservable();
         this.enteredCarObserver = new RoundaboutObservable();
@@ -241,6 +243,11 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     public abstract void moveFirstCarToNextSection()
     throws IllegalStateException;
 
+    /**
+     * Calculates either a car could enter next section or not
+     *
+     * @return true if car could enter next section otherwise false
+     */
     public abstract boolean carCouldEnterNextSection();
 
     /**
@@ -250,6 +257,15 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
      */
     public boolean isTrafficLightActive() {
         return trafficLight.isActive();
+    }
+
+    /**
+     * Returns if traffic light at end of the street is triggered by traffic jam. if not it is cyclic.
+     *
+     * @return true = active
+     */
+    public boolean isTrafficLightTriggeredByJam() {
+        return trafficLight.isTriggersByJam();
     }
 
     /**
@@ -272,6 +288,20 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
         trafficLight.setFreeToGo(isFreeToGo);
         trafficLightObserver.notifyObservers(isFreeToGo);
     }
+
+    /**
+     * Getter for red phase duration of traffic light
+     *
+     * @return the duration of the red light
+     */
+    public long getRedPhaseDurationOfTrafficLight() { return this.trafficLight.getRedCircleDuration(); }
+
+    /**
+     * Getter for green phase duration of traffic light
+     *
+     * @return the duration of the green light
+     */
+    public long getGreenPhaseDurationOfTrafficLight() { return this.trafficLight.getGreenCircleDuration(); }
 
     /**
      * Helper method that registers typed observers.

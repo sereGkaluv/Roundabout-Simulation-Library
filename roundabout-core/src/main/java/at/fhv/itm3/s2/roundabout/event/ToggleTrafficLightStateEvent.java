@@ -47,14 +47,34 @@ public class ToggleTrafficLightStateEvent extends Event<Street> {
      */
     @Override
     public void eventRoutine(Street donorStreet) throws SuspendExecution {
-        boolean toggleState = !donorStreet.isTrafficLightFreeToGo();
+        donorStreet.setTrafficLightFreeToGo( !donorStreet.isTrafficLightFreeToGo() );
+        if(!donorStreet.isTrafficLightTriggeredByJam()) {
+            // cyclic traffic light
+            donorStreet.setTrafficLightFreeToGo( !donorStreet.isTrafficLightFreeToGo() );
 
-        // generate CarCouldLeaveSectionEvent if traffic light is free to go
-        if (toggleState) {
-            // TODO simulate acceleration
-            roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(donorStreet, new TimeSpan(0));
+            // generate CarCouldLeaveSectionEvent if traffic light is free to go
+            if (donorStreet.isTrafficLightFreeToGo()) {
+                // triggered to green
+                // TODO simulate acceleration
+                roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(donorStreet, new TimeSpan(0));
+                roundaboutEventFactory.createToggleTrafficLightStateEvent(roundaboutSimulationModel).schedule(
+                        donorStreet,
+                        new TimeSpan(
+                                donorStreet.getGreenPhaseDurationOfTrafficLight(),
+                                roundaboutSimulationModel.getModelTimeUnit()
+                        )
+                );
+            } else {
+                roundaboutEventFactory.createToggleTrafficLightStateEvent(roundaboutSimulationModel).schedule(
+                        donorStreet,
+                        new TimeSpan(
+                                donorStreet.getRedPhaseDurationOfTrafficLight(),
+                                roundaboutSimulationModel.getModelTimeUnit()
+                        )
+                );
+            }
         }
 
-        donorStreet.setTrafficLightFreeToGo(toggleState);
+
     }
 }
