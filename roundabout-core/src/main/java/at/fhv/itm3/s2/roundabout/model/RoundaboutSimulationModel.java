@@ -3,6 +3,7 @@ package at.fhv.itm3.s2.roundabout.model;
 import at.fhv.itm14.trafsim.model.ModelFactory;
 import at.fhv.itm14.trafsim.model.entities.OneWayStreet;
 import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
+import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import desmoj.core.dist.ContDist;
 import desmoj.core.dist.ContDistNormal;
 import desmoj.core.dist.ContDistUniform;
@@ -201,6 +202,7 @@ public class RoundaboutSimulationModel extends Model {
         if (modelStructure != null) {
             modelStructure.getIntersections().forEach(is -> is.getController().start());
             modelStructure.getRoutes().keySet().forEach(so -> so.startGeneratingCars(0));
+            modelStructure.getStreets().forEach(Street::initTrafficLight);
         } else {
             throw new IllegalArgumentException("Model structure should not be null!");
         }

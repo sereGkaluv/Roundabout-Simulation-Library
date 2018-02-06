@@ -48,15 +48,15 @@ public class ToggleTrafficLightStateEvent extends Event<Street> {
     @Override
     public void eventRoutine(Street donorStreet) throws SuspendExecution {
         donorStreet.setTrafficLightFreeToGo( !donorStreet.isTrafficLightFreeToGo() );
+        if(donorStreet.isTrafficLightFreeToGo()){
+            // TODO simulate acceleration
+            // generate CarCouldLeaveSectionEvent if traffic light is free to go
+            roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(donorStreet, new TimeSpan(0));
+        }
         if(!donorStreet.isTrafficLightTriggeredByJam()) {
             // cyclic traffic light
-            donorStreet.setTrafficLightFreeToGo( !donorStreet.isTrafficLightFreeToGo() );
-
-            // generate CarCouldLeaveSectionEvent if traffic light is free to go
             if (donorStreet.isTrafficLightFreeToGo()) {
                 // triggered to green
-                // TODO simulate acceleration
-                roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(donorStreet, new TimeSpan(0));
                 roundaboutEventFactory.createToggleTrafficLightStateEvent(roundaboutSimulationModel).schedule(
                         donorStreet,
                         new TimeSpan(

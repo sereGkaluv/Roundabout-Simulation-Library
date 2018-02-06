@@ -28,19 +28,50 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     protected Observable trafficLightObserver;
 
     public Street(Model owner, String name, boolean showInTrace) {
-        this(owner, name, showInTrace, false);
+        this(UUID.randomUUID().toString(), owner, name, showInTrace);
     }
 
     public Street(String id, Model owner, String name, boolean showInTrace) {
-        this(id, owner, name, showInTrace, false, 0, 0);
+        this(id, owner, name, showInTrace, false, null, null);
     }
 
-    public Street(Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
-        this(UUID.randomUUID().toString(), owner, name, showInTrace, trafficLightActive, 0, 0);
+    public Street(Model owner, String name, boolean showInTrace, boolean trafficLightActive, Long redPhaseDuration) {
+        this(UUID.randomUUID().toString(),
+        owner,
+        name,
+        showInTrace,
+        trafficLightActive,
+        null,
+        redPhaseDuration);
     }
 
-    public Street(String id, Model owner, String name, boolean showInTrace,
-                  boolean trafficLightActive, long greenPhaseDuration, long redPhaseDuration) {
+    public Street(Model owner,
+         String name,
+         boolean showInTrace,
+         boolean trafficLightActive,
+         Long greenPhaseDuration,
+         Long redPhaseDuration
+    ) {
+        this(
+            UUID.randomUUID().toString(),
+            owner,
+            name,
+            showInTrace,
+            trafficLightActive,
+            greenPhaseDuration,
+            redPhaseDuration
+        );
+    }
+
+    public Street(
+        String id,
+        Model owner,
+        String name,
+        boolean showInTrace,
+        boolean trafficLightActive,
+        Long greenPhaseDuration,
+        Long redPhaseDuration
+    ) {
         super(owner, name, showInTrace);
 
         this.id = id;
@@ -66,7 +97,7 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
      *
      * @return void
      */
-    public void trafficLightActiveAndJamInNextSection() { return; }
+    public void trafficLightActiveAndJamInNextSection() { }
 
     /**
      * Gets total car counter passed into {@code this} {@link Street}.
@@ -302,6 +333,16 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
      * @return the duration of the green light
      */
     public long getGreenPhaseDurationOfTrafficLight() { return this.trafficLight.getGreenCircleDuration(); }
+
+    /**
+     * Sends notifications for traffic light state.
+     * Is designed to be started in the beginning of simulation.
+     */
+    public void initTrafficLight() {
+        if (isTrafficLightActive()) {
+            trafficLightObserver.notifyObservers();
+        }
+    }
 
     /**
      * Helper method that registers typed observers.

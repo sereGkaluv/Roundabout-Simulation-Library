@@ -370,13 +370,24 @@ public class ConfigParser {
         return sections.getSection().stream().collect(toMap(
             Section::getId,
             s -> {
-                if(s.getLength() < minStreetLength) throw new IllegalArgumentException("Street must not be smaller than " +
-                                                                "the biggest vehicle incl. distance to other vehicles");
+                if(s.getLength() < minStreetLength) {
+                    throw new IllegalArgumentException(
+                        "Street must not be smaller than the biggest vehicle incl. distance to other vehicles"
+                    );
+                }
+
                 final boolean isTrafficLightActive = s.getIsTrafficLightActive() != null ? s.getIsTrafficLightActive() : false;
-                final long greenPhaseDuration = s.getGreenPhaseDuration() != null ? s.getGreenPhaseDuration() : 0;
-                final long redPhaseDuration = s.getRedPhaseDuration() != null ? s.getRedPhaseDuration() : 0;
-                final StreetSection streetSection = new StreetSection(s.getId(), s.getLength(), model, s.getId(),
-                        false, isTrafficLightActive, greenPhaseDuration, redPhaseDuration);
+                final StreetSection streetSection = new StreetSection(
+                    s.getId(),
+                    s.getLength(),
+                    model,
+                    s.getId(),
+                    false,
+                    isTrafficLightActive,
+                    s.getGreenPhaseDuration(),
+                    s.getRedPhaseDuration()
+                );
+
                 if (!SECTION_REGISTRY.containsKey(scopeComponentId)) {
                     SECTION_REGISTRY.put(scopeComponentId, new HashMap<>());
                 }

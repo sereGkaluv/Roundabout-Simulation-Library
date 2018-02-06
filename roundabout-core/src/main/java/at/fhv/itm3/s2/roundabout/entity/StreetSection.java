@@ -4,17 +4,16 @@ import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.events.CarDepartureEvent;
 import at.fhv.itm14.trafsim.persistence.model.DTO;
-import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.TimeSpan;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class StreetSection extends Street {
 
@@ -48,20 +47,10 @@ public class StreetSection extends Street {
         String modelDescription,
         boolean showInTrace
     ) {
-        this(id, length, model, modelDescription, showInTrace,
-                false, 0, 0);
-    }
-
-    public StreetSection(
-            double length,
-            Model model,
-            String modelDescription,
-            boolean showInTrace,
-            boolean trafficLightActive,
-            long redPhaseDuration
-    ) {
-        this(UUID.randomUUID().toString(), length, model, modelDescription, showInTrace,
-                trafficLightActive, 0, redPhaseDuration);
+        this(
+            id, length, model, modelDescription, showInTrace,
+            false, null, null
+        );
     }
 
     public StreetSection(
@@ -70,11 +59,27 @@ public class StreetSection extends Street {
         String modelDescription,
         boolean showInTrace,
         boolean trafficLightActive,
-        long greenPhaseDuration,
-        long redPhaseDuration
+        Long redPhaseDuration
     ) {
-        this(UUID.randomUUID().toString(), length, model, modelDescription, showInTrace,
-                trafficLightActive, greenPhaseDuration, redPhaseDuration);
+        this(
+            UUID.randomUUID().toString(), length, model, modelDescription, showInTrace,
+            trafficLightActive, null, redPhaseDuration
+        );
+    }
+
+    public StreetSection(
+        double length,
+        Model model,
+        String modelDescription,
+        boolean showInTrace,
+        boolean trafficLightActive,
+        Long greenPhaseDuration,
+        Long redPhaseDuration
+    ) {
+        this(
+            UUID.randomUUID().toString(), length, model, modelDescription, showInTrace,
+            trafficLightActive, greenPhaseDuration, redPhaseDuration
+        );
     }
 
     public StreetSection(
@@ -84,8 +89,8 @@ public class StreetSection extends Street {
         String modelDescription,
         boolean showInTrace,
         boolean trafficLightActive,
-        long greenPhaseDuration,
-        long redPhaseDuration
+        Long greenPhaseDuration,
+        Long redPhaseDuration
     ) {
         super(id, model, modelDescription, showInTrace, trafficLightActive, greenPhaseDuration, redPhaseDuration);
 
@@ -95,9 +100,11 @@ public class StreetSection extends Street {
         this.carPositions = new HashMap<>();
         this.intersectionController = IntersectionController.getInstance();
 
-        if(this.isTrafficLightActive()) {
-            RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(getRoundaboutModel()).
-                    schedule(this, new TimeSpan(0.0));
+        if(this.isTrafficLightActive() && !this.isTrafficLightTriggeredByJam()) {
+            RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(getRoundaboutModel()).schedule(
+                this,
+                new TimeSpan(greenPhaseDuration)
+            );
         }
     }
 

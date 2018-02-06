@@ -4,24 +4,35 @@ public class TrafficLight {
     private boolean active;
     private boolean isFreeToGo;
     private boolean triggersByJam;
-    private long greenCircleDuration;
-    private long redCircleDuration;
+    private Long greenCircleDuration;
+    private Long redCircleDuration;
 
-
-    public TrafficLight(boolean active, long redPhaseDuration) {
-        this.active = active;
-        this.isFreeToGo = true;
-        this.triggersByJam = true;
-        this.greenCircleDuration = 0;
-        this.redCircleDuration = redPhaseDuration;
+    public TrafficLight(boolean active, Long redPhaseDuration) {
+        this(active, true, null, redPhaseDuration);
     }
 
-    public TrafficLight(boolean active,
-                        long greenCircleDuration,
-                        long redCircleDuration) {
+    public TrafficLight(
+        boolean active,
+        Long greenCircleDuration,
+        Long redCircleDuration
+    ) {
+        this(active, true, greenCircleDuration, redCircleDuration);
+    }
+
+    public TrafficLight(
+        boolean active,
+        boolean isFreeToGo,
+        Long greenCircleDuration,
+        Long redCircleDuration
+    ) {
+
+        if(greenCircleDuration == null) this.triggersByJam = true;
+        else this.triggersByJam = false;
+        if(redCircleDuration == null) active = false;
+
         this.active = active;
-        this.isFreeToGo = true;
-        this.triggersByJam = false;
+        this.isFreeToGo = isFreeToGo;
+
         this.greenCircleDuration = greenCircleDuration;
         this.redCircleDuration = redCircleDuration;
     }

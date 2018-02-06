@@ -58,7 +58,7 @@
 				<sink id="sk_s1_t1"/>
             </sinks>
             <sections>
-                <section id="s1_t1" length="110.45" isTrafficLightActive="true" greenPhaseDuration="10" redPhaseDuration="10"/>
+                <section id="s1_t1" length="110.45" isTrafficLightActive="true" greenPhaseDuration="10" redPhaseDuration="100"/>
 
                 <section id="s2_t1" length="110.45"/>
                 <section id="s2_t2" length="110.45"/>
