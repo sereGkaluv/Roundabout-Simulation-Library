@@ -30,7 +30,7 @@ public class MainApp extends Application {
 
     private static final String DEFAULT_TITLE = "TRAFSIM";
 
-    private static final int DEFAULT_WIDTH = 1200;
+    private static final int DEFAULT_WIDTH = 950;
     private static final int DEFAULT_HEIGHT = 950;
 
     private static final String PATH_TO_DEFAULT_CSS_FILE = "/at/fhv/itm3/s2/roundabout/ui/css/main.css";
