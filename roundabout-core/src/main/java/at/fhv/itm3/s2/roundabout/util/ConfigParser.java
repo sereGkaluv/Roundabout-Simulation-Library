@@ -135,6 +135,10 @@ public class ConfigParser {
         return modelStructure;
     }
 
+    public Map<String, Map<String, RoundaboutSource>> getSourceRegistry() {
+        return Collections.unmodifiableMap(SOURCE_REGISTRY);
+    }
+
     public Map<String, Map<String, StreetSection>> getSectionRegistry() {
         return Collections.unmodifiableMap(SECTION_REGISTRY);
     }

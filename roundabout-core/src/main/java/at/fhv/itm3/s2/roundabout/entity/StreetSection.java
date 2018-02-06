@@ -113,6 +113,8 @@ public class StreetSection extends Street {
         if (consumer instanceof Street) {
             ((Street)consumer).carDelivered(null, car, true);
         }
+
+        carObserver.notifyObservers(iCar);
     }
 
     @Override
@@ -240,6 +242,8 @@ public class StreetSection extends Street {
 
             previousCar = currentCar;
         }
+
+        carPositionObserver.notifyObservers();
     }
 
     @Override

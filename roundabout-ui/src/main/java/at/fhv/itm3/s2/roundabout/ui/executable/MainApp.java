@@ -5,8 +5,10 @@ import at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController;
 import at.fhv.itm3.s2.roundabout.ui.util.ViewLoader;
 import at.fhv.itm3.s2.roundabout.util.ConfigParser;
 import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
-import com.sun.javafx.application.LauncherImpl;
-import desmoj.core.simulator.*;
+import desmoj.core.simulator.Experiment;
+import desmoj.core.simulator.Model;
+import desmoj.core.simulator.SimClock;
+import desmoj.core.simulator.TimeInstant;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -90,7 +92,10 @@ public class MainApp extends Application {
                 experiment.stop(new TimeInstant(stopTime, experiment.getReferenceUnit()));
                 experiment.proceed();
             });
-            mainViewController.setProceedRunnable(experiment::proceed);
+            mainViewController.setProceedRunnable(() -> {
+                experiment.stop(new TimeInstant(EXPERIMENT_STOP_TIME, experiment.getReferenceUnit()));
+                experiment.proceed();
+            });
 
         } catch (Throwable t) {
             LOGGER.error("Error occurred during start of the application.", t);

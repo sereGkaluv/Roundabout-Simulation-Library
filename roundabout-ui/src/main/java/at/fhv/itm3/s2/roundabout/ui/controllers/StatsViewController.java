@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.ui.controllers;
 
-import at.fhv.itm3.s2.roundabout.api.util.observable.CarObserverType;
+import at.fhv.itm3.s2.roundabout.api.util.observable.ObserverType;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.ui.controllers.core.JfxController;
@@ -8,6 +8,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.*;
@@ -27,6 +29,8 @@ public class StatsViewController extends JfxController {
     private static final String SINK_MAX_SUFFIX = "_max";
 
     private static final String NOT_AVAILABLE = "N/A";
+
+    private static final int TRAFFIC_LIGHT_INDICATOR_SIZE = 8;
 
     private static final Function<Double, String> DOUBLE_STRING_FORMATTER_FUNCTION = v -> String.format("%.2f", v);
 
@@ -56,7 +60,10 @@ public class StatsViewController extends JfxController {
             final String sourceIS = String.format(KEY_FORMAT, streetSection.getId(), SOURCE_IS_SUFFIX);
             final String sourcePS = String.format(KEY_FORMAT, streetSection.getId(), SOURCE_PS_SUFFIX);
 
-            final Label lblSourceId = new Label(sourceId);
+            final Label lblSourceId = new Label(streetSection.getId());
+            final Rectangle trafficLight = new Rectangle(TRAFFIC_LIGHT_INDICATOR_SIZE, TRAFFIC_LIGHT_INDICATOR_SIZE, Color.GRAY);
+            trafficLight.setStroke(Color.BLACK);
+            lblSourceId.setGraphic(trafficLight);
             sectionIdContainer.getChildren().add(lblSourceId);
             labelMap.put(sourceId, lblSourceId);
 
@@ -68,7 +75,17 @@ public class StatsViewController extends JfxController {
             sectionPSContainer.getChildren().add(lblSourcePS);
             labelMap.put(sourcePS, lblSourcePS);
 
-            streetSection.addObserver(CarObserverType.CAR_ENTERED, (o, arg) -> {
+            streetSection.addObserver(ObserverType.TRAFFIC_LIGHT, ((o, arg) -> {
+                if (streetSection.isTrafficLightFreeToGo()) {
+                    trafficLight.setFill(Color.GREEN);
+                } else if (!streetSection.isTrafficLightActive()) {
+                    trafficLight.setFill(Color.GRAY);
+                } else {
+                    trafficLight.setFill(Color.RED);
+                }
+            }));
+
+            streetSection.addObserver(ObserverType.CAR_ENTERED, (o, arg) -> {
                 final String rawValue = toStringOrEmpty(arg) ;
                 final long longValue = rawValue != null ? Long.valueOf(rawValue) : 0;
                 final long is_counter = Math.max(longValue - streetSection.getNrOfLeftCars(), 0);
@@ -77,7 +94,7 @@ public class StatsViewController extends JfxController {
                 );
             });
 
-            streetSection.addObserver(CarObserverType.CAR_LEFT, (o, arg) -> {
+            streetSection.addObserver(ObserverType.CAR_LEFT, (o, arg) -> {
                 final String rawValue = toStringOrEmpty(arg);
                 final long longValue = rawValue != null ? Long.valueOf(rawValue) : 0;
                 Platform.runLater(() ->
@@ -97,7 +114,10 @@ public class StatsViewController extends JfxController {
             final String sinkAvg = String.format(KEY_FORMAT, sink.getId(), SINK_AVG_SUFFIX);
             final String sinkMax = String.format(KEY_FORMAT, sink.getId(), SINK_MAX_SUFFIX);
 
-            final Label lblSinkId = new Label(sinkId);
+            final Label lblSinkId = new Label(sink.getId());
+            final Rectangle trafficLight = new Rectangle(TRAFFIC_LIGHT_INDICATOR_SIZE, TRAFFIC_LIGHT_INDICATOR_SIZE, Color.GRAY);
+            trafficLight.setStroke(Color.BLACK);
+            lblSinkId.setGraphic(trafficLight);
             sinkIdContainer.getChildren().add(lblSinkId);
             labelMap.put(sinkId, lblSinkId);
 
@@ -113,7 +133,17 @@ public class StatsViewController extends JfxController {
             sinkMaxContainer.getChildren().add(lblSinkMax);
             labelMap.put(sinkMax, lblSinkMax);
 
-            sink.addObserver(CarObserverType.CAR_ENTITY, (o, arg) -> {
+            sink.addObserver(ObserverType.TRAFFIC_LIGHT, ((o, arg) -> {
+                if (sink.isTrafficLightFreeToGo()) {
+                    trafficLight.setFill(Color.GREEN);
+                } else if (!sink.isTrafficLightActive()) {
+                    trafficLight.setFill(Color.GRAY);
+                } else {
+                    trafficLight.setFill(Color.RED);
+                }
+            }));
+
+            sink.addObserver(ObserverType.CAR_ENTITY, (o, arg) -> {
                 final Double carWaitTime = sink.getMeanWaitingTimePerStopForEnteredCars();
 
                 final double minValue = sinkStats.getOrDefault(sinkMin, Double.MAX_VALUE);

@@ -48,14 +48,14 @@
                             </font>
                         </Label>
                     </VBox>
-                    <VBox fx:id="sectionISContainer">
+                    <VBox fx:id="sectionISContainer" alignment="CENTER" minWidth="40">
                         <Label text="IS">
                             <font>
                                 <Font name="System Bold Italic" size="12.0" />
                             </font>
                         </Label>
                     </VBox>
-                    <VBox fx:id="sectionPSContainer">
+                    <VBox fx:id="sectionPSContainer" alignment="CENTER" minWidth="40">
                         <Label text="PS">
                             <font>
                                 <Font name="System Bold Italic" size="12.0" />
@@ -86,21 +86,21 @@
                             </font>
                         </Label>
                     </VBox>
-                    <VBox fx:id="sinkMinContainer">
+                    <VBox fx:id="sinkMinContainer" alignment="CENTER" minWidth="40">
                         <Label text="MIN">
                             <font>
                                 <Font name="System Bold Italic" size="12.0"/>
                             </font>
                         </Label>
                     </VBox>
-                    <VBox fx:id="sinkAvgContainer">
+                    <VBox fx:id="sinkAvgContainer" alignment="CENTER" minWidth="40">
                         <Label text="AVG">
                             <font>
                                 <Font name="System Bold Italic" size="12.0"/>
                             </font>
                         </Label>
                     </VBox>
-                    <VBox fx:id="sinkMaxContainer">
+                    <VBox fx:id="sinkMaxContainer" alignment="CENTER" minWidth="40">
                         <Label text="MAX">
                             <font>
                                 <Font name="System Bold Italic" size="12.0"/>

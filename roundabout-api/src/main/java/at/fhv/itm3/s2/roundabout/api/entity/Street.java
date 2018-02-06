@@ -1,9 +1,10 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
 import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
-import at.fhv.itm3.s2.roundabout.api.util.observable.CarObserverType;
+import at.fhv.itm3.s2.roundabout.api.util.observable.ObserverType;
 import at.fhv.itm3.s2.roundabout.api.util.observable.RoundaboutObservable;
 import desmoj.core.simulator.Model;
+import javafx.beans.value.ObservableValueBase;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,8 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     protected Observable carObserver;
     protected Observable enteredCarObserver;
     protected Observable leftCarObserver;
+    protected Observable carPositionObserver;
+    protected Observable trafficLightObserver;
 
     public Street(Model owner, String name, boolean showInTrace) {
         this(owner, name, showInTrace, false);
@@ -48,6 +51,8 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
         this.carObserver = new RoundaboutObservable();
         this.enteredCarObserver = new RoundaboutObservable();
         this.leftCarObserver = new RoundaboutObservable();
+        this.carPositionObserver = new RoundaboutObservable();
+        this.trafficLightObserver = new RoundaboutObservable();
     }
 
     public String getId() {
@@ -258,13 +263,22 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
      */
     public void setTrafficLightFreeToGo(boolean isFreeToGo) throws IllegalStateException {
         trafficLight.setFreeToGo(isFreeToGo);
+        trafficLightObserver.notifyObservers(isFreeToGo);
     }
 
-    public synchronized void addObserver(CarObserverType observerType, Observer o) {
+    /**
+     * Helper method that registers typed observers.
+     *
+     * @param observerType type of observer to be registered.
+     * @param o observer.
+     */
+    public synchronized void addObserver(ObserverType observerType, Observer o) {
         switch (observerType) {
             case CAR_ENTERED: enteredCarObserver.addObserver(o); break;
             case CAR_ENTITY: carObserver.addObserver(o); break;
             case CAR_LEFT: leftCarObserver.addObserver(o); break;
+            case CAR_POSITION: carPositionObserver.addObserver(o); break;
+            case TRAFFIC_LIGHT: trafficLightObserver.addObserver(o); break;
         }
     }
 }
