@@ -2,7 +2,6 @@ package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
@@ -12,11 +11,10 @@ import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.DriverBehaviour;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutCar;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import desmoj.core.simulator.Event;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.TimeSpan;
-
-import java.util.concurrent.TimeUnit;
 
 
 public class CarGenerateEvent extends Event<AbstractSource> {
