@@ -4,11 +4,13 @@ import at.fhv.itm3.s2.roundabout.api.util.observable.ObserverType;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.ui.controllers.core.JfxController;
+import at.fhv.itm3.s2.roundabout.ui.util.DaemonThreadFactory;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
@@ -34,7 +36,10 @@ public class StatsViewController extends JfxController {
 
     private static final Function<Double, String> DOUBLE_STRING_FORMATTER_FUNCTION = v -> String.format("%.2f", v);
 
-    private final Map<String, Double> sinkStats = new HashMap<>();
+    private final Map<String, Double> sinkMinStats = new HashMap<>();
+    private final Map<String, Double> sinkAvgStats = new HashMap<>();
+    private final Map<String, Double> sinkMaxStats = new HashMap<>();
+
     private final Map<String, Label> labelMap = new HashMap<>();
 
     @FXML private Label lblStatsTitle;
@@ -108,6 +113,10 @@ public class StatsViewController extends JfxController {
             });
         });
 
+        final Label lblMinAverageSink = new Label(NOT_AVAILABLE);
+        final Label lblAvgAverageSink = new Label(NOT_AVAILABLE);
+        final Label lblMaxAverageSink = new Label(NOT_AVAILABLE);
+
         sinks.stream().sorted(Comparator.comparing(RoundaboutSink::getId)).forEach(sink -> {
             final String sinkId = String.format(KEY_FORMAT, sink.getId(), SINK_ID_SUFFIX);
             final String sinkMin = String.format(KEY_FORMAT, sink.getId(), SINK_MIN_SUFFIX);
@@ -146,26 +155,70 @@ public class StatsViewController extends JfxController {
             sink.addObserver(ObserverType.CAR_ENTITY, (o, arg) -> {
                 final Double carWaitTime = sink.getMeanWaitingTimePerStopForEnteredCars();
 
-                final double minValue = sinkStats.getOrDefault(sinkMin, Double.MAX_VALUE);
-                if (carWaitTime < minValue || !sinkStats.containsKey(sinkMin)) {
-                    sinkStats.put(sinkMin, carWaitTime);
+                final double minValue = sinkMinStats.getOrDefault(sinkMin, Double.MAX_VALUE);
+                if (carWaitTime < minValue || !sinkMinStats.containsKey(sinkMin)) {
+                    sinkMinStats.put(sinkMin, carWaitTime);
 
                     final String sinkMinValue = toStringOrEmpty(carWaitTime, DOUBLE_STRING_FORMATTER_FUNCTION);
-                    Platform.runLater(() -> lblSinkMin.setText(sinkMinValue));
+                    final OptionalDouble optionalAvgSinkMinValue = sinkMinStats.values().stream().mapToDouble(v -> v).average();
+                    final String avgSinkMinValue;
+                    if (optionalAvgSinkMinValue.isPresent()) {
+                        avgSinkMinValue = toStringOrEmpty(optionalAvgSinkMinValue.getAsDouble(), DOUBLE_STRING_FORMATTER_FUNCTION);
+                    } else {
+                        avgSinkMinValue = NOT_AVAILABLE;
+                    }
+
+                    Platform.runLater(() -> {
+                        lblSinkMin.setText(sinkMinValue);
+                        lblMinAverageSink.setText(avgSinkMinValue);
+                    });
                 }
 
                 final String sinkAvgValue = toStringOrEmpty(carWaitTime, DOUBLE_STRING_FORMATTER_FUNCTION);
-                Platform.runLater(() -> lblSinkAvg.setText(sinkAvgValue));
+                final OptionalDouble optionalAvgSinkAvgValue = sinkAvgStats.values().stream().mapToDouble(v -> v).average();
+                final String avgSinkAvgValue;
+                if (optionalAvgSinkAvgValue.isPresent()) {
+                    avgSinkAvgValue = toStringOrEmpty(optionalAvgSinkAvgValue.getAsDouble(), DOUBLE_STRING_FORMATTER_FUNCTION);
+                } else {
+                    avgSinkAvgValue = NOT_AVAILABLE;
+                }
 
-                final double maxValue = sinkStats.getOrDefault(sinkMax, Double.MIN_VALUE);
-                if (carWaitTime > maxValue || !sinkStats.containsKey(sinkMax)) {
-                    sinkStats.put(sinkMax, carWaitTime);
+                sinkAvgStats.put(sinkAvg, carWaitTime);
+                Platform.runLater(() -> {
+                    lblSinkAvg.setText(sinkAvgValue);
+                    lblAvgAverageSink.setText(avgSinkAvgValue);
+                });
+
+                final double maxValue = sinkMaxStats.getOrDefault(sinkMax, Double.MIN_VALUE);
+                if (carWaitTime > maxValue || !sinkMaxStats.containsKey(sinkMax)) {
+                    sinkMaxStats.put(sinkMax, carWaitTime);
 
                     final String sinkMaxValue = toStringOrEmpty(carWaitTime, DOUBLE_STRING_FORMATTER_FUNCTION);
-                    Platform.runLater(() -> lblSinkMax.setText(sinkMaxValue));
+                    final OptionalDouble optionalAvgSinkMaxValue = sinkMaxStats.values().stream().mapToDouble(v -> v).average();
+                    final String avgSinkMaxValue;
+                    if (optionalAvgSinkMaxValue.isPresent()) {
+                        avgSinkMaxValue = toStringOrEmpty(optionalAvgSinkMaxValue.getAsDouble(), DOUBLE_STRING_FORMATTER_FUNCTION);
+                    } else {
+                        avgSinkMaxValue = NOT_AVAILABLE;
+                    }
+
+                    Platform.runLater(() -> {
+                        lblSinkMax.setText(sinkMaxValue);
+                        lblMaxAverageSink.setText(avgSinkMaxValue);
+                    });
                 }
             });
         });
+
+        // Adding average value labels.
+        sinkMinContainer.getChildren().add(new Line());
+        sinkMinContainer.getChildren().add(lblMinAverageSink);
+
+        sinkAvgContainer.getChildren().add(new Line());
+        sinkAvgContainer.getChildren().add(lblAvgAverageSink);
+
+        sinkMaxContainer.getChildren().add(new Line());
+        sinkMaxContainer.getChildren().add(lblMaxAverageSink);
     }
 
     private <T> String toStringOrEmpty(T value) {
