@@ -54,6 +54,7 @@ public class ToggleTrafficLightStateEvent extends Event<Street> {
         }
         if(donorStreet.isTrafficLightTriggeredByJam()) {
             if( !donorStreet.isTrafficLightFreeToGo()) {
+                donorStreet.setGreenPhaseStart(getModel().getExperiment().getSimClock().getTime().getTimeAsDouble());
                 RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(roundaboutSimulationModel).
                         schedule(donorStreet, new TimeSpan(donorStreet.getRedPhaseDurationOfTrafficLight(), roundaboutSimulationModel.getModelTimeUnit()));
             }

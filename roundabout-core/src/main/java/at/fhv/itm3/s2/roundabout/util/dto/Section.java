@@ -9,6 +9,7 @@ public class Section implements IDTO {
     private Double length;
     private Integer order;
     private Boolean isTrafficLightActive;
+    private Long minGreenPahseDuration;
     private Long greenPhaseDuration;
     private Long redPhaseDuration;
 
@@ -55,4 +56,9 @@ public class Section implements IDTO {
     public  Long getRedPhaseDuration() { return  redPhaseDuration; }
 
     public  void setRedPhaseDuration(Long redPhaseDuration) { this.redPhaseDuration = redPhaseDuration; }
+
+    @XmlAttribute
+    public  Long getMinGreenPhaseDuration() { return minGreenPahseDuration; }
+
+    private void setMinGreenPhaseDuration(Long greenPhaseDuration) {this.minGreenPahseDuration = minGreenPahseDuration; }
 }

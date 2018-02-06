@@ -49,7 +49,7 @@ public class StreetSection extends Street {
     ) {
         this(
             id, length, model, modelDescription, showInTrace,
-            false, null, null
+            false, null, null, null
         );
     }
 
@@ -59,11 +59,13 @@ public class StreetSection extends Street {
         String modelDescription,
         boolean showInTrace,
         boolean trafficLightActive,
+        boolean isJamTrafficLight,
+        Long minGreenPhaseDuration,
         Long redPhaseDuration
     ) {
         this(
             UUID.randomUUID().toString(), length, model, modelDescription, showInTrace,
-            trafficLightActive, null, redPhaseDuration
+            trafficLightActive, null, minGreenPhaseDuration, redPhaseDuration
         );
     }
 
@@ -78,7 +80,7 @@ public class StreetSection extends Street {
     ) {
         this(
             UUID.randomUUID().toString(), length, model, modelDescription, showInTrace,
-            trafficLightActive, greenPhaseDuration, redPhaseDuration
+            trafficLightActive, null, greenPhaseDuration, redPhaseDuration
         );
     }
 
@@ -89,10 +91,19 @@ public class StreetSection extends Street {
         String modelDescription,
         boolean showInTrace,
         boolean trafficLightActive,
+        Long minGreenPhaseDuration,
         Long greenPhaseDuration,
         Long redPhaseDuration
     ) {
-        super(id, model, modelDescription, showInTrace, trafficLightActive, greenPhaseDuration, redPhaseDuration);
+        super(id,
+            model,
+            modelDescription,
+            showInTrace,
+            trafficLightActive,
+            minGreenPhaseDuration,
+            greenPhaseDuration,
+            redPhaseDuration
+        );
 
         this.length = length;
 
@@ -163,8 +174,10 @@ public class StreetSection extends Street {
                         throw new IllegalArgumentException("Failing cast form IConsumer to StreetSection.");
                         StreetSection streetSectionNext = (StreetSection) consumerNext;
                     if (!streetSectionNext.isEmpty() &&
-                            streetSectionNext.currentWaitingTime > getRoundaboutModel().jamIndicatorInSeconds) {
-                         // trigger red
+                            streetSectionNext.currentWaitingTime > getRoundaboutModel().jamIndicatorInSeconds &&
+                            getModel().getExperiment().getSimClock().getTime().getTimeAsDouble() - getGreenPhaseStart() >
+                                    this.getMinGreenPhaseDuraitonOfTrafficLight()) {
+                        // trigger red
                         RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(getRoundaboutModel()).
                           schedule(this, new TimeSpan(0, getRoundaboutModel().getModelTimeUnit()));
                     }

@@ -384,6 +384,7 @@ public class ConfigParser {
                     s.getId(),
                     false,
                     isTrafficLightActive,
+                    s.getMinGreenPhaseDuration(),
                     s.getGreenPhaseDuration(),
                     s.getRedPhaseDuration()
                 );

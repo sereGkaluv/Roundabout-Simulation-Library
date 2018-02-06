@@ -4,8 +4,6 @@ import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
 import at.fhv.itm3.s2.roundabout.api.util.observable.ObserverType;
 import at.fhv.itm3.s2.roundabout.api.util.observable.RoundaboutObservable;
 import desmoj.core.simulator.Model;
-import javafx.beans.value.ObservableValueBase;
-import desmoj.core.simulator.TimeSpan;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +19,8 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     private long lostCarsCounter;
     private TrafficLight trafficLight;
 
+    private double greenPhaseStart;
+
     protected Observable carObserver;
     protected Observable enteredCarObserver;
     protected Observable leftCarObserver;
@@ -32,34 +32,42 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     }
 
     public Street(String id, Model owner, String name, boolean showInTrace) {
-        this(id, owner, name, showInTrace, false, null, null);
+        this(id, owner, name, showInTrace, false, null, null, null);
     }
 
-    public Street(Model owner, String name, boolean showInTrace, boolean trafficLightActive, Long redPhaseDuration) {
+    public Street(Model owner,
+                  String name,
+                  boolean showInTrace,
+                  boolean trafficLightActive,
+                  boolean isJamTrafficLight,
+                  Long minGreenPhaseDuration,
+                  Long redPhaseDuration) {
         this(UUID.randomUUID().toString(),
         owner,
         name,
         showInTrace,
         trafficLightActive,
+        minGreenPhaseDuration,
         null,
         redPhaseDuration);
     }
 
     public Street(Model owner,
-         String name,
-         boolean showInTrace,
-         boolean trafficLightActive,
-         Long greenPhaseDuration,
-         Long redPhaseDuration
+                       String name,
+                       boolean showInTrace,
+                       boolean trafficLightActive,
+                       Long greenPhaseDuration,
+                       Long redPhaseDuration
     ) {
         this(
-            UUID.randomUUID().toString(),
-            owner,
-            name,
-            showInTrace,
-            trafficLightActive,
-            greenPhaseDuration,
-            redPhaseDuration
+                UUID.randomUUID().toString(),
+                owner,
+                name,
+                showInTrace,
+                trafficLightActive,
+                null,
+                greenPhaseDuration,
+                redPhaseDuration
         );
     }
 
@@ -69,6 +77,7 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
         String name,
         boolean showInTrace,
         boolean trafficLightActive,
+        Long minGreenPhaseDuration,
         Long greenPhaseDuration,
         Long redPhaseDuration
     ) {
@@ -79,13 +88,15 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
         this.leftCarsCounter = 0;
         this.lostCarsCounter = 0;
 
-        this.trafficLight = new TrafficLight(trafficLightActive, greenPhaseDuration, redPhaseDuration);
+        this.trafficLight = new TrafficLight(trafficLightActive, minGreenPhaseDuration, greenPhaseDuration, redPhaseDuration);
 
         this.carObserver = new RoundaboutObservable();
         this.enteredCarObserver = new RoundaboutObservable();
         this.leftCarObserver = new RoundaboutObservable();
         this.carPositionObserver = new RoundaboutObservable();
         this.trafficLightObserver = new RoundaboutObservable();
+
+        this.greenPhaseStart = 0.0;
     }
 
     public String getId() {
@@ -325,14 +336,14 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
      *
      * @return the duration of the red light
      */
-    public long getRedPhaseDurationOfTrafficLight() { return this.trafficLight.getRedCircleDuration(); }
+    public long getRedPhaseDurationOfTrafficLight() { return this.trafficLight.getRedPhaseDuration(); }
 
     /**
-     * Getter for green phase duration of traffic light
+     * Getter for green phase duration of cyclic traffic light
      *
      * @return the duration of the green light
      */
-    public long getGreenPhaseDurationOfTrafficLight() { return this.trafficLight.getGreenCircleDuration(); }
+    public long getGreenPhaseDurationOfTrafficLight() { return this.trafficLight.getGreenPhaseDuration(); }
 
     /**
      * Sends notifications for traffic light state.
@@ -343,6 +354,25 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
             trafficLightObserver.notifyObservers();
         }
     }
+
+    /**
+     * Sets TimeStamp of green phase Start - needed for jam traffic lights
+     */
+    public void setGreenPhaseStart( double greenPhaseStart ) { this.greenPhaseStart = greenPhaseStart; }
+
+    /**
+     * Get TimeStamp of green phase Start - needed for jam traffic lights
+     * ,
+     * @return returns start TimeStamp as double of green phase of jam traffic lights
+     */
+    public double getGreenPhaseStart( ) { return this.greenPhaseStart; }
+
+    /**
+     * Getter for min green phase duration of jam traffic light
+     *
+     * @return the duration of the min green light
+     */
+    public double getMinGreenPhaseDuraitonOfTrafficLight(){ return this.trafficLight.getMinGreenPhaseDuration(); }
 
     /**
      * Helper method that registers typed observers.

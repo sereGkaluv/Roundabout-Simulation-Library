@@ -1,40 +1,57 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
 public class TrafficLight {
-    private boolean active;
+    private Boolean active;
     private boolean isFreeToGo;
     private boolean triggersByJam;
-    private Long greenCircleDuration;
-    private Long redCircleDuration;
+    private Long minGreenPhaseDuration;
+    private Long greenPhaseDuration;
+    private Long redPhaseDuration;
 
-    public TrafficLight(boolean active, Long redPhaseDuration) {
-        this(active, true, null, redPhaseDuration);
+    public TrafficLight(boolean active, boolean isTrafficJam, Long minGreenPhaseDuration, Long redPhaseDuration) {
+        this(active, true, minGreenPhaseDuration, null, redPhaseDuration);
     }
 
     public TrafficLight(
         boolean active,
-        Long greenCircleDuration,
-        Long redCircleDuration
+        Long greenPhaseDuration,
+        Long redPhaseDuration
     ) {
-        this(active, true, greenCircleDuration, redCircleDuration);
+        this(active, true, null, greenPhaseDuration, redPhaseDuration);
     }
 
     public TrafficLight(
         boolean active,
+        Long minGreenPhaseDuration,
+        Long greenPhaseDuration,
+        Long redPhaseDuration
+    ) {
+        this(active, true, minGreenPhaseDuration, greenPhaseDuration, redPhaseDuration);
+    }
+
+
+    public TrafficLight(
+        Boolean active,
         boolean isFreeToGo,
-        Long greenCircleDuration,
-        Long redCircleDuration
+        Long minGreenPhaseDuration,
+        Long greenPhaseDuration,
+        Long redPhaseDuration
     ) {
-
-        if(greenCircleDuration == null) this.triggersByJam = true;
-        else this.triggersByJam = false;
-        if(redCircleDuration == null) active = false;
 
         this.active = active;
         this.isFreeToGo = isFreeToGo;
 
-        this.greenCircleDuration = greenCircleDuration;
-        this.redCircleDuration = redCircleDuration;
+        if(greenPhaseDuration == null && active != null) {
+            this.triggersByJam = true;
+            if(minGreenPhaseDuration == null)
+                throw new IllegalArgumentException("MinGreenPhaseDuration must not be null.");
+        }
+        else this.triggersByJam = false;
+        if(redPhaseDuration == null) active = false;
+
+        this.minGreenPhaseDuration = minGreenPhaseDuration;
+        this.greenPhaseDuration = greenPhaseDuration;
+        this.redPhaseDuration = redPhaseDuration;
     }
 
     public boolean isActive() {
@@ -54,7 +71,8 @@ public class TrafficLight {
     }
 
     public boolean isTriggersByJam() { return  triggersByJam; }
-    public long getGreenCircleDuration() { return greenCircleDuration; }
-    public long getRedCircleDuration() { return redCircleDuration; }
+    public long getGreenPhaseDuration() { return greenPhaseDuration; }
+    public long getRedPhaseDuration() { return redPhaseDuration; }
+    public double getMinGreenPhaseDuration() { return  minGreenPhaseDuration; }
 
 }

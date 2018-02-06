@@ -75,8 +75,8 @@
                 <section id="s9_t1" length="200"/>
                 <section id="s9_t2" length="200"/>
 
-                <section id="s10_t1" length="229" isTrafficLightActive="true" redPhaseDuration="10"/>
-                <section id="s10_t2" length="229" isTrafficLightActive="true" redPhaseDuration="10"/>
+                <section id="s10_t1" length="229" isTrafficLightActive="true"  minGreenPhaseDuration="60" redPhaseDuration="20"/>
+                <section id="s10_t2" length="229" isTrafficLightActive="true"  minGreenPhaseDuration="60" redPhaseDuration="20"/>
 
                 <section id="s11_t1" length="474.55"/>
 
