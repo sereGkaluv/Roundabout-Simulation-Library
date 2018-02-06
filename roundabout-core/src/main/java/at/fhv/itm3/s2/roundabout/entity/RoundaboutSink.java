@@ -132,8 +132,7 @@ public class RoundaboutSink extends AbstractSink {
 
     @Override
     public void carEnter(Car car) {
-        incrementEnteredCarCounter();
-        car.leaveSystem();
+        addCar(CarController.getICar(car));
     }
 
     @Override

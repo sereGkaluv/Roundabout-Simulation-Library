@@ -29,7 +29,7 @@ public class StreetSection extends Street {
     private IStreetConnector nextStreetConnector;
     private IStreetConnector previousStreetConnector;
 
-    protected IntersectionController intersectionController;
+    private IntersectionController intersectionController;
 
     public StreetSection(
         double length,
@@ -50,22 +50,6 @@ public class StreetSection extends Street {
         this(
             id, length, model, modelDescription, showInTrace,
             false, null, null, null
-        );
-    }
-
-    public StreetSection(
-        double length,
-        Model model,
-        String modelDescription,
-        boolean showInTrace,
-        boolean trafficLightActive,
-        boolean isJamTrafficLight,
-        Long minGreenPhaseDuration,
-        Long redPhaseDuration
-    ) {
-        this(
-            UUID.randomUUID().toString(), length, model, modelDescription, showInTrace,
-            trafficLightActive, null, minGreenPhaseDuration, redPhaseDuration
         );
     }
 
@@ -96,7 +80,7 @@ public class StreetSection extends Street {
         Long redPhaseDuration
     ) {
         super(
-                id,
+            id,
             model,
             modelDescription,
             showInTrace,
@@ -165,22 +149,26 @@ public class StreetSection extends Street {
 
     @Override
     public void trafficLightActiveAndJamInNextSection(){
-        if(this.isTrafficLightActive() && this.isTrafficLightTriggeredByJam()) {
-            ICar car = getFirstCar();
-            if(car != null && this.isTrafficLightFreeToGo()) {
+        if (this.isTrafficLightActive() && this.isTrafficLightTriggeredByJam()) {
+            final ICar car = getFirstCar();
+            if (car != null && this.isTrafficLightFreeToGo()) {
                 int idx = car.getRoute().getIndexOfSection(this);
-                if(idx + 1 < car.getRoute().getNumberOfSections()) {
-                    IConsumer consumerNext = car.getRoute().getSectionAt(idx + 1);
-                    if (!(consumerNext instanceof StreetSection))
+                if (idx + 1 < car.getRoute().getNumberOfSections()) {
+                    final IConsumer consumerNext = car.getRoute().getSectionAt(idx + 1);
+                    if (!(consumerNext instanceof StreetSection)) {
                         throw new IllegalArgumentException("Failing cast form IConsumer to StreetSection.");
-                        StreetSection streetSectionNext = (StreetSection) consumerNext;
-                    if (!streetSectionNext.isEmpty() &&
-                            streetSectionNext.currentWaitingTime > getRoundaboutModel().jamIndicatorInSeconds &&
-                            getModel().getExperiment().getSimClock().getTime().getTimeAsDouble() - getGreenPhaseStart() >
-                                    this.getMinGreenPhaseDuraitonOfTrafficLight()) {
+                    }
+
+                    final StreetSection streetSectionNext = (StreetSection) consumerNext;
+                    final boolean isWaitingTimeBiggerThanJamIndicator = streetSectionNext.currentWaitingTime > getRoundaboutModel().getJamIndicatorInSeconds();
+                    final boolean isActualGreenPhaseBiggerThanMin = (getRoundaboutModel().getCurrentTime() - getGreenPhaseStart()) > getMinGreenPhaseDurationOfTrafficLight();
+
+                    if (!streetSectionNext.isEmpty() && isWaitingTimeBiggerThanJamIndicator && isActualGreenPhaseBiggerThanMin) {
                         // trigger red
-                        RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(getRoundaboutModel()).
-                          schedule(this, new TimeSpan(0, getRoundaboutModel().getModelTimeUnit()));
+                        RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(getRoundaboutModel()).schedule(
+                            this,
+                                new TimeSpan(0, getRoundaboutModel().getModelTimeUnit())
+                        );
                     }
                 }
             }
@@ -486,7 +474,17 @@ public class StreetSection extends Street {
                         firstCarInQueue.startWaiting();
                     }
                 } else if (nextConsumer instanceof RoundaboutIntersection) {
-                    return true; // because Intersection is never full (isFull() of Intersection returns always false)
+                    final IConsumer consumer = firstCarInQueue.getSectionAfterNextSection();
+                    if (consumer instanceof Street) {
+                        // Such a trick should block cars from entering into intersection when the target section is full.
+                        // At the worse scenario intersection will accumulate cars in queues as it was before.St
+                        final Street streetAfterIntersection = (Street) consumer;
+                        return streetAfterIntersection.isEnoughSpace(firstCarInQueue.getLength());
+                    } else {
+                        // fallback only in case intersection is connected to intersection,
+                        // because Intersection is never full (isFull() of Intersection returns always false)
+                        return true;
+                    }
                 }
             }
         }
@@ -594,7 +592,7 @@ public class StreetSection extends Street {
             addCar(iCar);
             double traverseTime = iCar.getTimeToTraverseCurrentSection();
             CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = RoundaboutEventFactory.getInstance().createCarCouldLeaveSectionEvent(
-                    getRoundaboutModel()
+                getRoundaboutModel()
             );
             carCouldLeaveSectionEvent.schedule(this, new TimeSpan(traverseTime, getRoundaboutModel().getModelTimeUnit()));
         } else {

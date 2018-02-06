@@ -35,13 +35,15 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
         this(id, owner, name, showInTrace, false, null, null, null);
     }
 
-    public Street(Model owner,
-                  String name,
-                  boolean showInTrace,
-                  boolean trafficLightActive,
-                  boolean isJamTrafficLight,
-                  Long minGreenPhaseDuration,
-                  Long redPhaseDuration) {
+    public Street(
+        Model owner,
+        String name,
+        boolean showInTrace,
+        boolean trafficLightActive,
+        boolean isJamTrafficLight,
+        Long minGreenPhaseDuration,
+        Long redPhaseDuration
+    ) {
         this(UUID.randomUUID().toString(),
         owner,
         name,
@@ -52,22 +54,23 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
         redPhaseDuration);
     }
 
-    public Street(Model owner,
-                       String name,
-                       boolean showInTrace,
-                       boolean trafficLightActive,
-                       Long greenPhaseDuration,
-                       Long redPhaseDuration
+    public Street(
+        Model owner,
+        String name,
+        boolean showInTrace,
+        boolean trafficLightActive,
+        Long greenPhaseDuration,
+        Long redPhaseDuration
     ) {
         this(
-                UUID.randomUUID().toString(),
-                owner,
-                name,
-                showInTrace,
-                trafficLightActive,
-                null,
-                greenPhaseDuration,
-                redPhaseDuration
+            UUID.randomUUID().toString(),
+            owner,
+            name,
+            showInTrace,
+            trafficLightActive,
+            null,
+            greenPhaseDuration,
+            redPhaseDuration
         );
     }
 
@@ -372,7 +375,7 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
      *
      * @return the duration of the min green light
      */
-    public double getMinGreenPhaseDuraitonOfTrafficLight(){ return this.trafficLight.getMinGreenPhaseDuration(); }
+    public double getMinGreenPhaseDurationOfTrafficLight(){ return this.trafficLight.getMinGreenPhaseDuration(); }
 
     /**
      * Helper method that registers typed observers.

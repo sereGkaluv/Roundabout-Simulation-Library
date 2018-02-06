@@ -15,39 +15,39 @@ public class RoundaboutSimulationModel extends Model {
 
     private static final long DEFAULT_SIMULATION_SEED = 1L;
 
-    public static final Double DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
-    public static final Double DEFAULT_MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
-    public static final Double DEFAULT_MIN_DISTANCE_FACTOR_BETWEEN_CARS = 0.0;
-    public static final Double DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS = 1.0;
-    public static final Double DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS = 1.0;
-    public static final Double DEFAULT_STANDARD_CAR_ACCELERATION_TIME = 2.0;
-    public static final Double DEFAULT_MIN_CAR_LENGTH = 3.0;
-    public static final Double DEFAULT_MAX_CAR_LENGTH = 19.5;
-    public static final Double DEFAULT_EXPECTED_CAR_LENGTH = 4.5;
-    public static final Double DEFAULT_MIN_TRUCK_LENGTH = 3.0;
-    public static final Double DEFAULT_MAX_TRUCK_LENGTH = 19.5;
-    public static final Double DEFAULT_EXPECTED_TRUCK_LENGTH = 4.5;
-    public static final Double DEFAULT_CAR_RATIO_PER_TOTAL_VEHICLE = 0.8;
-    public static final Double DEFAULT_JAM_INDICATOR_IN_SECONDS = 5.0;
+    private static final Double DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
+    private static final Double DEFAULT_MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
+    private static final Double DEFAULT_MIN_DISTANCE_FACTOR_BETWEEN_CARS = 0.0;
+    private static final Double DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS = 1.0;
+    private static final Double DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS = 1.0;
+    private static final Double DEFAULT_STANDARD_CAR_ACCELERATION_TIME = 2.0;
+    private static final Double DEFAULT_MIN_CAR_LENGTH = 3.0;
+    private static final Double DEFAULT_MAX_CAR_LENGTH = 19.5;
+    private static final Double DEFAULT_EXPECTED_CAR_LENGTH = 4.5;
+    private static final Double DEFAULT_MIN_TRUCK_LENGTH = 3.0;
+    private static final Double DEFAULT_MAX_TRUCK_LENGTH = 19.5;
+    private static final Double DEFAULT_EXPECTED_TRUCK_LENGTH = 4.5;
+    private static final Double DEFAULT_CAR_RATIO_PER_TOTAL_VEHICLE = 0.8;
+    private static final Double DEFAULT_JAM_INDICATOR_IN_SECONDS = 5.0;
 
-    public static final Double VEHICLE_LENGTH_STEP_SIZE = 0.1;
+    private static final Double VEHICLE_LENGTH_STEP_SIZE = 0.1;
 
-    public final Long simulationSeed;
-    public final Double minDistanceFactorBetweenCars;
-    public final Double maxDistanceFactorBetweenCars;
-    public final Double minTimeBetweenCarArrivals;
-    public final Double maxTimeBetweenCarArrivals;
-    public final Double meanTimeBetweenCarArrivals;
-    public final Double mainArrivalRateForOneWayStreets;
-    public final Double standardCarAccelerationTime;
-    public final Double minCarLength;
-    public final Double maxCarLength;
-    public final Double expectedCarLength;
-    public final Double minTruckLength;
-    public final Double maxTruckLength;
-    public final Double expectedTruckLength;
-    public final Double carRatioPerTotalVehicle;
-    public final Double jamIndicatorInSeconds;
+    private final Long simulationSeed;
+    private final Double minDistanceFactorBetweenCars;
+    private final Double maxDistanceFactorBetweenCars;
+    private final Double minTimeBetweenCarArrivals;
+    private final Double maxTimeBetweenCarArrivals;
+    private final Double meanTimeBetweenCarArrivals;
+    private final Double mainArrivalRateForOneWayStreets;
+    private final Double standardCarAccelerationTime;
+    private final Double minCarLength;
+    private final Double maxCarLength;
+    private final Double expectedCarLength;
+    private final Double minTruckLength;
+    private final Double maxTruckLength;
+    private final Double expectedTruckLength;
+    private final Double carRatioPerTotalVehicle;
+    private final Double jamIndicatorInSeconds;
 
     private IModelStructure modelStructure;
 
@@ -315,6 +315,15 @@ public class RoundaboutSimulationModel extends Model {
      */
     public double getRandomDistanceFactorBetweenCars() {
         return distanceFactorBetweenCars.sample();
+    }
+
+    /**
+     * Returns a jam indicator value in seconds.
+     *
+     * @return a jam indicator.
+     */
+    public double getJamIndicatorInSeconds() {
+        return jamIndicatorInSeconds;
     }
 
     /**
