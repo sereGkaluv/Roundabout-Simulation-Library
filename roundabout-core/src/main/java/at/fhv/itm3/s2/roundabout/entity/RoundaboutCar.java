@@ -211,8 +211,10 @@ public class RoundaboutCar implements ICar {
 
     @Override
     public void leaveRoundabout() {
-        double res = this.roundaboutStopWatch.stop();
-        this.roundaboutTime.update(new TimeSpan(res));
+        if (this.roundaboutStopWatch.isRunning()) {
+            double res = this.roundaboutStopWatch.stop();
+            this.roundaboutTime.update(new TimeSpan(res));
+        }
     }
 
     @Override

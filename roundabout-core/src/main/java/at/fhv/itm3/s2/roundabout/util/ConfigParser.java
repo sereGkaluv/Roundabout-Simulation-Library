@@ -6,6 +6,8 @@ import at.fhv.itm14.trafsim.model.entities.AbstractProducer;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
 import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
+import at.fhv.itm14.trafsim.model.entities.intersection.IntersectionConnection;
+import at.fhv.itm14.trafsim.model.entities.intersection.IntersectionPhase;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.IModelStructure;
@@ -53,6 +55,7 @@ public class ConfigParser {
     private static final String CONTROLLER_YELLOW_DURATION = "CONTROLLER_YELLOW_DURATION";
     private static final String CONTROLLER_PHASE_SHIFT_TIME = "CONTROLLER_PHASE_SHIFT_TIME";
 
+    private static final Map<String, String> MODEL_PARAMETERS = new HashMap<>();
     private static final Map<String, Map<String, RoundaboutSource>> SOURCE_REGISTRY = new HashMap<>(); // componentId, sectionId, section
     private static final Map<String, Map<String, RoundaboutSink>> SINK_REGISTRY = new HashMap<>();
     private static final Map<String, Map<String, StreetSection>> SECTION_REGISTRY = new HashMap<>();
@@ -65,7 +68,6 @@ public class ConfigParser {
     private static final Function<Connector, List<Track>> SORTED_TRACK_EXTRACTOR = co -> co.getTrack().stream().sorted(TRACK_COMPARATOR).collect(Collectors.toList());
 
     private String filename;
-    private Double minStreetLength;
 
     public ConfigParser(String filename) {
         this.filename = filename;
@@ -117,8 +119,8 @@ public class ConfigParser {
         model.connectToExperiment(experiment);  // ! - Should be done before anything else.
 
         final IModelStructure modelStructure = new ModelStructure(model, parameters);
-        minStreetLength = Double.parseDouble(parameters.get(MAX_TRUCK_LENGTH)) +
-                          Double.parseDouble(parameters.get(MAX_DISTANCE_FACTOR_BETWEEN_CARS)) * 2;
+
+        // Handling model components.
         handleComponents(modelStructure, modelConfig.getComponents());
         if (modelConfig.getComponents().getConnectors() != null) {
             handleConnectors(null, modelConfig.getComponents().getConnectors());
@@ -150,8 +152,7 @@ public class ConfigParser {
     }
 
     private Map<String, String> handleParameters(ModelConfig modelConfig) {
-        final Map<String, String> modelParameters = new HashMap<>();
-        final Consumer<Parameter> parameterRegistrator = p -> modelParameters.put(p.getName(), p.getValue());
+        final Consumer<Parameter> parameterRegistrator = p -> MODEL_PARAMETERS.put(p.getName(), p.getValue());
         modelConfig.getParameters().getParameter().forEach(parameterRegistrator);
 
         final List<Component> componentList = modelConfig.getComponents().getComponent();
@@ -160,7 +161,7 @@ public class ConfigParser {
                 component.getParameters().getParameter().forEach(parameterRegistrator);
             }
         }
-        return modelParameters;
+        return MODEL_PARAMETERS;
     }
 
     private void handleComponents(IModelStructure modelStructure, Components modelComponents) {
@@ -217,25 +218,6 @@ public class ConfigParser {
     private void handleIntersection(IModelStructure modelStructure, Component intersectionComponent) {
         final Model model = modelStructure.getModel();
 
-        // Init intersection.
-        final RoundaboutIntersection intersection = new RoundaboutIntersection(
-            model,
-            intersectionComponent.getName(),
-            false,
-            Integer.parseInt(modelStructure.getParameter(INTERSECTION_SIZE))
-        );
-
-        intersection.setServiceDelay(
-            extractParameter(modelStructure::getParameter, Double::valueOf, INTERSECTION_SERVICE_DELAY)
-        );
-        final FixedCirculationController ic = ModelFactory.getInstance(model).createStdFull4Controller(
-            intersection,
-            extractParameter(modelStructure::getParameter, Double::valueOf, CONTROLLER_GREEN_DURATION),
-            extractParameter(modelStructure::getParameter, Double::valueOf, CONTROLLER_YELLOW_DURATION),
-            extractParameter(modelStructure::getParameter, Double::valueOf, CONTROLLER_PHASE_SHIFT_TIME)
-        );
-        intersection.attachController(ic);
-
         // Handle the rest of configuration.
         final Map<String, StreetSection> sections = handleSections(
             intersectionComponent.getId(),
@@ -255,84 +237,40 @@ public class ConfigParser {
             model
         );
 
-        // Handle connectors (is specific for intersections).
-        final IntersectionController intersectionController = IntersectionController.getInstance();
-        final Map<String, Integer> DIRECTION_MAP = new HashMap<>();
+        // Init intersection.
+        final RoundaboutIntersection intersection = new RoundaboutIntersection(
+            model,
+            intersectionComponent.getName(),
+            false,
+            Integer.parseInt(modelStructure.getParameter(INTERSECTION_SIZE))
+        );
+        intersection.setServiceDelay(
+            extractParameter(modelStructure::getParameter, Double::valueOf, INTERSECTION_SERVICE_DELAY)
+        );
 
-        // Assembling intersection sections (init connection queues, connectors, etc.)
-        int directionIndexer = 0;
-        double intersectionTraverseTime = Double.valueOf(modelStructure.getParameter(INTERSECTION_TRAVERSE_TIME));
+        final List<IntersectionPhase> phases = handlePhases(
+            intersectionComponent.getId(),
+            intersection,
+            intersectionComponent.getConnectors(),
+            extractParameter(modelStructure::getParameter, Double::valueOf, CONTROLLER_YELLOW_DURATION)
+        );
 
-        for (Connector connector : intersectionComponent.getConnectors().getConnector()) {
-            final List<Track> trackList = SORTED_TRACK_EXTRACTOR.apply(connector);
-
-            final Collection<IConsumer> previousSections = new LinkedHashSet<>();
-            final Collection<IConsumer> nextSections = new LinkedHashSet<>();
-
-            for (Track track : trackList) {
-                // In direction.
-                final String fromSectionId = track.getFromSectionId();
-                final Street fromSection = resolveStreet(intersectionComponent.getId(), fromSectionId);
-                if (!DIRECTION_MAP.containsKey(fromSectionId)) {
-                    DIRECTION_MAP.put(fromSectionId, directionIndexer++);
-
-                    // Handling section -> intersections connectors, should be done only once per section.
-                    // Connection intersection -> section is handled via connection queue.
-                    previousSections.add(fromSection);
-                    nextSections.add(intersection);
-                }
-                final int inDirection = DIRECTION_MAP.get(fromSectionId);
-                intersectionController.setIntersectionInDirectionMapping(intersection, fromSection, inDirection);
-
-                // Out direction.
-                final String toSectionId = track.getToSectionId();
-                final Street toSection = resolveStreet(intersectionComponent.getId(), toSectionId);
-                if (!DIRECTION_MAP.containsKey(toSectionId)) {
-                    DIRECTION_MAP.put(toSectionId, directionIndexer++);
-                }
-                final int outDirection = DIRECTION_MAP.get(toSectionId);
-                intersectionController.setIntersectionOutDirectionMapping(intersection, toSection, outDirection);
-
-                // Connection queue.
-                if (fromSection == null || toSection == null) {
-                    throw new IllegalArgumentException(String.format(
-                        "Please check if \"from\" section: \"%s\" and \"to\" section: \"%s\" were declared correctly." +
-                        "(Connector id: \"%s\", Track id: \"%s\")",
-                        fromSectionId,
-                        toSectionId,
-                        connector.getId(),
-                        track.getOrder()
-                    ));
-                }
-
-                final AbstractProducer producer = fromSection.toProducer();
-                intersection.attachProducer(inDirection, producer);
-
-                final AbstractConsumer consumer = toSection.toConsumer();
-                intersection.attachConsumer(outDirection, consumer);
-
-                intersection.createConnectionQueue(
-                    producer,
-                    new AbstractConsumer[]{consumer},
-                    new double[]{intersectionTraverseTime},
-                    new double[]{1} // probability should be always 1 in our case?
-                );
-            }
-            final StreetConnector streetConnector = new StreetConnector(connector.getId(), previousSections, nextSections);
-            previousSections.forEach(fromSection -> streetConnector.initializeTrack(
-                fromSection,
-                ConsumerType.STREET_SECTION,
-                intersection,
-                ConsumerType.INTERSECTION
-            ));
-        }
-
-        // Registering intersection.
-        INTERSECTION_REGISTRY.put(intersectionComponent.getId(), intersection);
+        final FixedCirculationController ic = new FixedCirculationController(
+            model,
+            intersection.getName(),
+            false,
+            intersection,
+            phases,
+            extractParameter(modelStructure::getParameter, Double::valueOf, CONTROLLER_GREEN_DURATION),
+            extractParameter(modelStructure::getParameter, Double::valueOf, CONTROLLER_PHASE_SHIFT_TIME)
+        );
+        intersection.attachController(ic);
 
         modelStructure.addStreets(sections.values());
         modelStructure.addSources(sources.values());
         modelStructure.addSinks(sinks.values());
+        // Registering intersection.
+        INTERSECTION_REGISTRY.put(intersectionComponent.getId(), intersection);
     }
 
     private Map<String, RoundaboutSource> handleSources(String scopeComponentId, Sources sources, Model model) {
@@ -367,6 +305,10 @@ public class ConfigParser {
     }
 
     private Map<String, StreetSection> handleSections(String scopeComponentId, Sections sections, Model model) {
+        final double maxTruckLength = Double.parseDouble(MODEL_PARAMETERS.get(MAX_TRUCK_LENGTH));
+        final double maxDistanceFactorBetweenCars = Double.parseDouble(MODEL_PARAMETERS.get(MAX_DISTANCE_FACTOR_BETWEEN_CARS));
+        final double minStreetLength = maxTruckLength + maxDistanceFactorBetweenCars * 2;
+
         return sections.getSection().stream().collect(toMap(
             Section::getId,
             s -> {
@@ -428,6 +370,91 @@ public class ConfigParser {
                 return streetConnector;
             }
         ));
+    }
+
+    private List<IntersectionPhase> handlePhases(
+        String intersectionId,
+        RoundaboutIntersection intersection,
+        Connectors connectors,
+        Double controllerYellowDuration
+    ) {
+        final int numberOfPhases = connectors.getConnector().size();
+        final List<IntersectionPhase> phases = new ArrayList<>(numberOfPhases);
+
+        final Map<String, Integer> directionMap = new HashMap<>();
+
+        final Collection<IConsumer> previousSections = new LinkedHashSet<>();
+        final Collection<IConsumer> nextSections = new LinkedHashSet<>();
+
+        final IntersectionController intersectionController = IntersectionController.getInstance();
+
+        connectors.getConnector().forEach(connector -> {
+            final IntersectionPhase phase = new IntersectionPhase(1.0 / numberOfPhases, controllerYellowDuration);
+            connector.getTrack().forEach(track -> {
+                // In direction.
+                final String fromSectionId = track.getFromSectionId();
+                final Street fromSection = resolveStreet(intersectionId, fromSectionId);
+                if (!directionMap.containsKey(fromSectionId)) {
+                    directionMap.put(fromSectionId, directionMap.size());
+
+                    // Handling section -> intersections connectors, should be done only once per section.
+                    // Connection intersection -> section is handled via connection queue.
+                    previousSections.add(fromSection);
+                    nextSections.add(intersection);
+                }
+                final int inDirection = directionMap.get(fromSectionId);
+                intersectionController.setIntersectionInDirectionMapping(intersection, fromSection, inDirection);
+
+                // Out direction.
+                final String toSectionId = track.getToSectionId();
+                final Street toSection = resolveStreet(intersectionId, toSectionId);
+                if (!directionMap.containsKey(toSectionId)) {
+                    directionMap.put(toSectionId, directionMap.size());
+                }
+                final int outDirection = directionMap.get(toSectionId);
+                intersectionController.setIntersectionOutDirectionMapping(intersection, toSection, outDirection);
+
+                // Connection queue.
+                if (fromSection == null || toSection == null) {
+                    throw new IllegalArgumentException(String.format(
+                        "Please check if \"from\" section: \"%s\" and \"to\" section: \"%s\" were declared correctly." +
+                        "(Connector id: \"%s\", Track id: \"%s\")",
+                        fromSectionId,
+                        toSectionId,
+                        connector.getId(),
+                        track.getOrder()
+                    ));
+                }
+
+                final AbstractProducer producer = fromSection.toProducer();
+                intersection.attachProducer(inDirection, producer);
+
+                final AbstractConsumer consumer = toSection.toConsumer();
+                intersection.attachConsumer(outDirection, consumer);
+
+                intersection.createConnectionQueue(
+                    producer,
+                    new AbstractConsumer[]{consumer},
+                    new double[]{0},
+                    new double[]{1} // probability should be always 1 in our case?
+                );
+
+                phase.addConnection(new IntersectionConnection(inDirection, outDirection));
+            });
+
+            phases.add(phase);
+        });
+
+        // Connect sections with intersection.
+        final StreetConnector streetConnector = new StreetConnector("intersection", previousSections, nextSections);
+        previousSections.forEach(fromSection -> streetConnector.initializeTrack(
+            fromSection,
+            ConsumerType.STREET_SECTION,
+            intersection,
+            ConsumerType.INTERSECTION
+        ));
+
+        return phases;
     }
 
     private Map<AbstractSource, Map<RoundaboutSink, Route>> handleRoutes(ModelConfig modelConfig) {
@@ -548,9 +575,9 @@ public class ConfigParser {
                                 final Street toSection = resolveSection(toComponentId, toSectionId);
 
                                 final List<IConsumer> newRouteSections = new LinkedList<>(routeSections);
-                                if (component.getType() == ComponentType.INTERSECTION) {
-                                    newRouteSections.add((IConsumer) INTERSECTION_REGISTRY.get(component.getId()));
-                                }
+//                                if (component.getType() == ComponentType.INTERSECTION) {
+//                                    newRouteSections.add((IConsumer) INTERSECTION_REGISTRY.get(component.getId()));
+//                                }
                                 newRouteSections.add(toSection);
 
                                 doDepthFirstSearch(source, newRouteSections, localComponent, modelConfig);

@@ -8,11 +8,13 @@ import at.fhv.itm3.s2.roundabout.ui.util.DaemonThreadFactory;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
@@ -30,6 +32,7 @@ public class StatsViewController extends JfxController {
     private static final String SINK_AVG_SUFFIX = "_avg";
     private static final String SINK_MAX_SUFFIX = "_max";
 
+    private static final String AVG = "AVG:";
     private static final String NOT_AVAILABLE = "N/A";
 
     private static final int TRAFFIC_LIGHT_INDICATOR_SIZE = 8;
@@ -113,6 +116,7 @@ public class StatsViewController extends JfxController {
             });
         });
 
+        final Label lblAverageSink = new Label(AVG);
         final Label lblMinAverageSink = new Label(NOT_AVAILABLE);
         final Label lblAvgAverageSink = new Label(NOT_AVAILABLE);
         final Label lblMaxAverageSink = new Label(NOT_AVAILABLE);
@@ -211,13 +215,16 @@ public class StatsViewController extends JfxController {
         });
 
         // Adding average value labels.
-        sinkMinContainer.getChildren().add(new Line());
+        sinkIdContainer.getChildren().add(new Separator());
+        sinkIdContainer.getChildren().add(lblAverageSink);
+
+        sinkMinContainer.getChildren().add(new Separator());
         sinkMinContainer.getChildren().add(lblMinAverageSink);
 
-        sinkAvgContainer.getChildren().add(new Line());
+        sinkAvgContainer.getChildren().add(new Separator());
         sinkAvgContainer.getChildren().add(lblAvgAverageSink);
 
-        sinkMaxContainer.getChildren().add(new Line());
+        sinkMaxContainer.getChildren().add(new Separator());
         sinkMaxContainer.getChildren().add(lblMaxAverageSink);
     }
 

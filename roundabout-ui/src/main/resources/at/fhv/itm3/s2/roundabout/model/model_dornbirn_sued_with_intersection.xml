@@ -20,21 +20,21 @@
     <components>
         <component id="ro1" type="ROUNDABOUT" name="Kreisverkehr Dornbirn Süd">
             <sources>
-                <source id="so_s5_t1" sectionId="s5_t1" generatorExpectation="1.0"/>
+                <source id="so_s5_t1" sectionId="s5_t1" generatorExpectation="56.18"/>
 
-                <source id="so_s6_t1" sectionId="s6_t1" generatorExpectation="1.0"/>
+                <source id="so_s6_t1" sectionId="s6_t1" generatorExpectation="60.0"/>
 
-                <source id="so_s10_t1" sectionId="s10_t1" generatorExpectation="1.0"/>
-                <source id="so_s10_t2" sectionId="s10_t2" generatorExpectation="1.0"/>
+                <source id="so_s10_t1" sectionId="s10_t1" generatorExpectation="6.24"/>
+                <source id="so_s10_t2" sectionId="s10_t2" generatorExpectation="56.18"/>
 
-                <source id="so_s11_t1" sectionId="s11_t1" generatorExpectation="1.0"/>
+                <source id="so_s11_t1" sectionId="s11_t1" generatorExpectation="20.0"/>
 
-                <source id="so_s14_t1" sectionId="s14_t1" generatorExpectation="1.0"/>
-                <source id="so_s14_t2" sectionId="s14_t2" generatorExpectation="1.0"/>
+                <source id="so_s14_t1" sectionId="s14_t1" generatorExpectation="6.24"/>
+                <source id="so_s14_t2" sectionId="s14_t2" generatorExpectation="18.73"/>
 
-                <source id="so_s15_t1" sectionId="s15_t1" generatorExpectation="1.0"/>
+                <source id="so_s15_t1" sectionId="s15_t1" generatorExpectation="60.0"/>
 
-                <source id="so_s18_t1" sectionId="s18_t1" generatorExpectation="1.0"/>
+                <source id="so_s18_t1" sectionId="s18_t1" generatorExpectation="9.36"/>
             </sources>
             <sinks>
                 <sink id="sk_s4_t1"/>
@@ -175,14 +175,14 @@
                 </connector>
             </connectors>
         </component>
-        <component id="is1" type="INTERSECTION" name="Basic intersection">
+        <component id="is1" type="INTERSECTION" name="Messekreuzung">
             <parameters>
                 <parameter name="INTERSECTION_SIZE" value="16"/>
-                <parameter name="INTERSECTION_SERVICE_DELAY" value="2"/>
-                <parameter name="INTERSECTION_TRAVERSE_TIME" value="5"/>
+                <parameter name="INTERSECTION_SERVICE_DELAY" value="1"/>
+                <parameter name="INTERSECTION_TRAVERSE_TIME" value="1"/>
                 <parameter name="CONTROLLER_GREEN_DURATION" value="22.5"/>
                 <parameter name="CONTROLLER_YELLOW_DURATION" value="7.5"/>
-                <parameter name="CONTROLLER_PHASE_SHIFT_TIME" value="0"/>
+                <parameter name="CONTROLLER_PHASE_SHIFT_TIME" value="0.1"/>
             </parameters>
             <sources>
                 <source id="so_s3_t1" sectionId="s3_t1"/>
@@ -222,20 +222,29 @@
                 <section id="s6_t2" length="110.45"/>
             </sections>
             <connectors>
-                <connector id="intersection">
-                    <track order="1" fromSectionId="s2_t1" fromSectionType="STREET_SECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="2" fromSectionId="s2_t1" fromSectionType="STREET_SECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="3" fromSectionId="s2_t2" fromSectionType="STREET_SECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="4" fromSectionId="s3_t1" fromSectionType="STREET_SECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="5" fromSectionId="s3_t2" fromSectionType="STREET_SECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="6" fromSectionId="s3_t3" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
-                    <track order="7" fromSectionId="s3_t4" fromSectionType="STREET_SECTION" toSectionId="s6_t2" toSectionType="STREET_SECTION"/>
-                    <track order="8" fromSectionId="s4_t1" fromSectionType="STREET_SECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="9" fromSectionId="s4_t1" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
-                    <track order="10" fromSectionId="s4_t2" fromSectionType="STREET_SECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="11" fromSectionId="s5_t1" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
-                    <track order="12" fromSectionId="s5_t2" fromSectionType="STREET_SECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
-                    <track order="13" fromSectionId="s5_t3" fromSectionType="STREET_SECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                <connector id="main_horizontal">
+                    <track fromSectionId="s2_t1" fromSectionType="STREET_SECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track fromSectionId="s2_t2" fromSectionType="STREET_SECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
+
+                    <track fromSectionId="s4_t1" fromSectionType="STREET_SECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track fromSectionId="s4_t1" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
+                </connector>
+                <connector id="secondary_horizontal">
+                    <track fromSectionId="s2_t2" fromSectionType="STREET_SECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
+
+                    <track fromSectionId="s4_t2" fromSectionType="STREET_SECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                </connector>
+                <connector id="main_vertical">
+                    <track fromSectionId="s5_t1" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
+                    <track fromSectionId="s5_t3" fromSectionType="STREET_SECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
+
+                    <track fromSectionId="s3_t4" fromSectionType="STREET_SECTION" toSectionId="s6_t2" toSectionType="STREET_SECTION"/>
+                    <track fromSectionId="s3_t3" fromSectionType="STREET_SECTION" toSectionId="s6_t1" toSectionType="STREET_SECTION"/>
+                    <track fromSectionId="s3_t1" fromSectionType="STREET_SECTION" toSectionId="sk2_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                </connector>
+                <connector id="secondary_vertical">
+                    <track fromSectionId="s3_t2" fromSectionType="STREET_SECTION" toSectionId="sk3_t1" toSectionType="ROUNDABOUT_EXIT"/>
+                    <track fromSectionId="s5_t2" fromSectionType="STREET_SECTION" toSectionId="sk1_t1" toSectionType="ROUNDABOUT_EXIT"/>
                 </connector>
             </connectors>
         </component>
@@ -254,8 +263,39 @@
             </connector>
         </connectors>
         <routes>
-            <route fromComponentId="ro1" fromSourceId="s6_t2" toComponentId="ro1" toSinkId="sk_1" ratio="0.1"/>
-            <route fromComponentId="ro1" fromSourceId="s6_t2" toComponentId="ro1" toSinkId="sk_1" ratio="0.2"/>
+            <route fromComponentId="ro1" fromSourceId="so_s2_t1" toComponentId="ro1" toSinkId="sk_s4_t1" ratio="0.143"/>
+            <route fromComponentId="ro1" fromSourceId="so_s2_t1" toComponentId="ro1" toSinkId="sk_s9_t1" ratio="0.4"/>
+            <route fromComponentId="ro1" fromSourceId="so_s2_t1" toComponentId="ro1" toSinkId="sk_s9_t2" ratio="0.457"/>
+
+            <route fromComponentId="ro1" fromSourceId="so_s2_t2" toComponentId="ro1" toSinkId="sk_s13_t1" ratio="0.923"/>
+            <route fromComponentId="ro1" fromSourceId="so_s2_t2" toComponentId="ro1" toSinkId="sk_s17_t1" ratio="0.077"/>
+
+            <route fromComponentId="ro1" fromSourceId="so_s5_t1" toComponentId="ro1" toSinkId="sk_s13_t1" ratio="0.8"/>
+            <route fromComponentId="ro1" fromSourceId="so_s5_t1" toComponentId="ro1" toSinkId="sk_s17_t1" ratio="0.1"/>
+            <route fromComponentId="ro1" fromSourceId="so_s5_t1" toComponentId="ro1" toSinkId="sk1_t1" ratio="0.1"/>
+
+            <route fromComponentId="ro1" fromSourceId="so_s6_t1" toComponentId="ro1" toSinkId="sk_s6_t1" ratio="1.0"/>
+
+            <route fromComponentId="ro1" fromSourceId="so_s10_t1" toComponentId="ro1" toSinkId="sk_s17_t1" ratio="0.333"/>
+            <route fromComponentId="ro1" fromSourceId="so_s10_t1" toComponentId="ro1" toSinkId="sk1_t1" ratio="0.667"/>
+
+            <route fromComponentId="ro1" fromSourceId="so_s10_t2" toComponentId="ro1" toSinkId="sk_s4_t1" ratio="1.0"/>
+
+            <route fromComponentId="ro1" fromSourceId="so_s11_t1" toComponentId="ro1" toSinkId="sk_s11_t1" ratio="1.0"/>
+
+            <route fromComponentId="ro1" fromSourceId="so_s14_t1" toComponentId="ro1" toSinkId="sk1_t1" ratio="1.0"/>
+
+            <route fromComponentId="ro1" fromSourceId="so_s14_t2" toComponentId="ro1" toSinkId="sk_s4_t1" ratio="0.333"/>
+            <route fromComponentId="ro1" fromSourceId="so_s14_t2" toComponentId="ro1" toSinkId="sk_s9_t1" ratio="0.3"/>
+            <route fromComponentId="ro1" fromSourceId="so_s14_t2" toComponentId="ro1" toSinkId="sk_s9_t2" ratio="0.367"/>
+
+            <route fromComponentId="ro1" fromSourceId="so_s15_t1" toComponentId="ro1" toSinkId="sk_15_t1" ratio="1.0"/>
+
+            <route fromComponentId="ro1" fromSourceId="so_s18_t1" toComponentId="is1" toSinkId="sk1_t1" ratio="0.25"/>
+            <route fromComponentId="ro1" fromSourceId="so_s18_t1" toComponentId="ro1" toSinkId="sk_s4_t1" ratio="0.083"/>
+            <route fromComponentId="ro1" fromSourceId="so_s18_t1" toComponentId="ro1" toSinkId="sk_s9_t1" ratio="0.15"/>
+            <route fromComponentId="ro1" fromSourceId="so_s18_t1" toComponentId="ro1" toSinkId="sk_s9_t2" ratio="0.183"/>
+            <route fromComponentId="ro1" fromSourceId="so_s18_t1" toComponentId="ro1" toSinkId="sk_s13_t1" ratio="0.333"/>
         </routes>
     </components>
 </model>
