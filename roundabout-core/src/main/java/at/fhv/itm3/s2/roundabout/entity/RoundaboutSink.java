@@ -47,6 +47,7 @@ public class RoundaboutSink extends AbstractSink {
         CarController.removeCarMapping(iCar);
         enteredCars.add(iCar);
         carObserver.notifyObservers(iCar);
+        incrementLeftCarCounter();
     }
 
     @Override

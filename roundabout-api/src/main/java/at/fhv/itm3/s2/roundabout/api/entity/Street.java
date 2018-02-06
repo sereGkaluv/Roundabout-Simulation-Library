@@ -24,6 +24,7 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     protected Observable carObserver;
     protected Observable enteredCarObserver;
     protected Observable leftCarObserver;
+    protected Observable lostCarObserver;
     protected Observable carPositionObserver;
     protected Observable trafficLightObserver;
 
@@ -92,14 +93,19 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
         this.lostCarsCounter = 0;
 
         this.trafficLight = new TrafficLight(trafficLightActive, minGreenPhaseDuration, greenPhaseDuration, redPhaseDuration);
+        this.greenPhaseStart = 0.0;
 
         this.carObserver = new RoundaboutObservable();
         this.enteredCarObserver = new RoundaboutObservable();
         this.leftCarObserver = new RoundaboutObservable();
+        this.lostCarObserver = new RoundaboutObservable();
         this.carPositionObserver = new RoundaboutObservable();
         this.trafficLightObserver = new RoundaboutObservable();
 
-        this.greenPhaseStart = 0.0;
+        addObserver(
+            ObserverType.CAR_LOST,
+            (o, arg) ->  System.out.println(String.format("Street \"%s\" cars lost: %s", id, arg))
+        );
     }
 
     public String getId() {
@@ -162,6 +168,7 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
      */
     protected void incrementLostCarCounter() {
         this.lostCarsCounter++;
+        this.lostCarObserver.notifyObservers(this.lostCarObserver);
     }
 
     /**

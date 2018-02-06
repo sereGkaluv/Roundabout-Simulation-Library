@@ -61,7 +61,7 @@
             <ImageView fx:id="imageView" fitWidth="1200.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@../img/back.png"/>
             </ImageView>
-            <ScrollPane hbarPolicy="NEVER">
+            <ScrollPane>
                 <HBox fx:id="hBoxContainer" spacing="15.0">
                     <padding>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

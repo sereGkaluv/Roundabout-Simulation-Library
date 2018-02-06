@@ -28,6 +28,7 @@ public class StatsViewController extends JfxController {
     private static final String SOURCE_PS_SUFFIX = "_ps";
 
     private static final String SINK_ID_SUFFIX = "_id";
+    private static final String SINK_PS_SUFFIX = "_id";
     private static final String SINK_MIN_SUFFIX = "_min";
     private static final String SINK_AVG_SUFFIX = "_avg";
     private static final String SINK_MAX_SUFFIX = "_max";
@@ -39,6 +40,7 @@ public class StatsViewController extends JfxController {
 
     private static final Function<Double, String> DOUBLE_STRING_FORMATTER_FUNCTION = v -> String.format("%.2f", v);
 
+    private final Map<String, Long> sinkPSStats = new HashMap<>();
     private final Map<String, Double> sinkMinStats = new HashMap<>();
     private final Map<String, Double> sinkAvgStats = new HashMap<>();
     private final Map<String, Double> sinkMaxStats = new HashMap<>();
@@ -52,6 +54,7 @@ public class StatsViewController extends JfxController {
     @FXML private VBox sectionPSContainer;
 
     @FXML private VBox sinkIdContainer;
+    @FXML private VBox sinkPSContainer;
     @FXML private VBox sinkMinContainer;
     @FXML private VBox sinkAvgContainer;
     @FXML private VBox sinkMaxContainer;
@@ -63,6 +66,11 @@ public class StatsViewController extends JfxController {
     public void generateStatLabels(String title, Collection<StreetSection> streetSections, Collection<RoundaboutSink> sinks) {
         Platform.runLater(() -> lblStatsTitle.setText(title));
 
+        generateStreetSectionLabels(streetSections);
+        generateSinkLabels(sinks);
+    }
+
+    private void generateStreetSectionLabels(Collection<StreetSection> streetSections) {
         streetSections.stream().sorted(Comparator.comparing(StreetSection::getId)).forEach(streetSection -> {
             final String sourceId = String.format(KEY_FORMAT, streetSection.getId(), SOURCE_ID_SUFFIX);
             final String sourceIS = String.format(KEY_FORMAT, streetSection.getId(), SOURCE_IS_SUFFIX);
@@ -115,14 +123,18 @@ public class StatsViewController extends JfxController {
                 );
             });
         });
+    }
 
+    private void generateSinkLabels(Collection<RoundaboutSink> sinks) {
         final Label lblAverageSink = new Label(AVG);
+        final Label lblPSAverageSink = new Label(NOT_AVAILABLE);
         final Label lblMinAverageSink = new Label(NOT_AVAILABLE);
         final Label lblAvgAverageSink = new Label(NOT_AVAILABLE);
         final Label lblMaxAverageSink = new Label(NOT_AVAILABLE);
 
         sinks.stream().sorted(Comparator.comparing(RoundaboutSink::getId)).forEach(sink -> {
             final String sinkId = String.format(KEY_FORMAT, sink.getId(), SINK_ID_SUFFIX);
+            final String sinkPS = String.format(KEY_FORMAT, sink.getId(), SINK_PS_SUFFIX);
             final String sinkMin = String.format(KEY_FORMAT, sink.getId(), SINK_MIN_SUFFIX);
             final String sinkAvg = String.format(KEY_FORMAT, sink.getId(), SINK_AVG_SUFFIX);
             final String sinkMax = String.format(KEY_FORMAT, sink.getId(), SINK_MAX_SUFFIX);
@@ -133,6 +145,10 @@ public class StatsViewController extends JfxController {
             lblSinkId.setGraphic(trafficLight);
             sinkIdContainer.getChildren().add(lblSinkId);
             labelMap.put(sinkId, lblSinkId);
+
+            final Label lblSinkPS = new Label(NOT_AVAILABLE);
+            sinkPSContainer.getChildren().add(lblSinkPS);
+            labelMap.put(sinkPS, lblSinkPS);
 
             final Label lblSinkMin = new Label(NOT_AVAILABLE);
             sinkMinContainer.getChildren().add(lblSinkMin);
@@ -155,6 +171,24 @@ public class StatsViewController extends JfxController {
                     trafficLight.setFill(Color.RED);
                 }
             }));
+
+            sink.addObserver(ObserverType.CAR_LEFT, (o, arg) -> {
+                final long nrOfLeftCars = sink.getNrOfLeftCars();
+                final String rawValue = toStringOrEmpty(nrOfLeftCars);
+                sinkPSStats.put(sinkMax, nrOfLeftCars);
+
+                final OptionalDouble optionalAvgSinkPSValue = sinkPSStats.values().stream().mapToLong(v -> v).average();
+                final String avgSinkPSValue;
+                if (optionalAvgSinkPSValue.isPresent()) {
+                    avgSinkPSValue = toStringOrEmpty(optionalAvgSinkPSValue.getAsDouble(), DOUBLE_STRING_FORMATTER_FUNCTION);
+                } else {
+                    avgSinkPSValue = NOT_AVAILABLE;
+                }
+                Platform.runLater(() -> {
+                    lblSinkPS.setText(rawValue);
+                    lblPSAverageSink.setText(avgSinkPSValue);
+                });
+            });
 
             sink.addObserver(ObserverType.CAR_ENTITY, (o, arg) -> {
                 final Double carWaitTime = sink.getMeanWaitingTimePerStopForEnteredCars();
@@ -217,6 +251,9 @@ public class StatsViewController extends JfxController {
         // Adding average value labels.
         sinkIdContainer.getChildren().add(new Separator());
         sinkIdContainer.getChildren().add(lblAverageSink);
+
+        sinkPSContainer.getChildren().add(new Separator());
+        sinkPSContainer.getChildren().add(lblPSAverageSink);
 
         sinkMinContainer.getChildren().add(new Separator());
         sinkMinContainer.getChildren().add(lblMinAverageSink);
