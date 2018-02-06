@@ -3,6 +3,7 @@ package at.fhv.itm3.s2.roundabout.ui.controllers;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.ui.controllers.core.JfxController;
+import at.fhv.itm3.s2.roundabout.ui.util.BufferedImageTranscoder;
 import at.fhv.itm3.s2.roundabout.ui.util.DaemonThreadFactory;
 import at.fhv.itm3.s2.roundabout.ui.util.ViewLoader;
 import at.fhv.itm3.s2.roundabout.util.dto.Component;
@@ -10,6 +11,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -19,14 +21,24 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainViewController extends JfxController {
+
+    private static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     private static final int DEFAULT_SIM_SPEED_VALUE = 0;
     private static final int MAX_SIM_SPEED_VALUE = 50;
@@ -35,6 +47,8 @@ public class MainViewController extends JfxController {
     private static final SimpleBooleanProperty IS_SIMULATION_PAUSED = new SimpleBooleanProperty(false);
 
     private static final SimpleDoubleProperty CURRENT_SIM_SPEED = new SimpleDoubleProperty(0);
+
+    private static final BufferedImageTranscoder BUFFERED_IMAGE_TRANSCODER = new BufferedImageTranscoder();
 
     @FXML private Button btnStartSimulation;
     @FXML private Button btnFinishSimulation;
@@ -94,6 +108,13 @@ public class MainViewController extends JfxController {
         lblProgress.visibleProperty().bind(lblProgress.managedProperty());
 
         imageView.fitWidthProperty().bind(borderPaneContainer.widthProperty());
+        try (InputStream file = getClass().getResourceAsStream("/at/fhv/itm3/s2/roundabout/ui/img/back.svg")) {
+            TranscoderInput transIn = new TranscoderInput(file);
+            BUFFERED_IMAGE_TRANSCODER.transcode(transIn, null);
+            imageView.setImage(SwingFXUtils.toFXImage(BUFFERED_IMAGE_TRANSCODER.getBufferedImage(), null));
+        } catch (IOException | TranscoderException e) {
+            LOGGER.error("Error occurs while loading background SVG.", e);
+        }
 
         initButtonListeners();
     }
