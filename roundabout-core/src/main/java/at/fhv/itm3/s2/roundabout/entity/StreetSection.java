@@ -155,22 +155,18 @@ public class StreetSection extends Street {
     public void trafficLightActiveAndJamInNextSection(){
         if(this.isTrafficLightActive() && this.isTrafficLightTriggeredByJam()) {
             ICar car = getFirstCar();
-            if(car != null) {
+            if(car != null && this.isTrafficLightFreeToGo()) {
                 int idx = car.getRoute().getIndexOfSection(this);
                 if(idx + 1 < car.getRoute().getNumberOfSections()) {
                     IConsumer consumerNext = car.getRoute().getSectionAt(idx + 1);
                     if (!(consumerNext instanceof StreetSection))
                         throw new IllegalArgumentException("Failing cast form IConsumer to StreetSection.");
                         StreetSection streetSectionNext = (StreetSection) consumerNext;
-                    if (streetSectionNext.isFull() && streetSectionNext.currentWaitingTime > getRoundaboutModel().jamIndicatorInSeconds) {
-                        if(this.isTrafficLightFreeToGo()) {
-                            // trigger red
-                            RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(getRoundaboutModel()).
-                                    schedule(this, new TimeSpan(0));
-                        }
-                        // schedule trigger of green
+                    if (!streetSectionNext.isEmpty() &&
+                            streetSectionNext.currentWaitingTime > getRoundaboutModel().jamIndicatorInSeconds) {
+                         // trigger red
                         RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(getRoundaboutModel()).
-                                schedule(this, new TimeSpan(getRedPhaseDurationOfTrafficLight()));
+                          schedule(this, new TimeSpan(0, getRoundaboutModel().getModelTimeUnit()));
                     }
                 }
             }

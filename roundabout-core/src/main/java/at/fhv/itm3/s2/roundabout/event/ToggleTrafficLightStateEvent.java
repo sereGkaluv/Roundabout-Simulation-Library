@@ -53,7 +53,12 @@ public class ToggleTrafficLightStateEvent extends Event<Street> {
             // generate CarCouldLeaveSectionEvent if traffic light is free to go
             roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(donorStreet, new TimeSpan(0));
         }
-        if(!donorStreet.isTrafficLightTriggeredByJam()) {
+        if(donorStreet.isTrafficLightTriggeredByJam()) {
+            if( !donorStreet.isTrafficLightFreeToGo()) {
+                RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(roundaboutSimulationModel).
+                        schedule(donorStreet, new TimeSpan(donorStreet.getRedPhaseDurationOfTrafficLight(), roundaboutSimulationModel.getModelTimeUnit()));
+            }
+        } else {
             // cyclic traffic light
             if (donorStreet.isTrafficLightFreeToGo()) {
                 // triggered to green
