@@ -475,7 +475,7 @@ public class StreetSection extends Street {
                     }
                 } else if (nextConsumer instanceof RoundaboutIntersection) {
                     final IConsumer consumer = firstCarInQueue.getSectionAfterNextSection();
-                    if (consumer instanceof Street) {
+                    if (consumer != null && consumer instanceof Street) {
                         // Such a trick should block cars from entering into intersection when the target section is full.
                         // At the worse scenario intersection will accumulate cars in queues as it was before.St
                         final Street streetAfterIntersection = (Street) consumer;
