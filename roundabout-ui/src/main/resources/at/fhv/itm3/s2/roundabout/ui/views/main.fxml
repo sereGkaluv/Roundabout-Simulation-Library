@@ -46,7 +46,7 @@
             <VBox alignment="CENTER">
                 <Label fx:id="lblCurrentSimSpeed">
                     <font>
-                        <Font name="System Bold" size="9.0" />
+                        <Font name="System Bold" size="10.0" />
                     </font>
                 </Label>
                 <Slider fx:id="sliderSimSpeed" minWidth="350"/>
