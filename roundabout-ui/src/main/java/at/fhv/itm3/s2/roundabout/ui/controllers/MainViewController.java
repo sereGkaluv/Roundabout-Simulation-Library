@@ -40,7 +40,7 @@ public class MainViewController extends JfxController {
     private static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     private static final int DEFAULT_SIM_SPEED_VALUE = 0;
-    private static final int MAX_SIM_SPEED_VALUE = 50;
+    private static final int MAX_SIM_SPEED_VALUE = 100;
 
     private static final SimpleBooleanProperty IS_SIMULATION_RUNNING = new SimpleBooleanProperty(false);
     private static final SimpleBooleanProperty IS_SIMULATION_PAUSED = new SimpleBooleanProperty(false);
@@ -98,7 +98,7 @@ public class MainViewController extends JfxController {
         sliderSimSpeed.visibleProperty().bind(sliderSimSpeed.managedProperty());
         sliderSimSpeed.valueProperty().bindBidirectional(CURRENT_SIM_SPEED);
 
-        lblCurrentSimSpeed.textProperty().bind(Bindings.format("Simulation factor (0 - max speed, 0 < x from slow to fast) : %.2f", CURRENT_SIM_SPEED));
+        lblCurrentSimSpeed.textProperty().bind(Bindings.format("Simulation factor (x = 0 - max speed, x > 0 - from slow to fast) : %.2f x", CURRENT_SIM_SPEED));
         lblCurrentSimSpeed.managedProperty().bind(sliderSimSpeed.managedProperty());
         lblCurrentSimSpeed.visibleProperty().bind(sliderSimSpeed.visibleProperty());
 
