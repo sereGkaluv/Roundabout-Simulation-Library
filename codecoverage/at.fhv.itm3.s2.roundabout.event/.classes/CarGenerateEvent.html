@@ -1,0 +1,181 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CarGenerateEvent</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">at.fhv.itm3.s2.roundabout.event</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CarGenerateEvent (at.fhv.itm3.s2.roundabout.event)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CarGenerateEvent</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92%
+  </span>
+  <span class="absValue">
+    (23/ 25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package at.fhv.itm3.s2.roundabout.event;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import at.fhv.itm14.trafsim.model.entities.Car;
+<i>4</i>&nbsp;import at.fhv.itm14.trafsim.model.entities.IConsumer;
+<i>5</i>&nbsp;import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+<i>6</i>&nbsp;import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
+<i>7</i>&nbsp;import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+<i>8</i>&nbsp;import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
+<i>9</i>&nbsp;import at.fhv.itm3.s2.roundabout.api.entity.Street;
+<i>10</i>&nbsp;import at.fhv.itm3.s2.roundabout.controller.CarController;
+<i>11</i>&nbsp;import at.fhv.itm3.s2.roundabout.controller.RouteController;
+<i>12</i>&nbsp;import at.fhv.itm3.s2.roundabout.entity.DriverBehaviour;
+<i>13</i>&nbsp;import at.fhv.itm3.s2.roundabout.entity.RoundaboutCar;
+<i>14</i>&nbsp;import at.fhv.itm3.s2.roundabout.entity.StreetSection;
+<i>15</i>&nbsp;import desmoj.core.simulator.Event;
+<i>16</i>&nbsp;import desmoj.core.simulator.Model;
+<i>17</i>&nbsp;import desmoj.core.simulator.TimeSpan;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;import java.util.concurrent.TimeUnit;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;public class CarGenerateEvent extends Event&lt;AbstractSource&gt; {
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    /**
+<i>25</i>&nbsp;     * A reference to the {@link RoundaboutSimulationModel} the {@link CarCouldLeaveSectionEvent} is part of.
+<i>26</i>&nbsp;     */
+<i>27</i>&nbsp;    private RoundaboutSimulationModel roundaboutSimulationModel;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    /**
+<i>30</i>&nbsp;     * Instance of {@link RoundaboutEventFactory} for creating new events.
+<i>31</i>&nbsp;     */
+<i>32</i>&nbsp;    protected RoundaboutEventFactory roundaboutEventFactory;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    /**
+<i>35</i>&nbsp;     * Instance of {@link RouteController} for creating new routes.
+<i>36</i>&nbsp;     * (protected because of testing)
+<i>37</i>&nbsp;     */
+<i>38</i>&nbsp;    protected RouteController routeController;
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    /**
+<i>41</i>&nbsp;     * Constructs a new {@link CarCouldLeaveSectionEvent}.
+<i>42</i>&nbsp;     *
+<i>43</i>&nbsp;     * @param model the model this event belongs to.
+<i>44</i>&nbsp;     * @param name this event&#39;s name.
+<i>45</i>&nbsp;     * @param showInTrace flag to indicate if this event shall produce output for the trace.
+<i>46</i>&nbsp;     */
+<i>47</i>&nbsp;    public CarGenerateEvent(Model model, String name, boolean showInTrace) {
+<b class="fc"><i>48</i>&nbsp;        super(model, name, showInTrace);</b>
+<i>49</i>&nbsp;
+<b class="fc"><i>50</i>&nbsp;        roundaboutEventFactory = RoundaboutEventFactory.getInstance();</b>
+<i>51</i>&nbsp;
+<b class="fc"><i>52</i>&nbsp;        if (model instanceof RoundaboutSimulationModel) {</b>
+<b class="fc"><i>53</i>&nbsp;            roundaboutSimulationModel = (RoundaboutSimulationModel)model;</b>
+<i>54</i>&nbsp;        } else {
+<b class="nc"><i>55</i>&nbsp;            throw new IllegalArgumentException(&quot;No suitable model given over.&quot;);</b>
+<i>56</i>&nbsp;        }
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;        routeController = RouteController.getInstance(roundaboutSimulationModel);</b>
+<i>59</i>&nbsp;
+<b class="fc"><i>60</i>&nbsp;    }</b>
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    /**
+<i>63</i>&nbsp;     * The event routine describes the generation (arrival) of a new car.
+<i>64</i>&nbsp;     *
+<i>65</i>&nbsp;     * A new car is generated and added to the given section. A new {@link CarCouldLeaveSectionEvent} is
+<i>66</i>&nbsp;     * scheduled for the time the car needs to traverse this section at optimal conditions, which means
+<i>67</i>&nbsp;     * that the car knows how long it needs to reach the end of this section if it can drive to the end of
+<i>68</i>&nbsp;     * it without the need to stop and after this time the section checks if a car could leave the section.
+<i>69</i>&nbsp;     * At the end the event routine schedules a new {@link CarGenerateEvent} with a normally distributed time.
+<i>70</i>&nbsp;     *
+<i>71</i>&nbsp;     * @param source instance of {@link AbstractSource} in which the car is generated
+<i>72</i>&nbsp;     */
+<i>73</i>&nbsp;    @Override
+<i>74</i>&nbsp;    public void eventRoutine(AbstractSource source) {
+<i>75</i>&nbsp;        // TODO: use meaningful values!!
+<b class="fc"><i>76</i>&nbsp;        Car car = new Car(roundaboutSimulationModel, &quot;&quot;, false);</b>
+<b class="fc"><i>77</i>&nbsp;        IRoute route = this.routeController.getRandomRoute(source);</b>
+<b class="fc"><i>78</i>&nbsp;        DriverBehaviour driverBehaviour = new DriverBehaviour(6.0, 0.5, 1, 1, 1);</b>
+<b class="fc"><i>79</i>&nbsp;        ICar roundaboutCar = new RoundaboutCar(getModel(), car, 2.0, driverBehaviour, route);</b>
+<b class="fc"><i>80</i>&nbsp;        roundaboutCar.enterSystem();</b>
+<b class="fc"><i>81</i>&nbsp;        CarController.addCarMapping(car, roundaboutCar);</b>
+<b class="fc"><i>82</i>&nbsp;        IConsumer nextSection = source.getConnectedStreet();</b>
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;        if (nextSection instanceof StreetSection) {</b>
+<b class="fc"><i>85</i>&nbsp;            ((Street)nextSection).addCar(roundaboutCar);</b>
+<b class="fc"><i>86</i>&nbsp;            double traverseTime = roundaboutCar.getTimeToTraverseCurrentSection();</b>
+<b class="fc"><i>87</i>&nbsp;            CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel);</b>
+<b class="fc"><i>88</i>&nbsp;            carCouldLeaveSectionEvent.schedule((Street)nextSection, new TimeSpan(traverseTime, TimeUnit.SECONDS));</b>
+<i>89</i>&nbsp;
+<b class="fc"><i>90</i>&nbsp;            double timeBetweenCarArrivals = roundaboutSimulationModel.getRandomTimeBetweenCarArrivals();</b>
+<b class="fc"><i>91</i>&nbsp;            CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);</b>
+<b class="fc"><i>92</i>&nbsp;            carGenerateEvent.schedule(source, new TimeSpan(timeBetweenCarArrivals, TimeUnit.SECONDS));</b>
+<b class="fc"><i>93</i>&nbsp;        } else {</b>
+<b class="nc"><i>94</i>&nbsp;            throw new IllegalStateException(&quot;NextSection should be of type Street&quot;);</b>
+<i>95</i>&nbsp;        }
+<i>96</i>&nbsp;
+<b class="fc"><i>97</i>&nbsp;    }</b>
+<i>98</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-02-07 09:19</div>
+</div>
+</body>
+</html>

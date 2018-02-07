@@ -1,0 +1,165 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Track</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">at.fhv.itm3.s2.roundabout.util.dto</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Track (at.fhv.itm3.s2.roundabout.util.dto)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Track</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package at.fhv.itm3.s2.roundabout.util.dto;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
+<i>4</i>&nbsp;import at.fhv.itm3.s2.roundabout.api.util.dto.IDTO;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import javax.xml.bind.annotation.XmlAttribute;
+<i>7</i>&nbsp;
+<b class="nc"><i>8</i>&nbsp;public class Track implements IDTO {</b>
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    private Long order;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    private String fromComponentId;
+<i>13</i>&nbsp;    private String fromSectionId;
+<i>14</i>&nbsp;    private ConsumerType fromSectionType;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    private String toComponentId;
+<i>17</i>&nbsp;    private String toSectionId;
+<i>18</i>&nbsp;    private ConsumerType toSectionType;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    @XmlAttribute
+<i>21</i>&nbsp;    public Long getOrder() {
+<b class="nc"><i>22</i>&nbsp;        return order;</b>
+<i>23</i>&nbsp;    }
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    public void setOrder(Long order) {
+<b class="nc"><i>26</i>&nbsp;        this.order = order;</b>
+<i>27</i>&nbsp;    }
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    @XmlAttribute
+<i>30</i>&nbsp;    public String getFromComponentId() {
+<b class="nc"><i>31</i>&nbsp;        return fromComponentId;</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    public void setFromComponentId(String fromComponentId) {
+<b class="nc"><i>35</i>&nbsp;        this.fromComponentId = fromComponentId;</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    @XmlAttribute
+<i>39</i>&nbsp;    public String getFromSectionId() {
+<b class="nc"><i>40</i>&nbsp;        return fromSectionId;</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    public void setFromSectionId(String fromSectionId) {
+<b class="nc"><i>44</i>&nbsp;        this.fromSectionId = fromSectionId;</b>
+<i>45</i>&nbsp;    }
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    @XmlAttribute
+<i>48</i>&nbsp;    public ConsumerType getFromSectionType() {
+<b class="nc"><i>49</i>&nbsp;        return fromSectionType;</b>
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    public void setFromSectionType(ConsumerType fromSectionType) {
+<b class="nc"><i>53</i>&nbsp;        this.fromSectionType = fromSectionType;</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    @XmlAttribute
+<i>57</i>&nbsp;    public String getToComponentId() {
+<b class="nc"><i>58</i>&nbsp;        return toComponentId;</b>
+<i>59</i>&nbsp;    }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    public void setToComponentId(String toComponentId) {
+<b class="nc"><i>62</i>&nbsp;        this.toComponentId = toComponentId;</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    @XmlAttribute
+<i>66</i>&nbsp;    public String getToSectionId() {
+<b class="nc"><i>67</i>&nbsp;        return toSectionId;</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    public void setToSectionId(String toSectionId) {
+<b class="nc"><i>71</i>&nbsp;        this.toSectionId = toSectionId;</b>
+<i>72</i>&nbsp;    }
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    @XmlAttribute
+<i>75</i>&nbsp;    public ConsumerType getToSectionType() {
+<b class="nc"><i>76</i>&nbsp;        return toSectionType;</b>
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    public void setToSectionType(ConsumerType toSectionType) {
+<b class="nc"><i>80</i>&nbsp;        this.toSectionType = toSectionType;</b>
+<i>81</i>&nbsp;    }
+<i>82</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-02-07 09:19</div>
+</div>
+</body>
+</html>

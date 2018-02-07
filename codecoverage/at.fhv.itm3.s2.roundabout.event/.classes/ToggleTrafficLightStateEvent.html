@@ -1,0 +1,142 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ToggleTrafficLightStateEvent</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">at.fhv.itm3.s2.roundabout.event</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ToggleTrafficLightStateEvent (at.fhv.itm3.s2.roundabout.event)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ToggleTrafficLightStateEvent</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.9%
+  </span>
+  <span class="absValue">
+    (10/ 11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package at.fhv.itm3.s2.roundabout.event;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+<i>4</i>&nbsp;import at.fhv.itm3.s2.roundabout.api.entity.Street;
+<i>5</i>&nbsp;import co.paralleluniverse.fibers.SuspendExecution;
+<i>6</i>&nbsp;import desmoj.core.simulator.Event;
+<i>7</i>&nbsp;import desmoj.core.simulator.Model;
+<i>8</i>&nbsp;import desmoj.core.simulator.TimeSpan;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public class ToggleTrafficLightStateEvent extends Event&lt;Street&gt; {
+<i>11</i>&nbsp;    /**
+<i>12</i>&nbsp;     * A reference to the {@link RoundaboutSimulationModel} the {@link ToggleTrafficLightStateEvent} is part of.
+<i>13</i>&nbsp;     */
+<i>14</i>&nbsp;    private RoundaboutSimulationModel roundaboutSimulationModel;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    /**
+<i>17</i>&nbsp;     * Instance of {@link RoundaboutEventFactory} for creating new events.
+<i>18</i>&nbsp;     * (protected because of testing)
+<i>19</i>&nbsp;     */
+<i>20</i>&nbsp;    protected RoundaboutEventFactory roundaboutEventFactory;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * Constructs a new {@link ToggleTrafficLightStateEvent}.
+<i>24</i>&nbsp;     *
+<i>25</i>&nbsp;     * @param model       the model this event belongs to.
+<i>26</i>&nbsp;     * @param name        this event&#39;s name.
+<i>27</i>&nbsp;     * @param showInTrace flag to indicate if this event shall produce output for the trace.
+<i>28</i>&nbsp;     */
+<i>29</i>&nbsp;    public ToggleTrafficLightStateEvent(Model model, String name, boolean showInTrace) {
+<b class="fc"><i>30</i>&nbsp;        super(model, name, showInTrace);</b>
+<i>31</i>&nbsp;
+<b class="fc"><i>32</i>&nbsp;        roundaboutEventFactory = RoundaboutEventFactory.getInstance();</b>
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;        if (model instanceof RoundaboutSimulationModel) {</b>
+<b class="fc"><i>35</i>&nbsp;            roundaboutSimulationModel = (RoundaboutSimulationModel) model;</b>
+<i>36</i>&nbsp;        } else {
+<b class="nc"><i>37</i>&nbsp;            throw new IllegalArgumentException(&quot;No suitable model given over.&quot;);</b>
+<i>38</i>&nbsp;        }
+<b class="fc"><i>39</i>&nbsp;    }</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    /**
+<i>42</i>&nbsp;     * Toggles the traffic lights state &quot;from free to go&quot; to &quot;stop&quot; and vice versa.
+<i>43</i>&nbsp;     *
+<i>44</i>&nbsp;     * @param donorStreet the street car will move away from.
+<i>45</i>&nbsp;     * @throws SuspendExecution Marker exception for Quasar (inherited).
+<i>46</i>&nbsp;     */
+<i>47</i>&nbsp;    @Override
+<i>48</i>&nbsp;    public void eventRoutine(Street donorStreet) throws SuspendExecution {
+<b class="fc"><i>49</i>&nbsp;        boolean toggleState = !donorStreet.isTrafficLightFreeToGo();</b>
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;        // generate CarCouldLeaveSectionEvent if traffic light is free to go
+<b class="fc"><i>52</i>&nbsp;        if (toggleState) {</b>
+<i>53</i>&nbsp;            // TODO simulate acceleration
+<b class="fc"><i>54</i>&nbsp;            roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(donorStreet, new TimeSpan(0));</b>
+<i>55</i>&nbsp;        }
+<i>56</i>&nbsp;
+<b class="fc"><i>57</i>&nbsp;        donorStreet.setTrafficLightFreeToGo(toggleState);</b>
+<b class="fc"><i>58</i>&nbsp;    }</b>
+<i>59</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-02-07 09:19</div>
+</div>
+</body>
+</html>

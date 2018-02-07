@@ -1,0 +1,167 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Test</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">at.fhv.itm3.s2.roundabout.util</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Test (at.fhv.itm3.s2.roundabout.util)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Test</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 43)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package at.fhv.itm3.s2.roundabout.util;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import at.fhv.itm14.trafsim.model.entities.IConsumer;
+<i>4</i>&nbsp;import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+<i>5</i>&nbsp;import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
+<i>6</i>&nbsp;import at.fhv.itm3.s2.roundabout.entity.*;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.LinkedList;
+<i>9</i>&nbsp;import java.util.List;
+<i>10</i>&nbsp;
+<b class="nc"><i>11</i>&nbsp;public class Test {</b>
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    private static void test() {
+<b class="nc"><i>14</i>&nbsp;        RoundaboutSimulationModel model = new RoundaboutSimulationModel(null, &quot;&quot;, false, false, 3.5, 10.0);</b>
+<b class="nc"><i>15</i>&nbsp;        RoundaboutStructure structure = new RoundaboutStructure(model);</b>
+<i>16</i>&nbsp;
+<b class="nc"><i>17</i>&nbsp;        StreetSection streetSection1_t1 = new StreetSection(10, model, &quot;s1_t1&quot;, false);</b>
+<b class="nc"><i>18</i>&nbsp;        StreetSection streetSection1_t2 = new StreetSection(10, model, &quot;s1_t2&quot;, false);</b>
+<i>19</i>&nbsp;
+<b class="nc"><i>20</i>&nbsp;        StreetSection streetSection2_t1 = new StreetSection(10, model, &quot;s2_t1&quot;, false);</b>
+<b class="nc"><i>21</i>&nbsp;        StreetSection streetSection2_t2 = new StreetSection(10, model, &quot;s2_t2&quot;, false);</b>
+<i>22</i>&nbsp;
+<b class="nc"><i>23</i>&nbsp;        StreetSection streetSectionO1_t1 = new StreetSection(10, model, &quot;s3_t1&quot;, false);</b>
+<i>24</i>&nbsp;
+<b class="nc"><i>25</i>&nbsp;        StreetSection streetSectionI1_t1 = new StreetSection(10, model, &quot;s4_t1&quot;, false);</b>
+<b class="nc"><i>26</i>&nbsp;        StreetSection streetSectionI1_t2 = new StreetSection(10, model, &quot;s4_t2&quot;, false);</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;
+<b class="nc"><i>29</i>&nbsp;        List&lt;IConsumer&gt; previousSections = new LinkedList&lt;&gt;();</b>
+<b class="nc"><i>30</i>&nbsp;        previousSections.add(streetSection1_t1);</b>
+<b class="nc"><i>31</i>&nbsp;        previousSections.add(streetSection1_t2);</b>
+<b class="nc"><i>32</i>&nbsp;        previousSections.add(streetSectionI1_t1);</b>
+<b class="nc"><i>33</i>&nbsp;        previousSections.add(streetSectionI1_t2);</b>
+<i>34</i>&nbsp;
+<b class="nc"><i>35</i>&nbsp;        List&lt;IConsumer&gt; nextSections = new LinkedList&lt;&gt;();</b>
+<b class="nc"><i>36</i>&nbsp;        nextSections.add(streetSection2_t1);</b>
+<b class="nc"><i>37</i>&nbsp;        nextSections.add(streetSection2_t2);</b>
+<b class="nc"><i>38</i>&nbsp;        nextSections.add(streetSectionO1_t1);</b>
+<i>39</i>&nbsp;
+<b class="nc"><i>40</i>&nbsp;        StreetConnector streetConnector = new StreetConnector(previousSections, nextSections);</b>
+<b class="nc"><i>41</i>&nbsp;        streetSection1_t1.setNextStreetConnector(streetConnector);</b>
+<b class="nc"><i>42</i>&nbsp;        streetSection1_t2.setNextStreetConnector(streetConnector);</b>
+<b class="nc"><i>43</i>&nbsp;        streetSectionI1_t1.setNextStreetConnector(streetConnector);</b>
+<b class="nc"><i>44</i>&nbsp;        streetSectionI1_t2.setNextStreetConnector(streetConnector);</b>
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;        streetSection2_t1.setPreviousStreetConnector(streetConnector);</b>
+<b class="nc"><i>47</i>&nbsp;        streetSection2_t2.setPreviousStreetConnector(streetConnector);</b>
+<b class="nc"><i>48</i>&nbsp;        streetSectionO1_t1.setPreviousStreetConnector(streetConnector);</b>
+<i>49</i>&nbsp;
+<b class="nc"><i>50</i>&nbsp;        streetConnector.initializeTrack(streetSection1_t1, ConsumerType.ROUNDABOUT_SECTION, streetSection2_t1, ConsumerType.ROUNDABOUT_SECTION);</b>
+<b class="nc"><i>51</i>&nbsp;        streetConnector.initializeTrack(streetSection1_t2, ConsumerType.ROUNDABOUT_SECTION, streetSection2_t2, ConsumerType.ROUNDABOUT_SECTION);</b>
+<i>52</i>&nbsp;
+<b class="nc"><i>53</i>&nbsp;        streetConnector.initializeTrack(streetSection1_t1, ConsumerType.ROUNDABOUT_SECTION, streetSectionO1_t1, ConsumerType.ROUNDABOUT_EXIT);</b>
+<i>54</i>&nbsp;
+<b class="nc"><i>55</i>&nbsp;        streetConnector.initializeTrack(streetSectionI1_t1, ConsumerType.ROUNDABOUT_INLET, streetSection2_t1, ConsumerType.ROUNDABOUT_SECTION);</b>
+<b class="nc"><i>56</i>&nbsp;        streetConnector.initializeTrack(streetSectionI1_t2, ConsumerType.ROUNDABOUT_INLET, streetSection2_t2, ConsumerType.ROUNDABOUT_SECTION);</b>
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;        // sink
+<i>59</i>&nbsp;
+<b class="nc"><i>60</i>&nbsp;        RoundaboutSink sink1 = new RoundaboutSink(model, &quot;SK1&quot;, false);</b>
+<i>61</i>&nbsp;
+<b class="nc"><i>62</i>&nbsp;        List&lt;IConsumer&gt; sinkNext = new LinkedList&lt;&gt;();</b>
+<b class="nc"><i>63</i>&nbsp;        sinkNext.add(sink1);</b>
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;        List&lt;IConsumer&gt; sinkPrev = new LinkedList&lt;&gt;();</b>
+<b class="nc"><i>66</i>&nbsp;        sinkPrev.add(streetSectionO1_t1);</b>
+<i>67</i>&nbsp;
+<b class="nc"><i>68</i>&nbsp;        StreetConnector streetConnector2 = new StreetConnector(sinkPrev, sinkNext);</b>
+<b class="nc"><i>69</i>&nbsp;        sink1.setPreviousStreetConnector(streetConnector2);</b>
+<i>70</i>&nbsp;
+<b class="nc"><i>71</i>&nbsp;        streetSectionO1_t1.setNextStreetConnector(streetConnector2);</b>
+<i>72</i>&nbsp;
+<b class="nc"><i>73</i>&nbsp;        streetConnector2.initializeTrack(streetSectionO1_t1, ConsumerType.ROUNDABOUT_EXIT, sink1, ConsumerType.STREET_SECTION);</b>
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;        // source (pro track)
+<b class="nc"><i>76</i>&nbsp;        RoundaboutSource source1 = new RoundaboutSource(model, &quot;so1&quot;, false, streetSectionI1_t1);</b>
+<b class="nc"><i>77</i>&nbsp;        RoundaboutSource source2 = new RoundaboutSource(model, &quot;so2&quot;, false, streetSectionI1_t2);</b>
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;        //Intersection
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    }
+<i>84</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-02-07 09:19</div>
+</div>
+</body>
+</html>

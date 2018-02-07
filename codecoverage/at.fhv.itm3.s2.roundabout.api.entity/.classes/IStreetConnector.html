@@ -1,0 +1,112 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IStreetConnector</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">at.fhv.itm3.s2.roundabout.api.entity</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IStreetConnector (at.fhv.itm3.s2.roundabout.api.entity)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IStreetConnector</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package at.fhv.itm3.s2.roundabout.api.entity;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import at.fhv.itm14.trafsim.model.entities.IConsumer;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.Collection;
+<i>6</i>&nbsp;import java.util.List;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public interface IStreetConnector {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    /**
+<i>11</i>&nbsp;     * Gets the next connected {@link IConsumer}s, which are accessible via this connector.
+<i>12</i>&nbsp;     *
+<i>13</i>&nbsp;     * @return The further connected {@link IConsumer}s as {@link Collection} of {@link IConsumer}.
+<i>14</i>&nbsp;     */
+<i>15</i>&nbsp;    Collection&lt;IConsumer&gt; getNextConsumers();
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    /**
+<i>18</i>&nbsp;     * Gets the previous connected {@link IConsumer}s, which are accessible through this connector.
+<i>19</i>&nbsp;     *
+<i>20</i>&nbsp;     * @return The previous connected {@link IConsumer}s as {@link Collection} of {@link IConsumer}.
+<i>21</i>&nbsp;     */
+<i>22</i>&nbsp;    Collection&lt;IConsumer&gt; getPreviousConsumers();
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    /**
+<i>25</i>&nbsp;     * Gets the previous connected {@link IConsumer}s with the given type, which are accessible through this connector.
+<i>26</i>&nbsp;     *
+<i>27</i>&nbsp;     * @param consumerType    the street type the returned {@link IConsumer}s have
+<i>28</i>&nbsp;     * @return the previous connected {@link IConsumer}s with the given street type as {@link List} of {@link IConsumer}
+<i>29</i>&nbsp;     */
+<i>30</i>&nbsp;    List&lt;IConsumer&gt; getPreviousConsumers(ConsumerType consumerType);
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    /**
+<i>33</i>&nbsp;     * Returns the previous connected {@link IConsumer}s fo the given {@link IConsumer} of the given {@link ConsumerType} on its track
+<i>34</i>&nbsp;     *
+<i>35</i>&nbsp;     * @param consumer      a next {@link IConsumer} of the connector
+<i>36</i>&nbsp;     * @param consumerType    the {@link ConsumerType} the returned {@link IConsumer}s are of
+<i>37</i>&nbsp;     * @return              the next consumers as {@link IConsumer}
+<i>38</i>&nbsp;     */
+<i>39</i>&nbsp;    List&lt;IConsumer&gt; getPreviousTrackConsumers(IConsumer consumer, ConsumerType consumerType);
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    /**
+<i>42</i>&nbsp;     * Checks if the nextConsumer is on the same track as the currentConsumer
+<i>43</i>&nbsp;     *
+<i>44</i>&nbsp;     * @param currentConsumer     the {@link IConsumer} on the track, we&#39;re interested in
+<i>45</i>&nbsp;     * @param nextConsumer        the next {@link IConsumer}
+<i>46</i>&nbsp;     * @return                      true, if the next {@link IConsumer} is on the same track as the current, else false
+<i>47</i>&nbsp;     */
+<i>48</i>&nbsp;    boolean isNextConsumerOnSameTrackAsCurrent(IConsumer currentConsumer, IConsumer nextConsumer);
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    /**
+<i>51</i>&nbsp;     * Connects the two given {@link IConsumer}s to a track (used for precedence)
+<i>52</i>&nbsp;     *
+<i>53</i>&nbsp;     * @param firstConsumer   a previous {@link IConsumer} of the connector
+<i>54</i>&nbsp;     * @param secondConsumer  a next {@link IConsumer} of the connector
+<i>55</i>&nbsp;     */
+<i>56</i>&nbsp;    void initializeTrack(IConsumer firstConsumer, ConsumerType consumerTypeOfFirstConsumer, IConsumer secondConsumer, ConsumerType consumerTypeOfSecondConsumer);
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    /**
+<i>59</i>&nbsp;     * Returns the type of a {@link IConsumer} connected to the {@link IStreetConnector}
+<i>60</i>&nbsp;     *
+<i>61</i>&nbsp;     * @param consumer  the {@link IConsumer} the type of should be returned
+<i>62</i>&nbsp;     * @return          the type as {@link IConsumer}
+<i>63</i>&nbsp;     */
+<i>64</i>&nbsp;    ConsumerType getTypeOfConsumer(IConsumer consumer);
+<i>65</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-02-07 09:19</div>
+</div>
+</body>
+</html>

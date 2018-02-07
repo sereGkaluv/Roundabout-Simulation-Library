@@ -1,0 +1,129 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IRoute</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">at.fhv.itm3.s2.roundabout.api.entity</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IRoute (at.fhv.itm3.s2.roundabout.api.entity)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IRoute</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package at.fhv.itm3.s2.roundabout.api.entity;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import at.fhv.itm14.trafsim.model.entities.IConsumer;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;public interface IRoute {
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;    /**
+<i>10</i>&nbsp;     * Returns the route as unmodifiable list of {@link Street}.
+<i>11</i>&nbsp;     *
+<i>12</i>&nbsp;     * @return the route as unmodifiable list of {@link Street}.
+<i>13</i>&nbsp;     */
+<i>14</i>&nbsp;    List&lt;IConsumer&gt; getRoute();
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    /**
+<i>17</i>&nbsp;     * Returns an {@link Street} at the given index of the route.
+<i>18</i>&nbsp;     *
+<i>19</i>&nbsp;     * @param index the index the {@link Street} should be returned from the route.
+<i>20</i>&nbsp;     * @return an {@link Street} located at given index.
+<i>21</i>&nbsp;     */
+<i>22</i>&nbsp;    IConsumer getSectionAt(int index);
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    /**
+<i>25</i>&nbsp;     * Returns a start {@link Street} of the route.
+<i>26</i>&nbsp;     *
+<i>27</i>&nbsp;     * @return start {@link Street} of the route if present, otherwise null.
+<i>28</i>&nbsp;     */
+<i>29</i>&nbsp;    IConsumer getStartSection();
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    /**
+<i>32</i>&nbsp;     * Returns a destination {@link Street} of the route.
+<i>33</i>&nbsp;     *
+<i>34</i>&nbsp;     * @return start {@link Street} of the route if present, otherwise null.
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    IConsumer getDestinationSection();
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * Returns the number of {@link Street} in the route.
+<i>40</i>&nbsp;     *
+<i>41</i>&nbsp;     * @return the number of {@link Street} in the route as int.
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    int getNumberOfSections();
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    /**
+<i>46</i>&nbsp;     * Adds a new {@link Street} to the route.
+<i>47</i>&nbsp;     *
+<i>48</i>&nbsp;     * @param section the section that is added to the route at the end.
+<i>49</i>&nbsp;     */
+<i>50</i>&nbsp;    void addSection(IConsumer section);
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    /**
+<i>53</i>&nbsp;     * Checks if there are {@link Street}s in the route defined.
+<i>54</i>&nbsp;     *
+<i>55</i>&nbsp;     * @return true if there are {@link Street} in the route, otherwise false.
+<i>56</i>&nbsp;     */
+<i>57</i>&nbsp;    boolean isEmpty();
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    /**
+<i>60</i>&nbsp;     * Returns the index in the route of given {@link Street}
+<i>61</i>&nbsp;     *
+<i>62</i>&nbsp;     * @param streetSection is the {@link Street} from which the index should be returned
+<i>63</i>&nbsp;     * @return the index of streetSection in the route
+<i>64</i>&nbsp;     */
+<i>65</i>&nbsp;     int getIndexOfSection(IConsumer streetSection);
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    /**
+<i>68</i>&nbsp;     * Returns the {@link AbstractSource} source of the route
+<i>69</i>&nbsp;     *
+<i>70</i>&nbsp;     * @return  the source of the route as {@link AbstractSource}
+<i>71</i>&nbsp;     */
+<i>72</i>&nbsp;    AbstractSource getSource();
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    void addSource(AbstractSource source);
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    /**
+<i>77</i>&nbsp;     * Returns the {@link Street} sink of the route
+<i>78</i>&nbsp;     *
+<i>79</i>&nbsp;     * @return  the sink of the route as {@link Street}
+<i>80</i>&nbsp;     */
+<i>81</i>&nbsp;    AbstractSink getSink();
+<i>82</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-02-07 09:19</div>
+</div>
+</body>
+</html>

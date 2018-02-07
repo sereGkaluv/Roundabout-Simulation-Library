@@ -1,0 +1,130 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IDriverBehaviour</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">at.fhv.itm3.s2.roundabout.api.entity</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IDriverBehaviour (at.fhv.itm3.s2.roundabout.api.entity)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">IDriverBehaviour$$EnhancerByMockitoWithCGLIB$$63b46b5f</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package at.fhv.itm3.s2.roundabout.api.entity;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;public interface IDriverBehaviour {
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;    /**
+<i>6</i>&nbsp;     * Returns riding speed of {@code this} driver.
+<i>7</i>&nbsp;     *
+<i>8</i>&nbsp;     * @return the speed of the driver.
+<i>9</i>&nbsp;     */
+<i>10</i>&nbsp;    double getSpeed();
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    /**
+<i>13</i>&nbsp;     * Sets the riding speed of {@code this} driver.
+<i>14</i>&nbsp;     *
+<i>15</i>&nbsp;     * @param speed value to be set.
+<i>16</i>&nbsp;     * @throws IllegalArgumentException when given speed is not greater than or equal to 0.
+<i>17</i>&nbsp;     */
+<i>18</i>&nbsp;    void setSpeed(double speed)
+<i>19</i>&nbsp;    throws IllegalArgumentException;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    /**
+<i>22</i>&nbsp;     * Returns preferred min distance to next car held by {@code this} driver.
+<i>23</i>&nbsp;     *
+<i>24</i>&nbsp;     * @return the min distance to next car of the driver.
+<i>25</i>&nbsp;     */
+<i>26</i>&nbsp;    double getMinDistanceToNextCar();
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    /**
+<i>29</i>&nbsp;     * Sets preferred min distance to next car held by {@code this} driver.
+<i>30</i>&nbsp;     *
+<i>31</i>&nbsp;     * @param minDistanceToNextCar value to be set.
+<i>32</i>&nbsp;     * @throws IllegalArgumentException when given speed is not greater than 0.
+<i>33</i>&nbsp;     */
+<i>34</i>&nbsp;    void setMinDistanceToNextCar(double minDistanceToNextCar)
+<i>35</i>&nbsp;    throws IllegalArgumentException;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    /**
+<i>38</i>&nbsp;     * Returns preferred max distance to next car held by {@code this} driver.
+<i>39</i>&nbsp;     *
+<i>40</i>&nbsp;     * @return the max distance to next car of the driver.
+<i>41</i>&nbsp;     */
+<i>42</i>&nbsp;    double getMaxDistanceToNextCar();
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * Sets preferred max distance to next car held by {@code this} driver.
+<i>46</i>&nbsp;     *
+<i>47</i>&nbsp;     * @param maxDistanceToNextCar value to be set.
+<i>48</i>&nbsp;     * @throws IllegalArgumentException when given speed is not greater than 0.
+<i>49</i>&nbsp;     */
+<i>50</i>&nbsp;    void setMaxDistanceToNextCar(double maxDistanceToNextCar)
+<i>51</i>&nbsp;    throws IllegalArgumentException;
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    /**
+<i>54</i>&nbsp;     * Returns preferred merge factor of {@code this} driver.
+<i>55</i>&nbsp;     *
+<i>56</i>&nbsp;     * @return the merge factor of the driver.
+<i>57</i>&nbsp;     */
+<i>58</i>&nbsp;    double getMergeFactor();
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    /**
+<i>61</i>&nbsp;     * Sets the merge factor of {@code this} driver.
+<i>62</i>&nbsp;     *
+<i>63</i>&nbsp;     * @param mergeFactor value to be set.
+<i>64</i>&nbsp;     */
+<i>65</i>&nbsp;    void setMergeFactor(double mergeFactor);
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    /**
+<i>68</i>&nbsp;     * AccelerationFactor is used to simulate the acceleration time of a car in case of jam.
+<i>69</i>&nbsp;     *
+<i>70</i>&nbsp;     * @return accelerationFactor
+<i>71</i>&nbsp;     */
+<i>72</i>&nbsp;    double getAccelerationFactor();
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    /**
+<i>75</i>&nbsp;     * Sets the accelerationFactor which is used to simulate the acceleration time of a car in case of jam.
+<i>76</i>&nbsp;     *
+<i>77</i>&nbsp;     * @param accelerationFactor value to be set.
+<i>78</i>&nbsp;     */
+<i>79</i>&nbsp;    void setAccelerationFactor(double accelerationFactor);
+<i>80</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-02-07 09:19</div>
+</div>
+</body>
+</html>
