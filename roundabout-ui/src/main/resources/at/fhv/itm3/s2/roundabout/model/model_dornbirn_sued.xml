@@ -213,7 +213,7 @@
             <route fromComponentId="ro1" fromSourceId="so_s14_t2" toComponentId="ro1" toSinkId="sk_s9_t1" ratio="0.3"/>
             <route fromComponentId="ro1" fromSourceId="so_s14_t2" toComponentId="ro1" toSinkId="sk_s9_t2" ratio="0.367"/>
 
-            <route fromComponentId="ro1" fromSourceId="so_s15_t1" toComponentId="ro1" toSinkId="sk_15_t1" ratio="1.0"/>
+            <route fromComponentId="ro1" fromSourceId="so_s15_t1" toComponentId="ro1" toSinkId="sk_s15_t1" ratio="1.0"/>
 
             <route fromComponentId="ro1" fromSourceId="so_s18_t1" toComponentId="ro1" toSinkId="sk_s1_t1" ratio="0.25"/>
             <route fromComponentId="ro1" fromSourceId="so_s18_t1" toComponentId="ro1" toSinkId="sk_s4_t1" ratio="0.083"/>

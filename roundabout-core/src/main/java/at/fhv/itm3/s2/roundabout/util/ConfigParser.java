@@ -517,7 +517,6 @@ public class ConfigParser {
         for (Connector connector : component.getConnectors().getConnector()) {
             for (Track track : connector.getTrack()) {
                 if (track.getFromSectionId().equals(currentSectionId)) {
-                    final String fromComponentId = track.getFromComponentId() != null ? track.getFromComponentId() : component.getId();
                     final String toComponentId = track.getToComponentId() != null ? track.getToComponentId() : component.getId();
                     final String toSectionId = track.getToSectionId();
 
@@ -538,15 +537,17 @@ public class ConfigParser {
 
                             final Map<RoundaboutSink, Route> targetRoutes = ROUTE_REGISTRY.get(source);
                             if (!targetRoutes.containsKey(sink) || targetRoutes.get(sink).getNumberOfSections() > newRouteSections.size()) {
-                                final double flowRatio;
+                                double flowRatio = DEFAULT_ROUTE_RATIO;
                                 if (modelConfig.getComponents().getRoutes() != null) {
-                                    final Optional<Double> optionalRatio = modelConfig.getComponents().getRoutes().getRoute().stream().filter(r ->
-                                        fromComponentId.equals(r.getFromComponentId()) && source.getId().equals(r.getFromSourceId()) &&
-                                        toComponentId.equals(r.getToComponentId()) && sink.getId().equals(r.getToSinkId())
-                                    ).map(at.fhv.itm3.s2.roundabout.util.dto.Route::getRatio).findFirst();
-                                    flowRatio = optionalRatio.orElse(DEFAULT_ROUTE_RATIO);
-                                } else {
-                                    flowRatio = DEFAULT_ROUTE_RATIO;
+                                    for (at.fhv.itm3.s2.roundabout.util.dto.Route route : modelConfig.getComponents().getRoutes().getRoute()) {
+                                        final AbstractSource routeSource = SOURCE_REGISTRY.get(route.getFromComponentId()).get(route.getFromSourceId());
+                                        final RoundaboutSink routeSink = SINK_REGISTRY.get(route.getToComponentId()).get(route.getToSinkId());
+
+                                        if (source.equals(routeSource) && sink.equals(routeSink)) {
+                                            flowRatio = route.getRatio();
+                                            break;
+                                        }
+                                    }
                                 }
                                 targetRoutes.put(sink, new Route(source, newRouteSections, flowRatio));
                             }
