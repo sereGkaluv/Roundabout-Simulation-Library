@@ -1,0 +1,294 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RoundaboutSimulationModel</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">at.fhv.itm3.s2.roundabout</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RoundaboutSimulationModel (at.fhv.itm3.s2.roundabout)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RoundaboutSimulationModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    69.2%
+  </span>
+  <span class="absValue">
+    (9/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82.1%
+  </span>
+  <span class="absValue">
+    (23/ 28)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">RoundaboutSimulationModel$$EnhancerByMockitoWithCGLIB$$3af6c0c9</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    69.2%
+  </span>
+  <span class="absValue">
+    (9/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82.1%
+  </span>
+  <span class="absValue">
+    (23/ 28)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package at.fhv.itm3.s2.roundabout;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import at.fhv.itm14.trafsim.model.ModelFactory;
+<i>4</i>&nbsp;import desmoj.core.dist.ContDist;
+<i>5</i>&nbsp;import desmoj.core.dist.ContDistUniform;
+<i>6</i>&nbsp;import desmoj.core.simulator.Model;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.Random;
+<i>9</i>&nbsp;import java.util.concurrent.TimeUnit;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;public class RoundaboutSimulationModel extends Model {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    public static final double DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS = 3.5;
+<i>14</i>&nbsp;    public static final double DEFAULT_MAX_TIME_BETWEEN_CAR_ARRIVALS = 10.0;
+<i>15</i>&nbsp;    public static final double DEFAULT_MIN_DISTANCE_FACTOR_BETWEEN_CARS = 0.0;
+<i>16</i>&nbsp;    public static final double DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS = 1.0;
+<i>17</i>&nbsp;    public static final double DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS = 1;
+<i>18</i>&nbsp;    public static final double DEFAULT_STANDARD_CAR_ACCELERATION_TIME = 2;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    public final double minDistanceFactorBetweenCars;
+<i>21</i>&nbsp;    public final double maxDistanceFactorBetweenCars;
+<i>22</i>&nbsp;    public final double minTimeBetweenCarArrivals;
+<i>23</i>&nbsp;    public final double maxTimeBetweenCarArrivals;
+<i>24</i>&nbsp;    public final double mainArrivalRateForOneWayStreets;
+<i>25</i>&nbsp;    public final double standardCarAccelerationTime;
+<i>26</i>&nbsp;
+<b class="fc"><i>27</i>&nbsp;    private static final long MODEL_SEED = new Random().nextLong();</b>
+<b class="fc"><i>28</i>&nbsp;    private static final TimeUnit MODEL_TIME_UNIT = TimeUnit.SECONDS;</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    /**
+<i>31</i>&nbsp;     * Random number stream used to calculate a distance between two cars.
+<i>32</i>&nbsp;     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+<i>33</i>&nbsp;     */
+<i>34</i>&nbsp;    private ContDistUniform distanceFactorBetweenCars;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    private ContDist timeBetweenCarArrivalsOnOneWayStreets;
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * Random number stream used to draw a time between two car arrivals.
+<i>40</i>&nbsp;     * See {@link RoundaboutSimulationModel#init()} method for stream parameters.
+<i>41</i>&nbsp;     */
+<i>42</i>&nbsp;    private ContDistUniform timeBetweenCarArrivals;
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * Constructs a new RoundaboutSimulationModel
+<i>46</i>&nbsp;     *
+<i>47</i>&nbsp;     * @param model the model this model is part of (set to null when there is no such model)
+<i>48</i>&nbsp;     * @param name this model&#39;s name
+<i>49</i>&nbsp;     * @param showInReport flag to indicate if this model shall produce output to the report file
+<i>50</i>&nbsp;     * @param showInTrace flag to indicate if this model shall produce output to the trace file
+<i>51</i>&nbsp;     */
+<i>52</i>&nbsp;    public RoundaboutSimulationModel(
+<i>53</i>&nbsp;        Model model,
+<i>54</i>&nbsp;        String name,
+<i>55</i>&nbsp;        boolean showInReport,
+<i>56</i>&nbsp;        boolean showInTrace
+<i>57</i>&nbsp;    ) {
+<b class="nc"><i>58</i>&nbsp;        this(</b>
+<i>59</i>&nbsp;            model, name, showInReport, showInTrace,
+<i>60</i>&nbsp;            DEFAULT_MIN_TIME_BETWEEN_CAR_ARRIVALS, DEFAULT_MAX_TIME_BETWEEN_CAR_ARRIVALS
+<i>61</i>&nbsp;        );
+<b class="nc"><i>62</i>&nbsp;    }</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    /**
+<i>65</i>&nbsp;     * Constructs a new RoundaboutSimulationModel
+<i>66</i>&nbsp;     *
+<i>67</i>&nbsp;     * @param model the model this model is part of (set to null when there is no such model)
+<i>68</i>&nbsp;     * @param name this model&#39;s name
+<i>69</i>&nbsp;     * @param showInReport flag to indicate if this model shall produce output to the report file
+<i>70</i>&nbsp;     * @param showInTrace flag to indicate if this model shall produce output to the trace file
+<i>71</i>&nbsp;     */
+<i>72</i>&nbsp;    public RoundaboutSimulationModel(
+<i>73</i>&nbsp;        Model model,
+<i>74</i>&nbsp;        String name,
+<i>75</i>&nbsp;        boolean showInReport,
+<i>76</i>&nbsp;        boolean showInTrace,
+<i>77</i>&nbsp;        double minTimeBetweenCarArrivals,
+<i>78</i>&nbsp;        double maxTimeBetweenCarArrivals
+<i>79</i>&nbsp;    ) {
+<b class="fc"><i>80</i>&nbsp;        this(</b>
+<i>81</i>&nbsp;            model, name, showInReport, showInTrace,
+<i>82</i>&nbsp;            minTimeBetweenCarArrivals, maxTimeBetweenCarArrivals,
+<i>83</i>&nbsp;            DEFAULT_MIN_DISTANCE_FACTOR_BETWEEN_CARS, DEFAULT_MAX_DISTANCE_FACTOR_BETWEEN_CARS,
+<i>84</i>&nbsp;            DEFAULT_MAIN_ARRIVAL_RATE_FOR_ONE_WAY_STREETS,
+<i>85</i>&nbsp;            DEFAULT_STANDARD_CAR_ACCELERATION_TIME
+<i>86</i>&nbsp;        );
+<b class="fc"><i>87</i>&nbsp;    }</b>
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    /**
+<i>90</i>&nbsp;     * Constructs a new RoundaboutSimulationModel
+<i>91</i>&nbsp;     *
+<i>92</i>&nbsp;     * @param model the model this model is part of (set to null when there is no such model)
+<i>93</i>&nbsp;     * @param name this model&#39;s name
+<i>94</i>&nbsp;     * @param showInReport flag to indicate if this model shall produce output to the report file
+<i>95</i>&nbsp;     * @param showInTrace flag to indicate if this model shall produce output to the trace file
+<i>96</i>&nbsp;     */
+<i>97</i>&nbsp;    public RoundaboutSimulationModel(
+<i>98</i>&nbsp;        Model model,
+<i>99</i>&nbsp;        String name,
+<i>100</i>&nbsp;        boolean showInReport,
+<i>101</i>&nbsp;        boolean showInTrace,
+<i>102</i>&nbsp;        double minTimeBetweenCarArrivals,
+<i>103</i>&nbsp;        double maxTimeBetweenCarArrivals,
+<i>104</i>&nbsp;        double minDistanceFactorBetweenCars,
+<i>105</i>&nbsp;        double maxDistanceFactorBetweenCars,
+<i>106</i>&nbsp;        double mainArrivalRateForOneWayStreets,
+<i>107</i>&nbsp;        double standardCarAccelerationTime
+<i>108</i>&nbsp;    ) {
+<b class="fc"><i>109</i>&nbsp;        super(model, name, showInReport, showInTrace);</b>
+<i>110</i>&nbsp;
+<b class="fc"><i>111</i>&nbsp;        this.minTimeBetweenCarArrivals = minTimeBetweenCarArrivals;</b>
+<b class="fc"><i>112</i>&nbsp;        this.maxTimeBetweenCarArrivals = maxTimeBetweenCarArrivals;</b>
+<b class="fc"><i>113</i>&nbsp;        this.minDistanceFactorBetweenCars = minDistanceFactorBetweenCars;</b>
+<b class="fc"><i>114</i>&nbsp;        this.maxDistanceFactorBetweenCars = maxDistanceFactorBetweenCars;</b>
+<b class="fc"><i>115</i>&nbsp;        this.mainArrivalRateForOneWayStreets = mainArrivalRateForOneWayStreets;</b>
+<b class="fc"><i>116</i>&nbsp;        this.standardCarAccelerationTime = standardCarAccelerationTime;</b>
+<b class="fc"><i>117</i>&nbsp;    }</b>
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;    @Override
+<i>120</i>&nbsp;    public String description() {
+<b class="nc"><i>121</i>&nbsp;        return &quot;Roundabout simulation model&quot;;</b>
+<i>122</i>&nbsp;    }
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;    @Override
+<i>125</i>&nbsp;    public void doInitialSchedules() {
+<b class="fc"><i>126</i>&nbsp;    }</b>
+<i>127</i>&nbsp;
+<i>128</i>&nbsp;    @Override
+<i>129</i>&nbsp;    public void init() {
+<b class="fc"><i>130</i>&nbsp;        distanceFactorBetweenCars = new ContDistUniform(</b>
+<i>131</i>&nbsp;            this,
+<i>132</i>&nbsp;            &quot;DistanceFactorBetweenCarsStream&quot;,
+<i>133</i>&nbsp;            minDistanceFactorBetweenCars,
+<i>134</i>&nbsp;            maxDistanceFactorBetweenCars,
+<i>135</i>&nbsp;            true,
+<i>136</i>&nbsp;            false
+<i>137</i>&nbsp;        );
+<b class="fc"><i>138</i>&nbsp;        distanceFactorBetweenCars.setSeed(MODEL_SEED);</b>
+<i>139</i>&nbsp;
+<b class="fc"><i>140</i>&nbsp;        timeBetweenCarArrivals = new ContDistUniform(</b>
+<i>141</i>&nbsp;            this,
+<i>142</i>&nbsp;            &quot;TimeBetweenCarArrivalsStream&quot;,
+<i>143</i>&nbsp;                minTimeBetweenCarArrivals,
+<i>144</i>&nbsp;                maxTimeBetweenCarArrivals,
+<i>145</i>&nbsp;            true,
+<i>146</i>&nbsp;            false
+<i>147</i>&nbsp;        );
+<b class="fc"><i>148</i>&nbsp;        timeBetweenCarArrivals.setSeed(MODEL_SEED);</b>
+<i>149</i>&nbsp;
+<b class="fc"><i>150</i>&nbsp;        timeBetweenCarArrivalsOnOneWayStreets = ModelFactory.getInstance(this).createContDistConstant(mainArrivalRateForOneWayStreets);</b>
+<b class="fc"><i>151</i>&nbsp;    }</b>
+<i>152</i>&nbsp;
+<i>153</i>&nbsp;    /**
+<i>154</i>&nbsp;     * Returns a sample of the random stream {@link ContDistUniform} used to determine the distance factor between cars.
+<i>155</i>&nbsp;     *
+<i>156</i>&nbsp;     * @return a {@code distanceFactorBetweenCars} sample as double.
+<i>157</i>&nbsp;     */
+<i>158</i>&nbsp;    public double getRandomDistanceFactorBetweenCars() {
+<b class="fc"><i>159</i>&nbsp;        return distanceFactorBetweenCars.sample();</b>
+<i>160</i>&nbsp;    }
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;    /**
+<i>163</i>&nbsp;     * Returns a sample of the random stream {@link ContDistUniform} used to determine the time between car arrivals.
+<i>164</i>&nbsp;     *
+<i>165</i>&nbsp;     * @return a {@code timeBetweenCarArrivals} sample as double.
+<i>166</i>&nbsp;     */
+<i>167</i>&nbsp;    public double getRandomTimeBetweenCarArrivals() {
+<b class="fc"><i>168</i>&nbsp;        return timeBetweenCarArrivals.sample();</b>
+<i>169</i>&nbsp;    }
+<i>170</i>&nbsp;
+<i>171</i>&nbsp;    /**
+<i>172</i>&nbsp;     * Returns configured model {@link TimeUnit}.
+<i>173</i>&nbsp;     *
+<i>174</i>&nbsp;     * @return configured model {@link TimeUnit}.
+<i>175</i>&nbsp;     */
+<i>176</i>&nbsp;    public TimeUnit getModelTimeUnit() {
+<b class="fc"><i>177</i>&nbsp;        return MODEL_TIME_UNIT;</b>
+<i>178</i>&nbsp;    }
+<i>179</i>&nbsp;
+<i>180</i>&nbsp;    /**
+<i>181</i>&nbsp;     * Returns model current time in configured model {@link TimeUnit}.
+<i>182</i>&nbsp;     *
+<i>183</i>&nbsp;     * @return model current time.
+<i>184</i>&nbsp;     */
+<i>185</i>&nbsp;    public double getCurrentTime() {
+<b class="fc"><i>186</i>&nbsp;        return currentModel().getExperiment().getSimClock().getTime().getTimeAsDouble(getModelTimeUnit());</b>
+<i>187</i>&nbsp;    }
+<i>188</i>&nbsp;
+<i>189</i>&nbsp;    public ContDist getTimeBetweenCarArrivalsOnOneWayStreets() {
+<b class="nc"><i>190</i>&nbsp;        return timeBetweenCarArrivalsOnOneWayStreets;</b>
+<i>191</i>&nbsp;    }
+<i>192</i>&nbsp;
+<i>193</i>&nbsp;    /**
+<i>194</i>&nbsp;     * This method returns the acceleration time which is not influenced by driver behaviour.
+<i>195</i>&nbsp;     *
+<i>196</i>&nbsp;     * @return standardCarAccelerationTime
+<i>197</i>&nbsp;     */
+<i>198</i>&nbsp;    public double getStandardCarAccelerationTime(){
+<b class="nc"><i>199</i>&nbsp;        return standardCarAccelerationTime;</b>
+<i>200</i>&nbsp;    }
+<i>201</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-02-07 09:19</div>
+</div>
+</body>
+</html>

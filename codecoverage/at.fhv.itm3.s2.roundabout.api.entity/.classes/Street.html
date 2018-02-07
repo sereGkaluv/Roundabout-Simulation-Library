@@ -1,0 +1,309 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Street</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">at.fhv.itm3.s2.roundabout.api.entity</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Street (at.fhv.itm3.s2.roundabout.api.entity)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Street</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.9%
+  </span>
+  <span class="absValue">
+    (10/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95%
+  </span>
+  <span class="absValue">
+    (19/ 20)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Street$$FastClassByMockitoWithCGLIB$$cb690eb2</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    90.9%
+  </span>
+  <span class="absValue">
+    (10/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95%
+  </span>
+  <span class="absValue">
+    (19/ 20)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package at.fhv.itm3.s2.roundabout.api.entity;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
+<i>4</i>&nbsp;import desmoj.core.simulator.Model;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.util.List;
+<i>7</i>&nbsp;import java.util.Map;
+<i>8</i>&nbsp;import java.util.UUID;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public abstract class Street extends AbstractProSumer implements IEnteredCarCounter {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    private final String id;
+<i>13</i>&nbsp;    private long enteredCarsCounter;
+<i>14</i>&nbsp;    private long lostCarsCounter;
+<i>15</i>&nbsp;    private TrafficLight trafficLight;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    public Street(Model owner, String name, boolean showInTrace) {
+<b class="fc"><i>18</i>&nbsp;        this(owner, name, showInTrace, false);</b>
+<b class="fc"><i>19</i>&nbsp;    }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    public Street(Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
+<b class="fc"><i>22</i>&nbsp;        this(UUID.randomUUID().toString(), owner, name, showInTrace, trafficLightActive);</b>
+<b class="fc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    public Street(String id, Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
+<b class="fc"><i>26</i>&nbsp;        super(owner, name, showInTrace);</b>
+<i>27</i>&nbsp;
+<b class="fc"><i>28</i>&nbsp;        this.id = id;</b>
+<b class="fc"><i>29</i>&nbsp;        this.enteredCarsCounter = 0;</b>
+<b class="fc"><i>30</i>&nbsp;        this.lostCarsCounter = 0;</b>
+<i>31</i>&nbsp;
+<b class="fc"><i>32</i>&nbsp;        trafficLight = new TrafficLight(trafficLightActive);</b>
+<b class="fc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    public String getId() {
+<b class="nc"><i>36</i>&nbsp;        return id;</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * Gets total car counter passed via {@code this} {@link Street}.
+<i>41</i>&nbsp;     *
+<i>42</i>&nbsp;     * @return total car counter.
+<i>43</i>&nbsp;     */
+<i>44</i>&nbsp;    @Override
+<i>45</i>&nbsp;    public long getNrOfEnteredCars() {
+<b class="fc"><i>46</i>&nbsp;        return enteredCarsCounter;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    /**
+<i>50</i>&nbsp;     * Internal method for counter incrementation.
+<i>51</i>&nbsp;     */
+<i>52</i>&nbsp;    protected void incrementTotalCarCounter() {
+<b class="fc"><i>53</i>&nbsp;        this.enteredCarsCounter++;</b>
+<b class="fc"><i>54</i>&nbsp;    }</b>
+<i>55</i>&nbsp;
+<b class="fc"><i>56</i>&nbsp;    public long getNrOfLostCars() { return lostCarsCounter; }</b>
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;    protected void incrementLostCarsCounter() { this.lostCarsCounter++; }</b>
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    /**
+<i>61</i>&nbsp;     * Gets physical length of the street section.
+<i>62</i>&nbsp;     *
+<i>63</i>&nbsp;     * @return The length in meters.
+<i>64</i>&nbsp;     */
+<i>65</i>&nbsp;    public abstract double getLength();
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    /**
+<i>68</i>&nbsp;     * Adds a new car to the street section.
+<i>69</i>&nbsp;     *
+<i>70</i>&nbsp;     * @param car The car to add.
+<i>71</i>&nbsp;     */
+<i>72</i>&nbsp;    public abstract void addCar(ICar car);
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    /**
+<i>75</i>&nbsp;     * Gets first car in Section.
+<i>76</i>&nbsp;     *
+<i>77</i>&nbsp;     * @return first car in section.
+<i>78</i>&nbsp;     */
+<i>79</i>&nbsp;    public abstract ICar getFirstCar();
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    /**
+<i>82</i>&nbsp;     * Gets last car in Section.
+<i>83</i>&nbsp;     *
+<i>84</i>&nbsp;     * @return last car in section.
+<i>85</i>&nbsp;     */
+<i>86</i>&nbsp;    public abstract ICar getLastCar();
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;    /**
+<i>89</i>&nbsp;     * Returns car queue of this {@link Street}.
+<i>90</i>&nbsp;     *
+<i>91</i>&nbsp;     * @return unmodifiable car queue.
+<i>92</i>&nbsp;     * @throws IllegalStateException in case if queue equals null.
+<i>93</i>&nbsp;     */
+<i>94</i>&nbsp;    public abstract List&lt;ICar&gt; getCarQueue()
+<i>95</i>&nbsp;    throws IllegalStateException;
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    /**
+<i>98</i>&nbsp;     * Removes the first car of the queue and returns the first car.
+<i>99</i>&nbsp;     *
+<i>100</i>&nbsp;     * @return removed car.
+<i>101</i>&nbsp;     */
+<i>102</i>&nbsp;    public abstract ICar removeFirstCar();
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;    /**
+<i>105</i>&nbsp;     * Checks if the street section is empty.
+<i>106</i>&nbsp;     *
+<i>107</i>&nbsp;     * @return True if street section is empty.
+<i>108</i>&nbsp;     */
+<i>109</i>&nbsp;    public abstract boolean isEmpty();
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;    /**
+<i>112</i>&nbsp;     * Gets the next street connector if available.
+<i>113</i>&nbsp;     *
+<i>114</i>&nbsp;     * @return reference to next {@link IStreetConnector}.
+<i>115</i>&nbsp;     */
+<i>116</i>&nbsp;    public abstract IStreetConnector getNextStreetConnector();
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;    /**
+<i>119</i>&nbsp;     * Gets the previous street connector if available.
+<i>120</i>&nbsp;     *
+<i>121</i>&nbsp;     * @return reference to previous {@link IStreetConnector}.
+<i>122</i>&nbsp;     */
+<i>123</i>&nbsp;    public abstract IStreetConnector getPreviousStreetConnector();
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    /**
+<i>126</i>&nbsp;     * Sets the previous street connector
+<i>127</i>&nbsp;     *
+<i>128</i>&nbsp;     * @param previousStreetConnector street connector to be set
+<i>129</i>&nbsp;     */
+<i>130</i>&nbsp;    public abstract void setPreviousStreetConnector(IStreetConnector previousStreetConnector);
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;    /**
+<i>133</i>&nbsp;     *  Sets the next street connector
+<i>134</i>&nbsp;     *
+<i>135</i>&nbsp;     * @param nextStreetConnector street connector to be set
+<i>136</i>&nbsp;     */
+<i>137</i>&nbsp;    public abstract void setNextStreetConnector(IStreetConnector nextStreetConnector);
+<i>138</i>&nbsp;
+<i>139</i>&nbsp;    /**
+<i>140</i>&nbsp;     * Gets all car positions of the street section.
+<i>141</i>&nbsp;     *
+<i>142</i>&nbsp;     * @return unmodifiable map of car positions.
+<i>143</i>&nbsp;     */
+<i>144</i>&nbsp;    public abstract Map&lt;ICar, Double&gt; getCarPositions();
+<i>145</i>&nbsp;
+<i>146</i>&nbsp;    /**
+<i>147</i>&nbsp;     * Recalculates all car positions in the street section,
+<i>148</i>&nbsp;     * starting from the very first car to very last car in section.
+<i>149</i>&nbsp;     */
+<i>150</i>&nbsp;    public abstract void updateAllCarsPositions();
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;    /**
+<i>153</i>&nbsp;     * Checks if the first car in the street section is on the exit point.
+<i>154</i>&nbsp;     *
+<i>155</i>&nbsp;     * @return true if car is on exit point, otherwise false.
+<i>156</i>&nbsp;     */
+<i>157</i>&nbsp;    public abstract boolean isFirstCarOnExitPoint();
+<i>158</i>&nbsp;
+<i>159</i>&nbsp;    /**
+<i>160</i>&nbsp;     * Checks if first car in street section is able to enter the next section, depending on its predefined route.
+<i>161</i>&nbsp;     *
+<i>162</i>&nbsp;     * @return true = car can enter next section, false = car can not enter next section
+<i>163</i>&nbsp;     */
+<i>164</i>&nbsp;    public abstract boolean firstCarCouldEnterNextSection();
+<i>165</i>&nbsp;
+<i>166</i>&nbsp;    /**
+<i>167</i>&nbsp;     * Checks if there is enough space in the section, depending on the car&#39;s length.
+<i>168</i>&nbsp;     *
+<i>169</i>&nbsp;     * @param length length of the car
+<i>170</i>&nbsp;     * @return true = enough space, false = not enough space
+<i>171</i>&nbsp;     */
+<i>172</i>&nbsp;    public abstract boolean isEnoughSpace(double length);
+<i>173</i>&nbsp;
+<i>174</i>&nbsp;    /**
+<i>175</i>&nbsp;     * Moves the first car from the current section to the next section.
+<i>176</i>&nbsp;     * In background removes the first car (if there is one) from the queue and puts it into the
+<i>177</i>&nbsp;     * queue of the next {@link Street} present in car route.
+<i>178</i>&nbsp;     *
+<i>179</i>&nbsp;     * @throws IllegalStateException if car cannot move further e.g. next section is null.
+<i>180</i>&nbsp;     */
+<i>181</i>&nbsp;    public abstract void moveFirstCarToNextSection()
+<i>182</i>&nbsp;            throws IllegalStateException;
+<i>183</i>&nbsp;
+<i>184</i>&nbsp;    @Deprecated
+<i>185</i>&nbsp;    // TODO consider removal i think this logic can be packed into addCar method, otherwise consider rename to isCarAbleToEnter()
+<i>186</i>&nbsp;    public abstract boolean carCouldEnterNextSection();
+<i>187</i>&nbsp;
+<i>188</i>&nbsp;    /**
+<i>189</i>&nbsp;     * Returns if traffic light at end of the street is active or not.
+<i>190</i>&nbsp;     *
+<i>191</i>&nbsp;     * @return true = active
+<i>192</i>&nbsp;     */
+<i>193</i>&nbsp;    public boolean isTrafficLightActive() {
+<b class="fc"><i>194</i>&nbsp;        return trafficLight.isActive();</b>
+<i>195</i>&nbsp;    }
+<i>196</i>&nbsp;
+<i>197</i>&nbsp;    /**
+<i>198</i>&nbsp;     * Indicates whether the traffic light at the end of the street signals &quot;free to go&quot; (true) or &quot;stop&quot; (false), if it is active.
+<i>199</i>&nbsp;     * Otherwise it will always return true.
+<i>200</i>&nbsp;     *
+<i>201</i>&nbsp;     *  @return true = free to go
+<i>202</i>&nbsp;     */
+<i>203</i>&nbsp;    public boolean isTrafficLightFreeToGo() {
+<b class="fc"><i>204</i>&nbsp;        return !trafficLight.isActive() || trafficLight.isFreeToGo();</b>
+<i>205</i>&nbsp;    }
+<i>206</i>&nbsp;
+<i>207</i>&nbsp;    /**
+<i>208</i>&nbsp;     * Sets the traffic light state (free to go = true, stop = false).
+<i>209</i>&nbsp;     *
+<i>210</i>&nbsp;     * @param isFreeToGo set true if cars are free to go
+<i>211</i>&nbsp;     * @throws IllegalStateException if traffic light is inactive
+<i>212</i>&nbsp;     */
+<i>213</i>&nbsp;    public void setTrafficLightFreeToGo(boolean isFreeToGo) throws IllegalStateException {
+<b class="fc"><i>214</i>&nbsp;        trafficLight.setFreeToGo(isFreeToGo);</b>
+<b class="fc"><i>215</i>&nbsp;    }</b>
+<i>216</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-02-07 09:19</div>
+</div>
+</body>
+</html>

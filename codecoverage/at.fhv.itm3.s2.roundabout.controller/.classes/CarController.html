@@ -1,0 +1,160 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CarController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">at.fhv.itm3.s2.roundabout.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CarController (at.fhv.itm3.s2.roundabout.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CarController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    72.7%
+  </span>
+  <span class="absValue">
+    (8/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (27/ 36)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package at.fhv.itm3.s2.roundabout.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import at.fhv.itm14.trafsim.model.entities.Car;
+<i>4</i>&nbsp;import at.fhv.itm14.trafsim.model.entities.IConsumer;
+<i>5</i>&nbsp;import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+<i>6</i>&nbsp;import at.fhv.itm3.s2.roundabout.api.entity.Street;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.HashMap;
+<i>9</i>&nbsp;import java.util.LinkedList;
+<i>10</i>&nbsp;import java.util.List;
+<i>11</i>&nbsp;import java.util.Map;
+<i>12</i>&nbsp;
+<b class="nc"><i>13</i>&nbsp;public class CarController {</b>
+<i>14</i>&nbsp;
+<b class="fc"><i>15</i>&nbsp;    private static Map&lt;Car, ICar&gt; carToICarMap = new HashMap&lt;&gt;();</b>
+<b class="fc"><i>16</i>&nbsp;    private static Map&lt;ICar, Car&gt; iCarToCarMap = new HashMap&lt;&gt;();</b>
+<b class="fc"><i>17</i>&nbsp;    private static Map&lt;IConsumer, List&lt;ICar&gt;&gt; lostCarsMap = new HashMap&lt;&gt;();</b>
+<b class="fc"><i>18</i>&nbsp;    private static List&lt;ICar&gt; iCars = new LinkedList&lt;&gt;();</b>
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    public static void addCarMapping(Car car, ICar iCar) {
+<b class="fc"><i>21</i>&nbsp;        iCars.add(iCar);</b>
+<b class="fc"><i>22</i>&nbsp;        carToICarMap.put(car, iCar);</b>
+<b class="fc"><i>23</i>&nbsp;        iCarToCarMap.put(iCar, car);</b>
+<b class="fc"><i>24</i>&nbsp;    }</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    public static void removeCarMapping(Car car) {
+<b class="nc"><i>27</i>&nbsp;        ICar iCar = carToICarMap.get(car);</b>
+<b class="nc"><i>28</i>&nbsp;        carToICarMap.remove(car);</b>
+<b class="nc"><i>29</i>&nbsp;        iCarToCarMap.remove(iCar);</b>
+<b class="nc"><i>30</i>&nbsp;        iCars.remove(iCar);</b>
+<b class="nc"><i>31</i>&nbsp;    }</b>
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    public static void removeCarMapping(ICar iCar) {
+<b class="fc"><i>34</i>&nbsp;        Car car = iCarToCarMap.get(iCar);</b>
+<b class="fc"><i>35</i>&nbsp;        iCarToCarMap.remove(iCar);</b>
+<b class="fc"><i>36</i>&nbsp;        carToICarMap.remove(car);</b>
+<b class="fc"><i>37</i>&nbsp;        iCars.remove(car);</b>
+<b class="fc"><i>38</i>&nbsp;    }</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    public static ICar getICar(Car car) {
+<b class="fc"><i>41</i>&nbsp;        if (!carToICarMap.containsKey(car)) {</b>
+<b class="nc"><i>42</i>&nbsp;            throw new IllegalArgumentException(&quot;carToICarMap does not contain car&quot;);</b>
+<i>43</i>&nbsp;        }
+<i>44</i>&nbsp;
+<b class="fc"><i>45</i>&nbsp;        return carToICarMap.get(car);</b>
+<i>46</i>&nbsp;    }
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    public static Car getCar(ICar car) {
+<b class="fc"><i>49</i>&nbsp;        if (!iCarToCarMap.containsKey(car)) {</b>
+<b class="nc"><i>50</i>&nbsp;            throw new IllegalArgumentException(&quot;iCarToCarMap does not contain car&quot;);</b>
+<i>51</i>&nbsp;        }
+<i>52</i>&nbsp;
+<b class="fc"><i>53</i>&nbsp;        return iCarToCarMap.get(car);</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    public static void addLostCar(IConsumer consumer, ICar car) {
+<b class="fc"><i>57</i>&nbsp;        if (!lostCarsMap.containsKey(consumer)) {</b>
+<b class="fc"><i>58</i>&nbsp;            lostCarsMap.put(consumer, new LinkedList&lt;&gt;());</b>
+<i>59</i>&nbsp;        }
+<b class="fc"><i>60</i>&nbsp;        lostCarsMap.get(consumer).add(car);</b>
+<b class="fc"><i>61</i>&nbsp;    }</b>
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    public static int getNrOfCars() {
+<b class="nc"><i>64</i>&nbsp;        return iCars.size();</b>
+<i>65</i>&nbsp;    }
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    public static void clear() {
+<b class="fc"><i>68</i>&nbsp;        carToICarMap.clear();</b>
+<b class="fc"><i>69</i>&nbsp;        iCarToCarMap.clear();</b>
+<b class="fc"><i>70</i>&nbsp;        lostCarsMap.clear();</b>
+<b class="fc"><i>71</i>&nbsp;        iCars.clear();</b>
+<b class="fc"><i>72</i>&nbsp;    }</b>
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    public static List&lt;ICar&gt; getICars() {
+<b class="fc"><i>75</i>&nbsp;        return iCars;</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-02-07 09:19</div>
+</div>
+</body>
+</html>
