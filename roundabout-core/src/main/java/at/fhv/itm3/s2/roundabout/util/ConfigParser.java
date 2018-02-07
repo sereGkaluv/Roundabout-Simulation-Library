@@ -50,7 +50,6 @@ public class ConfigParser {
 
     private static final String INTERSECTION_SIZE = "INTERSECTION_SIZE";
     private static final String INTERSECTION_SERVICE_DELAY = "INTERSECTION_SERVICE_DELAY";
-    private static final String INTERSECTION_TRAVERSE_TIME = "INTERSECTION_TRAVERSE_TIME";
     private static final String CONTROLLER_GREEN_DURATION = "CONTROLLER_GREEN_DURATION";
     private static final String CONTROLLER_YELLOW_DURATION = "CONTROLLER_YELLOW_DURATION";
     private static final String CONTROLLER_PHASE_SHIFT_TIME = "CONTROLLER_PHASE_SHIFT_TIME";
@@ -388,7 +387,7 @@ public class ConfigParser {
 
         final IntersectionController intersectionController = IntersectionController.getInstance();
 
-        connectors.getConnector().forEach(connector -> {
+        connectors.getConnector().stream().sorted(Comparator.comparing(Connector::getId)).forEach(connector -> {
             final IntersectionPhase phase = new IntersectionPhase(1.0 / numberOfPhases, controllerYellowDuration);
             connector.getTrack().forEach(track -> {
                 // In direction.
@@ -576,9 +575,6 @@ public class ConfigParser {
                                 final Street toSection = resolveSection(toComponentId, toSectionId);
 
                                 final List<IConsumer> newRouteSections = new LinkedList<>(routeSections);
-//                                if (component.getType() == ComponentType.INTERSECTION) {
-//                                    newRouteSections.add((IConsumer) INTERSECTION_REGISTRY.get(component.getId()));
-//                                }
                                 newRouteSections.add(toSection);
 
                                 doDepthFirstSearch(source, newRouteSections, localComponent, modelConfig);

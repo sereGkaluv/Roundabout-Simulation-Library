@@ -182,7 +182,6 @@
             <parameters>
                 <parameter name="INTERSECTION_SIZE" value="16"/>
                 <parameter name="INTERSECTION_SERVICE_DELAY" value="1"/>
-                <parameter name="INTERSECTION_TRAVERSE_TIME" value="1"/>
                 <parameter name="CONTROLLER_GREEN_DURATION" value="22.5"/>
                 <parameter name="CONTROLLER_YELLOW_DURATION" value="7.5"/>
                 <parameter name="CONTROLLER_PHASE_SHIFT_TIME" value="0.1"/>
