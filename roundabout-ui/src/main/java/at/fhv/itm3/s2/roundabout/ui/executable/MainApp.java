@@ -1,6 +1,7 @@
 package at.fhv.itm3.s2.roundabout.ui.executable;
 
 
+import at.fhv.itm3.s2.roundabout.controller.CarController;
 import at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController;
 import at.fhv.itm3.s2.roundabout.ui.util.ViewLoader;
 import at.fhv.itm3.s2.roundabout.util.ConfigParser;
@@ -86,6 +87,7 @@ public class MainApp extends Application {
                     experiment.report();
                 }
                 experiment.finish();
+                CarController.clear();
             });
             mainViewController.setPauseRunnable(experiment::stop);
             mainViewController.setDoStepRunnable(() -> {
