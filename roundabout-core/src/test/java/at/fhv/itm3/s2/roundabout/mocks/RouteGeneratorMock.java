@@ -14,15 +14,13 @@ import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
 import at.fhv.itm3.s2.roundabout.entity.*;
 import org.mockito.Mockito;
 
-import static org.mockito.Matchers.anyDouble;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import static at.fhv.itm3.s2.roundabout.mocks.RouteType.*;
-import static org.mockito.Matchers.notNull;
+import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.when;
 
 public class RouteGeneratorMock {
@@ -101,7 +99,7 @@ public class RouteGeneratorMock {
         );
 
         IRoute route = new Route();
-        route.addSource(source1);
+        route.setSource(source1);
         route.addSection(street1_1);
         route.addSection(street1_2);
         route.addSection(roundaboutSink1);
@@ -151,7 +149,7 @@ public class RouteGeneratorMock {
         );
 
         IRoute route = new Route();
-        route.addSource(source1);
+        route.setSource(source1);
         route.addSection(street1_1);
         route.addSection(street1_2);
         route.addSection(roundaboutSinkSpyMock);
@@ -234,7 +232,7 @@ public class RouteGeneratorMock {
 
         // initialize route
         IRoute route = new Route();
-        route.addSource(source);
+        route.setSource(source);
         route.addSection(street1);
         route.addSection(intersection);
         route.addSection(street2);
@@ -292,13 +290,13 @@ public class RouteGeneratorMock {
         AbstractSource source2 = new RoundaboutSourceMock(model, "", false, street2_1, 1, this, RouteType.ONE_CAR_CHANGES_TRACK);
 
         IRoute route1 = new Route();
-        route1.addSource(source1);
+        route1.setSource(source1);
         route1.addSection(street1_1);
         route1.addSection(street1_2);
         route1.addSection(sink1);
 
         IRoute route2 = new Route();
-        route2.addSource(source2);
+        route2.setSource(source2);
         route2.addSection(street2_1);
         route2.addSection(street1_2);
         route2.addSection(sink1);
@@ -364,7 +362,7 @@ public class RouteGeneratorMock {
         );
 
         IRoute route = new Route();
-        route.addSource(source1);
+        route.setSource(source1);
         route.addSection(street1);
         route.addSection(street2);
         route.addSection(street3);
@@ -462,7 +460,7 @@ public class RouteGeneratorMock {
 
         // initialize route
         IRoute route = new Route();
-        route.addSource(source);
+        route.setSource(source);
         route.addSection(street1);
         route.addSection(intersection);
         route.addSection(street2);
@@ -521,13 +519,13 @@ public class RouteGeneratorMock {
         AbstractSource source2 = new RoundaboutSourceMock(model, "", false, street1_1, 4, this, RouteType.STOPS_FOUR_CARS_STAY_ON_TRACK);
 
         IRoute route1 = new Route();
-        route1.addSource(source1);
+        route1.setSource(source1);
         route1.addSection(street2_1);
         route1.addSection(street1_2);
         route1.addSection(sink1);
 
         IRoute route2 = new Route();
-        route2.addSource(source2);
+        route2.setSource(source2);
         route2.addSection(street1_1);
         route2.addSection(street1_2);
         route2.addSection(sink1);

@@ -1,7 +1,10 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
 import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
-import at.fhv.itm3.s2.roundabout.api.entity.*;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
+import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
+import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
 import at.fhv.itm3.s2.roundabout.mocks.RoundaboutSinkMock;
 import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;

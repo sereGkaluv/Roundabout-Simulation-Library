@@ -2,48 +2,50 @@ package at.fhv.itm3.s2.roundabout.api.entity;
 
 import desmoj.core.simulator.Model;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public interface IRoundaboutStructure {
 
     /**
-     * Add a street connector to the structure.
+     * Add a collection of street connectors to the structure.
      * Structure setup needs to be done before.
      *
-     * @param streetConnector street connector to be added
+     * @param streetConnector street connectors to be added
      */
-    void addStreetConnector(IStreetConnector streetConnector);
+    void addStreetConnectors(Collection<? extends IStreetConnector> streetConnector);
 
     /**
-     * Add a route to the structure.
+     * Add a collection of routes to the structure.
      * Structure setup needs to be done before.
      *
-     * @param route route to be added
+     * @param routes routes to be added
      */
-    void addRoute(IRoute route);
+    void addRoutes(Collection<? extends IRoute> routes);
 
     /**
-     * Add a street to the structure.
+     * Add a collection of streets to the structure.
      * Structure setup needs to be done before.
      *
-     * @param street street to be added
+     * @param streets streets to be added
      */
-    void addStreet(Street street);
+    void addStreets(Collection<? extends Street> streets);
 
     /**
-     * Adds a sink to the structure.
+     * Adds a collection of sinks to the structure.
      *
-     * @param sink The sink to be added.
+     * @param sinks The sinks to be added.
      */
-    void addSink(AbstractSink sink);
+    void addSinks(Collection<? extends AbstractSink> sinks);
 
     /**
-     * Adds a source to the structure.
+     * Adds a collection of sources to the structure.
      *
-     * @param source The source to be added.
+     * @param sources The source to be added.
      */
-    void addSource(AbstractSource source);
+    void addSources(Collection<? extends AbstractSource> sources);
 
     /**
      * Add a configuration parameter to the structure.
@@ -66,7 +68,7 @@ public interface IRoundaboutStructure {
      *
      * @return routes of structure
      */
-    Set<IRoute> getRoutes();
+    Map<AbstractSource, List<IRoute>> getRoutes();
 
     /**
      * Get all streets of the structure.
@@ -84,6 +86,11 @@ public interface IRoundaboutStructure {
      * Gets all sources from the structure.
      */
     Set<AbstractSource> getSources();
+
+    /**
+     * Gets all roundabout inlets as {@link Street}
+     */
+    Set<Street> getRoundaboutInlets();
 
     /**
      * Get all parameters of the structure.
