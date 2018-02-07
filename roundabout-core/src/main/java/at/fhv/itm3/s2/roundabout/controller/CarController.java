@@ -34,7 +34,7 @@ public class CarController {
         Car car = iCarToCarMap.get(iCar);
         iCarToCarMap.remove(iCar);
         carToICarMap.remove(car);
-        iCars.remove(car);
+        iCars.remove(iCar);
     }
 
     public static ICar getICar(Car car) {

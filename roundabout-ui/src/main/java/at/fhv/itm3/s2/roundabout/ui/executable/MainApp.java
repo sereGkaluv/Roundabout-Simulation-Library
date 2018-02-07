@@ -144,8 +144,15 @@ public class MainApp extends Application {
             //set real time, default value is 0
             experiment.setExecutionSpeedRate(executionSpeedRateSupplier.get());
 
+            final long time = System.currentTimeMillis();
+            System.out.println("Start: " + System.currentTimeMillis());
+
             // Starting experiment
             experiment.start();
+
+            final long finishTime = System.currentTimeMillis();
+            System.out.println("Logic Stop: " + finishTime);
+            System.out.println("Time:" + (finishTime - time));
         };
     }
 
