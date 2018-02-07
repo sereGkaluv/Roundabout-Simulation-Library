@@ -15,7 +15,7 @@
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="btnFinishSimulation" text="Finish">
+            <Button fx:id="btnGenReportSimulation" text="Generate report">
                 <graphic>
                     <ImageView>
                         <Image url="@../img/finish.png" />
@@ -49,7 +49,7 @@
                         <Font name="System Bold" size="9.0" />
                     </font>
                 </Label>
-                <Slider fx:id="sliderSimSpeed" />
+                <Slider fx:id="sliderSimSpeed" minWidth="350"/>
             </VBox>
             <Pane HBox.hgrow="ALWAYS" />
             <Label fx:id="lblProgress" />

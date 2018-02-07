@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class MainViewController extends JfxController {
     private static final BufferedImageTranscoder BUFFERED_IMAGE_TRANSCODER = new BufferedImageTranscoder();
 
     @FXML private Button btnStartSimulation;
-    @FXML private Button btnFinishSimulation;
+    @FXML private Button btnGenReportSimulation;
     @FXML private Button btnPauseSimulation;
     @FXML private Button btnProceedSimulation;
     @FXML private Button btnDoStepOfSimulation;
@@ -74,8 +73,8 @@ public class MainViewController extends JfxController {
         btnStartSimulation.managedProperty().bind(IS_SIMULATION_RUNNING.not());
         btnStartSimulation.visibleProperty().bind(btnStartSimulation.managedProperty());
 
-        btnFinishSimulation.managedProperty().bind(IS_SIMULATION_RUNNING);
-        btnFinishSimulation.visibleProperty().bind(btnFinishSimulation.managedProperty());
+        btnGenReportSimulation.managedProperty().bind(IS_SIMULATION_RUNNING);
+        btnGenReportSimulation.visibleProperty().bind(btnGenReportSimulation.managedProperty());
 
         btnPauseSimulation.disableProperty().bind(IS_SIMULATION_RUNNING.and(IS_SIMULATION_PAUSED));
         btnPauseSimulation.managedProperty().bind(IS_SIMULATION_RUNNING);
@@ -99,7 +98,7 @@ public class MainViewController extends JfxController {
         sliderSimSpeed.visibleProperty().bind(sliderSimSpeed.managedProperty());
         sliderSimSpeed.valueProperty().bindBidirectional(CURRENT_SIM_SPEED);
 
-        lblCurrentSimSpeed.textProperty().bind(Bindings.format("Slowdown factor: %.2f", CURRENT_SIM_SPEED));
+        lblCurrentSimSpeed.textProperty().bind(Bindings.format("Simulation factor (0 - max speed, 0 < x from slow to fast) : %.2f", CURRENT_SIM_SPEED));
         lblCurrentSimSpeed.managedProperty().bind(sliderSimSpeed.managedProperty());
         lblCurrentSimSpeed.visibleProperty().bind(sliderSimSpeed.visibleProperty());
 
@@ -125,7 +124,7 @@ public class MainViewController extends JfxController {
             new DaemonThreadFactory().newThread(startRunnable).start();
         });
 
-        btnFinishSimulation.setOnAction(e -> {
+        btnGenReportSimulation.setOnAction(e -> {
             IS_SIMULATION_RUNNING.set(false);
             btnStartSimulation.setDisable(true);
             new DaemonThreadFactory().newThread(finishRunnable).start();

@@ -23,12 +23,6 @@ public class StatsViewController extends JfxController {
 
     private static final String KEY_FORMAT = "%s%s";
 
-    private static final String SOURCE_ID_SUFFIX = "_id";
-    private static final String SOURCE_IS_SUFFIX = "_is";
-    private static final String SOURCE_PS_SUFFIX = "_ps";
-
-    private static final String SINK_ID_SUFFIX = "_id";
-    private static final String SINK_PS_SUFFIX = "_id";
     private static final String SINK_MIN_SUFFIX = "_min";
     private static final String SINK_AVG_SUFFIX = "_avg";
     private static final String SINK_MAX_SUFFIX = "_max";
@@ -44,8 +38,6 @@ public class StatsViewController extends JfxController {
     private final Map<String, Double> sinkMinStats = new HashMap<>();
     private final Map<String, Double> sinkAvgStats = new HashMap<>();
     private final Map<String, Double> sinkMaxStats = new HashMap<>();
-
-    private final Map<String, Label> labelMap = new HashMap<>();
 
     @FXML private Label lblStatsTitle;
 
@@ -72,24 +64,18 @@ public class StatsViewController extends JfxController {
 
     private void generateStreetSectionLabels(Collection<StreetSection> streetSections) {
         streetSections.stream().sorted(Comparator.comparing(StreetSection::getId)).forEach(streetSection -> {
-            final String sourceId = String.format(KEY_FORMAT, streetSection.getId(), SOURCE_ID_SUFFIX);
-            final String sourceIS = String.format(KEY_FORMAT, streetSection.getId(), SOURCE_IS_SUFFIX);
-            final String sourcePS = String.format(KEY_FORMAT, streetSection.getId(), SOURCE_PS_SUFFIX);
 
             final Label lblSourceId = new Label(streetSection.getId());
             final Rectangle trafficLight = new Rectangle(TRAFFIC_LIGHT_INDICATOR_SIZE, TRAFFIC_LIGHT_INDICATOR_SIZE, Color.GRAY);
             trafficLight.setStroke(Color.BLACK);
             lblSourceId.setGraphic(trafficLight);
             sectionIdContainer.getChildren().add(lblSourceId);
-            labelMap.put(sourceId, lblSourceId);
 
             final Label lblSourceIS = new Label(NOT_AVAILABLE);
             sectionISContainer.getChildren().add(lblSourceIS);
-            labelMap.put(sourceIS, lblSourceIS);
 
             final Label lblSourcePS = new Label(NOT_AVAILABLE);
             sectionPSContainer.getChildren().add(lblSourcePS);
-            labelMap.put(sourcePS, lblSourcePS);
 
             streetSection.addObserver(ObserverType.TRAFFIC_LIGHT, ((o, arg) -> {
                 if (streetSection.isTrafficLightFreeToGo()) {
@@ -133,8 +119,6 @@ public class StatsViewController extends JfxController {
         final Label lblMaxAverageSink = new Label(NOT_AVAILABLE);
 
         sinks.stream().sorted(Comparator.comparing(RoundaboutSink::getId)).forEach(sink -> {
-            final String sinkId = String.format(KEY_FORMAT, sink.getId(), SINK_ID_SUFFIX);
-            final String sinkPS = String.format(KEY_FORMAT, sink.getId(), SINK_PS_SUFFIX);
             final String sinkMin = String.format(KEY_FORMAT, sink.getId(), SINK_MIN_SUFFIX);
             final String sinkAvg = String.format(KEY_FORMAT, sink.getId(), SINK_AVG_SUFFIX);
             final String sinkMax = String.format(KEY_FORMAT, sink.getId(), SINK_MAX_SUFFIX);
@@ -144,23 +128,18 @@ public class StatsViewController extends JfxController {
             trafficLight.setStroke(Color.BLACK);
             lblSinkId.setGraphic(trafficLight);
             sinkIdContainer.getChildren().add(lblSinkId);
-            labelMap.put(sinkId, lblSinkId);
 
             final Label lblSinkPS = new Label(NOT_AVAILABLE);
             sinkPSContainer.getChildren().add(lblSinkPS);
-            labelMap.put(sinkPS, lblSinkPS);
 
             final Label lblSinkMin = new Label(NOT_AVAILABLE);
             sinkMinContainer.getChildren().add(lblSinkMin);
-            labelMap.put(sinkMin, lblSinkMin);
 
             final Label lblSinkAvg = new Label(NOT_AVAILABLE);
             sinkAvgContainer.getChildren().add(lblSinkAvg);
-            labelMap.put(sinkAvg, lblSinkAvg);
 
             final Label lblSinkMax = new Label(NOT_AVAILABLE);
             sinkMaxContainer.getChildren().add(lblSinkMax);
-            labelMap.put(sinkMax, lblSinkMax);
 
             sink.addObserver(ObserverType.TRAFFIC_LIGHT, ((o, arg) -> {
                 if (sink.isTrafficLightFreeToGo()) {
