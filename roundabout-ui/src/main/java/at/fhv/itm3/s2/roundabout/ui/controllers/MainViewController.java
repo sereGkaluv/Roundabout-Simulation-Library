@@ -123,6 +123,7 @@ public class MainViewController extends JfxController {
         stackPane.minWidthProperty().bind(borderPaneContainer.prefWidthProperty().subtract(hBoxContainer.widthProperty()));
         imageView.fitWidthProperty().bind(stackPane.widthProperty());
         imageView.fitHeightProperty().bind(stackPane.heightProperty());
+
         initButtonListeners();
     }
 
