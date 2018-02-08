@@ -45,6 +45,7 @@ public class MainViewController extends JfxController {
 
     private static final BufferedImageTranscoder BUFFERED_IMAGE_TRANSCODER = new BufferedImageTranscoder();
 
+
     @FXML private Button btnStartSimulation;
     @FXML private Button btnGenReportSimulation;
     @FXML private Button btnPauseSimulation;
@@ -55,7 +56,8 @@ public class MainViewController extends JfxController {
     @FXML private Slider sliderSimSpeed;
     @FXML private Label lblProgress;
     @FXML private ProgressBar progressBar;
-    @FXML private Pane stackPane;
+    @FXML private StackPane stackPane;
+    @FXML private Pane drawPane;
     @FXML private ImageView imageView;
     @FXML private HBox hBoxContainer;
     @FXML private VBox vBoxContainer;
@@ -119,7 +121,6 @@ public class MainViewController extends JfxController {
         }
 
         stackPane.minWidthProperty().bind(borderPaneContainer.prefWidthProperty().subtract(hBoxContainer.widthProperty()));
-        //imageView.layoutYProperty().bind((stackPane.heightProperty().subtract(imageView.getImage().heightProperty())).divide(2));
         imageView.fitWidthProperty().bind(stackPane.widthProperty());
         imageView.fitHeightProperty().bind(stackPane.heightProperty());
         initButtonListeners();
@@ -180,7 +181,7 @@ public class MainViewController extends JfxController {
 //                Circle car = new Circle(Math.abs(new Random().nextDouble() * 400), Math.abs(new Random().nextDouble() * 400) , 2);
 //                car.setFill(Color.GREEN);
 //
-//                Platform.runLater(() -> stackPane.getChildren().add(car));
+//                Platform.runLater(() -> drawPane.getChildren().add(car));
 //            }));
 
             viewLoader.getController().generateStatLabels(component.getName(), componentStreetSections, componentSinks);

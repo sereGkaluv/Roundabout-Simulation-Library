@@ -17,6 +17,8 @@
 <?import javafx.scene.text.Font?>
 
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
 <BorderPane fx:id="borderPaneContainer" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.itm3.s2.roundabout.ui.controllers.MainViewController">
     <top>
         <ToolBar>
@@ -69,11 +71,16 @@
         </ToolBar>
     </top>
     <center>
-        <StackPane fx:id="stackPane" style="-fx-background-color: lightgray;">
-            <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../img/progress.gif" />
-            </ImageView>
-        </StackPane>
+        <AnchorPane>
+            <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+                       fx:id="stackPane" style="-fx-background-color: lightgray;" >
+                <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../img/progress.gif" />
+                </ImageView>
+            </StackPane>
+            <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+                  fx:id="drawPane" />
+        </AnchorPane>
     </center>
     <right>
         <HBox fx:id="hBoxContainer">
