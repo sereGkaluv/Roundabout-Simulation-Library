@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -39,7 +40,7 @@ public class StatsViewController extends JfxController {
     private final Map<String, Double> sinkAvgStats = new HashMap<>();
     private final Map<String, Double> sinkMaxStats = new HashMap<>();
 
-    @FXML private Label lblStatsTitle;
+    @FXML private TitledPane paneStatsTitle;
 
     @FXML private VBox sectionIdContainer;
     @FXML private VBox sectionISContainer;
@@ -56,7 +57,7 @@ public class StatsViewController extends JfxController {
     }
 
     public void generateStatLabels(String title, Collection<StreetSection> streetSections, Collection<RoundaboutSink> sinks) {
-        Platform.runLater(() -> lblStatsTitle.setText(title));
+        Platform.runLater(() -> paneStatsTitle.setText(title));
 
         generateStreetSectionLabels(streetSections);
         generateSinkLabels(sinks);

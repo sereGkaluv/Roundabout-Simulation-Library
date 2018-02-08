@@ -1,5 +1,6 @@
 package at.fhv.itm3.s2.roundabout.ui.controllers;
 
+import at.fhv.itm3.s2.roundabout.api.util.observable.ObserverType;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.ui.controllers.core.JfxController;
@@ -14,13 +15,11 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.logging.log4j.LogManager;
@@ -30,10 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainViewController extends JfxController {
 
@@ -59,8 +55,12 @@ public class MainViewController extends JfxController {
     @FXML private Slider sliderSimSpeed;
     @FXML private Label lblProgress;
     @FXML private ProgressBar progressBar;
+    @FXML private Pane stackPane;
     @FXML private ImageView imageView;
     @FXML private HBox hBoxContainer;
+    @FXML private VBox vBoxContainer;
+    @FXML private ScrollPane scrollPane;
+    @FXML private ScrollBar scrollBarStats;
 
     private Runnable startRunnable;
     private Runnable finishRunnable;
@@ -106,15 +106,22 @@ public class MainViewController extends JfxController {
         lblProgress.managedProperty().bind(IS_SIMULATION_RUNNING);
         lblProgress.visibleProperty().bind(lblProgress.managedProperty());
 
-        imageView.fitWidthProperty().bind(borderPaneContainer.widthProperty());
+        scrollBarStats.minProperty().bind(scrollPane.vminProperty());
+        scrollBarStats.maxProperty().bind(scrollPane.vmaxProperty());
+        scrollBarStats.valueProperty().bindBidirectional(scrollPane.vvalueProperty());
+
         try (InputStream file = getClass().getResourceAsStream("/at/fhv/itm3/s2/roundabout/ui/img/back.svg")) {
-            TranscoderInput transIn = new TranscoderInput(file);
+            final TranscoderInput transIn = new TranscoderInput(file);
             BUFFERED_IMAGE_TRANSCODER.transcode(transIn, null);
-            imageView.setImage(SwingFXUtils.toFXImage(BUFFERED_IMAGE_TRANSCODER.getBufferedImage(), null));
+            Platform.runLater(() -> imageView.setImage(SwingFXUtils.toFXImage(BUFFERED_IMAGE_TRANSCODER.getBufferedImage(), null)));
         } catch (IOException | TranscoderException e) {
             LOGGER.error("Error occurs while loading background SVG.", e);
         }
 
+        stackPane.minWidthProperty().bind(borderPaneContainer.prefWidthProperty().subtract(hBoxContainer.widthProperty()));
+        //imageView.layoutYProperty().bind((stackPane.heightProperty().subtract(imageView.getImage().heightProperty())).divide(2));
+        imageView.fitWidthProperty().bind(stackPane.widthProperty());
+        imageView.fitHeightProperty().bind(stackPane.heightProperty());
         initButtonListeners();
     }
 
@@ -151,7 +158,7 @@ public class MainViewController extends JfxController {
     }
 
     public void clearComponentStatContainers() {
-        Platform.runLater(() -> hBoxContainer.getChildren().clear());
+        Platform.runLater(() -> vBoxContainer.getChildren().clear());
     }
 
     public void generateComponentStatContainers(
@@ -169,8 +176,15 @@ public class MainViewController extends JfxController {
             final Collection<StreetSection> componentStreetSections = streetSectionMap != null ? new ArrayList<>(streetSectionMap.values()) : new ArrayList<>();
             final Collection<RoundaboutSink> componentSinks = sinkMap != null ? new ArrayList<>(sinkMap.values()) : new ArrayList<>();
 
+//            componentStreetSections.forEach(streetSection -> streetSection.addObserver(ObserverType.CAR_POSITION, (o, arg) -> {
+//                Circle car = new Circle(Math.abs(new Random().nextDouble() * 400), Math.abs(new Random().nextDouble() * 400) , 2);
+//                car.setFill(Color.GREEN);
+//
+//                Platform.runLater(() -> stackPane.getChildren().add(car));
+//            }));
+
             viewLoader.getController().generateStatLabels(component.getName(), componentStreetSections, componentSinks);
-            Platform.runLater(() -> hBoxContainer.getChildren().add(statNode));
+            Platform.runLater(() -> vBoxContainer.getChildren().add(statNode));
         });
     }
 

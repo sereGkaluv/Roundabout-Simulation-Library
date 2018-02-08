@@ -1,3 +1,25 @@
 .button:hover {
     -fx-background-color: rgba(30,144,255,0.3);
 }
+
+.table-view {
+    -fx-background-color: #F4F4F4;
+}
+
+.scroll-pane, .scroll-pane:focused, .list-view, .list-view:focused, .table-view, .table-view:focused {
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0, 0, 0, 2;
+}
+
+.progress {
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image: url("../img/progress.gif");
+}
+
+.searchBox {
+    -fx-background-color: #E1E1E1;
+    -fx-border-color: #CFCFCF;
+}
