@@ -11,11 +11,17 @@ public class BufferedImageTranscoder extends ImageTranscoder {
 
     private BufferedImage img = null;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BufferedImage createImage(int width, int height) {
         return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void writeImage(BufferedImage img, TranscoderOutput to)
     throws TranscoderException {

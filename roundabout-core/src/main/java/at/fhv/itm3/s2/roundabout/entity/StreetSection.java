@@ -104,11 +104,17 @@ public class StreetSection extends Street {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getLength() {
         return length;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addCar(ICar iCar) {
         if (carQueue == null) {
@@ -147,6 +153,9 @@ public class StreetSection extends Street {
         carObserver.notifyObservers(iCar);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void trafficLightActiveAndJamInNextSection(){
         if (this.isTrafficLightActive() && this.isTrafficLightTriggeredByJam()) {
@@ -175,12 +184,18 @@ public class StreetSection extends Street {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ICar removeFirstCar() {
         incrementLeftCarCounter();
         return carQueue.removeFirst();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ICar getFirstCar() {
         final List<ICar> carQueue = getCarQueue();
@@ -191,6 +206,9 @@ public class StreetSection extends Street {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ICar getLastCar() {
         final List<ICar> carQueue = getCarQueue();
@@ -201,6 +219,9 @@ public class StreetSection extends Street {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ICar> getCarQueue()
     throws IllegalStateException {
@@ -211,37 +232,58 @@ public class StreetSection extends Street {
         return Collections.unmodifiableList(carQueue);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         final List<ICar> carQueue = getCarQueue();
         return carQueue.isEmpty();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IStreetConnector getNextStreetConnector() {
         return nextStreetConnector;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IStreetConnector getPreviousStreetConnector() {
         return previousStreetConnector;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPreviousStreetConnector(IStreetConnector previousStreetConnector) {
         this.previousStreetConnector = previousStreetConnector;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setNextStreetConnector(IStreetConnector nextStreetConnector) {
         this.nextStreetConnector = nextStreetConnector;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<ICar, Double> getCarPositions() {
         return Collections.unmodifiableMap(carPositions);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateAllCarsPositions() {
         final double currentTime = getRoundaboutModel().getCurrentTime();
@@ -308,6 +350,9 @@ public class StreetSection extends Street {
         carPositionObserver.notifyObservers();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isFirstCarOnExitPoint() {
         final ICar firstCar = getFirstCar();
@@ -318,6 +363,9 @@ public class StreetSection extends Street {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean firstCarCouldEnterNextSection() {
         updateAllCarsPositions();
@@ -491,12 +539,18 @@ public class StreetSection extends Street {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEnoughSpace(double length) {
         final double freeSpace = calculateFreeSpace();
         return length < freeSpace;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveFirstCarToNextSection()
     throws IllegalStateException {
@@ -527,6 +581,9 @@ public class StreetSection extends Street {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean carCouldEnterNextSection() {
         throw new IllegalStateException("Street section is not empty, but last car could not be determined.");
@@ -578,6 +635,9 @@ public class StreetSection extends Street {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carEnter(Car car) {
         ICar iCar = CarController.getICar(car);
@@ -602,6 +662,9 @@ public class StreetSection extends Street {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isFull() {
         // this method is only used by an Intersection object
@@ -621,6 +684,9 @@ public class StreetSection extends Street {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean successful) {
         if (successful) {
@@ -630,6 +696,9 @@ public class StreetSection extends Street {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DTO toDTO() {
         return null;

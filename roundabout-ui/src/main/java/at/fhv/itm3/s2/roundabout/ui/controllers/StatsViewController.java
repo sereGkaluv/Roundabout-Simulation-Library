@@ -52,6 +52,9 @@ public class StatsViewController extends JfxController {
     @FXML private VBox sinkAvgContainer;
     @FXML private VBox sinkMaxContainer;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }

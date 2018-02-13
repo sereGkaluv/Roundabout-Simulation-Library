@@ -38,21 +38,33 @@ public class StreetConnector implements IStreetConnector {
         this.streetTypeMap = new HashMap<>();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getId() {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<IConsumer> getNextConsumers() {
         return nextSections;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<IConsumer> getPreviousConsumers() {
         return previousSections;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<IConsumer> getPreviousConsumers(ConsumerType consumerType) {
         List<IConsumer> streetsToReturn = new LinkedList<>();
@@ -64,6 +76,9 @@ public class StreetConnector implements IStreetConnector {
         return streetsToReturn;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<IConsumer> getPreviousTrackConsumers(IConsumer consumer, ConsumerType consumerType) {
         if (!this.previousSectionsOnTrackMap.containsKey(consumer)) {
@@ -78,6 +93,9 @@ public class StreetConnector implements IStreetConnector {
         return streetsToReturn;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isNextConsumerOnSameTrackAsCurrent(IConsumer currentConsumer, IConsumer nextConsumer) {
         if (!this.previousSectionsOnTrackMap.containsKey(nextConsumer) || !this.nextSectionsOnTrackMap.containsKey(currentConsumer)) {
@@ -98,6 +116,9 @@ public class StreetConnector implements IStreetConnector {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initializeTrack(IConsumer firstConsumer, ConsumerType consumerTypeOfFirstConsumer, IConsumer secondConsumer, ConsumerType consumerTypeOfSecondConsumer) {
         if (!this.nextSectionsOnTrackMap.containsKey(firstConsumer)) {
@@ -116,6 +137,9 @@ public class StreetConnector implements IStreetConnector {
         streetTypeMap.put(secondConsumer, consumerTypeOfSecondConsumer);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConsumerType getTypeOfConsumer(IConsumer consumer) {
         if (!streetTypeMap.containsKey(consumer)) {

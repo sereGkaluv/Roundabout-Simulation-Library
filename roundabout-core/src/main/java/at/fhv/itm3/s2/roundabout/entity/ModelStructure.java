@@ -33,11 +33,17 @@ public class ModelStructure implements IModelStructure {
         this.roundaboutInlets = new HashSet<>();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addStreetConnectors(Collection<? extends IStreetConnector> streetConnectors) {
         this.connectors.addAll(streetConnectors);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addRoutes(Collection<? extends IRoute> routes) {
         routes.forEach(route -> {
@@ -52,11 +58,17 @@ public class ModelStructure implements IModelStructure {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addIntersections(Collection<? extends Intersection> intersections) {
         this.intersections.addAll(intersections);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addParameter(String key, String value) {
         if (!key.isEmpty() && !value.isEmpty() && !parameters.containsKey(key)) {
@@ -64,6 +76,9 @@ public class ModelStructure implements IModelStructure {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addStreets(Collection<? extends Street> streets) {
         this.streets.addAll(streets);
@@ -75,61 +90,97 @@ public class ModelStructure implements IModelStructure {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addSinks(Collection<? extends AbstractSink> sinks) {
         this.sinks.addAll(sinks);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addSources(Collection<? extends AbstractSource> sources) {
         this.sources.addAll(sources);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<IStreetConnector> getStreetConnectors() {
         return Collections.unmodifiableSet(connectors);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<AbstractSource, List<IRoute>> getRoutes() {
         return Collections.unmodifiableMap(routes);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<Intersection> getIntersections() {
         return Collections.unmodifiableSet(intersections);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<Street> getStreets() {
         return Collections.unmodifiableSet(streets);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<AbstractSink> getSinks() {
         return sinks;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<AbstractSource> getSources() {
         return sources;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<Street> getRoundaboutInlets() {
         return roundaboutInlets;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, String> getParameters() {
         return Collections.unmodifiableMap(parameters);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getParameter(String key) {
         return parameters.get(key);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Model getModel() {
         return model;

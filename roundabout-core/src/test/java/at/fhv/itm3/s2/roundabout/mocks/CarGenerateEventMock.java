@@ -92,6 +92,9 @@ public class CarGenerateEventMock extends CarGenerateEvent {
         return routeGeneratorMock.getRoute(this.type).getSink();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void eventRoutine(AbstractSource source) {
         if (remainingCarsToGenerate > 0) {

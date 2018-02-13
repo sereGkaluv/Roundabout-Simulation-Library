@@ -37,11 +37,17 @@ public class RoundaboutSink extends AbstractSink {
         this.meanIntersectionPassTimeSum = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getLength() {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addCar(ICar iCar) {
         iCar.leaveSystem();
@@ -66,127 +72,202 @@ public class RoundaboutSink extends AbstractSink {
         meanIntersectionPassTimeSum += car.getMeanIntersectionPassTime();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ICar getFirstCar() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ICar getLastCar() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ICar> getCarQueue()
     throws IllegalStateException {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ICar removeFirstCar() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IStreetConnector getNextStreetConnector() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IStreetConnector getPreviousStreetConnector() {
         return this.previousStreetConnector;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPreviousStreetConnector(IStreetConnector previousStreetConnector) {
         this.previousStreetConnector = previousStreetConnector;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setNextStreetConnector(IStreetConnector nextStreetConnector) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<ICar, Double> getCarPositions() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateAllCarsPositions() {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isFirstCarOnExitPoint() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean firstCarCouldEnterNextSection() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEnoughSpace(double length) {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveFirstCarToNextSection() throws IllegalStateException {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean carCouldEnterNextSection() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carEnter(Car car) {
         addCar(CarController.getICar(car));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isFull() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean successful) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DTO toDTO() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanRoundaboutPassTimeForEnteredCars() {
         return meanRoundaboutPassTimeSum / getNrOfEnteredCars();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanTimeSpentInSystemForEnteredCars() {
         return meanTimeSpentInSystemSum / getNrOfEnteredCars();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanWaitingTimePerStopForEnteredCars() {
         return meanWaitingTimePerStopSum / getNrOfEnteredCars();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanStopCountForEnteredCars() {
         return stopCountSum / getNrOfEnteredCars();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanIntersectionPassTimeForEnteredCars() {
         return meanIntersectionPassTimeSum / getNrOfEnteredCars();

@@ -192,11 +192,17 @@ public class RoundaboutSimulationModel extends Model {
         this.jamIndicatorInSeconds = jamIndicatorInSeconds;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String description() {
         return "Roundabout simulation model";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void doInitialSchedules() {
         if (modelStructure != null) {
@@ -208,6 +214,9 @@ public class RoundaboutSimulationModel extends Model {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void init() {
         getExperiment().setSeedGenerator(simulationSeed);

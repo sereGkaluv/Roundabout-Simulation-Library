@@ -44,6 +44,9 @@ public class CarCouldLeaveSectionEventMock extends CarCouldLeaveSectionEvent{
         return createCarCouldLeaveSectionEventCounter;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void eventRoutine(Street donorStreet) throws SuspendExecution {
         super.eventRoutine(donorStreet);

@@ -27,11 +27,17 @@ public class Route implements IRoute {
         this.ratio = ratio;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<IConsumer> getRoute() {
         return Collections.unmodifiableList(route);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getSectionAt(int index) {
         if (index >= route.size()) {
@@ -40,37 +46,58 @@ public class Route implements IRoute {
         return route.get(index);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getStartSection() {
         return !isEmpty() ? route.get(0) : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getDestinationSection() {
         return !isEmpty() ? route.get(route.size() - 1) : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getNumberOfSections() {
         return route.size();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addSection(IConsumer section) {
         // Adds as a last element to list.
         route.add(section);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSource(AbstractSource source) {
         this.source = source;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractSource getSource() {
         return this.source;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractSink getSink() {
         final IConsumer destinationSection = this.getDestinationSection();
@@ -81,11 +108,17 @@ public class Route implements IRoute {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Double getRatio() {
         return ratio;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return route.isEmpty();
@@ -98,6 +131,9 @@ public class Route implements IRoute {
         return route.indexOf(streetSection);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean contains (IConsumer section) {
         if (!(section instanceof Street)) {

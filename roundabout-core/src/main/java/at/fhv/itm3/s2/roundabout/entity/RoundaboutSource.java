@@ -53,10 +53,16 @@ public class RoundaboutSource extends AbstractSource {
         this.generateRatio += ratio;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean b) {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DTO toDTO() {
         return null;

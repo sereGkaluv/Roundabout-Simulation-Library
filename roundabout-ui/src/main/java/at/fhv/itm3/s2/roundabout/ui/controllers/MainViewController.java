@@ -45,7 +45,6 @@ public class MainViewController extends JfxController {
 
     private static final BufferedImageTranscoder BUFFERED_IMAGE_TRANSCODER = new BufferedImageTranscoder();
 
-
     @FXML private Button btnStartSimulation;
     @FXML private Button btnGenReportSimulation;
     @FXML private Button btnPauseSimulation;
@@ -70,6 +69,9 @@ public class MainViewController extends JfxController {
     private Runnable doStepRunnable;
     private Runnable proceedRunnable;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         btnStartSimulation.managedProperty().bind(IS_SIMULATION_RUNNING.not());

@@ -49,10 +49,16 @@ public class MainApp extends Application {
     public MainApp() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start(Stage initStage) {
         try {

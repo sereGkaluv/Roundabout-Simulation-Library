@@ -77,11 +77,17 @@ public class RoundaboutCar implements ICar {
         return car;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getLastUpdateTime() {
         return lastUpdateTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setLastUpdateTime(double lastUpdateTime)
             throws IllegalArgumentException {
@@ -92,12 +98,18 @@ public class RoundaboutCar implements ICar {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getTimeToTraverseCurrentSection() {
 
         return getTimeToTraverseSection(getCurrentSection());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getTimeToTraverseSection(IConsumer section) {
 
@@ -122,6 +134,9 @@ public class RoundaboutCar implements ICar {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getTransitionTime() {
         final double currentTime = getRoundaboutModel().getCurrentTime();
@@ -139,41 +154,65 @@ public class RoundaboutCar implements ICar {
         return minPossibleTransitionTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getLength() {
         return length;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IDriverBehaviour getDriverBehaviour() {
         return driverBehaviour;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IRoute getRoute() {
         return route;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getLastSection() {
         return lastSection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getCurrentSection() {
         return currentSection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getNextSection() {
         return nextSection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getSectionAfterNextSection() {
         return sectionAfterNextSection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void traverseToNextSection() {
         this.lastSection = this.currentSection;
@@ -185,6 +224,9 @@ public class RoundaboutCar implements ICar {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getDestination() {
         return route.getDestinationSection();
@@ -203,12 +245,18 @@ public class RoundaboutCar implements ICar {
         return routeIterator.hasNext() ? routeIterator.next() : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void enterRoundabout() {
         this.roundaboutCounter.update();
         this.roundaboutStopWatch.start();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void leaveRoundabout() {
         if (this.roundaboutStopWatch.isRunning()) {
@@ -217,6 +265,9 @@ public class RoundaboutCar implements ICar {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanRoundaboutPassTime() {
         return this.roundaboutTime.getObservations() <= 0L ? 0.0D : this.roundaboutTime.getMean();

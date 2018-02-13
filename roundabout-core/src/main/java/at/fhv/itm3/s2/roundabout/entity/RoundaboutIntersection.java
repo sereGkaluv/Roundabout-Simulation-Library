@@ -11,6 +11,9 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
         super(owner, name, showInTrace, size);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carEnter(Car car, int inDirection) {
         try {
@@ -39,6 +42,9 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carEnter(Car car) {
         // should never be used
