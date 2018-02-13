@@ -24,6 +24,19 @@
         <module>roundabout-ui</module>
     </modules>
 
+    <repositories>
+        <repository>
+            <id>local-maven-repository</id>
+            <url>file://${local.repository.folder}</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <!-- Build language level -->
@@ -76,19 +89,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>local-maven-repository</id>
-            <url>file://${local.repository.folder}</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
