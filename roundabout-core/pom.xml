@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>roundabout-core</artifactId>
+    <name>roundabout-core</name>
 
     <properties>
         <local.repository.folder>${project.basedir}/../libs/</local.repository.folder>

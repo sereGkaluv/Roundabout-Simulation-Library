@@ -27,7 +27,7 @@
     <distributionManagement>
         <site>
             <id>Roundabout Shared</id>
-            <url>${project.build.directory}/site-staged</url>
+            <url>${project.build.directory}/staging</url>
         </site>
     </distributionManagement>
 
