@@ -24,6 +24,13 @@
         <module>roundabout-ui</module>
     </modules>
 
+    <distributionManagement>
+        <site>
+            <id>Roundabout Shared</id>
+            <url>${project.build.directory}/site-staged</url>
+        </site>
+    </distributionManagement>
+
     <repositories>
         <repository>
             <id>local-maven-repository</id>
