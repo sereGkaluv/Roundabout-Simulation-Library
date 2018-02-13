@@ -7,10 +7,19 @@
     <groupId>at.fhv.itm3.s2.roundabout</groupId>
     <artifactId>roundabout-shared</artifactId>
     <version>1.0.0</version>
-
     <packaging>pom</packaging>
+    <url>/roundabout-shared</url>
 
     <properties>
+        <project.java.source.version>1.8</project.java.source.version>
+        <project.java.target.version>1.8</project.java.target.version>
+        <project.mvn.plugin.compiler.version>3.7.0</project.mvn.plugin.compiler.version>
+        <project.mvn.plugin.javadoc.version>2.10.3</project.mvn.plugin.javadoc.version>
+        <project.mvn.plugin.umldoclet.version>1.0.14</project.mvn.plugin.umldoclet.version>
+        <project.mvn.plugin.surefire.version>2.20.1</project.mvn.plugin.surefire.version>
+        <project.dependency.trafsim.version>0.1</project.dependency.trafsim.version>
+        <project.dependency.desmoj.version>2.5.1e</project.dependency.desmoj.version>
+        <project.dependency.plantuml.version>8059</project.dependency.plantuml.version>
         <project.tests.junit.version>4.12</project.tests.junit.version>
         <project.tests.mockito.version>1.9.5</project.tests.mockito.version>
         <project.tests.awaitility.version>3.0.0</project.tests.awaitility.version>
@@ -50,17 +59,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>${project.mvn.plugin.compiler.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${project.java.source.version}</source>
+                    <target>${project.java.target.version}</target>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
+                <version>${project.mvn.plugin.javadoc.version}</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -72,7 +81,7 @@
                             <docletArtifact>
                                 <groupId>nl.talsmasoftware</groupId>
                                 <artifactId>umldoclet</artifactId>
-                                <version>1.0.14</version>
+                                <version>${project.mvn.plugin.umldoclet.version}</version>
                             </docletArtifact>
                             <additionalparam>
                                 -umlIncludeProtectedFields false
@@ -86,7 +95,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.20.1</version>
+                <version>${project.mvn.plugin.surefire.version}</version>
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
@@ -97,32 +106,66 @@
         </plugins>
     </build>
 
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${project.mvn.plugin.javadoc.version}</version>
+                <configuration>
+                    <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
+                    <docletArtifact>
+                        <groupId>nl.talsmasoftware</groupId>
+                        <artifactId>umldoclet</artifactId>
+                        <version>${project.mvn.plugin.umldoclet.version}</version>
+                    </docletArtifact>
+                    <additionalparam>
+                        -umlIncludeProtectedFields false
+                        -umlImageFormat PNG
+                        -umlImageDirectory ../../site/images/uml-class
+                    </additionalparam>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${project.mvn.plugin.surefire.version}</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*Integration.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
     <dependencies>
         <dependency>
             <groupId>trafsim</groupId>
             <artifactId>trafsim</artifactId>
-            <version>0.1</version>
+            <version>${project.dependency.trafsim.version}</version>
             <scope>system</scope>
-            <systemPath>${local.repository.folder}/trafsim-0.1.jar</systemPath>
+            <systemPath>${local.repository.folder}/trafsim-${project.dependency.trafsim.version}.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>desmoj</groupId>
             <artifactId>desmoj</artifactId>
-            <version>2.5.1e</version>
+            <version>${project.dependency.desmoj.version}</version>
             <scope>system</scope>
-            <systemPath>${local.repository.folder}/desmoj-2.5.1e-bin.jar</systemPath>
+            <systemPath>${local.repository.folder}/desmoj-${project.dependency.desmoj.version}-bin.jar</systemPath>
         </dependency>
         <!-- https://mvnrepository.com/artifact/nl.talsmasoftware/umldoclet -->
         <dependency>
             <groupId>nl.talsmasoftware</groupId>
             <artifactId>umldoclet</artifactId>
-            <version>1.0.14</version>
+            <version>${project.mvn.plugin.umldoclet.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/net.sourceforge.plantuml/plantuml -->
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml</artifactId>
-            <version>8059</version>
+            <version>${project.dependency.plantuml.version}</version>
         </dependency>
     </dependencies>
 
