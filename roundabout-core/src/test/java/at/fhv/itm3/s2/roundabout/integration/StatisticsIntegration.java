@@ -83,9 +83,12 @@ public class StatisticsIntegration {
         Assert.assertEquals(2, sink1.getNrOfEnteredCars());
         // ! - We can not predict how cars will be generated anymore (after car generation event delay was randomised)
 
-        List<ICar> cars = CarController.getICars();
+        List<ICar> cars = sink1.getEnteredCars();
         Assert.assertFalse(cars.get(0).isWaiting());
         Assert.assertFalse(cars.get(1).isWaiting());
+
+        // Check if cars has leaved the system.
+        Assert.assertTrue(CarController.getICars().isEmpty());
     }
 
     @Test

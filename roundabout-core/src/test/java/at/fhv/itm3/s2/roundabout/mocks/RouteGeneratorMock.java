@@ -25,8 +25,8 @@ import static org.mockito.Mockito.when;
 
 public class RouteGeneratorMock {
 
-    long DEFAULT_RED_PHASE = 20;
-    long DEFAUTL_GEEN_PHASE = 20;
+    private long DEFAULT_RED_PHASE = 60;
+    private long DEFAULT_GREEN_PHASE = 60;
 
     private Map<RouteType, IRoute> routes;
     private RoundaboutSimulationModel model;
@@ -63,8 +63,10 @@ public class RouteGeneratorMock {
 
         // INITIALIZE ROUTE WITH TWO STREETSECTIONS
         // initialize streets and sink
-        Street street1_1 = new StreetSection(10.0, model, "", false, true, DEFAUTL_GEEN_PHASE, DEFAULT_RED_PHASE);
-        Street street1_2 = new StreetSection(10.0, model, "", false);
+        Street street1_1 = new StreetSection(10.0, model, "", false, true, DEFAULT_GREEN_PHASE, DEFAULT_RED_PHASE);
+        street1_1.setTrafficLightFreeToGo(true);
+        Street street1_2 = new StreetSection(10.0, model, "", false, true, DEFAULT_GREEN_PHASE, DEFAULT_RED_PHASE);
+        street1_1.setTrafficLightFreeToGo(true);
         RoundaboutSink roundaboutSink1 = new RoundaboutSink(model, "", false);
 
         // initialize connectors
