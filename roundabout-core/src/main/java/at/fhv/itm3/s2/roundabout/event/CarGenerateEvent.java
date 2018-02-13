@@ -101,6 +101,5 @@ public class CarGenerateEvent extends Event<AbstractSource> {
         } else {
             throw new IllegalStateException("NextSection should be of type Street");
         }
-
     }
 }

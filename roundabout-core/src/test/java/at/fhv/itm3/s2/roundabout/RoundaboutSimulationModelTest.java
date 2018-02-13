@@ -14,8 +14,8 @@ public class RoundaboutSimulationModelTest {
             "",
             false,
             false,
-                3.5,
-                10.0
+            3.5,
+            10.0
         );
 
         // create experiment and connect it with the model

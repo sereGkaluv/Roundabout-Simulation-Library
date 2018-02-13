@@ -1,5 +1,6 @@
 package at.fhv.itm3.s2.roundabout.util;
 
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.entity.ModelStructure;
 import at.fhv.itm3.s2.roundabout.util.dto.ModelConfig;
 import desmoj.core.simulator.Experiment;
@@ -7,13 +8,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.net.URL;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ConfigParserTest {
+    // THIS TEST IS RELEVANT ONLY FOR DORNBIRN NORD. DISABLED FOR OUR CASE
+
 /*    private ModelConfig roundAboutConfig;
     private ConfigParser configParser;
+    private Map<String, Double> parameters;
 
     @Before
     public void setUp() throws ConfigParserException {
@@ -24,7 +29,14 @@ public class ConfigParserTest {
         roundAboutConfig = configParser.loadConfig();
 
         Experiment experiment = new Experiment("Config Parser Test");
-        RoundaboutStructure structure = (RoundaboutStructure) configParser.initRoundaboutStructure(roundAboutConfig, experiment);
+        RoundaboutSimulationModel model = new RoundaboutSimulationModel(
+                null,
+                roundAboutConfig.getName(),
+                false,
+                false
+        );
+        model.connectToExperiment(experiment);
+        ModelStructure structure = (ModelStructure) configParser.initRoundaboutStructure(roundAboutConfig, model);
     }
 
     @Test
