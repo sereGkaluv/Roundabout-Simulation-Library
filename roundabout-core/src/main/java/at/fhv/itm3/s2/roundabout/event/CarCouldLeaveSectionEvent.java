@@ -12,8 +12,6 @@ import desmoj.core.simulator.Event;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.TimeSpan;
 
-import java.util.concurrent.TimeUnit;
-
 public class CarCouldLeaveSectionEvent extends Event<Street> {
 
     /**
@@ -65,7 +63,7 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
      */
     @Override
     public void eventRoutine(Street donorStreet) throws SuspendExecution {
-        donorStreet.trafficLightActiveAndJamInNextSection();
+        donorStreet.handleJamTrafficLight();
         if ( donorStreet.firstCarCouldEnterNextSection()) {
 
             // schedule a CarCouldLeaveSectionEvent for the next section, so it is thrown when the car should be able to

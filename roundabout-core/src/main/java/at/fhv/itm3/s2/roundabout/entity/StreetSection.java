@@ -157,7 +157,7 @@ public class StreetSection extends Street {
      * {@inheritDoc}
      */
     @Override
-    public void trafficLightActiveAndJamInNextSection(){
+    public void handleJamTrafficLight(){
         if (this.isTrafficLightActive() && this.isTrafficLightTriggeredByJam()) {
             final ICar car = getFirstCar();
             if (car != null && this.isTrafficLightFreeToGo()) {
@@ -176,7 +176,7 @@ public class StreetSection extends Street {
                         // trigger red
                         RoundaboutEventFactory.getInstance().createToggleTrafficLightStateEvent(getRoundaboutModel()).schedule(
                             this,
-                                new TimeSpan(0, getRoundaboutModel().getModelTimeUnit())
+                            new TimeSpan(0, getRoundaboutModel().getModelTimeUnit())
                         );
                     }
                 }

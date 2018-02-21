@@ -113,11 +113,10 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
     }
 
     /**
-     * Triggers active traffic light to red if there is a jam in the next street section {@Link Street}
-     *
-     * @return void
+     * Handles active traffic light to red if there is a jam in the next street section {@link Street}
      */
-    public void trafficLightActiveAndJamInNextSection() { }
+    public void handleJamTrafficLight() {
+    }
 
     /**
      * Gets total car counter passed into {@code this} {@link Street}.
@@ -372,7 +371,7 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
 
     /**
      * Get TimeStamp of green phase Start - needed for jam traffic lights
-     * ,
+     *
      * @return returns start TimeStamp as double of green phase of jam traffic lights
      */
     public double getGreenPhaseStart( ) { return this.greenPhaseStart; }
