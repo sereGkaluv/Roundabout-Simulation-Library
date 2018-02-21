@@ -72,7 +72,7 @@ public class TrafficLight {
         this.isFreeToGo = isFreeToGo;
     }
 
-    public boolean isTriggersByJam() {
+    public boolean isTriggeredByJam() {
         return triggersByJam != null ? triggersByJam : false;
     }
 

@@ -316,7 +316,7 @@ public abstract class Street extends AbstractProSumer implements ICarCountable {
      * @return true = active
      */
     public boolean isTrafficLightTriggeredByJam() {
-        return trafficLight.isTriggersByJam();
+        return trafficLight.isTriggeredByJam();
     }
 
     /**
