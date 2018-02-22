@@ -11,9 +11,11 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
         super(owner, name, showInTrace, size);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carEnter(Car car, int inDirection) {
-
         try {
             // notify last section that car was successfully delivered
             // CarDeliveredEvent is never used, so it can be null
@@ -31,14 +33,18 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
             } else {
                 // Otherwise queue car
                 queues[inDirection][outIndex].insert(car);
-                car.startWaiting();
+                if (!car.isWaitingInIntersection()) {
+                    car.startWaiting();
+                }
             }
         } catch (IndexOutOfBoundsException e) {
             throw new IllegalArgumentException("Given inDirection is not available on this intersection");
         }
-
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carEnter(Car car) {
         // should never be used
@@ -51,6 +57,5 @@ public class RoundaboutIntersection extends Intersection implements IConsumer {
         } catch (IndexOutOfBoundsException e) {
             throw new IllegalArgumentException("Given inDirection and/or outDirection is not available on this intersection");
         }
-
     }
 }

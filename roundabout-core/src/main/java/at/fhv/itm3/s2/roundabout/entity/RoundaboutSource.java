@@ -3,13 +3,15 @@ package at.fhv.itm3.s2.roundabout.entity;
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.events.CarDepartureEvent;
 import at.fhv.itm14.trafsim.persistence.model.DTO;
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.event.CarGenerateEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.TimeSpan;
+
+import java.util.UUID;
 
 public class RoundaboutSource extends AbstractSource {
 
@@ -19,7 +21,11 @@ public class RoundaboutSource extends AbstractSource {
     private double generateRatio;
 
     public RoundaboutSource(Model model, String description, boolean showInTrace, Street connectedStreet) {
-        super(model, description, showInTrace);
+        this(UUID.randomUUID().toString(), null, model, description, showInTrace, connectedStreet);
+    }
+
+    public RoundaboutSource(String id, Double generatorExpectation, Model model, String description, boolean showInTrace, Street connectedStreet) {
+        super(id, generatorExpectation, model, description, showInTrace);
         this.connectedStreet = connectedStreet;
         this.roundaboutEventFactory = RoundaboutEventFactory.getInstance();
 
@@ -47,11 +53,16 @@ public class RoundaboutSource extends AbstractSource {
         this.generateRatio += ratio;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean b) {
-
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DTO toDTO() {
         return null;

@@ -5,7 +5,7 @@ import at.fhv.itm14.trafsim.model.entities.AbstractConsumer;
 import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.intersection.FixedCirculationController;
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.ConsumerType;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
@@ -24,6 +24,9 @@ import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.when;
 
 public class RouteGeneratorMock {
+
+    private long DEFAULT_RED_PHASE = 60;
+    private long DEFAULT_GREEN_PHASE = 60;
 
     private Map<RouteType, IRoute> routes;
     private RoundaboutSimulationModel model;
@@ -60,8 +63,10 @@ public class RouteGeneratorMock {
 
         // INITIALIZE ROUTE WITH TWO STREETSECTIONS
         // initialize streets and sink
-        Street street1_1 = new StreetSection(10.0, model, "", false, true);
-        Street street1_2 = new StreetSection(10.0, model, "", false);
+        Street street1_1 = new StreetSection(10.0, model, "", false, true, DEFAULT_GREEN_PHASE, DEFAULT_RED_PHASE);
+        street1_1.setTrafficLightFreeToGo(true);
+        Street street1_2 = new StreetSection(10.0, model, "", false, true, DEFAULT_GREEN_PHASE, DEFAULT_RED_PHASE);
+        street1_1.setTrafficLightFreeToGo(true);
         RoundaboutSink roundaboutSink1 = new RoundaboutSink(model, "", false);
 
         // initialize connectors
@@ -309,8 +314,8 @@ public class RouteGeneratorMock {
 
         // INITIALIZE ROUTE WITH TWO STREETSECTIONS
         // initialize streets and sink
-        Street street1 = new StreetSection(10.0, model, "", false);
-        Street street2 = new StreetSection(10.0, model, "", false);
+        Street street1 = new StreetSection(model.getMaxVehicleLength() * 3, model, "", false);
+        Street street2 = new StreetSection(model.getMaxVehicleLength() * 3, model, "", false);
         Street street3 = Mockito.mock(StreetSection.class);
         RoundaboutSink roundaboutSink = new RoundaboutSink(model, "", false);
 

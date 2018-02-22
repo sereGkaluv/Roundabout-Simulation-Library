@@ -11,187 +11,265 @@ import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.CarController;
 import desmoj.core.simulator.Model;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RoundaboutSink extends AbstractSink {
 
     private IStreetConnector previousStreetConnector;
-    private List<ICar> enteredCars;
+
+    private double meanRoundaboutPassTimeSum;
+    private double meanTimeSpentInSystemSum;
+    private double meanWaitingTimePerStopSum;
+    private double stopCountSum;
+    private double meanIntersectionPassTimeSum;
 
     public RoundaboutSink(Model owner, String name, boolean showInTrace) {
-        super(owner, name, showInTrace);
-        enteredCars = new LinkedList<>();
+        this(UUID.randomUUID().toString(), owner, name, showInTrace);
     }
 
+    public RoundaboutSink(String id, Model owner, String name, boolean showInTrace) {
+        super(id, owner, name, showInTrace);
+
+        this.meanRoundaboutPassTimeSum = 0;
+        this.meanTimeSpentInSystemSum = 0;
+        this.meanWaitingTimePerStopSum = 0;
+        this.stopCountSum = 0;
+        this.meanIntersectionPassTimeSum = 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getLength() {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addCar(ICar iCar) {
-        incrementTotalCarCounter();
         iCar.leaveSystem();
+        incrementEnteredCarCounter();
+        updateStats(iCar);
+
         IConsumer consumer = iCar.getLastSection();
         if (consumer instanceof Street) {
             Car car = CarController.getCar(iCar);
             ((Street)consumer).carDelivered(null, car, true);
         }
         CarController.removeCarMapping(iCar);
-        enteredCars.add(iCar);
+        carObserver.notifyObservers(iCar);
+        incrementLeftCarCounter();
     }
 
+    public void updateStats(ICar car) {
+        meanRoundaboutPassTimeSum += car.getMeanRoundaboutPassTime();
+        meanTimeSpentInSystemSum += car.getTimeSpentInSystem();
+        meanWaitingTimePerStopSum += car.getMeanWaitingTime();
+        stopCountSum += car.getStopCount();
+        meanIntersectionPassTimeSum += car.getMeanIntersectionPassTime();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ICar getFirstCar() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ICar getLastCar() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ICar> getCarQueue()
     throws IllegalStateException {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ICar removeFirstCar() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IStreetConnector getNextStreetConnector() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IStreetConnector getPreviousStreetConnector() {
         return this.previousStreetConnector;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPreviousStreetConnector(IStreetConnector previousStreetConnector) {
         this.previousStreetConnector = previousStreetConnector;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setNextStreetConnector(IStreetConnector nextStreetConnector) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<ICar, Double> getCarPositions() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateAllCarsPositions() {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isFirstCarOnExitPoint() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean firstCarCouldEnterNextSection() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEnoughSpace(double length) {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveFirstCarToNextSection() throws IllegalStateException {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean carCouldEnterNextSection() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carEnter(Car car) {
-        incrementTotalCarCounter();
-        car.leaveSystem();
+        addCar(CarController.getICar(car));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isFull() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void carDelivered(CarDepartureEvent carDepartureEvent, Car car, boolean successful) {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DTO toDTO() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanRoundaboutPassTimeForEnteredCars() {
-        double meanRoundaboutPassTime = 0;
-        for (ICar car: this.enteredCars) {
-            meanRoundaboutPassTime += car.getMeanRoundaboutPassTime();
-        }
-        return meanRoundaboutPassTime / this.enteredCars.size();
+        return meanRoundaboutPassTimeSum / getNrOfEnteredCars();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanTimeSpentInSystemForEnteredCars() {
-        double meanTimeSpentInSystem = 0;
-        for (ICar car: this.enteredCars) {
-            meanTimeSpentInSystem += car.getTimeSpentInSystem();
-        }
-        return meanTimeSpentInSystem / this.enteredCars.size();
+        return meanTimeSpentInSystemSum / getNrOfEnteredCars();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanWaitingTimePerStopForEnteredCars() {
-        double meanWaitingTimePerStop = 0;
-        for (ICar car: this.enteredCars) {
-            meanWaitingTimePerStop += car.getMeanWaitingTime();
-        }
-        return meanWaitingTimePerStop / this.enteredCars.size();
+        return meanWaitingTimePerStopSum / getNrOfEnteredCars();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanStopCountForEnteredCars() {
-        double stopCount = 0;
-        for (ICar car: this.enteredCars) {
-            stopCount += car.getStopCount();
-        }
-        return stopCount / this.enteredCars.size();
+        return stopCountSum / getNrOfEnteredCars();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanIntersectionPassTimeForEnteredCars() {
-        double meanIntersectionPassTime = 0;
-        for (ICar car: this.enteredCars) {
-            meanIntersectionPassTime += car.getMeanIntersectionPassTime();
-        }
-        return meanIntersectionPassTime / this.enteredCars.size();
-    }
-
-    @Override
-    public List<ICar> getEnteredCars() {
-        return this.enteredCars;
+        return meanIntersectionPassTimeSum / getNrOfEnteredCars();
     }
 }

@@ -1,6 +1,7 @@
 package at.fhv.itm3.s2.roundabout.mocks;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm14.trafsim.model.events.TrafficLightGreenEvent;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
 import at.fhv.itm3.s2.roundabout.event.ToggleTrafficLightStateEvent;
 import desmoj.core.simulator.Model;
@@ -31,6 +32,10 @@ public class ToggleTrafficLightStateEventMock extends ToggleTrafficLightStateEve
         this.createCarCouldLeaveSectionEventCounter = 0;
 
         this.roundaboutEventFactory = Mockito.mock(RoundaboutEventFactory.class);
+
+        when(this.roundaboutEventFactory.createToggleTrafficLightStateEvent((RoundaboutSimulationModel) notNull())).then(
+            invocationOnMock -> new ToggleTrafficLightStateEventMock(this.model, "", false)
+        );
 
         when(this.roundaboutEventFactory.createCarCouldLeaveSectionEvent((RoundaboutSimulationModel) notNull())).then(invocationOnMock -> {
             this.createCarCouldLeaveSectionEventCounter++;

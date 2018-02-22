@@ -2,6 +2,7 @@ package at.fhv.itm3.s2.roundabout.api.entity;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface IRoute {
@@ -11,7 +12,7 @@ public interface IRoute {
      *
      * @return the route as unmodifiable list of {@link Street}.
      */
-    List<IConsumer> getRoute();
+    Collection<IConsumer> getRoute();
 
     /**
      * Returns an {@link Street} at the given index of the route.
@@ -86,4 +87,11 @@ public interface IRoute {
      * @return ratio of traffic flow
      */
     Double getRatio();
+
+    /**
+    * Checks if there is a specific {@link Street}s already in the route.
+    *
+    * @return true if there is a specific {@link Street} in the route, otherwise false.
+    */
+    boolean contains(IConsumer section);
 }

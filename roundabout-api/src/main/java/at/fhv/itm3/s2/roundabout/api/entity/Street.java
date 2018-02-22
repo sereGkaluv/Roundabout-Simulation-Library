@@ -1,35 +1,111 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
 import at.fhv.itm14.trafsim.model.entities.AbstractProSumer;
+import at.fhv.itm3.s2.roundabout.api.util.observable.ObserverType;
+import at.fhv.itm3.s2.roundabout.api.util.observable.RoundaboutObservable;
 import desmoj.core.simulator.Model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.UUID;
 
-public abstract class Street extends AbstractProSumer implements IEnteredCarCounter {
+public abstract class Street extends AbstractProSumer implements ICarCountable {
 
     private final String id;
     private long enteredCarsCounter;
+    private long leftCarsCounter;
     private long lostCarsCounter;
     private TrafficLight trafficLight;
 
+    private double greenPhaseStart;
+
+    protected Observable carObserver;
+    protected Observable enteredCarObserver;
+    protected Observable leftCarObserver;
+    protected Observable lostCarObserver;
+    protected Observable carPositionObserver;
+    protected Observable trafficLightObserver;
+
     public Street(Model owner, String name, boolean showInTrace) {
-        this(owner, name, showInTrace, false);
+        this(UUID.randomUUID().toString(), owner, name, showInTrace);
     }
 
-    public Street(Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
-        this(UUID.randomUUID().toString(), owner, name, showInTrace, trafficLightActive);
+    public Street(String id, Model owner, String name, boolean showInTrace) {
+        this(id, owner, name, showInTrace, false, null, null, null);
     }
 
-    public Street(String id, Model owner, String name, boolean showInTrace, boolean trafficLightActive) {
+    public Street(
+        Model owner,
+        String name,
+        boolean showInTrace,
+        boolean trafficLightActive,
+        boolean isJamTrafficLight,
+        Long minGreenPhaseDuration,
+        Long redPhaseDuration
+    ) {
+        this(UUID.randomUUID().toString(),
+        owner,
+        name,
+        showInTrace,
+        trafficLightActive,
+        minGreenPhaseDuration,
+        null,
+        redPhaseDuration);
+    }
+
+    public Street(
+        Model owner,
+        String name,
+        boolean showInTrace,
+        boolean trafficLightActive,
+        Long greenPhaseDuration,
+        Long redPhaseDuration
+    ) {
+        this(
+            UUID.randomUUID().toString(),
+            owner,
+            name,
+            showInTrace,
+            trafficLightActive,
+            null,
+            greenPhaseDuration,
+            redPhaseDuration
+        );
+    }
+
+    public Street(
+        String id,
+        Model owner,
+        String name,
+        boolean showInTrace,
+        boolean trafficLightActive,
+        Long minGreenPhaseDuration,
+        Long greenPhaseDuration,
+        Long redPhaseDuration
+    ) {
         super(owner, name, showInTrace);
 
         this.id = id;
         this.enteredCarsCounter = 0;
+        this.leftCarsCounter = 0;
         this.lostCarsCounter = 0;
 
-        trafficLight = new TrafficLight(trafficLightActive);
+        this.trafficLight = new TrafficLight(trafficLightActive, minGreenPhaseDuration, greenPhaseDuration, redPhaseDuration);
+        this.greenPhaseStart = 0.0;
+
+        this.carObserver = new RoundaboutObservable();
+        this.enteredCarObserver = new RoundaboutObservable();
+        this.leftCarObserver = new RoundaboutObservable();
+        this.lostCarObserver = new RoundaboutObservable();
+        this.carPositionObserver = new RoundaboutObservable();
+        this.trafficLightObserver = new RoundaboutObservable();
+
+        addObserver(
+            ObserverType.CAR_LOST,
+            (o, arg) ->  System.out.println(String.format("Street \"%s\" cars lost: %s", id, arg))
+        );
     }
 
     public String getId() {
@@ -37,7 +113,13 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     }
 
     /**
-     * Gets total car counter passed via {@code this} {@link Street}.
+     * Handles active traffic light to red if there is a jam in the next street section {@link Street}
+     */
+    public void handleJamTrafficLight() {
+    }
+
+    /**
+     * Gets total car counter passed into {@code this} {@link Street}.
      *
      * @return total car counter.
      */
@@ -47,15 +129,46 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
     }
 
     /**
-     * Internal method for counter incrementation.
+     * Gets total car counter passed from {@code this} {@link Street}.
+     *
+     * @return total car counter.
      */
-    protected void incrementTotalCarCounter() {
-        this.enteredCarsCounter++;
+    @Override
+    public long getNrOfLeftCars() { return leftCarsCounter; }
+
+    /**
+     * Gets total car counter lost in {@code this} {@link Street}.
+     *
+     * @return total car counter.
+     */
+    @Override
+    public long getNrOfLostCars() {
+        return lostCarsCounter;
     }
 
-    public long getNrOfLostCars() { return lostCarsCounter; }
+    /**
+     * Internal method for counter incrementation.
+     */
+    protected void incrementEnteredCarCounter() {
+        this.enteredCarsCounter++;
+        this.enteredCarObserver.notifyObservers(this.enteredCarsCounter);
+    }
 
-    protected void incrementLostCarsCounter() { this.lostCarsCounter++; }
+    /**
+     * Internal method for counter incrementation.
+     */
+    protected void incrementLeftCarCounter() {
+        this.leftCarsCounter++;
+        this.leftCarObserver.notifyObservers(this.leftCarsCounter);
+    }
+
+    /**
+     * Internal method for counter incrementation.
+     */
+    protected void incrementLostCarCounter() {
+        this.lostCarsCounter++;
+        this.lostCarObserver.notifyObservers(this.lostCarObserver);
+    }
 
     /**
      * Gets physical length of the street section.
@@ -179,10 +292,13 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
      * @throws IllegalStateException if car cannot move further e.g. next section is null.
      */
     public abstract void moveFirstCarToNextSection()
-            throws IllegalStateException;
+    throws IllegalStateException;
 
-    @Deprecated
-    // TODO consider removal i think this logic can be packed into addCar method, otherwise consider rename to isCarAbleToEnter()
+    /**
+     * Calculates either a car could enter next section or not
+     *
+     * @return true if car could enter next section otherwise false
+     */
     public abstract boolean carCouldEnterNextSection();
 
     /**
@@ -192,6 +308,15 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
      */
     public boolean isTrafficLightActive() {
         return trafficLight.isActive();
+    }
+
+    /**
+     * Returns if traffic light at end of the street is triggered by traffic jam. if not it is cyclic.
+     *
+     * @return true = active
+     */
+    public boolean isTrafficLightTriggeredByJam() {
+        return trafficLight.isTriggeredByJam();
     }
 
     /**
@@ -212,5 +337,65 @@ public abstract class Street extends AbstractProSumer implements IEnteredCarCoun
      */
     public void setTrafficLightFreeToGo(boolean isFreeToGo) throws IllegalStateException {
         trafficLight.setFreeToGo(isFreeToGo);
+        trafficLightObserver.notifyObservers(isFreeToGo);
+    }
+
+    /**
+     * Getter for red phase duration of traffic light
+     *
+     * @return the duration of the red light
+     */
+    public long getRedPhaseDurationOfTrafficLight() { return this.trafficLight.getRedPhaseDuration(); }
+
+    /**
+     * Getter for green phase duration of cyclic traffic light
+     *
+     * @return the duration of the green light
+     */
+    public long getGreenPhaseDurationOfTrafficLight() { return this.trafficLight.getGreenPhaseDuration(); }
+
+    /**
+     * Sends notifications for traffic light state.
+     * Is designed to be started in the beginning of simulation.
+     */
+    public void initTrafficLight() {
+        if (isTrafficLightActive()) {
+            trafficLightObserver.notifyObservers();
+        }
+    }
+
+    /**
+     * Sets TimeStamp of green phase Start - needed for jam traffic lights
+     */
+    public void setGreenPhaseStart( double greenPhaseStart ) { this.greenPhaseStart = greenPhaseStart; }
+
+    /**
+     * Get TimeStamp of green phase Start - needed for jam traffic lights
+     *
+     * @return returns start TimeStamp as double of green phase of jam traffic lights
+     */
+    public double getGreenPhaseStart( ) { return this.greenPhaseStart; }
+
+    /**
+     * Getter for min green phase duration of jam traffic light
+     *
+     * @return the duration of the min green light
+     */
+    public double getMinGreenPhaseDurationOfTrafficLight(){ return this.trafficLight.getMinGreenPhaseDuration(); }
+
+    /**
+     * Helper method that registers typed observers.
+     *
+     * @param observerType type of observer to be registered.
+     * @param o observer.
+     */
+    public synchronized void addObserver(ObserverType observerType, Observer o) {
+        switch (observerType) {
+            case CAR_ENTERED: enteredCarObserver.addObserver(o); break;
+            case CAR_ENTITY: carObserver.addObserver(o); break;
+            case CAR_LEFT: leftCarObserver.addObserver(o); break;
+            case CAR_POSITION: carPositionObserver.addObserver(o); break;
+            case TRAFFIC_LIGHT: trafficLightObserver.addObserver(o); break;
+        }
     }
 }

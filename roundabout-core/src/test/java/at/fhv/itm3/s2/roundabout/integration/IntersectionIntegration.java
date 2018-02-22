@@ -1,6 +1,7 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.entity.ModelStructure;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
@@ -24,14 +25,16 @@ public class IntersectionIntegration {
     public void setUp() {
         model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
+        Experiment.setReferenceUnit(TimeUnit.SECONDS);
         model.connectToExperiment(exp);
+        model.registerModelStructure(new ModelStructure(model));
         exp.setShowProgressBar(false);
     }
 
     @Test
     public void intersectionWith2DirectionsAndStreetSections_twoCarsShouldEnterSinks() {
 
-        exp.stop(new TimeInstant(10000, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(10000, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 

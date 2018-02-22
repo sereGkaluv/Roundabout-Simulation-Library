@@ -2,7 +2,6 @@ package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
@@ -11,13 +10,11 @@ import at.fhv.itm3.s2.roundabout.controller.CarController;
 import at.fhv.itm3.s2.roundabout.controller.RouteController;
 import at.fhv.itm3.s2.roundabout.entity.DriverBehaviour;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutCar;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutSource;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import desmoj.core.simulator.Event;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.TimeSpan;
-
-import java.util.concurrent.TimeUnit;
 
 
 public class CarGenerateEvent extends Event<AbstractSource> {
@@ -55,7 +52,6 @@ public class CarGenerateEvent extends Event<AbstractSource> {
         } else {
             throw new IllegalArgumentException("No suitable model given over.");
         }
-
         routeController = RouteController.getInstance(roundaboutSimulationModel);
 
     }
@@ -73,34 +69,37 @@ public class CarGenerateEvent extends Event<AbstractSource> {
      */
     @Override
     public void eventRoutine(AbstractSource source) {
-        // TODO: use meaningful values!!
-        Car car = new Car(roundaboutSimulationModel, "", false);
-        IRoute route = this.routeController.getRandomRoute(source);
-        DriverBehaviour driverBehaviour = new DriverBehaviour(6.0, 0.5, 1, 1, 1);
-        ICar roundaboutCar = new RoundaboutCar(getModel(), car, 2.0, driverBehaviour, route);
+        final IRoute route = routeController.getRandomRoute(source);
+        final double carLength = roundaboutSimulationModel.getRandomVehicleLength();
+
+        final Car car = new Car(roundaboutSimulationModel, "", false);
+        final DriverBehaviour driverBehaviour = new DriverBehaviour(6.0, 0.5, 1, 1, 1);
+        final ICar roundaboutCar = new RoundaboutCar(getModel(), carLength, car, driverBehaviour, route);
         roundaboutCar.enterSystem();
+
         CarController.addCarMapping(car, roundaboutCar);
-        IConsumer nextSection = source.getConnectedStreet();
+        final IConsumer nextSection = source.getConnectedStreet();
 
         if (nextSection instanceof StreetSection) {
             ((Street)nextSection).addCar(roundaboutCar);
-            double traverseTime = roundaboutCar.getTimeToTraverseCurrentSection();
-            CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
-            carCouldLeaveSectionEvent.schedule((Street)nextSection, new TimeSpan(traverseTime, TimeUnit.SECONDS));
+            final double traverseTime = roundaboutCar.getTimeToTraverseCurrentSection();
+            final CarCouldLeaveSectionEvent carCouldLeaveSectionEvent = roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel);
+            carCouldLeaveSectionEvent.schedule((Street)nextSection, new TimeSpan(traverseTime, roundaboutSimulationModel.getModelTimeUnit()));
 
-            double carGenerateRatio;
-            if (source instanceof RoundaboutSource) {
-                carGenerateRatio = ((RoundaboutSource) source).getGenerateRatio();
-            } else {
-                throw new IllegalStateException("Source should be of type RoundaboutSource");
-            }
+            final CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);
 
-            double timeBetweenCarArrivals = roundaboutSimulationModel.getRandomTimeBetweenCarArrivalsOnMainFlow() * carGenerateRatio;
-            CarGenerateEvent carGenerateEvent = roundaboutEventFactory.createCarGenerateEvent(roundaboutSimulationModel);
-            carGenerateEvent.schedule(source, new TimeSpan(timeBetweenCarArrivals, TimeUnit.SECONDS));
+            final double minTimeBetweenCarArrivals = roundaboutSimulationModel.getMinTimeBetweenCarArrivals();
+            final double meanTimeBetweenCarArrivals = roundaboutSimulationModel.getMeanTimeBetweenCarArrivals();
+
+            final double randomTimeUntilCarArrival = roundaboutSimulationModel.getRandomTimeBetweenCarArrivals();
+            final double generatorExpectationShift = source.getGeneratorExpectation() - meanTimeBetweenCarArrivals;
+
+            final double shiftedTimeUntilCarArrival = randomTimeUntilCarArrival + generatorExpectationShift;
+            final double actualTimeUntilCarArrival = Math.max(shiftedTimeUntilCarArrival, minTimeBetweenCarArrivals);
+
+            carGenerateEvent.schedule(source, new TimeSpan(actualTimeUntilCarArrival, roundaboutSimulationModel.getModelTimeUnit()));
         } else {
             throw new IllegalStateException("NextSection should be of type Street");
         }
-
     }
 }

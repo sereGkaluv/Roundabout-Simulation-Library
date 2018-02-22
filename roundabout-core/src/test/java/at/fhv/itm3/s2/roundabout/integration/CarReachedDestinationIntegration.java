@@ -1,7 +1,7 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.*;
 import at.fhv.itm3.s2.roundabout.entity.*;
 import at.fhv.itm3.s2.roundabout.mocks.RouteGeneratorMock;
@@ -26,13 +26,15 @@ public class CarReachedDestinationIntegration {
     public void setUp() {
         model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
+        Experiment.setReferenceUnit(TimeUnit.SECONDS);
         model.connectToExperiment(exp);
+        model.registerModelStructure(new ModelStructure(model));
         exp.setShowProgressBar(false);
     }
 
     @Test
     public void destinationReached() {
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
         ArgumentCaptor<ICar> varArgs = ArgumentCaptor.forClass(ICar.class);
 
         RoundaboutSink roundaboutSinkSpyMock = spy(new RoundaboutSink(model, "", false));

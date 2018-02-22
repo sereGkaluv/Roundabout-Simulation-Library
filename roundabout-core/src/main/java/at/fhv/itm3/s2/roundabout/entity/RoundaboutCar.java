@@ -4,7 +4,7 @@ import at.fhv.itm14.trafsim.model.entities.Car;
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.statistics.StopWatch;
 import at.fhv.itm3.s2.roundabout.controller.IntersectionController;
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.ICar;
 import at.fhv.itm3.s2.roundabout.api.entity.IDriverBehaviour;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
@@ -34,7 +34,7 @@ public class RoundaboutCar implements ICar {
     private IConsumer nextSection;
     private IConsumer sectionAfterNextSection;
 
-    public RoundaboutCar(Model model, Car car, double length, IDriverBehaviour driverBehaviour, IRoute route)
+    public RoundaboutCar(Model model, double length, Car car, IDriverBehaviour driverBehaviour, IRoute route)
     throws IllegalArgumentException {
 
         if (car != null) {
@@ -77,11 +77,17 @@ public class RoundaboutCar implements ICar {
         return car;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getLastUpdateTime() {
         return lastUpdateTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setLastUpdateTime(double lastUpdateTime)
             throws IllegalArgumentException {
@@ -92,12 +98,18 @@ public class RoundaboutCar implements ICar {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getTimeToTraverseCurrentSection() {
 
         return getTimeToTraverseSection(getCurrentSection());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getTimeToTraverseSection(IConsumer section) {
 
@@ -122,6 +134,9 @@ public class RoundaboutCar implements ICar {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getTransitionTime() {
         final double currentTime = getRoundaboutModel().getCurrentTime();
@@ -139,41 +154,65 @@ public class RoundaboutCar implements ICar {
         return minPossibleTransitionTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getLength() {
         return length;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IDriverBehaviour getDriverBehaviour() {
         return driverBehaviour;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IRoute getRoute() {
         return route;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getLastSection() {
         return lastSection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getCurrentSection() {
         return currentSection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getNextSection() {
         return nextSection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getSectionAfterNextSection() {
         return sectionAfterNextSection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void traverseToNextSection() {
         this.lastSection = this.currentSection;
@@ -185,6 +224,9 @@ public class RoundaboutCar implements ICar {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IConsumer getDestination() {
         return route.getDestinationSection();
@@ -203,18 +245,29 @@ public class RoundaboutCar implements ICar {
         return routeIterator.hasNext() ? routeIterator.next() : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void enterRoundabout() {
         this.roundaboutCounter.update();
         this.roundaboutStopWatch.start();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void leaveRoundabout() {
-        double res = this.roundaboutStopWatch.stop();
-        this.roundaboutTime.update(new TimeSpan(res));
+        if (this.roundaboutStopWatch.isRunning()) {
+            double res = this.roundaboutStopWatch.stop();
+            this.roundaboutTime.update(new TimeSpan(res));
+        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMeanRoundaboutPassTime() {
         return this.roundaboutTime.getObservations() <= 0L ? 0.0D : this.roundaboutTime.getMean();

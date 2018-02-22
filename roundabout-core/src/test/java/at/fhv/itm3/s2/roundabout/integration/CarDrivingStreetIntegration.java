@@ -1,6 +1,9 @@
 package at.fhv.itm3.s2.roundabout.integration;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.api.entity.ICar;
+import at.fhv.itm3.s2.roundabout.controller.CarController;
+import at.fhv.itm3.s2.roundabout.entity.ModelStructure;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSink;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
@@ -14,6 +17,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class CarDrivingStreetIntegration {
@@ -25,14 +29,16 @@ public class CarDrivingStreetIntegration {
     public void setUp() {
         model = new RoundaboutSimulationModel(null, "", false, false, 3.5, 10.0);
         exp = new Experiment("RoundaboutSimulationModel Experiment");
+        Experiment.setReferenceUnit(TimeUnit.SECONDS);
         model.connectToExperiment(exp);
+        model.registerModelStructure(new ModelStructure(model));
         exp.setShowProgressBar(false);
     }
 
     @Test
     public void twoStreetSectionsTwoCars_carsShouldEnterSinks() {
 
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
@@ -53,7 +59,7 @@ public class CarDrivingStreetIntegration {
     @Test
     public void twoStreetSectionsOneCar_trafficLightRed() {
 
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
@@ -77,7 +83,7 @@ public class CarDrivingStreetIntegration {
     @Test
     public void twoStreetSectionsOneCar_trafficLightGreen() {
 
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
@@ -101,7 +107,7 @@ public class CarDrivingStreetIntegration {
     @Test
     public void precedence_oneCarStaysOnTrack_oneCarWantsToChangeTrackAndHasToGivePrecedence() {
 
-        exp.stop(new TimeInstant(60, TimeUnit.SECONDS));
+        exp.stop(new TimeInstant(60, model.getModelTimeUnit()));
 
         RouteGeneratorMock routeGeneratorMock = new RouteGeneratorMock(model);
 
@@ -121,9 +127,16 @@ public class CarDrivingStreetIntegration {
         exp.finish();
 
         Assert.assertEquals(2, sink1.getNrOfEnteredCars());
-        // first car that enters is from source 1
-        Assert.assertEquals(source1, sink1.getEnteredCars().get(0).getRoute().getSource());
-        // second car that enters is from source 2
-        Assert.assertEquals(source2, sink1.getEnteredCars().get(1).getRoute().getSource());
+        // ! - We can not predict how cars will be generated anymore (after car generation event delay was randomised)
+
+//        // first car that enters is from source 1
+//        Assert.assertEquals(source1, sink1.getEnteredCars().get(0).getRoute().getSource());
+//        // second car that enters is from source 2
+//        Assert.assertEquals(source2, sink1.getEnteredCars().get(1).getRoute().getSource());
+
+        List<ICar> cars = CarController.getICars();
+        for (ICar car: cars) {
+            Assert.assertFalse(car.isWaiting());
+        }
     }
 }

@@ -2,18 +2,15 @@ package at.fhv.itm3.s2.roundabout.event;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
 import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.IStreetConnector;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
-import at.fhv.itm3.s2.roundabout.entity.RoundaboutIntersection;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import co.paralleluniverse.fibers.SuspendExecution;
 import desmoj.core.simulator.Event;
 import desmoj.core.simulator.Model;
 import desmoj.core.simulator.TimeSpan;
-
-import java.util.concurrent.TimeUnit;
 
 public class CarCouldLeaveSectionEvent extends Event<Street> {
 
@@ -66,15 +63,16 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
      */
     @Override
     public void eventRoutine(Street donorStreet) throws SuspendExecution {
-        if (donorStreet.firstCarCouldEnterNextSection()) {
+        donorStreet.handleJamTrafficLight();
+        if ( donorStreet.firstCarCouldEnterNextSection()) {
 
             // schedule a CarCouldLeaveSectionEvent for the next section, so it is thrown when the car should be able to
             // leave the next section under optimal conditions
             IConsumer nextSection = donorStreet.getFirstCar().getNextSection();
             if (nextSection != null && nextSection instanceof StreetSection) {
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                        (StreetSection)nextSection,
-                        new TimeSpan((donorStreet.getFirstCar().getTimeToTraverseSection(nextSection)), TimeUnit.SECONDS)
+                    (StreetSection) nextSection,
+                    new TimeSpan((donorStreet.getFirstCar().getTimeToTraverseSection(nextSection)), roundaboutSimulationModel.getModelTimeUnit())
                 );
                 donorStreet.moveFirstCarToNextSection();
             }  else if (nextSection != null && (nextSection instanceof RoundaboutSink || nextSection instanceof Intersection)) {
@@ -86,8 +84,8 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
             // car is standing or driving
             if (!donorStreet.isEmpty()) {
                 roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                        donorStreet,
-                        new TimeSpan(donorStreet.getFirstCar().getTransitionTime(), TimeUnit.SECONDS)
+                    donorStreet,
+                    new TimeSpan(donorStreet.getFirstCar().getTransitionTime(), roundaboutSimulationModel.getModelTimeUnit())
                 );
             }
 
@@ -98,8 +96,8 @@ public class CarCouldLeaveSectionEvent extends Event<Street> {
                 for (IConsumer previousSection : previousStreetConnector.getPreviousConsumers()) {
                     if (previousSection != null && previousSection instanceof StreetSection) {
                         roundaboutEventFactory.createCarCouldLeaveSectionEvent(roundaboutSimulationModel).schedule(
-                                (StreetSection)previousSection,
-                                new TimeSpan(0, TimeUnit.SECONDS)
+                            (StreetSection )previousSection,
+                            new TimeSpan(0, roundaboutSimulationModel.getModelTimeUnit())
                         );
                     }
                 }

@@ -1,12 +1,15 @@
 package at.fhv.itm3.s2.roundabout.controller;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.IRoute;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import desmoj.core.simulator.Model;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class RouteController {
 
@@ -77,32 +80,29 @@ public class RouteController {
 
         this.routes = new HashMap<>();
         this.sources = new LinkedList<>();
-
-        initializeRoutes();
     }
 
     public IRoute getRandomRoute(AbstractSource source) {
         if (this.routes.isEmpty()) {
-            throw new IllegalStateException("Routes must not be empty");
+            throw new IllegalStateException("Routes must not be empty.");
         }
 
-        List<IRoute> routes = this.routes.get(source);
+        final List<IRoute> routes = this.routes.get(source);
 
-        double totalRatio = routes.stream().mapToDouble(route -> route.getRatio()).sum();
-        double randomRatio = (new Random().nextDouble()) * totalRatio;
+        final double totalRatio = routes.stream().mapToDouble(IRoute::getRatio).sum();
+        final double randomRatio = model.getRandomRouteRatioFactor() * totalRatio;
 
-        double sumRatio = 0.0;
+        double sumRatio = 0;
         for (IRoute route : routes) {
-            sumRatio += route.getRatio();
-            if (sumRatio >= randomRatio) {
+            if (route.getRatio() > 0) {
+                sumRatio += route.getRatio();
+            }
+
+            if (sumRatio > randomRatio) {
                 return route;
             }
         }
 
-        throw new IllegalStateException("no route chosen");
-    }
-
-    private void initializeRoutes() {
-        // TODO implement
+        throw new IllegalStateException("No route was chosen for source: " + source);
     }
 }

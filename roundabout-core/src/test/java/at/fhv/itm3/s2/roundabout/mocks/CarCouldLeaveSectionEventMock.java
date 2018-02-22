@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.mocks;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.event.CarCouldLeaveSectionEvent;
 import at.fhv.itm3.s2.roundabout.event.RoundaboutEventFactory;
@@ -44,6 +44,9 @@ public class CarCouldLeaveSectionEventMock extends CarCouldLeaveSectionEvent{
         return createCarCouldLeaveSectionEventCounter;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void eventRoutine(Street donorStreet) throws SuspendExecution {
         super.eventRoutine(donorStreet);

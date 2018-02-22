@@ -3,10 +3,37 @@ package at.fhv.itm3.s2.roundabout.api.entity;
 import at.fhv.itm14.trafsim.model.entities.AbstractProducer;
 import desmoj.core.simulator.Model;
 
-public abstract class AbstractSource extends AbstractProducer {
+import java.util.UUID;
 
-    public AbstractSource(Model model, String string, boolean bln) {
-        super(model, string, bln);
+public abstract class AbstractSource extends AbstractProducer {
+    private String id;
+    private double generatorExpectation;
+
+    public AbstractSource(Double generatorExpectation, Model model, String description, boolean showInTrace) {
+        this(UUID.randomUUID().toString(), generatorExpectation, model, description, showInTrace);
+    }
+
+    public AbstractSource(String id, Double generatorExpectation, Model model, String description, boolean showInTrace) {
+        super(model, description, showInTrace);
+        this.id = id;
+        this.generatorExpectation = generatorExpectation != null ? generatorExpectation : 1.0;
+    }
+
+    /**
+     * Get id of this source.
+     * @return id value.
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Get generator expectation.
+     *
+     * @return generator expectation value.
+     */
+    public double getGeneratorExpectation() {
+        return generatorExpectation;
     }
 
     /**

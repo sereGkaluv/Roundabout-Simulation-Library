@@ -51,22 +51,30 @@ public class IntersectionController {
 
     public int getInDirectionOfIConsumer(Intersection intersection, IConsumer consumer) {
         if (!inDirectionsMap.containsKey(intersection)) {
-            throw new IllegalArgumentException("There is no mapping for this intersection in the in-direction-map of the intersection");
+            throw new IllegalArgumentException(
+                "There is no mapping for this intersection in the in-direction-map of the intersection:" + intersection
+            );
         }
         Map<IConsumer, Integer> map = inDirectionsMap.get(intersection);
         if (!map.containsKey(consumer)) {
-            throw new IllegalArgumentException("There is no mapping for this consumer in the in-direction-map of the intersection");
+            throw new IllegalArgumentException(
+                "There is no mapping for this consumer in the in-direction-map of the intersection: " + consumer
+            );
         }
         return map.get(consumer);
     }
 
     public int getOutDirectionOfIConsumer(Intersection intersection, IConsumer consumer) {
         if (!outDirectionsMap.containsKey(intersection)) {
-            throw new IllegalArgumentException("There is no mapping for this intersection in the in-direction-map of the intersection");
+            throw new IllegalArgumentException(
+                "There is no mapping for this intersection in the out-direction-map of the intersection: " + intersection
+            );
         }
         Map<IConsumer, Integer> map = outDirectionsMap.get(intersection);
         if (!map.containsKey(consumer)) {
-            throw new IllegalArgumentException("There is no mapping for this consumer in the in-direction-map of the intersection");
+            throw new IllegalArgumentException(
+                "There is no mapping for this consumer in the out-direction-map of the intersection: " + consumer
+            );
         }
         return map.get(consumer);
     }

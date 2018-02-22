@@ -6,10 +6,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import java.util.List;
 
 public class Route implements IDTO {
+    private String fromComponentId;
+    private String fromSourceId;
+
+    private String toComponentId;
+    private String toSinkId;
+
     private Double ratio;
-    private Source source;
-    private Sink sink;
-    private List<Section> sectionList;
 
     @XmlAttribute
     public Double getRatio() {
@@ -20,27 +23,39 @@ public class Route implements IDTO {
         this.ratio = ratio;
     }
 
-    public Source getSource() {
-        return source;
+    @XmlAttribute
+    public String getFromComponentId() {
+        return fromComponentId;
     }
 
-    public void setSource(Source source) {
-        this.source = source;
+    public void setFromComponentId(String fromComponentId) {
+        this.fromComponentId = fromComponentId;
     }
 
-    public Sink getSink() {
-        return sink;
+    @XmlAttribute
+    public String getFromSourceId() {
+        return fromSourceId;
     }
 
-    public void setSink(Sink sink) {
-        this.sink = sink;
+    public void setFromSourceId(String fromSourceId) {
+        this.fromSourceId = fromSourceId;
     }
 
-    public List<Section> getSection() {
-        return sectionList;
+    @XmlAttribute
+    public String getToComponentId() {
+        return toComponentId;
     }
 
-    public void setSection(List<Section> sectionList) {
-        this.sectionList = sectionList;
+    public void setToComponentId(String toComponentId) {
+        this.toComponentId = toComponentId;
+    }
+
+    @XmlAttribute
+    public String getToSinkId() {
+        return toSinkId;
+    }
+
+    public void setToSinkId(String toSinkId) {
+        this.toSinkId = toSinkId;
     }
 }

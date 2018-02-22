@@ -1,5 +1,6 @@
 package at.fhv.itm3.s2.roundabout.api.entity;
 
+import at.fhv.itm14.trafsim.model.entities.intersection.Intersection;
 import desmoj.core.simulator.Model;
 
 import java.util.Collection;
@@ -7,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface IRoundaboutStructure {
+public interface IModelStructure {
 
     /**
      * Add a collection of street connectors to the structure.
@@ -24,6 +25,14 @@ public interface IRoundaboutStructure {
      * @param routes routes to be added
      */
     void addRoutes(Collection<? extends IRoute> routes);
+
+    /**
+     * Add a collection of intersections to the structure.
+     * Structure setup needs to be done before.
+     *
+     * @param intersections intersections to be added
+     */
+    void addIntersections(Collection<? extends Intersection> intersections);
 
     /**
      * Add a collection of streets to the structure.
@@ -69,6 +78,13 @@ public interface IRoundaboutStructure {
      * @return routes of structure
      */
     Map<AbstractSource, List<IRoute>> getRoutes();
+
+    /**
+     * Get all intersections of the structure.
+     *
+     * @return intersections of structure
+     */
+    Set<Intersection> getIntersections();
 
     /**
      * Get all streets of the structure.

@@ -15,13 +15,15 @@ public class RoundaboutSinkMock extends RoundaboutSink {
         enteredCars = new LinkedList<>();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addCar(ICar iCar) {
         enteredCars.addLast(iCar);
         super.addCar(iCar);
     }
 
-    @Override
     public LinkedList<ICar> getEnteredCars() {
         return enteredCars;
     }

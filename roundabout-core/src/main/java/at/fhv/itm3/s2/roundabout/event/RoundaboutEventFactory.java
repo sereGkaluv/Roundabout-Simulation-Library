@@ -1,6 +1,6 @@
 package at.fhv.itm3.s2.roundabout.event;
 
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 
 public class RoundaboutEventFactory {
 

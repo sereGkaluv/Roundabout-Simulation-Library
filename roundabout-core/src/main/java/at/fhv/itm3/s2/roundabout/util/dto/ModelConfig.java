@@ -10,7 +10,6 @@ public class ModelConfig implements IDTO {
     private String name;
     private Parameters parameters;
     private Components components;
-    private Connectors connectors;
 
     @XmlAttribute
     public String getName() {

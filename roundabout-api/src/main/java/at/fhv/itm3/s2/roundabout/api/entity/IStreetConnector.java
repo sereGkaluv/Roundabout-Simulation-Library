@@ -8,6 +8,11 @@ import java.util.List;
 public interface IStreetConnector {
 
     /**
+     * Returns connector id.
+     */
+    String getId();
+
+    /**
      * Gets the next connected {@link IConsumer}s, which are accessible via this connector.
      *
      * @return The further connected {@link IConsumer}s as {@link Collection} of {@link IConsumer}.

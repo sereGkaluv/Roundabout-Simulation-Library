@@ -19,11 +19,17 @@ public class DriverBehaviour implements IDriverBehaviour {
         this.accelerationFactor = accelerationFactor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getSpeed() {
         return speed;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSpeed(double speed)
     throws IllegalArgumentException {
@@ -34,52 +40,76 @@ public class DriverBehaviour implements IDriverBehaviour {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMinDistanceToNextCar() {
         return minDistanceToNextCar;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setMinDistanceToNextCar(double minDistanceToNextCar)
     throws IllegalArgumentException {
-        if(minDistanceToNextCar > 0){
+        if (minDistanceToNextCar > 0) {
             this.minDistanceToNextCar = minDistanceToNextCar;
         } else {
             throw new IllegalArgumentException("Min distance must be positive");
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMaxDistanceToNextCar() {
         return maxDistanceToNextCar;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setMaxDistanceToNextCar(double maxDistanceToNextCar)
     throws IllegalArgumentException {
-        if(maxDistanceToNextCar > 0){
+        if (maxDistanceToNextCar > 0) {
             this.maxDistanceToNextCar = maxDistanceToNextCar;
         } else {
             throw new IllegalArgumentException("Max distance must be positive");
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getMergeFactor() {
         return mergeFactor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setMergeFactor(double mergeFactor) {
         this.mergeFactor = mergeFactor;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getAccelerationFactor() {
         return accelerationFactor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setAccelerationFactor(double accelerationFactor) {
         this.accelerationFactor = accelerationFactor;

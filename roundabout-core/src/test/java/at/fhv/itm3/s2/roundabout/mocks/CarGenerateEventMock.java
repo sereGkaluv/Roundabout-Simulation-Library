@@ -1,7 +1,7 @@
 package at.fhv.itm3.s2.roundabout.mocks;
 
 import at.fhv.itm14.trafsim.model.entities.IConsumer;
-import at.fhv.itm3.s2.roundabout.RoundaboutSimulationModel;
+import at.fhv.itm3.s2.roundabout.model.RoundaboutSimulationModel;
 import at.fhv.itm3.s2.roundabout.api.entity.AbstractSource;
 import at.fhv.itm3.s2.roundabout.api.entity.Street;
 import at.fhv.itm3.s2.roundabout.controller.RouteController;
@@ -92,6 +92,9 @@ public class CarGenerateEventMock extends CarGenerateEvent {
         return routeGeneratorMock.getRoute(this.type).getSink();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void eventRoutine(AbstractSource source) {
         if (remainingCarsToGenerate > 0) {
