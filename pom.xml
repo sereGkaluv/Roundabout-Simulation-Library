@@ -18,7 +18,7 @@
         <project.mvn.plugin.umldoclet.version>1.0.14</project.mvn.plugin.umldoclet.version>
         <project.mvn.plugin.surefire.version>2.20.1</project.mvn.plugin.surefire.version>
         <project.dependency.trafsim.version>0.1</project.dependency.trafsim.version>
-        <project.dependency.desmoj.version>2.5.1e</project.dependency.desmoj.version>
+        <project.dependency.desmoj.version>2.5.1e-bin</project.dependency.desmoj.version>
         <project.dependency.plantuml.version>8059</project.dependency.plantuml.version>
         <project.tests.junit.version>4.12</project.tests.junit.version>
         <project.tests.mockito.version>1.9.5</project.tests.mockito.version>
@@ -145,15 +145,11 @@
             <groupId>trafsim</groupId>
             <artifactId>trafsim</artifactId>
             <version>${project.dependency.trafsim.version}</version>
-            <scope>system</scope>
-            <systemPath>${local.repository.folder}/trafsim-${project.dependency.trafsim.version}.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>desmoj</groupId>
             <artifactId>desmoj</artifactId>
             <version>${project.dependency.desmoj.version}</version>
-            <scope>system</scope>
-            <systemPath>${local.repository.folder}/desmoj-${project.dependency.desmoj.version}-bin.jar</systemPath>
         </dependency>
         <!-- https://mvnrepository.com/artifact/nl.talsmasoftware/umldoclet -->
         <dependency>

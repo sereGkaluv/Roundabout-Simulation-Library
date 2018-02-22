@@ -1,12 +1,12 @@
 package at.fhv.itm3.s2.roundabout.ui.controllers;
 
-import at.fhv.itm3.s2.roundabout.api.util.observable.ObserverType;
 import at.fhv.itm3.s2.roundabout.entity.RoundaboutSink;
 import at.fhv.itm3.s2.roundabout.entity.StreetSection;
 import at.fhv.itm3.s2.roundabout.ui.controllers.core.JfxController;
 import at.fhv.itm3.s2.roundabout.ui.util.BufferedImageTranscoder;
 import at.fhv.itm3.s2.roundabout.ui.util.DaemonThreadFactory;
 import at.fhv.itm3.s2.roundabout.ui.util.ViewLoader;
+import at.fhv.itm3.s2.roundabout.util.ConfigParserException;
 import at.fhv.itm3.s2.roundabout.util.dto.Component;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -18,17 +18,18 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class MainViewController extends JfxController {
@@ -114,7 +115,11 @@ public class MainViewController extends JfxController {
         scrollBarStats.maxProperty().bind(scrollPane.vmaxProperty());
         scrollBarStats.valueProperty().bindBidirectional(scrollPane.vvalueProperty());
 
-        try (InputStream file = getClass().getResourceAsStream("/at/fhv/itm3/s2/roundabout/ui/img/back.svg")) {
+        File configFile = new File("./back.svg");
+        if (!configFile.exists()) {
+            configFile = new File("./back.png");
+        }
+        try (InputStream file = new FileInputStream(configFile)) {
             final TranscoderInput transIn = new TranscoderInput(file);
             BUFFERED_IMAGE_TRANSCODER.transcode(transIn, null);
             Platform.runLater(() -> imageView.setImage(SwingFXUtils.toFXImage(BUFFERED_IMAGE_TRANSCODER.getBufferedImage(), null)));
